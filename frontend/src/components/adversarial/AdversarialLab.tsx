@@ -105,11 +105,11 @@ export function AdversarialLab({
           <div className="flex items-center gap-2.5">
             <GitCompareArrows className="w-5 h-5 text-cyan-400" />
             <h2 className="text-base font-bold text-cyber-heading uppercase tracking-wider font-mono">
-              Adversarial Vision Lab — Active
+              Adversarial Vision Lab - Active
             </h2>
           </div>
           <span className="text-[10px] font-mono px-2 py-1 rounded border border-cyan-500/40 text-cyan-300">
-            {currentExperiment?.title ?? "—"}
+            {currentExperiment?.title ?? "-"}
           </span>
         </div>
         <div className="mt-3 flex items-center gap-2 text-[10px] font-mono text-cyber-muted">

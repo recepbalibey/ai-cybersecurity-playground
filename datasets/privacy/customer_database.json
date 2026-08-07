@@ -1,0 +1,16 @@
+{
+  "id": "customer_database",
+  "title": "Customer Database Export",
+  "category": "Customer PII",
+  "description": "A support analyst exports customer rows to ask a public AI assistant for help building a marketing email.",
+  "classification": "Confidential",
+  "risk_level": "High",
+  "handling": "Customer personal data must never be sent to a public AI service. Aggregate or synthesize before use.",
+  "document": "MARKETING EMAIL DRAFT HELP - SUPPORT TEAM\n\nHi there, please help me write a friendly email for our loyalty program. Here is a sample of our customer database:\n\nCustomer: Sarah Whitfield\nEmail: sarah.whitfield@northwind.example\nPhone: (555) 014-2281\nAddress: 214 Birchwood Lane, Portland, OR 97205\nCustomer ID: CUST-88421\nCard on file: 4111 2233 4455 6677 exp 08/27\n\nCustomer: Marcus Bell\nEmail: mbell@northwind.example\nPhone: +1 555 019-3345\nAddress: 88 Harbor Point, Seattle, WA 98101\nCustomer ID: CUST-11309\nCard on file: 5500 7788 9911 2233 exp 11/26\n\nCustomer: Elena Petrova\nEmail: elena.petrova@northwind.example\nPhone: (555) 016-7720\nAddress: 7 Maple Court, Denver, CO 80202\nCustomer ID: CUST-77204\nCard on file: 6011 5566 7788 9900 exp 03/28\n\nI only need the email body, thanks!",
+  "teaching_points": [
+    "Even a small sample of real customer records is personal data.",
+    "Payment card numbers are regulated data and must be protected end to end.",
+    "The analyst only needed the email structure - the rows added no value.",
+    "Synthetic or aggregated data would have been enough for this task."
+  ]
+}

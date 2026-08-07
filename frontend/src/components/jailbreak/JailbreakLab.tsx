@@ -226,7 +226,7 @@ export function JailbreakLab({
             >
               {scenarios.map((s) => (
                 <option key={s.key} value={s.key}>
-                  {s.title} — {s.difficulty}
+                  {s.title} - {s.difficulty}
                 </option>
               ))}
             </select>

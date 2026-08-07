@@ -44,7 +44,7 @@ export function CompareMode({
               Injected Payload
             </div>
             <p className="text-xs text-slate-200 font-mono break-all">
-              {payload || "—"}
+              {payload || "-"}
             </p>
           </div>
         </div>

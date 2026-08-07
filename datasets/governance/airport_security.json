@@ -1,0 +1,149 @@
+{
+  "id": "airport_security",
+  "title": "Airport Security Assistant",
+  "description": "An AI assistant that helps screening officers evaluate flagged passengers and baggage scans.",
+  "business_goal": "Help officers interpret scanner flags faster and improve the accuracy of secondary screening.",
+  "users": "Airport screening officers (about 400 users) at one airport.",
+  "data_types": ["Passenger watchlists", "Biometric data", "Flight manifests", "Scanner output"],
+  "model_type": "Vision model with a language interface",
+  "criticality": "Critical",
+  "governance_stance": "Poorly Governed",
+  "architecture": [
+    {
+      "id": "officers",
+      "name": "Screening Officers",
+      "role": "input",
+      "purpose": "Officers ask the assistant about flagged passengers and review its reading of scans.",
+      "security_considerations": ["Officers are under time pressure and may trust the AI too fast", "Shared terminals at checkpoints"],
+      "attack_surface": "A confident wrong answer influences a security decision under pressure."
+    },
+    {
+      "id": "web_app",
+      "name": "Screening Console",
+      "role": "application",
+      "purpose": "Terminal application at the checkpoint where flags and assistant answers appear.",
+      "security_considerations": ["High-security environment", "Session integrity is critical"],
+      "attack_surface": "Session hijacking on a checkpoint terminal affects live operations."
+    },
+    {
+      "id": "ai_gateway",
+      "name": "AI Gateway",
+      "role": "gateway",
+      "purpose": "Routes screening queries to the vision model and enforces policy.",
+      "security_considerations": ["Biometric data must be restricted", "No approval gate before actions"],
+      "attack_surface": "A request can ask the model to override or reveal watchlist data."
+    },
+    {
+      "id": "llm",
+      "name": "Vision-Language Model",
+      "role": "model",
+      "purpose": "Interprets scanner images and answers questions about flagged items and passengers.",
+      "security_considerations": ["Vision models can be fooled by adversarial patterns", "Outputs must not be treated as decisions"],
+      "attack_surface": "An adversarial image is crafted to hide a threat from the model."
+    },
+    {
+      "id": "vector_db",
+      "name": "Watchlist Store",
+      "role": "store",
+      "purpose": "Stores watchlist embeddings and historical flag patterns.",
+      "security_considerations": ["Watchlist data is extremely sensitive", "Access must be audit-only"],
+      "attack_surface": "Retrieval exposes watchlist membership through the assistant's answers."
+    },
+    {
+      "id": "internal_docs",
+      "name": "Security Data",
+      "role": "data",
+      "purpose": "Flight manifests, biometric samples, and scanner configuration used as context.",
+      "security_considerations": ["Sensitive operational data", "Must never leave the airport network"],
+      "attack_surface": "Operational data is disclosed to a hosted model provider."
+    },
+    {
+      "id": "logging",
+      "name": "Security Logging",
+      "role": "support",
+      "purpose": "Records every query and the officer who made it for accountability.",
+      "security_considerations": ["Logs contain passenger and biometric data", "Logs support incident investigation"],
+      "attack_surface": "Insiders read logs to track specific passengers."
+    },
+    {
+      "id": "monitoring",
+      "name": "Alert Monitoring",
+      "role": "support",
+      "purpose": "Flags model errors and unusual query patterns.",
+      "security_considerations": ["Monitoring exists but is reactive", "No adversarial robustness testing"],
+      "attack_surface": "A crafted scan pattern goes unnoticed until a real miss."
+    }
+  ],
+  "threats": [
+    {
+      "id": "t1",
+      "category": "adversarial_ml",
+      "name": "Adversarial scan patterns",
+      "description": "An attacker crafts a pattern that the vision model consistently misreads.",
+      "likelihood": 3,
+      "impact": 5,
+      "business_consequences": "A genuine threat passes screening or a passenger is wrongly held."
+    },
+    {
+      "id": "t2",
+      "category": "data_privacy",
+      "name": "Biometric data outside the network",
+      "description": "Biometric samples and watchlist data are sent to a hosted model provider.",
+      "likelihood": 3,
+      "impact": 5,
+      "business_consequences": "A major privacy breach of sensitive identity data."
+    },
+    {
+      "id": "t3",
+      "category": "hallucination",
+      "name": "Confident wrong answers",
+      "description": "The model invents a reason to detain or release a passenger.",
+      "likelihood": 3,
+      "impact": 5,
+      "business_consequences": "Wrong security decisions with real safety and legal consequences."
+    },
+    {
+      "id": "t4",
+      "category": "insider_threat",
+      "name": "Insider data misuse",
+      "description": "Staff use the assistant to probe watchlist status of people they know.",
+      "likelihood": 3,
+      "impact": 4,
+      "business_consequences": "Watchlist membership is leaked to people with access to the tool."
+    },
+    {
+      "id": "t5",
+      "category": "unauthorized_access",
+      "name": "Broad terminal access",
+      "description": "Any officer can query any passenger record regardless of duty need.",
+      "likelihood": 3,
+      "impact": 4,
+      "business_consequences": "Passenger data is accessible beyond the need-to-know boundary."
+    },
+    {
+      "id": "t6",
+      "category": "denial_of_service",
+      "name": "Assistant unavailable at peak",
+      "description": "High checkpoint load degrades the assistant exactly when it is needed.",
+      "likelihood": 3,
+      "impact": 3,
+      "business_consequences": "Screening slows down and officers fall back to manual review."
+    },
+    {
+      "id": "t7",
+      "category": "supply_chain",
+      "name": "Untrusted model update",
+      "description": "A model or scanner update arrives from the vendor without verification.",
+      "likelihood": 2,
+      "impact": 4,
+      "business_consequences": "A modified model behaves differently without anyone knowing why."
+    }
+  ],
+  "baseline_controls": ["audit_logging", "model_version_control"],
+  "teaching_points": [
+    "When lives and safety are at stake, the model output is a signal, not the decision.",
+    "Biometric data should never leave the operational network.",
+    "Adversarial ML means the model can be beaten by input patterns, not just words.",
+    "Governance here is about who can ask and what the answer may be used for."
+  ]
+}

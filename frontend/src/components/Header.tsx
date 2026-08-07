@@ -1,13 +1,15 @@
 "use client";
 
 import React from "react";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Moon, Sun } from "lucide-react";
 
 interface HeaderProps {
   instructorMode: boolean;
   onToggleInstructorMode: (val: boolean) => void;
   aiStatus: "online" | "processing" | "offline";
   activeModule?: string;
+  theme?: "dark" | "light";
+  onToggleTheme?: () => void;
 }
 
 export function Header({
@@ -15,8 +17,15 @@ export function Header({
   onToggleInstructorMode,
   aiStatus,
   activeModule = "soc-analyst",
+  theme = "dark",
+  onToggleTheme,
 }: HeaderProps) {
   const moduleConfig = {
+    "learning-hub": {
+      title: "Learning Hub",
+      subtitle: "Understand AI for cybersecurity and the cybersecurity of AI",
+      statusLabel: "Ready to learn",
+    },
     "soc-analyst": {
       title: "AI SOC Analyst",
       subtitle: "Investigate security events using artificial intelligence & automated threat triaging",
@@ -52,6 +61,26 @@ export function Header({
       subtitle: "Understand, attack and defend autonomous AI systems",
       statusLabel: aiStatus === "processing" ? "Agent Runtime Processing..." : "Agent Runtime Active",
     },
+    "malware-analysis": {
+      title: "AI Malware Analyst Lab",
+      subtitle: "Analyze simulated malware, map behaviors, and draft detections",
+      statusLabel: aiStatus === "processing" ? "Malware Analyst Processing..." : "Malware Analysis Online",
+    },
+    "code-review": {
+      title: "AI Security Code Reviewer",
+      subtitle: "Review code for vulnerabilities, inspect fixes, and verify before deploy",
+      statusLabel: aiStatus === "processing" ? "Secure Code Analysis Running..." : "Secure Code Analysis Ready",
+    },
+    "privacy-lab": {
+      title: "AI Data Privacy Lab",
+      subtitle: "Detect sensitive data, enforce policy, redact, and send safe prompts",
+      statusLabel: aiStatus === "processing" ? "Privacy Scan Running..." : "Privacy Protection Active",
+    },
+    governance: {
+      title: "AI Risk & Governance Simulator",
+      subtitle: "Assess AI risks, apply controls, and decide whether a system may deploy",
+      statusLabel: aiStatus === "processing" ? "Governance Review Running..." : "Risk Assessment Ready",
+    },
   }[activeModule] ?? {
     title: "AI Security Platform",
     subtitle: "AI-powered cybersecurity operations",
@@ -80,16 +109,30 @@ export function Header({
 
       {/* Right Tools & Instructor Mode */}
       <div className="flex items-center gap-4">
+        {/* Theme Toggle */}
+        <button
+          onClick={onToggleTheme}
+          title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+          aria-label="Toggle theme"
+          className="flex h-10 w-10 items-center justify-center rounded-md border border-cyber-border bg-cyber-surface text-cyber-muted transition-colors hover:text-accent"
+        >
+          {theme === "light" ? (
+            <Moon className="h-4 w-4" strokeWidth={1.75} />
+          ) : (
+            <Sun className="h-4 w-4" strokeWidth={1.75} />
+          )}
+        </button>
+
         {/* Instructor Mode Toggle */}
-        <div className="flex items-center gap-3 px-3.5 py-2 rounded-lg bg-slate-900/80 border border-slate-800">
+        <div className="flex items-center gap-3 px-3.5 py-2 rounded-lg bg-cyber-surface-hover border border-cyber-border">
           <div className="flex items-center gap-2">
             <BookOpen
               className={`w-4 h-4 ${
-                instructorMode ? "text-cyan-400" : "text-slate-500"
+                instructorMode ? "text-accent" : "text-cyber-muted"
               }`}
             />
             <div className="flex flex-col">
-              <span className="text-xs font-semibold text-cyber-text leading-none">
+              <span className="text-xs font-semibold text-cyber-heading leading-none">
                 Instructor Mode
               </span>
               <span className="text-[11px] text-cyber-muted leading-tight font-mono mt-0.5">
@@ -101,7 +144,7 @@ export function Header({
           <button
             onClick={() => onToggleInstructorMode(!instructorMode)}
             className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-              instructorMode ? "bg-cyan-600" : "bg-slate-800"
+              instructorMode ? "bg-accent" : "bg-cyber-border-light"
             }`}
           >
             <span

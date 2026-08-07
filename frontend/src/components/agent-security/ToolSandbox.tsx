@@ -41,7 +41,7 @@ export function ToolSandbox({ tools, result, isProcessing }: ToolSandboxProps) {
         {tools.map((t) => {
           const used = usedSet.has(t.key);
           const blocked = blockedSet.has(t.key);
-          const lastExec = used ? "this mission" : blocked ? "denied" : "—";
+          const lastExec = used ? "this mission" : blocked ? "denied" : "-";
           return (
             <div
               key={t.key}

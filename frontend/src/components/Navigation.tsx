@@ -5,140 +5,160 @@ import {
   ShieldAlert,
   Search,
   Terminal,
-  Cpu,
-  Lock,
   Zap,
+  Lock,
+  Cpu,
   Bot,
+  Bug,
+  FileCode2,
+  Compass,
+  PanelLeftClose,
+  PanelLeftOpen,
+  EyeOff,
+  Landmark,
 } from "lucide-react";
 
 interface NavigationProps {
   activeModule: string;
   onSelectModule?: (moduleId: string) => void;
+  collapsed?: boolean;
+  onToggleCollapsed?: () => void;
 }
 
-export function Navigation({ activeModule, onSelectModule }: NavigationProps) {
-  const modules = [
-    {
-      id: "soc-analyst",
-      name: "AI SOC Analyst",
-      icon: ShieldAlert,
-      active: true,
-      badge: "LIVE DEMO",
-    },
-    {
-      id: "threat-hunting",
-      name: "AI Threat Hunting",
-      icon: Search,
-      active: true,
-      badge: "LIVE DEMO",
-    },
-    {
-      id: "pentest-assistant",
-      name: "AI Pentest Assistant",
-      icon: Terminal,
-      active: true,
-      badge: "LIVE DEMO",
-    },
-    {
-      id: "prompt-injection",
-      name: "Prompt Injection Lab",
-      icon: Zap,
-      active: true,
-      badge: "LIVE DEMO",
-    },
-    {
-      id: "jailbreak-lab",
-      name: "Jailbreak Lab",
-      icon: Lock,
-      active: true,
-      badge: "LIVE DEMO",
-    },
-    {
-      id: "adversarial-ml",
-      name: "Adversarial ML Lab",
-      icon: Cpu,
-      active: true,
-      badge: "LIVE DEMO",
-    },
-    {
-      id: "agent-security",
-      name: "AI Agent Security Lab",
-      icon: Bot,
-      active: true,
-      badge: "LIVE DEMO",
-    },
-  ];
+interface NavItem {
+  id: string;
+  name: string;
+  icon: typeof ShieldAlert;
+}
 
+interface NavGroup {
+  label: string;
+  items: NavItem[];
+}
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    label: "Learn",
+    items: [{ id: "learning-hub", name: "Learning Hub", icon: Compass }],
+  },
+  {
+    label: "Defend with AI",
+    items: [
+      { id: "soc-analyst", name: "AI SOC Analyst", icon: ShieldAlert },
+      { id: "threat-hunting", name: "AI Threat Hunting", icon: Search },
+      { id: "pentest-assistant", name: "AI Pentest Assistant", icon: Terminal },
+      { id: "malware-analysis", name: "AI Malware Analyst", icon: Bug },
+      { id: "code-review", name: "AI Code Reviewer", icon: FileCode2 },
+    ],
+  },
+  {
+    label: "Secure AI",
+    items: [
+      { id: "prompt-injection", name: "Prompt Injection Lab", icon: Zap },
+      { id: "jailbreak-lab", name: "Jailbreak Lab", icon: Lock },
+      { id: "adversarial-ml", name: "Adversarial ML Lab", icon: Cpu },
+      { id: "agent-security", name: "AI Agent Security Lab", icon: Bot },
+      { id: "privacy-lab", name: "AI Data Privacy Lab", icon: EyeOff },
+      { id: "governance", name: "AI Governance Simulator", icon: Landmark },
+    ],
+  },
+];
+
+export function Navigation({
+  activeModule,
+  onSelectModule,
+  collapsed = false,
+  onToggleCollapsed,
+}: NavigationProps) {
   return (
-    <aside className="w-64 bg-cyber-surface border-r border-cyber-border flex flex-col h-screen sticky top-0 select-none z-20">
+    <aside
+      className={`${collapsed ? "w-16" : "w-64"} transition-[width] duration-200 bg-cyber-surface border-r border-cyber-border flex flex-col h-screen sticky top-0 select-none z-20`}
+    >
       {/* Brand Header */}
       <div className="p-4 border-b border-cyber-border flex items-center gap-3">
-        <div className="w-9 h-9 rounded bg-cyan-950/80 border border-cyan-500/40 flex items-center justify-center text-cyan-400 shadow-cyan-glow">
-          <ShieldAlert className="w-5 h-5" />
+        <div className="w-9 h-9 shrink-0 rounded-md bg-accent/10 border border-accent/40 flex items-center justify-center text-accent">
+          <ShieldAlert className="w-5 h-5" strokeWidth={1.75} />
         </div>
-        <div>
-          <h1 className="text-base font-bold tracking-tight text-cyber-heading uppercase">
-            AI Cybersecurity
-          </h1>
-          <p className="text-xs text-cyber-muted tracking-widest font-mono">
-            PLAYGROUND v1.0
-          </p>
-        </div>
+        {!collapsed && (
+          <div className="flex-1">
+            <h1 className="text-sm font-semibold tracking-tight text-cyber-heading">
+              AI Cybersecurity
+            </h1>
+            <p className="text-[11px] text-cyber-muted tracking-widest font-mono">
+              PLAYGROUND v1.0
+            </p>
+          </div>
+        )}
+        <button
+          onClick={onToggleCollapsed}
+          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-label="Toggle sidebar"
+          className="shrink-0 rounded-md p-1.5 text-cyber-muted transition-colors hover:bg-cyber-surface-hover hover:text-accent"
+        >
+          {collapsed ? (
+            <PanelLeftOpen className="h-4 w-4" strokeWidth={1.75} />
+          ) : (
+            <PanelLeftClose className="h-4 w-4" strokeWidth={1.75} />
+          )}
+        </button>
       </div>
 
       {/* Main Navigation List */}
-      <nav className="flex-1 p-3 space-y-1.5 overflow-y-auto">
-        <div className="px-3 py-2 text-xs font-mono tracking-widest text-cyber-muted uppercase">
-          Defense Operations
-        </div>
-
-        {modules.map((mod) => {
-          const Icon = mod.icon;
-          const isActive = mod.id === activeModule;
-          return (
-            <button
-              key={mod.id}
-              disabled={!mod.active}
-              onClick={() => onSelectModule && onSelectModule(mod.id)}
-              className={`w-full flex items-center justify-between px-3.5 py-3 rounded-md text-sm font-medium transition-all ${
-                isActive
-                  ? "bg-cyan-950/40 border border-cyan-500/50 text-cyan-300 shadow-cyan-glow cursor-pointer"
-                  : mod.active
-                  ? "text-cyber-text hover:bg-cyber-surface-hover hover:text-white cursor-pointer"
-                  : "text-cyber-muted/60 opacity-60 cursor-not-allowed"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Icon
-                  className={`w-4 h-4 ${
-                    isActive ? "text-cyan-400" : "text-cyber-muted"
-                  }`}
-                />
-                <span>{mod.name}</span>
+      <nav className="flex-1 p-3 space-y-4 overflow-y-auto">
+        {NAV_GROUPS.map((group) => (
+          <div key={group.label}>
+            {!collapsed && (
+              <div className="px-3 py-1.5 text-[11px] font-mono tracking-widest text-cyber-muted uppercase">
+                {group.label}
               </div>
-              <span
-                className={`text-[10px] px-2 py-0.5 rounded font-mono font-semibold ${
-                  isActive
-                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30"
-                    : "bg-slate-900 text-slate-500 border border-slate-800"
-                }`}
-              >
-                {mod.badge}
-              </span>
-            </button>
-          );
-        })}
+            )}
+            <div className="space-y-1">
+              {group.items.map((mod) => {
+                const Icon = mod.icon;
+                const isActive = mod.id === activeModule;
+                return (
+                  <button
+                    key={mod.id}
+                    onClick={() => onSelectModule && onSelectModule(mod.id)}
+                    title={collapsed ? mod.name : undefined}
+                    className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-md text-sm font-medium transition-all ${
+                      collapsed ? "justify-center px-0" : ""
+                    } ${
+                      isActive
+                        ? "bg-accent/10 border border-accent/40 text-accent"
+                        : "text-cyber-text hover:bg-cyber-surface-hover hover:text-white"
+                    }`}
+                  >
+                    <Icon
+                      className={`w-4 h-4 shrink-0 ${
+                        isActive ? "text-accent" : "text-cyber-muted"
+                      }`}
+                      strokeWidth={1.75}
+                    />
+                    {!collapsed && <span>{mod.name}</span>}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
       {/* Footer System Status */}
       <div className="p-3.5 border-t border-cyber-border bg-cyber-base/50">
-        <div className="flex items-center justify-between text-xs font-mono text-cyber-muted">
-          <span className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            SYS_OK
-          </span>
-          <span>SOC_NODE_01</span>
-        </div>
+        {collapsed ? (
+          <div className="flex justify-center">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between text-xs font-mono text-cyber-muted">
+            <span className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              SYS_OK
+            </span>
+            <span>SOC_NODE_01</span>
+          </div>
+        )}
       </div>
     </aside>
   );

@@ -1,0 +1,149 @@
+{
+  "id": "industrial_ai",
+  "title": "Industrial Predictive Maintenance",
+  "description": "An AI system that predicts machine failures and schedules maintenance on factory equipment.",
+  "business_goal": "Reduce unplanned downtime by predicting equipment failure before it happens.",
+  "users": "Plant operators and maintenance teams (about 80 users) at one factory.",
+  "data_types": ["Sensor telemetry", "Machine logs", "Maintenance history", "Equipment specs"],
+  "model_type": "Time-series model with an LLM reporting layer",
+  "criticality": "High",
+  "governance_stance": "Poorly Governed",
+  "architecture": [
+    {
+      "id": "operators",
+      "name": "Plant Operators",
+      "role": "input",
+      "purpose": "Operators read maintenance alerts and act on the assistant's recommendations.",
+      "security_considerations": ["Operators act fast on alerts", "Wrong advice stops production"],
+      "attack_surface": "A misleading alert causes operators to shut down healthy machines."
+    },
+    {
+      "id": "web_app",
+      "name": "Plant Dashboard",
+      "role": "application",
+      "purpose": "Dashboard where predictions and recommended actions are shown.",
+      "security_considerations": ["Production systems have high uptime needs", "Access control is per-plant"],
+      "attack_surface": "A compromised dashboard feeds false predictions to operators."
+    },
+    {
+      "id": "ai_gateway",
+      "name": "AI Gateway",
+      "role": "gateway",
+      "purpose": "Routes sensor data to the prediction model and the reporting LLM.",
+      "security_considerations": ["Sensor data volume is large", "Gateway should validate inputs"],
+      "attack_surface": "Fake telemetry injected at the gateway skews predictions."
+    },
+    {
+      "id": "llm",
+      "name": "Reporting LLM",
+      "role": "model",
+      "purpose": "Turns prediction scores into plain-language maintenance recommendations.",
+      "security_considerations": ["The LLM is only the reporting layer", "Its words affect operator actions"],
+      "attack_surface": "Injected text in sensor labels changes what the report says."
+    },
+    {
+      "id": "vector_db",
+      "name": "Maintenance Knowledge",
+      "role": "store",
+      "purpose": "Historical maintenance records used to explain why a part fails.",
+      "security_considerations": ["Contains vendor and plant data", "Should not include proprietary formulas"],
+      "attack_surface": "Retrieval exposes vendor pricing or maintenance secrets."
+    },
+    {
+      "id": "internal_docs",
+      "name": "Sensor Telemetry",
+      "role": "data",
+      "purpose": "Continuous streams of sensor readings from factory equipment.",
+      "security_considerations": ["Telemetry reveals production capacity", "Availability matters more than secrecy"],
+      "attack_surface": "Telemetry manipulation creates false alarms or hides real ones."
+    },
+    {
+      "id": "logging",
+      "name": "Plant Logging",
+      "role": "support",
+      "purpose": "Records every prediction and maintenance action for audit.",
+      "security_considerations": ["Logs support incident reconstruction", "Integration with SCADA is delicate"],
+      "attack_surface": "Insider edits to logs hide a failed maintenance action."
+    },
+    {
+      "id": "monitoring",
+      "name": "Prediction Monitoring",
+      "role": "support",
+      "purpose": "Tracks model accuracy against actual failures.",
+      "security_considerations": ["Drift detection is manual", "No feedback loop into the model"],
+      "attack_surface": "The model drifts and nobody notices until a machine fails."
+    }
+  ],
+  "threats": [
+    {
+      "id": "t1",
+      "category": "adversarial_ml",
+      "name": "Telemetry poisoning",
+      "description": "An attacker injects false sensor readings that make the model miss a real failure.",
+      "likelihood": 2,
+      "impact": 5,
+      "business_consequences": "A machine fails without warning, causing downtime and safety risk."
+    },
+    {
+      "id": "t2",
+      "category": "model_poisoning",
+      "name": "Corrupted maintenance history",
+      "description": "Bad labels in maintenance history train the model to repeat wrong predictions.",
+      "likelihood": 2,
+      "impact": 4,
+      "business_consequences": "Systematically wrong maintenance schedules across the plant."
+    },
+    {
+      "id": "t3",
+      "category": "hallucination",
+      "name": "Wrong maintenance advice",
+      "description": "The reporting LLM invents a root cause that matches the score but not reality.",
+      "likelihood": 3,
+      "impact": 4,
+      "business_consequences": "Maintenance crews fix the wrong part and the failure returns."
+    },
+    {
+      "id": "t4",
+      "category": "unauthorized_access",
+      "name": "Broad dashboard access",
+      "description": "Contractors and vendors see prediction data for machines beyond their scope.",
+      "likelihood": 3,
+      "impact": 3,
+      "business_consequences": "Operational data leaks to third parties."
+    },
+    {
+      "id": "t5",
+      "category": "insider_threat",
+      "name": "Insider manipulation of predictions",
+      "description": "A disgruntled employee alters telemetry or logs to cause a shutdown.",
+      "likelihood": 2,
+      "impact": 4,
+      "business_consequences": "Deliberate operational disruption from inside the plant."
+    },
+    {
+      "id": "t6",
+      "category": "supply_chain",
+      "name": "Compromised model update",
+      "description": "A vendor model update is deployed without integrity verification.",
+      "likelihood": 2,
+      "impact": 4,
+      "business_consequences": "Unknown changes to prediction behavior across all machines."
+    },
+    {
+      "id": "t7",
+      "category": "denial_of_service",
+      "name": "Alert flooding",
+      "description": "Automated or malicious telemetry floods the dashboard with alerts.",
+      "likelihood": 3,
+      "impact": 3,
+      "business_consequences": "Operators ignore alerts and miss a genuine failure."
+    }
+  ],
+  "baseline_controls": ["input_validation", "model_monitoring"],
+  "teaching_points": [
+    "An AI that touches physical systems has safety consequences, not only data ones.",
+    "Poisoning the training data is a real way to break a maintenance model.",
+    "The reporting LLM must be separated from the prediction model that does the math.",
+    "Monitoring accuracy against actual outcomes is the core governance control here."
+  ]
+}

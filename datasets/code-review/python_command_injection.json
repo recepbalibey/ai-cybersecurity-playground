@@ -1,0 +1,29 @@
+{
+  "id": "python_command_injection",
+  "title": "Command Injection in Python",
+  "language": "python",
+  "description": "A server passes user input directly to an OS shell, letting an attacker run arbitrary commands on the host.",
+  "severity": "Critical",
+  "owasp": "A03:2021 - Injection",
+  "cwe": "CWE-78",
+  "vulnerable_code": "import subprocess\nimport os\n\ndef ping_host(host):\n    # BAD: shell=True lets the shell interpret user input as commands\n    cmd = f\"ping -c 1 {host}\"\n    return subprocess.run(cmd, shell=True, capture_output=True)\n\ndef log_backup(path):\n    # BAD: passes user input through the shell\n    cls = f\"tar -czf /backups/log.tgz {path}\"\n    os.system(cls)",
+  "secure_code": "import subprocess\nimport shlex\n\ndef ping_host(host):\n    # GOOD: no shell, arguments passed as a list, host validated\n    if not _is_valid_host(host):\n        raise ValueError(\"Invalid host\")\n    return subprocess.run([\"ping\", \"-c\", \"1\", host], capture_output=True)\n\ndef _is_valid_host(host: str) -> bool:\n    # only allow hostnames made of approved characters\n    return all(c.isalnum() or c in \"-.\\\" for c in host)",
+  "finding": {
+    "title": "OS Command Injection",
+    "description": "User-supplied input reaches an OS shell interpreter without sanitization.",
+    "why_dangerous": "Shell=True lets the OS parse and execute attacker text like '; rm -rf /'.",
+    "impact": "Arbitrary command execution, full host compromise, data loss.",
+    "fix": "Avoid the shell entirely, pass an argument list, and validate the input with an allowlist.",
+    "learning_example": [
+      "Input: host; whoami runs both ping and whoami",
+      "Parameterized subprocess.run([...]) treats input as a single argument"
+    ]
+  },
+  "checklist": [
+    "Never use shell=True with untrusted input",
+    "Pass command arguments as a list, not a string",
+    "Validate input with an allowlist of safe characters",
+    "Prefer standard library APIs over shell calls",
+    "Apply least privilege to the service account"
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "id": "medical_ai",
+  "title": "Medical Diagnosis Assistant",
+  "description": "An AI assistant that drafts possible diagnoses and care suggestions from patient notes.",
+  "business_goal": "Reduce the time doctors spend on documentation and offer second opinions on complex cases.",
+  "users": "Hospital clinicians (about 150 licensed physicians and nurses).",
+  "data_types": ["Electronic health records", "Lab results", "Medication lists", "Patient demographics"],
+  "model_type": "Fine-tuned LLM on clinical text",
+  "criticality": "Critical",
+  "governance_stance": "Poorly Governed",
+  "architecture": [
+    {
+      "id": "clinicians",
+      "name": "Clinicians",
+      "role": "input",
+      "purpose": "Physicians and nurses enter patient notes and review suggested diagnoses.",
+      "security_considerations": ["Clinicians have broad legitimate access to health records", "Mobile devices are used at the bedside"],
+      "attack_surface": "A lost or stolen clinician session exposes protected health data."
+    },
+    {
+      "id": "web_app",
+      "name": "Clinical Web App",
+      "role": "application",
+      "purpose": "Secure portal where the assistant is integrated into the clinical workflow.",
+      "security_considerations": ["Must comply with health data protection rules", "Audit trail is partial"],
+      "attack_surface": "Weak session handling exposes patient records."
+    },
+    {
+      "id": "ai_gateway",
+      "name": "AI Gateway",
+      "role": "gateway",
+      "purpose": "Routes clinical prompts to the model and is supposed to filter protected health data.",
+      "security_considerations": ["Filtering is configured broadly and often bypassed", "No approval step before the model"],
+      "attack_surface": "Health data passes to the model without a governance decision."
+    },
+    {
+      "id": "llm",
+      "name": "Clinical LLM",
+      "role": "model",
+      "purpose": "Model trained on clinical text that drafts possible diagnoses.",
+      "security_considerations": ["Hosted model provider stores prompts", "Diagnoses are suggestions, not medical advice"],
+      "attack_surface": "Patient data in prompts is retained by a third party."
+    },
+    {
+      "id": "vector_db",
+      "name": "Knowledge Store",
+      "role": "store",
+      "purpose": "Retrieves relevant clinical guidelines and similar historical cases.",
+      "security_considerations": ["Similar cases may contain patient identifiers", "Retrieval has no validation"],
+      "attack_surface": "Retrieved patient data leaks into the generated answer."
+    },
+    {
+      "id": "internal_docs",
+      "name": "Medical Records",
+      "role": "data",
+      "purpose": "Source electronic health records that populate the assistant context.",
+      "security_considerations": ["Highest sensitivity data class", "Access should be on a need-to-know basis"],
+      "attack_surface": "Every record retrieved is a disclosure of protected health information."
+    },
+    {
+      "id": "logging",
+      "name": "Audit Logging",
+      "role": "support",
+      "purpose": "Records which clinician asked which question and what the model replied.",
+      "security_considerations": ["Logs are health data themselves", "Retention rules are unclear"],
+      "attack_surface": "Logs become a second copy of protected health data."
+    },
+    {
+      "id": "monitoring",
+      "name": "Safety Monitoring",
+      "role": "support",
+      "purpose": "Watch for unsafe suggestions and model drift.",
+      "security_considerations": ["Monitoring is manual and periodic", "No automated safety review"],
+      "attack_surface": "A dangerous suggestion can reach a clinician before any review."
+    }
+  ],
+  "threats": [
+    {
+      "id": "t1",
+      "category": "data_privacy",
+      "name": "Protected health data to a third party",
+      "description": "Full patient notes are sent to a hosted model provider without a governance decision.",
+      "likelihood": 5,
+      "impact": 5,
+      "business_consequences": "Severe regulatory breach, fines, and a loss of patient trust that is hard to rebuild."
+    },
+    {
+      "id": "t2",
+      "category": "hallucination",
+      "name": "Unsafe diagnosis suggestion",
+      "description": "The model states a confident but wrong diagnosis that a clinician may follow.",
+      "likelihood": 4,
+      "impact": 5,
+      "business_consequences": "Patient harm, liability, and an immediate loss of clinical trust."
+    },
+    {
+      "id": "t3",
+      "category": "bias_fairness",
+      "name": "Biased care suggestions",
+      "description": "The model treats some patient groups differently because of training data bias.",
+      "likelihood": 3,
+      "impact": 4,
+      "business_consequences": "Unequal care and potential discrimination claims."
+    },
+    {
+      "id": "t4",
+      "category": "unauthorized_access",
+      "name": "Wide record access",
+      "description": "Any clinician can retrieve records for patients outside their care team.",
+      "likelihood": 3,
+      "impact": 5,
+      "business_consequences": "Protected health data is seen by staff with no clinical need."
+    },
+    {
+      "id": "t5",
+      "category": "prompt_injection",
+      "name": "Instructions hidden in notes",
+      "description": "Text inside a patient note instructs the model to change its behavior or expose data.",
+      "likelihood": 2,
+      "impact": 4,
+      "business_consequences": "Model behavior is hijacked inside a clinical context."
+    },
+    {
+      "id": "t6",
+      "category": "model_poisoning",
+      "name": "Corrupted fine-tuning data",
+      "description": "The model is fine-tuned on clinical text that includes poisoned or incorrect labels.",
+      "likelihood": 2,
+      "impact": 4,
+      "business_consequences": "Systematic wrong suggestions across many patients."
+    },
+    {
+      "id": "t7",
+      "category": "data_leakage",
+      "name": "Records in audit logs",
+      "description": "Prompts and replies containing patient data are stored in logs with broad access.",
+      "likelihood": 4,
+      "impact": 4,
+      "business_consequences": "A second uncontrolled copy of protected health data."
+    }
+  ],
+  "baseline_controls": ["audit_logging"],
+  "teaching_points": [
+    "Health data has the highest stakes: the risk is patient harm, not only a fine.",
+    "Hallucination in a clinical tool is a safety failure, so output validation matters most.",
+    "Retrieval of similar cases can leak identifiers even when the question is clean.",
+    "Human approval is essential before a suggestion becomes a decision."
+  ]
+}

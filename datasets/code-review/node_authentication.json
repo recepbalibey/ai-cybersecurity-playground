@@ -1,0 +1,29 @@
+{
+  "id": "node_authentication",
+  "title": "Broken Authentication in Node.js",
+  "language": "javascript",
+  "description": "A Node/Express login stores plaintext passwords, weak sessions, and no brute-force protection.",
+  "severity": "High",
+  "owasp": "A07:2021 - Identification and Authentication Failures",
+  "cwe": "CWE-287",
+  "vulnerable_code": "const express = require(\"express\");\nconst db = require(\"./db\");\nconst app = express();\n\nconst SESSION_SECRET = \"development-secret\";\n\napp.post(\"/login\", (req, res) => {\n  const { username, password } = req.body;\n  // BAD: plaintext password compared directly to stored value\n  const row = db.get(\"SELECT * FROM users WHERE username = ?\", username);\n  if (row && row.password === password) {\n    const token = Buffer.from(username).toString(\"base64\"); // BAD: trivially forgeable\n    res.json({ ok: true, token });\n  } else {\n    res.status(401).json({ ok: false });\n  }\n});",
+  "secure_code": "const express = require(\"express\");\nconst bcrypt = require(\"bcrypt\");\nconst crypto = require(\"crypto\");\nconst app = express();\n\nconst SESSION_SECRET = process.env.SESSION_SECRET; // outside code\n\napp.post(\"/login\", async (req, res) => {\n  const { username, password } = req.body;\n  const row = await db.get(\"SELECT * FROM users WHERE username = ?\", username);\n  if (row && (await bcrypt.compare(password, row.password_hash))) {\n    const sessionId = crypto.randomBytes(32).toString(\"hex\");\n    await db.store({ sessionId, userId: row.id, expiresAt: Date.now() + 15 * 60 * 1000 });\n    res.json({ ok: true, sessionId });\n  } else {\n    res.status(401).json({ ok: false });\n  }\n});",
+  "finding": {
+    "title": "Broken Authentication",
+    "description": "Passwords are stored or compared in plaintext, session tokens are forgeable, and login is not rate limited.",
+    "why_dangerous": "Credentials and tokens can be replayed or guessed, so identity checks are ineffective.",
+    "impact": "Account takeover, impersonation, unauthorized data access.",
+    "fix": "Hash passwords (bcrypt/argon2), generate cryptographically random session tokens with expiry, and add rate limiting.",
+    "learning_example": [
+      "Plaintext compare lets an attacker with DB read recover every password",
+      "base64 token of the username is not a secret; anyone can forge it"
+    ]
+  },
+  "checklist": [
+    "Hash passwords with a strong adaptive algorithm (bcrypt/argon2)",
+    "Never store or send plaintext secrets",
+    "Issue random, signed, expiring session tokens",
+    "Add rate limiting and lockout to /login",
+    "Rotate secrets and keep them out of code"
+  ]
+}

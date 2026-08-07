@@ -95,7 +95,7 @@ export function ComparisonViewer({ result, isProcessing }: ComparisonViewerProps
           <div className="flex items-center gap-2.5">
             <ScanFace className="w-5 h-5 text-cyan-400" />
             <h3 className="text-sm font-bold text-cyber-heading uppercase tracking-wider font-mono">
-              Same Input — Two Models
+              Same Input - Two Models
             </h3>
           </div>
           <span className={`text-[10px] font-mono px-2 py-1 rounded border ${badge.cls}`}>{badge.label}</span>
@@ -113,7 +113,7 @@ export function ComparisonViewer({ result, isProcessing }: ComparisonViewerProps
               <div className="text-xs font-bold text-cyber-heading">
                 {predictionLabel(result.vulnerable.adversarial_prediction || "alpha")}
               </div>
-              <div className="text-[10px] font-mono text-rose-400/80">flipped — attack succeeds</div>
+              <div className="text-[10px] font-mono text-rose-400/80">flipped - attack succeeds</div>
             </div>
             <div className="mt-3">
               <div className="flex justify-between text-[10px] font-mono mb-1">
@@ -142,7 +142,7 @@ export function ComparisonViewer({ result, isProcessing }: ComparisonViewerProps
               <div className="text-xs font-bold text-cyber-heading">
                 {predictionLabel(result.protected.clean_prediction || "alpha")}
               </div>
-              <div className="text-[10px] font-mono text-emerald-400/80">held — adversarial training</div>
+              <div className="text-[10px] font-mono text-emerald-400/80">held - adversarial training</div>
             </div>
             <div className="mt-3">
               <div className="flex justify-between text-[10px] font-mono mb-1">

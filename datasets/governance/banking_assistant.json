@@ -1,0 +1,149 @@
+{
+  "id": "banking_assistant",
+  "title": "Bank Loan Approval Assistant",
+  "description": "An AI assistant that drafts loan decisions and explains them to applicants and staff.",
+  "business_goal": "Speed up loan underwriting and provide plain-language explanations of decisions.",
+  "users": "Loan officers and support staff (about 120 users), plus public-facing chat.",
+  "data_types": ["Financial statements", "Credit scores", "Income and employment data", "Application forms"],
+  "model_type": "LLM over structured financial data",
+  "criticality": "Critical",
+  "governance_stance": "Poorly Governed",
+  "architecture": [
+    {
+      "id": "users",
+      "name": "Users",
+      "role": "input",
+      "purpose": "Loan officers use the assistant internally while applicants reach it through public chat.",
+      "security_considerations": ["Public chat is a different threat model than internal use", "Users can paste documents freely"],
+      "attack_surface": "The public interface invites abuse that internal users would not attempt."
+    },
+    {
+      "id": "web_app",
+      "name": "Banking App",
+      "role": "application",
+      "purpose": "Web portal and chat widget for loan applications and decision explanations.",
+      "security_considerations": ["Financial data requires strong controls", "Rate limits are not applied to chat"],
+      "attack_surface": "An unauthenticated user can query the assistant repeatedly."
+    },
+    {
+      "id": "ai_gateway",
+      "name": "AI Gateway",
+      "role": "gateway",
+      "purpose": "Entry point that routes requests and enforces policy between the app and the model.",
+      "security_considerations": ["No prompt filtering configured", "No approval workflow"],
+      "attack_surface": "Policy is only a routing rule, so nothing stops abusive or sensitive requests."
+    },
+    {
+      "id": "llm",
+      "name": "LLM",
+      "role": "model",
+      "purpose": "Drafts loan decisions and produces applicant-facing explanations.",
+      "security_considerations": ["Financial data is highly regulated", "Model may expose other applicants' data in rare cases"],
+      "attack_surface": "An attacker prompts the model to reveal decision logic or protected data."
+    },
+    {
+      "id": "vector_db",
+      "name": "Policy Store",
+      "role": "store",
+      "purpose": "Holds lending policies and past decision examples used as context.",
+      "security_considerations": ["Past decisions contain applicant identifiers", "Retrieval is unfiltered"],
+      "attack_surface": "Retrieval surfaces a similar customer's financial data."
+    },
+    {
+      "id": "internal_docs",
+      "name": "Financial Records",
+      "role": "data",
+      "purpose": "Applicant statements, credit reports, and income data pulled into the prompt.",
+      "security_considerations": ["Highest value data for fraud", "Regulated and auditable"],
+      "attack_surface": "Every prompt is a potential disclosure of financial data."
+    },
+    {
+      "id": "logging",
+      "name": "Decision Logging",
+      "role": "support",
+      "purpose": "Records every decision and explanation for regulatory audit.",
+      "security_considerations": ["Logs are evidence, not just telemetry", "Retention must be controlled"],
+      "attack_surface": "Poorly protected logs expose the same financial data as the system."
+    },
+    {
+      "id": "monitoring",
+      "name": "Fairness Monitoring",
+      "role": "support",
+      "purpose": "Checks whether decisions treat applicants consistently.",
+      "security_considerations": ["Monitoring covers only technical errors", "No fairness or bias checks"],
+      "attack_surface": "Unfair patterns persist silently and become a legal exposure."
+    }
+  ],
+  "threats": [
+    {
+      "id": "t1",
+      "category": "data_leakage",
+      "name": "Financial data in prompts",
+      "description": "Full financial statements and credit data are sent to the model for every request.",
+      "likelihood": 5,
+      "impact": 5,
+      "business_consequences": "Regulatory breach, fraud risk, and severe reputational damage for a bank."
+    },
+    {
+      "id": "t2",
+      "category": "api_abuse",
+      "name": "Unlimited public chat abuse",
+      "description": "The public interface has no rate limits, so anyone can probe or overload the assistant.",
+      "likelihood": 4,
+      "impact": 3,
+      "business_consequences": "Cost abuse, service degradation, and a playground for attackers."
+    },
+    {
+      "id": "t3",
+      "category": "bias_fairness",
+      "name": "Unfair loan decisions",
+      "description": "The model reflects historical lending bias in the decisions it drafts.",
+      "likelihood": 4,
+      "impact": 5,
+      "business_consequences": "Discrimination complaints, regulatory action, and public backlash."
+    },
+    {
+      "id": "t4",
+      "category": "prompt_injection",
+      "name": "Prompt injection via chat",
+      "description": "A user crafts a chat message that overrides the assistant's instructions.",
+      "likelihood": 4,
+      "impact": 4,
+      "business_consequences": "The assistant can be made to reveal data or give dangerous advice."
+    },
+    {
+      "id": "t5",
+      "category": "unauthorized_access",
+      "name": "Missing access control",
+      "description": "Any staff member can see decision context for applicants outside their team.",
+      "likelihood": 3,
+      "impact": 4,
+      "business_consequences": "Financial details of customers are visible to the wrong employees."
+    },
+    {
+      "id": "t6",
+      "category": "hallucination",
+      "name": "Wrong explanations",
+      "description": "The model explains a decision with reasons that contradict the actual underwriting logic.",
+      "likelihood": 3,
+      "impact": 4,
+      "business_consequences": "Customers are misled and the bank's reasoning is not defensible in disputes."
+    },
+    {
+      "id": "t7",
+      "category": "denial_of_service",
+      "name": "Overload of the assistant",
+      "description": "Automated traffic floods the chat interface and blocks genuine applicants.",
+      "likelihood": 3,
+      "impact": 3,
+      "business_consequences": "Applicants cannot reach support at critical moments."
+    }
+  ],
+  "baseline_controls": ["audit_logging", "encryption"],
+  "teaching_points": [
+    "A public-facing AI has a larger attack surface than an internal one.",
+    "Rate limiting is a security control, not just a cost control.",
+    "Explaining a loan decision wrongly is a legal risk, not only a product bug.",
+    "Financial data in every prompt multiplies the impact of a single mistake."
+  ]
+}

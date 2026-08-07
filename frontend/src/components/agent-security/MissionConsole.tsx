@@ -71,7 +71,7 @@ export function MissionConsole({
       >
         {scenarios.map((s) => (
           <option key={s.scenario_key} value={s.scenario_key}>
-            {s.title} — {s.difficulty}
+            {s.title} - {s.difficulty}
           </option>
         ))}
       </select>

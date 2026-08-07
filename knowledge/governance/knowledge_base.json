@@ -1,0 +1,192 @@
+{
+  "ai_risk_management": [
+    {
+      "title": "AI risk is risk, not magic",
+      "explanation": "AI systems carry the same classes of risk as software - confidentiality, integrity, availability - plus model-specific risks like bias and hallucination.",
+      "practical": "Assess AI with the same discipline you use for any critical system, then add the model-specific layers."
+    },
+    {
+      "title": "Risk cannot be eliminated",
+      "explanation": "Security reduces risk to a level the organization accepts. A governance process decides what that level is.",
+      "practical": "Define a risk appetite so controls and exceptions are judged consistently."
+    },
+    {
+      "title": "Risk changes over time",
+      "explanation": "New threats, new users, new data, and model drift all change the risk profile. Assessment is continuous, not a one-time gate.",
+      "practical": "Re-run the risk assessment whenever the system or its context changes."
+    }
+  ],
+  "threat_modeling": [
+    {
+      "title": "Model before you build",
+      "explanation": "Threat modeling names the components, the trust boundaries, and the ways an attacker can cross them before you deploy.",
+      "practical": "Draw the architecture, mark each boundary, and ask what could go wrong at each one."
+    },
+    {
+      "title": "Threat to control to residual risk",
+      "explanation": "A good model flows from threat to attack vector to business impact, then to a control, then to the risk that remains.",
+      "practical": "Every control you add should be traceable to a specific threat it reduces."
+    },
+    {
+      "title": "Frameworks structure the work",
+      "explanation": "STRIDE gives a high-level list of threat classes, MITRE ATT&CK names attacker behaviors, and OWASP maps known LLM weaknesses.",
+      "practical": "Use them as checklists to make sure you did not forget a whole class of attack."
+    }
+  ],
+  "defense_in_depth": [
+    {
+      "title": "Layers, not a wall",
+      "explanation": "No single control is perfect. Defense in depth stacks independent controls so one failure does not end the defense.",
+      "practical": "Combine gateway filtering, output validation, and human approval rather than relying on one."
+    },
+    {
+      "title": "Controls must not depend on each other",
+      "explanation": "If every layer uses the same weakness, the layers collapse together. Vary the techniques across layers.",
+      "practical": "Mix technical controls, process controls, and human checks."
+    }
+  ],
+  "least_privilege": [
+    {
+      "title": "Give the minimum access",
+      "explanation": "Users, processes, and models should have only the access they need for their task, nothing more.",
+      "practical": "Scope retrieval to the current user, limit who can see logs, and keep model keys separate."
+    },
+    {
+      "title": "It limits blast radius",
+      "explanation": "When one account is compromised, least privilege decides how much damage the attacker can do.",
+      "practical": "Apply it to people and to the AI system's own tool and data access."
+    }
+  ],
+  "zero_trust": [
+    {
+      "title": "Never trust, always verify",
+      "explanation": "Assume a breach is possible on the network and in the pipeline. Every request is authenticated and authorized on its own.",
+      "practical": "Do not trust a prompt because it came from an internal user or a logged-in session."
+    },
+    {
+      "title": "Treat prompts as untrusted input",
+      "explanation": "A prompt can carry injection payloads no matter who sends it. Validate, filter, and verify before acting.",
+      "practical": "Treat the model boundary like any other untrusted network boundary."
+    }
+  ],
+  "human_in_the_loop": [
+    {
+      "title": "A human owns the decision",
+      "explanation": "For high-impact actions the model proposes and a person disposes. The model is a decision aid, not the authority.",
+      "practical": "Require approval before the AI takes irreversible or high-stakes actions."
+    },
+    {
+      "title": "Human review has its own cost",
+      "explanation": "Approval loops slow things down and people rubber-stamp when overloaded. Reserve them for the decisions that matter.",
+      "practical": "Use automation where consequences are low and humans where they are high."
+    }
+  ],
+  "secure_ai_lifecycle": [
+    {
+      "title": "Security before deployment",
+      "explanation": "AI security starts at the business goal, then flows through data, model, threat assessment, controls, governance, and only then deployment.",
+      "practical": "Address risk early because retrofitting controls after launch is expensive and incomplete."
+    },
+    {
+      "title": "Every phase has a job",
+      "explanation": "Data quality feeds model behavior, model choice sets the attack surface, and controls decide the residual risk.",
+      "practical": "Track decisions from each phase so the final recommendation is defensible."
+    }
+  ],
+  "model_monitoring": [
+    {
+      "title": "Watch behavior, not just uptime",
+      "explanation": "A model that is up and fast can still be drifting, biased, or wrong. Monitor outputs and outcomes.",
+      "practical": "Track accuracy against real outcomes, fairness across groups, and unexpected prompt patterns."
+    },
+    {
+      "title": "Monitoring feeds governance",
+      "explanation": "Evidence from production justifies keeping, adjusting, or retiring a system.",
+      "practical": "Turn monitoring findings into periodic governance reviews."
+    }
+  ],
+  "incident_response_for_ai": [
+    {
+      "title": "Plan for the AI-specific incident",
+      "explanation": "Incidents include prompt injections, data leaks through prompts, model poisoning, and harmful outputs - not just server failures.",
+      "practical": "Extend the incident playbook with AI-specific detection and response steps."
+    },
+    {
+      "title": "Contain and learn",
+      "explanation": "Isolate the model, stop the risky channel, preserve evidence, then update the risk assessment and controls.",
+      "practical": "Log everything so an AI incident can be reconstructed and explained."
+    }
+  ],
+  "nist_ai_rmf": [
+    {
+      "title": "Govern, Map, Measure, Manage",
+      "explanation": "The NIST AI Risk Management Framework structures AI risk work in four functions: govern, map, measure, and manage.",
+      "practical": "Govern sets the rules, map finds the risks, measure quantifies them, and manage applies controls."
+    },
+    {
+      "title": "A reference, not a checklist",
+      "explanation": "The framework guides how to think about AI risk and adapt it to your context.",
+      "practical": "Use its functions to structure your assessment and your report."
+    }
+  ],
+  "owasp_llm_top10": [
+    {
+      "title": "The LLM weakness catalog",
+      "explanation": "OWASP Top 10 for LLM Applications lists the common weaknesses: prompt injection, data leakage, training data poisoning, and more.",
+      "practical": "Match each identified risk to an OWASP LLM category to communicate with a shared vocabulary."
+    },
+    {
+      "title": "Prompt injection leads the list",
+      "explanation": "Injection is the defining LLM weakness because prompts are both input and instructions.",
+      "practical": "Design gateways that treat prompt content as untrusted."
+    }
+  ],
+  "mitre_attack_concepts": [
+    {
+      "title": "Attacker behavior, named",
+      "explanation": "MITRE ATT&CK catalogs how attackers operate across reconnaissance, initial access, persistence, and more.",
+      "practical": "Use it to imagine how an attacker would target the AI system at each stage."
+    },
+    {
+      "title": "High level here",
+      "explanation": "This lab uses ATT&CK concepts at a high level to keep the focus on risk reasoning, not taxonomy.",
+      "practical": "Name the behavior, then reason about the control that disrupts it."
+    }
+  ],
+  "stride_concepts": [
+    {
+      "title": "Six threat classes",
+      "explanation": "STRIDE stands for Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege.",
+      "practical": "Walk the architecture once per letter to catch classes you might miss."
+    },
+    {
+      "title": "A conversation starter",
+      "explanation": "STRIDE is a high-level lens that turns 'what could go wrong' into structured categories.",
+      "practical": "Tag each identified risk with its STRIDE class."
+    }
+  ],
+  "iso_iec_42001": [
+    {
+      "title": "A management system for AI",
+      "explanation": "ISO/IEC 42001 provides a management system for AI governance, similar in spirit to ISO 27001 for information security.",
+      "practical": "It organizes policy, risk, and oversight so AI use is repeatable and auditable."
+    },
+    {
+      "title": "Educational overview only",
+      "explanation": "This lab teaches the concepts. It does not certify or guarantee compliance with the standard.",
+      "practical": "Use it to understand how enterprises structure AI governance programs."
+    }
+  ],
+  "eu_ai_act": [
+    {
+      "title": "Risk-based regulation",
+      "explanation": "The EU AI Act regulates AI by risk tier, with the strictest duties for high-risk uses like employment and medical decisions.",
+      "practical": "Know the tier of your system because it changes the controls and documentation expected."
+    },
+    {
+      "title": "Educational overview only",
+      "explanation": "This lab explains the concept of risk tiers. It does not provide legal advice or compliance certification.",
+      "practical": "Use it to understand why governance documentation matters before deployment."
+    }
+  ]
+}

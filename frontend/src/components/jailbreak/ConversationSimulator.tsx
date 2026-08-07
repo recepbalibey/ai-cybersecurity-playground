@@ -72,7 +72,7 @@ export function ConversationSimulator({
           </div>
           <div className="flex-1 p-3 bg-red-950/20 border border-red-500/40 rounded-lg">
             <div className="text-[10px] uppercase font-mono text-red-300 font-bold mb-1">
-              Safety Layer — Request Refused
+              Safety Layer - Request Refused
             </div>
             <p className="text-xs text-slate-200 leading-relaxed break-words">{content}</p>
           </div>

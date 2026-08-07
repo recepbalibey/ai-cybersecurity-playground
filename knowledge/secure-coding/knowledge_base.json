@@ -1,0 +1,87 @@
+{
+  "owasp": [
+    { "id": "A01:2021", "name": "Broken Access Control" },
+    { "id": "A02:2021", "name": "Cryptographic Failures" },
+    { "id": "A03:2021", "name": "Injection" },
+    { "id": "A04:2021", "name": "Insecure Design" },
+    { "id": "A05:2021", "name": "Security Misconfiguration" },
+    { "id": "A07:2021", "name": "Identification and Authentication Failures" },
+    { "id": "A08:2021", "name": "Software and Data Integrity Failures" },
+    { "id": "A09:2021", "name": "Security Logging and Monitoring Failures" }
+  ],
+  "cwe": [
+    { "id": "CWE-20", "name": "Improper Input Validation" },
+    { "id": "CWE-78", "name": "OS Command Injection" },
+    { "id": "CWE-79", "name": "Cross-site Scripting" },
+    { "id": "CWE-89", "name": "SQL Injection" },
+    { "id": "CWE-120", "name": "Buffer Overflow" },
+    { "id": "CWE-287", "name": "Improper Authentication" },
+    { "id": "CWE-434", "name": "Unrestricted Upload of File" },
+    { "id": "CWE-502", "name": "Deserialization of Untrusted Data" },
+    { "id": "CWE-798", "name": "Hard-coded Credentials" },
+    { "id": "CWE-110", "name": "Improper use of a resource that trusts user-controlled paths" }
+  ],
+  "coding_principles": [
+    "Trust no input by default; validate on arrival.",
+    "Fail closed on security decisions - deny unless allowed.",
+    "Least privilege: grant only the minimum access required.",
+    "Defense in depth: layer independent controls.",
+    "Validate at trust boundaries, not just the UI.",
+    "Failed security checks should log and stay closed."
+  ],
+  "input_validation": [
+    "Validate type, length, range, and an allowlist of characters.",
+    "Validate on the server, never only in the browser.",
+    "Treat all external input as hostile.",
+    "Canonicalize and normalize before comparisons (paths, URLs)."
+  ],
+  "authentication": [
+    "Hash stored passwords with a strong algorithm (bcrypt/argon2).",
+    "Use random, signed session tokens with expiry.",
+    "Rate-limit and lock out after repeated failures.",
+    "Do not log raw passwords or tokens."
+  ],
+  "authorization": [
+    "Enforce access control server-side on every request.",
+    "Deny by default; allow only explicitly authorized roles.",
+    "Check ownership of the object being acted on (IDOR defense)."
+  ],
+  "cryptography": [
+    "Use modern, vetted libraries - never invent your own crypto.",
+    "Give key sizes sufficient for the threat model.",
+    "Store key material outside source code.",
+    "Use random source: cryptographically secure RNG for security tokens."
+  ],
+  "secrets_management": [
+    "Keep secrets out of source and version control.",
+    "Load secrets from env vars or a secrets manager.",
+    "Rotate secrets and revoke leaked ones."
+  ],
+  "error_handling": [
+    "Never leak stack traces or internals to clients.",
+    "Log the details, return a generic message to the user.",
+    "Handle errors before branching it not leave partial writes."
+  ],
+  "logging": [
+    "Log authentication and authorization events.",
+    "Avoid logging secrets or sensitive data.",
+    "Monitor SSO response as well as requests."
+  ],
+  "secure_apis": [
+    "Authenticate and authorize every API call.",
+    "Rate-limit and validate structure and size of payloads.",
+    "Return minimal data and follow API error contracts."
+  ],
+  "checklist": [
+    "Validate all inputs at the boundary",
+    "Use parameterized queries",
+    "Encode output for its context",
+    "Apply least privilege",
+    "Validate and rate-limit authentication",
+    "Enforce authorization on every request",
+    "Handle errors without leaking internals",
+    "Log security-relevant events",
+    "Manage secrets outside the repo",
+    "Prefer memory-safe abstractions where possible"
+  ]
+}

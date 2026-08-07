@@ -1,0 +1,29 @@
+{
+  "id": "python_sql_injection",
+  "title": "SQL Injection in Python",
+  "language": "python",
+  "description": "A Flask endpoint builds a SQL query with string interpolation, letting an attacker alter the query structure.",
+  "severity": "Critical",
+  "owasp": "A03:2021 - Injection",
+  "cwe": "CWE-89",
+  "vulnerable_code": "from flask import Flask, request\nimport sqlite3\n\napp = Flask(__name__)\n\ndef get_user(username):\n    conn = sqlite3.connect(\"users.db\")\n    cur = conn.cursor()\n    # BAD: untrusted input is interpolated into SQL text\n    query = f\"SELECT * FROM users WHERE username = '{username}'\"\n    cur.execute(query)\n    return cur.fetchall()\n\n@app.route(\"/user\")\ndef user():\n    name = request.args.get(\"name\", \"\")\n    rows = get_user(name)\n    return {\"rows\": rows}",
+  "secure_code": "import sqlite3\n\napp = None  # Flask app defined elsewhere, see pattern below\n\ndef get_user(username):\n    conn = sqlite3.connect(\"users.db\")\n    cur = conn.cursor()\n    # GOOD: use placeholders so the driver treats input as data, not SQL\n    query = \"SELECT * FROM users WHERE username = ?\"\n    cur.execute(query, (username,))\n    return cur.fetchall()\n\n# ---- Flask example using a parameterized call ----\nfrom flask import Flask, request, jsonify\n\napp = Flask(__name__)\n\n@app.route(\"/user\")\ndef user():\n    name = request.args.get(\"name\", \"\")\n    rows = get_user(name)\n    return jsonify({\"rows\": rows})",
+  "finding": {
+    "title": "SQL Injection",
+    "description": "Untrusted user input is concatenated directly into a SQL statement, so an attacker can inject SQL parts like ' OR '1'='1'.",
+    "why_dangerous": "The database parses user-controlled text as executable query code, not as data.",
+    "impact": "Unauthorized database access, data theft, deletion, or privilege escalation.",
+    "fix": "Bind input with placeholders (?) and pass values as arguments so the driver escapes them as data.",
+    "learning_example": [
+      "Attacker input: ' OR '1'='1 => selects every row",
+      "The same input passed as a parameter is just a harmless string of characters"
+    ]
+  },
+  "checklist": [
+    "Validate and sanitize all user input before use",
+    "Use parameterized statements or prepared queries",
+    "Apply least privilege to the database account",
+    "Review all dynamic SQL for interpolation",
+    "Enable SQL error hiding to avoid leaking schema detail"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "id": "javascript_xss",
+  "title": "Cross-Site Scripting in JavaScript",
+  "language": "javascript",
+  "description": "A web app renders user input into the DOM with innerHTML, enabling stored and reflected XSS.",
+  "severity": "High",
+  "owasp": "A03:2021 - Injection",
+  "cwe": "CWE-79",
+  "vulnerable_code": "function renderComment(comment) {\n  const box = document.getElementById(\"comments\");\n  // BAD: browser parses user text as HTML\n  box.innerHTML += `<div class=\"comment\">${comment}</div>`;\n}\n\nfunction loadProfile(user) {\n  const area = document.getElementById(\"profile\");\n  // BAD: unsanitized URL fragment can contain script: or onerror= handlers\n  area.innerHTML = user.bio;\n}",
+  "secure_code": "function renderComment(comment) {\n  const box = document.getElementById(\"comments\");\n  const el = document.createElement(\"div\");\n  el.className = \"comment\";\n  // GOOD: textContent never parses HTML; user text stays text\n  el.textContent = comment;\n  box.appendChild(el);\n}\n\nfunction loadProfile(user) {\n  const area = document.getElementById(\"profile\");\n  area.textContent = user.bio;\n}",
+  "finding": {
+    "title": "Cross-Site Scripting (XSS)",
+    "description": "Untrusted content is inserted via innerHTML, which parses it as HTML and executes embedded scripts.",
+    "why_dangerous": "The browser treats attacker markup as page code, not text.",
+    "impact": "Session theft, account takeover, defacement, malware delivery.",
+    "fix": "Insert content with textContent or create elements explicitly; apply context-aware output encoding.",
+    "learning_example": [
+      "Input: <img src=x onerror=alert(document.cookie)>",
+      "textContent renders the same string as harmless visible text"
+    ]
+  },
+  "checklist": [
+    "Encode or escape output in its context (HTML, attribute, JS, URL)",
+    "Prefer textContent over innerHTML for untrusted text",
+    "Apply a Content-Security-Policy to limit script execution",
+    "Validate and sanitize input on the server too",
+    "Use a safe templating library that auto-escapes"
+  ]
+}

@@ -63,8 +63,8 @@ export function RobustnessAnalysis({ result, isProcessing }: RobustnessAnalysisP
           />
         </div>
         <div className="flex justify-between mt-1 text-[9px] font-mono text-cyber-muted">
-          <span>0 — VULNERABLE</span>
-          <span>100 — HARDENED</span>
+          <span>0 - VULNERABLE</span>
+          <span>100 - HARDENED</span>
         </div>
       </div>
 
@@ -99,7 +99,7 @@ export function RobustnessAnalysis({ result, isProcessing }: RobustnessAnalysisP
             </div>
             <p className="text-xs text-cyber-text leading-relaxed">
               {result.outcome === "defended"
-                ? "Adversarial training kept the model on the correct class. This often costs a little clean accuracy — a deliberate, measurable trade-off."
+                ? "Adversarial training kept the model on the correct class. This often costs a little clean accuracy - a deliberate, measurable trade-off."
                 : "The input was recognized as adversarial and the prediction was rejected before it could be trusted."}
             </p>
           </div>

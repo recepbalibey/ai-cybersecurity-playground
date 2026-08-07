@@ -1,0 +1,29 @@
+{
+  "id": "cpp_buffer_overflow",
+  "title": "Buffer Overflow in C++",
+  "language": "cpp",
+  "description": "An unbounded strcpy into a fixed-size buffer lets longer input overwrite adjacent memory.",
+  "severity": "Critical",
+  "owasp": "A03:2021 - Injection",
+  "cwe": "CWE-120",
+  "vulnerable_code": "#include <cstring>\n#include <iostream>\n\nvoid process(const char* data) {\n    char buffer[64];\n    // BAD: no bounds check, strcpy writes until it hits a null byte\n    strcpy(buffer, data);\n    std::cout << buffer << std::endl;\n}\n\nint main(int argc, char** argv) {\n    if (argc > 1) process(argv[1]);\n    return 0;\n}",
+  "secure_code": "#include <string>\n#include <iostream>\n\nvoid process(const std::string& data) {\n    // GOOD: std::string grows safely, no manual buffer arithmetic\n    if (data.size() > 1024) {\n        std::clog << \"input too long\\n\";\n        return;\n    }\n    std::cout << data << std::endl;\n}\n\nint main(int argc, char** argv) {\n    if (argc > 1) process(argv[1]);\n    return 0;\n}",
+  "finding": {
+    "title": "Buffer Overflow",
+    "description": "strcpy writes into a 64-byte buffer without checking the input length.",
+    "why_dangerous": "Writing past the buffer can corrupt memory and redirect control flow.",
+    "impact": "Memory corruption, remote code execution, crash (denial of service).",
+    "fix": "Use std::string or bounded operations like strncpy_s and check lengths.",
+    "learning_example": [
+      "Input longer than what fits overwrites the stack beyond the buffer",
+      "std::string handles its own bounds so this overflow cannot happen"
+    ]
+  },
+  "checklist": [
+    "Never copy into fixed buffers without a length check",
+    "Prefer std::string / containers with automatic bounds",
+    "Use safe functions with explicit sizes when C APIs are required",
+    "Enable compiler defenses (ASLR, stack canaries, DEP)",
+    "Treat input length as data the program must validate"
+  ]
+}

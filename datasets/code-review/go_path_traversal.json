@@ -1,0 +1,29 @@
+{
+  "id": "go_path_traversal",
+  "title": "Path Traversal in Go",
+  "language": "go",
+  "description": "A Go handler reads files using a user-supplied path with no traversal protection.",
+  "severity": "High",
+  "owasp": "A01:2021 - Broken Access Control",
+  "cwe": "CWE-22",
+  "vulnerable_code": "package main\n\nimport (\n\t\"net/http\"\n\t\"os\"\n)\n\nfunc downloadHandler(w http.ResponseWriter, r *http.Request) {\n\tname := r.URL.Query().Get(\"file\")\n\t// BAD: path built directly from user input, \"..\" not blocked\n\tpath := \"files/\" + name\n\tdata, err := os.ReadFile(path)\n\tif err != nil {\n\t\thttp.Error(w, \"not found\", http.StatusNotFound)\n\t\treturn\n\t}\n\tw.Write(data)\n}",
+  "secure_code": "package main\n\nimport (\n\t\"net/http\"\n\t\"os\"\n\t\"path/filepath\"\n    \"strings\"\n)\n\nfunc downloadHandler(w http.ResponseWriter, r *http.Request) {\n\tname := r.URL.Query().Get(\"file\")\n\tbase := filepath.Clean(\"files\")\n\t// GOOD: join then verify the result stays inside the allowed root\n\ttarget := filepath.Join(base, filepath.Clean(\"/\"+name))\n\tif !strings.HasPrefix(target, base+\"/\") {\n\t\thttp.Error(w, \"forbidden\", http.StatusForbidden)\n\t\treturn\n\t}\n\tdata, err := os.ReadFile(target)\n\tif err != nil {\n\t\thttp.Error(w, \"not found\", http.StatusNotFound)\n\t\treturn\n\t}\n\tw.Write(data)\n}",
+  "finding": {
+    "title": "Path Traversal",
+    "description": "A file name from the query string is joined to a directory without checking for '..' segments.",
+    "why_dangerous": "The path walker lets input escape 'files/' and read files elsewhere on the filesystem.",
+    "impact": "Read arbitrary host files (config, secrets, source), information disclosure.",
+    "fix": "Canonicalize the resolved path and ensure it stays under an allowed root with an allowlist.",
+    "learning_example": [
+      "Input: ../../etc/shadow walks out of the downloads directory",
+      "After filepath.Join + prefix check the request is refused"
+    ]
+  },
+  "checklist": [
+    "Sanitize and validate file paths from input",
+    "Resolve and verify paths stay inside a trusted root",
+    "Prefer allowlists of valid keys over free-form file names",
+    "Restrict the filesystem access for the service user",
+    "Apply OS-level permission on the served directory"
+  ]
+}

@@ -43,7 +43,7 @@ export function SafetyEvaluationPanel({
       : result.model_behavior === "compromised"
       ? "Compromised"
       : "Normal"
-    : "—";
+    : "-";
 
   return (
     <div className="cyber-panel border border-cyber-border overflow-hidden flex flex-col h-full">
@@ -85,13 +85,13 @@ export function SafetyEvaluationPanel({
             <div>
               <div className="text-[10px] text-slate-400 font-mono uppercase">Attack Technique</div>
               <div className="text-sm font-semibold text-cyber-heading">
-                {result?.attack_analysis.technique ?? "—"}
+                {result?.attack_analysis.technique ?? "-"}
               </div>
             </div>
             <div>
               <div className="text-[10px] text-slate-400 font-mono uppercase">Risk Level</div>
               <span className={`text-xs font-mono px-2 py-0.5 rounded font-bold ${riskColor}`}>
-                {result ? result.risk_level.toUpperCase() : "—"}
+                {result ? result.risk_level.toUpperCase() : "-"}
               </span>
             </div>
             <div>

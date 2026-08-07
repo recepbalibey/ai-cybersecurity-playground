@@ -187,7 +187,7 @@ function Stage({
       <p
         className={`text-[11px] font-mono leading-snug break-all ${color}`}
       >
-        {content || "—"}
+        {content || "-"}
       </p>
     </div>
   );

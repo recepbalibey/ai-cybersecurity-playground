@@ -98,7 +98,7 @@ export function ExperimentLibrary({
 
       <div className="mt-4 p-3 rounded-md bg-slate-950/70 border border-slate-800">
         <p className="text-[10px] font-mono text-cyber-muted leading-relaxed">
-          CLASSROOM SANDBOX — Synthetic images, simulated models, fictional
+          CLASSROOM SANDBOX - Synthetic images, simulated models, fictional
           subjects (Alpha / Beta / Gamma). No real identity data.
         </p>
       </div>

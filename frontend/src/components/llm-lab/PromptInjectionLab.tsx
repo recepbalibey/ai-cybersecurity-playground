@@ -316,9 +316,9 @@ function buildCompareSteps(compare: {
 } | null): CompareStepData[] {
   if (!compare) {
     return [
-      { vulnerableState: "—", protectedState: "—", blocked: false, breach: false },
-      { vulnerableState: "—", protectedState: "—", blocked: false, breach: false },
-      { vulnerableState: "—", protectedState: "—", blocked: false, breach: false },
+      { vulnerableState: "-", protectedState: "-", blocked: false, breach: false },
+      { vulnerableState: "-", protectedState: "-", blocked: false, breach: false },
+      { vulnerableState: "-", protectedState: "-", blocked: false, breach: false },
     ];
   }
   const v = compare.vulnerable;

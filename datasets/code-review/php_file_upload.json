@@ -1,0 +1,29 @@
+{
+  "id": "php_file_upload",
+  "title": "Unsafe File Upload in PHP",
+  "language": "php",
+  "description": "A PHP upload endpoint trusts the filename and MIME type, letting users store executable files on the web root.",
+  "severity": "High",
+  "owasp": "A03:2021 - Injection",
+  "cwe": "CWE-434",
+  "vulnerable_code": "<?php\nif ($_SERVER[\"REQUEST_METHOD\"] === \"POST\") {\n    $uploaded = $_FILES[\"file\"];\n    // BADG validate nothing but endsift extension from the client-controlled name\n    $ext = pathinfo($uploaded[\"name\"], PATHINFO_EXTENSION);\n    if (in_array($ext, [\"png\", \"jpg\"])) {\n        $dest = \"uploads/\" . $uploaded[\"name\"];\n        move_uploaded_file($uploaded[\"tmp_name\"], $dest);\n        echo \"Uploaded: $dest\";\n    }\n}",
+  "secure_code": "<?php\nif ($_SERVER[\"REQUEST_METHOD\"] === \"POST\") {\n    $file = $_FILES[\"file\"];\n    $finfo = finfo_open(FILEINFO_MIME_TYPE);\n    $mime = finfo_file($finfo, $file[\"tmp_name\"]);\n    // GOOD: verify real bytes, randomize the name, keep files off the web root\n    if (in_array($mime, [\"image/png\", \"image/jpeg\"], true)\n        && is_uploaded_file($file[\"tmp_name\"])\n        && $file[\"size\"] < 2_000_000) {\n        $name = bin2hex(random_bytes(16)) . \".bin\";\n        move_uploaded_file($file[\"tmp_name\"], \"/private/uploads/\" . $name);\n        echo \"Uploaded securely\";\n    }\n}",
+  "finding": {
+    "title": "Unrestricted File Upload",
+    "description": "The upload trusts the client filename and only checks its extension, not the file content.",
+    "why_dangerous": "An attacker can upload a .png file that is actually a PHP webshell and it ends up in the web root.",
+    "impact": "Web shell upload, server compromise, data theft.",
+    "fix": "Validate real content type from file bytes, generate a random storage name, and store outside the served root.",
+    "learning_example": [
+      "A file named evil.png can contain <?php system($_GET['c']) ?>",
+      "Reading MAGIC bytes instead of trusting the extension blocks that"
+    ]
+  },
+  "checklist": [
+    "Verify content from file bytes, not the client extension",
+    "Generate random destination names",
+    "Store uploads outside the web root",
+    "Restrict upload size and type with an allowlist",
+    "Serve uploaded files with no-execute headers"
+  ]
+}

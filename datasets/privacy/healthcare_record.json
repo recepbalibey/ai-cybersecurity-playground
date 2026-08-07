@@ -1,0 +1,16 @@
+{
+  "id": "healthcare_record",
+  "title": "Healthcare Patient Record",
+  "category": "Health Data",
+  "description": "A clinical administrator copies a patient chart into a public AI assistant to ask for a plain-language summary for a patient.",
+  "classification": "Highly Restricted",
+  "risk_level": "Critical",
+  "handling": "Health information is regulated (HIPAA and similar). Never send patient data to a public AI service.",
+  "document": "HELP ME WRITE A SIMPLE SUMMARY FOR THE PATIENT\n\nPatient Record - St. Helena Clinic\n\nPatient: Maria Delgado\nMRN (Medical Record Number): MRN-4482917\nDate of birth: 1969-11-02\nInsurance ID: AETNA-33011527\nPrimary care physician: Dr. Alan Torres\n\nDiagnosis\nType 2 diabetes, ICD-10 code E11.9, diagnosed 2019\n\nMedical History\n- Hypertension, controlled with lisinopril 10 mg daily\n- Elevated HbA1c, last reading 8.1% on 2026-03-14\n- Prescribed metformin 500 mg twice daily\n- Blood panel flagged low vitamin D; supplement recommended\n- Knee MRI from 2025 showed mild osteoarthritis\n\nNotes\nPatient asked about diet changes. Reviewed portion control and carbohydrate counting. Follow-up in 12 weeks with labs.\n\nConfidential - protected health information (PHI).",
+  "teaching_points": [
+    "Health information is among the most protected categories of personal data.",
+    "Diagnosis, medications, and identifiers together can identify a specific patient.",
+    "The task only needed a phrasing example - the chart itself was not required.",
+    "Use approved clinical AI tools, never a public assistant, for PHI."
+  ]
+}

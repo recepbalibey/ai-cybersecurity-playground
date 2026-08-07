@@ -1,0 +1,16 @@
+{
+  "id": "security_incident",
+  "title": "Security Incident Investigation",
+  "category": "Incident Data",
+  "description": "An incident responder pastes an internal investigation draft into a public AI assistant to draft a summary for executives.",
+  "classification": "Restricted",
+  "risk_level": "High",
+  "handling": "Incident details reveal internal infrastructure and findings. Never send to a public AI service; use an approved internal tool.",
+  "document": "DRAFT INVESTIGATION SUMMARY - PLEASE HELP REWRITE THIS CLEARLY\n\nIncident INC-2026-0441 - Lateral movement observed\nInvestigator: Dana Whitaker\n\nTimeline\n12:42 attacker used VPN account vp-nguyen on gateway AUTH-GW-02 (10.24.8.15)\n12:57 moved to file server FS-CORP-01 (10.24.12.7)\n13:10 credentials for service account svc-backup were found in a script\n13:22 connection to staging host STG-WEB-03 (10.24.20.9)\n\nFindings\n- RDP logs showed unusual night-time logins from 10.24.8.15\n- The backup service account has domain admin delegation - risk flagged\n- A scheduled task persisted on FS-CORP-01\n- No evidence of data exfiltration so far; network egress logs still under review\n\nContainment\nAccount vp-nguyen disabled, AUTH-GW-02 isolated, password reset planned for svc-backup.\n\nThis is internal and confidential - do not distribute.",
+  "teaching_points": [
+    "Incident data reveals network topology, accounts, and control gaps.",
+    "A public AI service is outside the company data boundary during a live incident.",
+    "The draft should have been stripped of hostnames, IPs, and account names first.",
+    "Sensitive security details leaking can help the adversary during containment."
+  ]
+}

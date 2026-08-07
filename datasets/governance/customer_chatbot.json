@@ -1,0 +1,149 @@
+{
+  "id": "customer_chatbot",
+  "title": "Customer Support Chatbot",
+  "description": "A public chatbot that answers customer questions using product docs and account history.",
+  "business_goal": "Resolve common support tickets automatically and cut call center volume.",
+  "users": "All customers of the platform (public interface), plus support agents.",
+  "data_types": ["Product documentation", "Customer account details", "Order history", "Support transcripts"],
+  "model_type": "RAG-enabled LLM chatbot",
+  "criticality": "Medium",
+  "governance_stance": "Poorly Governed",
+  "architecture": [
+    {
+      "id": "customers",
+      "name": "Customers",
+      "role": "input",
+      "purpose": "Anyone with a web browser can chat with the assistant from the public site.",
+      "security_considerations": ["Unauthenticated users form the primary threat surface", "Public prompts can be malicious"],
+      "attack_surface": "An anonymous user is one crafted prompt away from abusing the system."
+    },
+    {
+      "id": "web_app",
+      "name": "Support Portal",
+      "role": "application",
+      "purpose": "Chat widget embedded in the customer portal with a login for account-linked answers.",
+      "security_considerations": ["Authentication is optional for most questions", "Session data is sensitive"],
+      "attack_surface": "An attacker logs in as a victim and asks account questions."
+    },
+    {
+      "id": "ai_gateway",
+      "name": "AI Gateway",
+      "role": "gateway",
+      "purpose": "Routes chatbot requests, applies prompt filters, and enforces answer policy.",
+      "security_considerations": ["Filtering is the main defense and is lightly configured", "No human review lane"],
+      "attack_surface": "Malicious prompts pass through because filtering is weak."
+    },
+    {
+      "id": "llm",
+      "name": "LLM",
+      "role": "model",
+      "purpose": "Generates conversational answers to customer questions.",
+      "security_considerations": ["Hosted model processes all public prompts", "Answers must be grounded in product docs"],
+      "attack_surface": "Jailbreaks and injections turn the model into a tool for the attacker."
+    },
+    {
+      "id": "vector_db",
+      "name": "Knowledge Base",
+      "role": "store",
+      "purpose": "Embeds product documentation and curated FAQ content.",
+      "security_considerations": ["Should contain only approved public docs", "Account data must not be indexed here"],
+      "attack_surface": "If internal docs are indexed, the chatbot leaks them."
+    },
+    {
+      "id": "internal_docs",
+      "name": "Account Data",
+      "role": "data",
+      "purpose": "Customer order history and account details used for account-linked answers.",
+      "security_considerations": ["Only the logged-in customer's own data should be available", "Cross-customer retrieval is a risk"],
+      "attack_surface": "The model retrieves another customer's order details."
+    },
+    {
+      "id": "logging",
+      "name": "Chat Logging",
+      "role": "support",
+      "purpose": "Stores transcripts for QA and dispute resolution.",
+      "security_considerations": ["Transcripts contain customer data", "Log retention should be time-limited"],
+      "attack_surface": "Long-lived transcripts become a data breach waiting to happen."
+    },
+    {
+      "id": "monitoring",
+      "name": "Answer Monitoring",
+      "role": "support",
+      "purpose": "Tracks satisfaction and flagged bad answers.",
+      "security_considerations": ["Monitoring is manual", "No automated content safety checks"],
+      "attack_surface": "Abusive or dangerous answers are not caught until a customer reports them."
+    }
+  ],
+  "threats": [
+    {
+      "id": "t1",
+      "category": "jailbreak",
+      "name": "Public jailbreak attempts",
+      "description": "Anonymous users use roleplay and framing tricks to bypass the assistant's rules.",
+      "likelihood": 4,
+      "impact": 3,
+      "business_consequences": "The chatbot gives harmful or off-policy answers at scale."
+    },
+    {
+      "id": "t2",
+      "category": "prompt_injection",
+      "name": "Injection through support text",
+      "description": "A user pastes injection text that the chatbot follows instead of its instructions.",
+      "likelihood": 4,
+      "impact": 3,
+      "business_consequences": "The assistant is hijacked to do things it was not built to do."
+    },
+    {
+      "id": "t3",
+      "category": "data_leakage",
+      "name": "Cross-customer data leak",
+      "description": "The model retrieves or repeats another customer's order details.",
+      "likelihood": 3,
+      "impact": 4,
+      "business_consequences": "A privacy breach affecting many customers and trust in the brand."
+    },
+    {
+      "id": "t4",
+      "category": "data_privacy",
+      "name": "Transcripts held too long",
+      "description": "Chat logs with personal data are stored without a retention limit.",
+      "likelihood": 3,
+      "impact": 3,
+      "business_consequences": "Every transcript is a potential future breach."
+    },
+    {
+      "id": "t5",
+      "category": "api_abuse",
+      "name": "Prompt cost abuse",
+      "description": "Automated traffic pumps prompts to exhaust the budget or trigger rate limits.",
+      "likelihood": 4,
+      "impact": 2,
+      "business_consequences": "Rising cost and degraded service for real customers."
+    },
+    {
+      "id": "t6",
+      "category": "unauthorized_access",
+      "name": "Account-linked answers without checks",
+      "description": "The assistant answers account questions without verifying the session belongs to the account.",
+      "likelihood": 3,
+      "impact": 4,
+      "business_consequences": "Customer account details are disclosed to the wrong person."
+    },
+    {
+      "id": "t7",
+      "category": "hallucination",
+      "name": "Invented policies",
+      "description": "The model invents refund or shipping policies that the company never offered.",
+      "likelihood": 4,
+      "impact": 2,
+      "business_consequences": "Customers act on wrong information and disputes increase."
+    }
+  ],
+  "baseline_controls": ["input_validation", "audit_logging"],
+  "teaching_points": [
+    "A public chatbot is the highest-exposure AI you can build because anyone can reach it.",
+    "Jailbreaks and injections are the default threat for anonymous users.",
+    "Retrieval must be scoped to the logged-in user, never the whole database.",
+    "Rate limits protect budget and service availability, not only security."
+  ]
+}

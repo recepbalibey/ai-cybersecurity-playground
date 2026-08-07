@@ -1,0 +1,29 @@
+{
+  "id": "rust_safe_example",
+  "title": "Safer Defaults in Rust",
+  "language": "rust",
+  "description": "A mostly-sound helper that reads one input and formats a greeting. It shows a minor hardening point: unchecked length and unused Result.",
+  "severity": "Informational",
+  "owasp": "A04:2021 - Insecure Design",
+  "cwe": "CWE-20",
+  "vulnerable_code": "use std::io::{self, Write};\n\nfn main() -> io::Result<()> {\n    let mut name = String::new();\n    io::stdin().read_line(&mut name)?;\n    let name = name.trim();\n    // Minor: no upper-length bound, no input validation for greeting text\n    println!(\"Hello {}\", name);\n    Ok(())\n}",
+  "secure_code": "use std::io::{self, Write};\n\nfn main() -> io::Result<()> {\n    let mut name = String::new();\n    io::stdin().read_line(&mut name)?;\n    let name = name.trim();\n    // GOOD: bound length and validate content before use in output\n    if name.is_empty() || name.chars().count() > 64 {\n        eprintln!(\"invalid input\");\n        return Ok(());\n    }\n    println!(\"Hello {}\", name);\n    Ok(())\n}",
+  "finding": {
+    "title": "Missing Input Validation (Informational)",
+    "description": "The default memory safety of Rust helps here, but user input is trusted without a size or content bound.",
+    "why_dangerous": "Any externally supplied input should be assumed hostile even when memory is safe.",
+    "impact": "Where there is low; an unvalidated value can feed other sinks and cause injection or logical failures.",
+    "fix": "Validate length and content with an allowlist before use.",
+    "learning_example": [
+      "Memory-safe languages still need input validation",
+      "Validate at the boundary, not deep inside the logic"
+    ]
+  },
+  "checklist": [
+    "Validate all external input even in memory-safe languages",
+    "Enforce length and character allowlists",
+    "Use the language's safe abstractions (String, Vec) over raw pointers",
+    "Add checks at trust boundaries",
+    "Review security sensors for informational findings too"
+  ]
+}

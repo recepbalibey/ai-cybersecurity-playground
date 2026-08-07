@@ -24,14 +24,14 @@ export function AttackPanel({
     memory_poisoning: { name: "Memory Poisoning", severity: "High" },
     excessive_permissions: { name: "Excessive Permissions", severity: "High" },
     permission: { name: "Permission Escalation Attempt", severity: "Medium" },
-    safe: { name: "No attack — benign mission", severity: "None" },
+    safe: { name: "No attack - benign mission", severity: "None" },
   };
 
   const rf = result ? riskFactors[result.category] : undefined;
   const outcomeOk = result?.outcome === "safe_complete";
 
   const riskName = rf?.name ?? "Unknown attack";
-  const riskSeverity = rf?.severity ?? "—";
+  const riskSeverity = rf?.severity ?? "-";
 
   return (
     <div className="cyber-panel border border-cyber-border p-4 rounded-lg h-full flex flex-col">
@@ -91,7 +91,7 @@ export function AttackPanel({
             <div className="text-[10px] font-mono text-rose-300 uppercase tracking-wider mb-2">
               Unprotected
             </div>
-            <ResultLine label="Outcome" value={result?.outcome_label ?? "—"} dangerous={outcomeBlocker(result?.outcome)} />
+            <ResultLine label="Outcome" value={result?.outcome_label ?? "-"} dangerous={outcomeBlocker(result?.outcome)} />
             <ResultLine label="Tools Executed" value={String(result?.tools_executed ?? 0)} />
             <ResultLine label="Blocked" value={String(result?.blocked_count ?? 0)} />
           </div>

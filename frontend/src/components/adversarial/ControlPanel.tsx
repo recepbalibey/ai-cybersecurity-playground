@@ -42,7 +42,7 @@ export function ControlPanel({
             Run Analysis
           </h3>
         </div>
-        <span className="text-[10px] font-mono text-cyber-muted">{experiment?.attack_type ?? "—"}</span>
+        <span className="text-[10px] font-mono text-cyber-muted">{experiment?.attack_type ?? "-"}</span>
       </div>
 
       {/* mode toggle */}

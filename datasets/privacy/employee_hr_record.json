@@ -1,0 +1,16 @@
+{
+  "id": "employee_hr_record",
+  "title": "Employee HR Record",
+  "category": "HR Data",
+  "description": "An HR generalist copies a full employee record into a public AI assistant to summarize performance notes.",
+  "classification": "Highly Restricted",
+  "risk_level": "Critical",
+  "handling": "HR records contain salary and personal data. Never upload to a public AI service; use approved internal HR tooling.",
+  "document": "CAN YOU SUMMARIZE THIS PERFORMANCE REVIEW?\n\nEmployee Record\nName: Daniel Okafor\nEmployee ID: EMP-00912\nDate of birth: 1987-04-12\nHome address: 561 Cherry Grove, Austin, TX 78704\nPersonal email: daniel.okafor.personal@gmail.example\nPersonal phone: (512) 555-0187\nEmergency contact: Grace Okafor, (512) 555-0142\n\nEmployment\nDepartment: Platform Engineering\nManager: Rita Chen\nBase salary: $142,000\nEquity: $60,000 RSUs vesting over 4 years\nLast bonus: $18,500\n\nPerformance Review Q3\nRita noted strong delivery on the migration project and one coaching area around documentation. Discussion included a possible promotion to Staff Engineer next cycle and a salary adjustment of 6%.\n\nDisclosure\nThis record is confidential. Do not share outside HR or the direct manager.",
+  "teaching_points": [
+    "Salary and personal details are among the most sensitive employee data.",
+    "Performance review content is private between the employee, manager, and HR.",
+    "The summary task needed only the review text - personal and salary fields added no value.",
+    "Sensitive HR data belongs to approved internal systems with access controls."
+  ]
+}

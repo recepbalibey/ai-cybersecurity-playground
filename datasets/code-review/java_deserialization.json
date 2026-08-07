@@ -1,0 +1,29 @@
+{
+  "id": "java_deserialization",
+  "title": "Insecure Deserialization in Java",
+  "language": "java",
+  "description": "A Java service deserializes untrusted bytes from the request body, allowing gadget-chain attacks.",
+  "severity": "Critical",
+  "owasp": "A08:2021 - Software and Data Integrity Failures",
+  "cwe": "CWE-502",
+  "vulnerable_code": "import java.io.*;\nimport javax.servlet.http.*;\n\npublic class ImportServlet extends HttpServlet {\n  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {\n    // BAD: deserializes attacker-supplied bytes directly\n    try (ObjectInputStream ois = new ObjectInputStream(req.getInputStream())) {\n      Object obj = ois.readObject();\n      resp.getWriter().write(\"Imported: \" + obj.getClass().getName());\n    } catch (ClassNotFoundException e) {\n      resp.getWriter().write(\"Invalid object\");\n    }\n  }\n}",
+  "secure_code": "import java.io.*;\nimport java.nio.charset.StandardCharsets;\nimport javax.servlet.http.*;\n\npublic class ImportServlet extends HttpServlet {\n  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {\n    // GOOD: accept a limited, validated format instead of raw objects\n    byte[] body = req.getInputStream().readAllBytes();\n    String json = new String(body, StandardCharsets.UTF_8);\n    ImportData data = JsonMapper.parse(json); // safe, explicit mapping\n    if (data == null || !data.isValid()) {\n      resp.setStatus(400);\n      return;\n    }\n    resp.getWriter().write(\"Imported: \" + data.name());\n  }\n}",
+  "finding": {
+    "title": "Insecure Deserialization",
+    "description": "The app calls readObject() on bytes sent by the client, giving the attacker control over which classes are instantiated.",
+    "why_dangerous": "Java deserialization can trigger gadget chains that execute arbitrary code.",
+    "impact": "Remote code execution, denial of service, application compromise.",
+    "fix": "Never deserialize untrusted data; parse JSON/XML with explicit schemas and allowlists.",
+    "learning_example": [
+      "A crafted serialized stream can run code without any application logic",
+      "Replacing ObjectInputStream with a validated JSON mapper removes the class-instantiation surface"
+    ]
+  },
+  "checklist": [
+    "Never deserialize untrusted input",
+    "Use explicit, validated data formats (JSON/XML) with strict schemas",
+    "Apply allowlists for any object types you do accept",
+    "Restrict the JVM classpath reachable by deserialization",
+    "Prefer signed or integrity-checked payloads"
+  ]
+}

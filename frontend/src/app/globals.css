@@ -2,10 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------------ */
+/* Theme tokens — dark is the default, .light overrides               */
+/* Stored as RGB triplets so Tailwind can apply <alpha-value>.       */
+/* ------------------------------------------------------------------ */
+:root {
+  --cb-base: 7 10 15;            /* #070a0f */
+  --cb-surface: 13 18 29;        /* #0d121d */
+  --cb-surface-hover: 20 28 44;  /* #141c2c */
+  --cb-border: 30 41 59;         /* #1e293b */
+  --cb-border-light: 51 65 85;   /* #334155 */
+  --cb-muted: 100 116 139;       /* #64748b */
+  --cb-text: 226 232 240;        /* #e2e8f0 */
+  --cb-heading: 248 250 252;     /* #f8fafc */
+  --cb-cyan: 6 182 212;          /* #06b6d4 */
+  --cb-cyan-dark: 8 145 178;     /* #0891b2 */
+  --cb-accent: 6 182 212;        /* #06b6d4 */
+  --cb-accent-hover: 8 145 178;  /* #0891b2 */
+  --cb-accent-mute: 14 116 144;  /* #0e7490 */
+}
+
+html.light {
+  color-scheme: light;
+  --cb-base: 248 250 252;        /* #f8fafc */
+  --cb-surface: 255 255 255;     /* #ffffff */
+  --cb-surface-hover: 241 245 249; /* #f1f5f9 */
+  --cb-border: 226 232 240;      /* #e2e8f0 */
+  --cb-border-light: 203 213 225; /* #cbd5e1 */
+  --cb-muted: 100 116 139;       /* #64748b */
+  --cb-text: 51 65 85;           /* #334155 */
+  --cb-heading: 15 23 42;        /* #0f172a */
+  --cb-cyan: 8 145 178;          /* #0891b2 */
+  --cb-cyan-dark: 14 116 144;    /* #0e7490 */
+  --cb-accent: 8 145 178;        /* #0891b2 */
+  --cb-accent-hover: 14 116 144; /* #0e7490 */
+  --cb-accent-mute: 103 199 217; /* #67c7d9 */
+}
+
 @layer base {
   body {
-    background-color: #070a0f;
-    color: #e2e8f0;
+    background-color: rgb(var(--cb-base));
+    color: rgb(var(--cb-text));
     font-family: 'Inter', sans-serif;
     font-size: 0.9375rem; /* 15px default base */
     line-height: 1.6;
@@ -15,21 +52,21 @@
 
 /* Custom SOC Grid Background Texture */
 .bg-grid-pattern {
-  background-image: radial-gradient(rgba(30, 41, 59, 0.5) 1px, transparent 1px);
+  background-image: radial-gradient(rgb(var(--cb-border) / 0.5) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
 /* Glassmorphism Panel */
 .cyber-panel {
-  background: rgba(13, 18, 29, 0.75);
+  background: rgb(var(--cb-surface) / 0.75);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(30, 41, 59, 0.8);
+  border: 1px solid rgb(var(--cb-border) / 0.8);
   border-radius: 0.5rem;
 }
 
 .cyber-panel-active {
-  border-color: rgba(6, 182, 212, 0.5);
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.15);
+  border-color: rgb(var(--cb-accent) / 0.5);
+  box-shadow: 0 0 15px rgb(var(--cb-accent) / 0.15);
 }
 
 /* Scanline Effect */
@@ -45,8 +82,8 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.8), transparent);
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.8);
+  background: linear-gradient(90deg, transparent, rgb(var(--cb-accent) / 0.8), transparent);
+  box-shadow: 0 0 15px rgb(var(--cb-accent) / 0.8);
   animation: scanline 4s linear infinite;
   pointer-events: none;
 }
@@ -63,14 +100,311 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #070a0f;
+  background: rgb(var(--cb-base));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: rgb(var(--cb-border));
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: rgb(var(--cb-border-light));
 }
+
+/* ------------------------------------------------------------------ */
+/* Design system refinements (see DESIGN_RULES.md)                    */
+/* ------------------------------------------------------------------ */
+
+/* Subtle focus ring for keyboard navigation & inputs */
+*:focus-visible {
+  outline: 2px solid rgb(var(--cb-accent) / 0.55);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Muted content panel: one topic per panel, neutral border */
+.panel {
+  background: rgb(var(--cb-surface) / 0.8);
+  border: 1px solid rgb(var(--cb-border));
+  border-radius: 0.5rem;
+}
+
+/* Skeleton loading shimmer */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgb(var(--cb-surface-hover));
+  border-radius: 0.375rem;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgb(var(--cb-border-light) / 0.15), transparent);
+  animation: skeleton-shimmer 1.6s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  100% { transform: translateX(100%); }
+}
+
+/* ------------------------------------------------------------------ */
+/* Theory Library schematic animations                                */
+/* ------------------------------------------------------------------ */
+/* Baseline: fully visible. Animations only ADD motion and can never hide. */
+.theory-node {
+  cursor: pointer;
+  outline: none;
+  animation: theory-node-in 0.5s ease-out both;
+}
+.theory-node:focus-visible .theory-hoverring,
+.theory-node:hover .theory-hoverring {
+  opacity: 1;
+}
+.theory-node-dim {
+  opacity: 0.32;
+}
+.theory-edge {
+  stroke-dasharray: 6 5;
+  animation: theory-edge-draw 0.6s ease-out both;
+}
+.theory-edge-dim {
+  opacity: 0.22;
+}
+.theory-edge-live {
+  stroke-dasharray: 14 12;
+  animation: theory-edge-flow 1s linear infinite;
+}
+.theory-halo {
+  animation: theory-halo-pulse 3.2s ease-in-out infinite;
+}
+.theory-hoverring {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.theory-selring {
+  animation: theory-sel-pulse 1.6s ease-in-out infinite;
+}
+@keyframes theory-node-in {
+  from { transform: translateY(8px); }
+  to   { transform: translateY(0); }
+}
+@keyframes theory-edge-draw {
+  from { stroke-dashoffset: 260; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes theory-edge-flow {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -26; }
+}
+@keyframes theory-halo-pulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 0.95; }
+}
+@keyframes theory-sel-pulse {
+  0%, 100% { opacity: 0.9; }
+  50%      { opacity: 0.45; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .theory-node,
+  .theory-edge,
+  .theory-halo,
+  .theory-selring,
+  .theory-edge-live {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Light-mode overrides for the dark slate/cyan utilities used across */
+/* the lab modules. Substring matches so opacity variants (e.g.       */
+/* bg-slate-900/60) and hover states are covered consistently.        */
+/* ------------------------------------------------------------------ */
+
+/* Dark slate surfaces -> light surfaces */
+html.light [class*="bg-slate-950"] { background-color: rgb(249 250 251); }
+html.light [class*="bg-slate-900"] { background-color: rgb(243 244 246); }
+html.light [class*="bg-slate-800"] { background-color: rgb(241 245 249); }
+html.light [class*="bg-slate-700"],
+html.light [class*="bg-slate-600"],
+html.light [class*="bg-slate-500"] { background-color: rgb(226 232 240); }
+
+/* Dark slate borders -> light borders */
+html.light [class*="border-slate-"] { border-color: rgb(203 213 225); }
+
+/* Slate text -> dark text */
+html.light [class*="text-slate-200"],
+html.light [class*="text-slate-300"] { color: rgb(51 65 85); }
+html.light [class*="text-slate-400"],
+html.light [class*="text-slate-500"],
+html.light [class*="text-slate-600"] { color: rgb(100 116 139); }
+html.light [class*="text-slate-50"],
+html.light [class*="text-slate-950"] { color: rgb(15 23 42); }
+html.light .hover\:text-white:hover { color: rgb(15 23 42); }
+
+/* Cyan: 950 tint panels, bright text, accents */
+html.light [class*="bg-cyan-950"] {
+  background-color: color-mix(in srgb, rgb(8 145 178) 14%, transparent);
+}
+html.light [class*="text-cyan-200"],
+html.light [class*="text-cyan-300"] { color: rgb(14 116 144); }
+html.light [class*="text-cyan-400"],
+html.light [class*="text-cyan-500"] { color: rgb(8 145 178); }
+html.light [class*="border-cyan-"] { border-color: rgb(8 145 178); }
+
+/* Colored status boxes: pale tint background + darker readable text */
+html.light [class*="bg-emerald-950"],
+html.light [class*="bg-green-950"] { background-color: rgb(16 185 129 / 0.12); }
+html.light [class*="bg-red-950"] { background-color: rgb(239 68 68 / 0.12); }
+html.light [class*="bg-rose-950"] { background-color: rgb(244 63 94 / 0.12); }
+html.light [class*="bg-amber-950"] { background-color: rgb(245 158 11 / 0.12); }
+
+html.light [class*="text-emerald-300"],
+html.light [class*="text-emerald-400"],
+html.light [class*="text-green-300"],
+html.light [class*="text-green-400"] { color: rgb(5 150 105); }
+html.light [class*="text-red-300"],
+html.light [class*="text-red-400"] { color: rgb(185 28 28); }
+html.light [class*="text-rose-300"],
+html.light [class*="text-rose-400"] { color: rgb(190 18 60); }
+html.light [class*="text-amber-300"],
+html.light [class*="text-amber-400"] { color: rgb(180 83 9); }
+
+html.light [class*="border-emerald-400"],
+html.light [class*="border-emerald-500"] { border-color: rgb(5 150 105); }
+html.light [class*="border-red-400"],
+html.light [class*="border-red-500"] { border-color: rgb(185 28 28); }
+html.light [class*="border-rose-400"],
+html.light [class*="border-rose-500"] { border-color: rgb(225 29 72); }
+html.light [class*="border-amber-400"],
+html.light [class*="border-amber-500"] { border-color: rgb(180 83 9); }
+
+/* AI Security Code Reviewer - syntax highlighting overlay */
+.code-comment { color: #64748b; font-style: italic; }
+.code-string { color: #86efac; }
+.code-number { color: #fbbf24; }
+.code-keyword { color: #f472b6; }
+html.light .code-comment { color: #64748b; }
+html.light .code-string { color: #166534; }
+html.light .code-number { color: #92400e; }
+html.light .code-keyword { color: #9d174d; }
+
+/* ------------------------------------------------------------------ */
+/* AI Data Privacy Lab - document heatmap + redaction                  */
+/* ------------------------------------------------------------------ */
+mark.privacy-hl,
+.privacy-hl {
+  padding: 0 0.1em;
+  border-radius: 2px;
+  background: transparent;
+  color: inherit;
+}
+.privacy-critical {
+  background: rgb(239 68 68 / 0.32);
+  box-shadow: 0 0 0 1px rgb(239 68 68 / 0.45);
+  color: rgb(254 226 226);
+  font-weight: 600;
+}
+.privacy-high {
+  background: rgb(249 115 22 / 0.3);
+  box-shadow: 0 0 0 1px rgb(249 115 22 / 0.4);
+  color: rgb(255 237 213);
+  font-weight: 600;
+}
+.privacy-medium {
+  background: rgb(234 179 8 / 0.28);
+  box-shadow: 0 0 0 1px rgb(234 179 8 / 0.4);
+  color: rgb(254 249 195);
+}
+.privacy-low {
+  background: rgb(14 165 233 / 0.25);
+  box-shadow: 0 0 0 1px rgb(14 165 233 / 0.35);
+  color: rgb(224 242 254);
+}
+.privacy-info {
+  background: rgb(100 116 139 / 0.25);
+  box-shadow: 0 0 0 1px rgb(100 116 139 / 0.3);
+  color: rgb(241 245 249);
+}
+mark.privacy-redacted {
+  background: rgb(16 185 129 / 0.18);
+  box-shadow: 0 0 0 1px rgb(16 185 129 / 0.5);
+  color: rgb(110 231 183);
+  font-weight: 700;
+  padding: 0 0.15em;
+  border-radius: 2px;
+}
+html.light .privacy-critical {
+  background: rgb(239 68 68 / 0.16);
+  color: rgb(127 29 29);
+}
+html.light .privacy-high {
+  background: rgb(249 115 22 / 0.16);
+  color: rgb(124 45 18);
+}
+html.light .privacy-medium {
+  background: rgb(234 179 8 / 0.18);
+  color: rgb(113 63 18);
+}
+html.light .privacy-low {
+  background: rgb(14 165 233 / 0.14);
+  color: rgb(12 74 110);
+}
+html.light .privacy-info {
+  background: rgb(100 116 139 / 0.14);
+  color: rgb(51 65 85);
+}
+html.light mark.privacy-redacted {
+  background: rgb(16 185 129 / 0.16);
+  color: rgb(4 120 87);
+}
+
+/* ------------------------------------------------------------------ */
+/* AI Governance Lab - risk heat map + report print                   */
+/* ------------------------------------------------------------------ */
+
+.gov-cell {
+  transition: filter 0.15s ease;
+}
+.gov-cell:hover {
+  filter: brightness(1.15);
+}
+.gov-cell-critical { background: rgb(239 68 68 / 0.55); }
+.gov-cell-high { background: rgb(249 115 22 / 0.5); }
+.gov-cell-medium { background: rgb(234 179 8 / 0.45); }
+.gov-cell-low { background: rgb(14 165 233 / 0.4); }
+.gov-cell-informational { background: rgb(100 116 139 / 0.3); }
+.gov-cell-critical:hover { background: rgb(239 68 68 / 0.7); }
+.gov-cell-high:hover { background: rgb(249 115 22 / 0.65); }
+.gov-cell-medium:hover { background: rgb(234 179 8 / 0.6); }
+.gov-cell-low:hover { background: rgb(14 165 233 / 0.55); }
+.gov-cell-informational:hover { background: rgb(100 116 139 / 0.45); }
+
+.gov-dot {
+  display: inline-block;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 9999px;
+}
+.gov-dot-critical { background: rgb(239 68 68 / 0.85); }
+.gov-dot-high { background: rgb(249 115 22 / 0.85); }
+.gov-dot-medium { background: rgb(234 179 8 / 0.85); }
+.gov-dot-low { background: rgb(14 165 233 / 0.85); }
+.gov-dot-info { background: rgb(100 116 139 / 0.8); }
+
+html.light .gov-cell-critical { background: rgb(239 68 68 / 0.32); }
+html.light .gov-cell-high { background: rgb(249 115 22 / 0.3); }
+html.light .gov-cell-medium { background: rgb(234 179 8 / 0.28); }
+html.light .gov-cell-low { background: rgb(14 165 233 / 0.26); }
+html.light .gov-cell-informational { background: rgb(100 116 139 / 0.2); }
+html.light .gov-cell-critical:hover { background: rgb(239 68 68 / 0.4); }
+html.light .gov-cell-high:hover { background: rgb(249 115 22 / 0.38); }
+html.light .gov-cell-medium:hover { background: rgb(234 179 8 / 0.36); }
+html.light .gov-cell-low:hover { background: rgb(14 165 233 / 0.34); }
+html.light .gov-cell-informational:hover { background: rgb(100 116 139 / 0.3); }
+

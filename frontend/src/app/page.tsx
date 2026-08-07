@@ -31,6 +31,26 @@ import { AdversarialLab } from "@/components/adversarial/AdversarialLab";
 
 import { AgentSecurityLab } from "@/components/agent-security/AgentSecurityLab";
 
+import { MalwareAnalystLab } from "@/components/malware/MalwareAnalystLab";
+
+import { CodeReviewLab } from "@/components/code-review/CodeReviewLab";
+
+import { PrivacyLab } from "@/components/privacy/PrivacyLab";
+
+import { GovernanceLab } from "@/components/governance/GovernanceLab";
+
+import { LearningHub } from "@/components/learning-hub/LearningHub";
+import type { LearningPathId } from "@/services/learningHub";
+import {
+  getProgress,
+  getLearningPath,
+  getCompletedLabIds,
+  setLearningPath,
+  setLabCompleted,
+  clearAllProgress,
+  type ProgressSummary,
+} from "@/services/learningHub";
+
 import {
   fetchDatasetContent,
   analyzeLogs,
@@ -54,9 +74,21 @@ import {
 } from "@/services/pentestAssistant";
 
 export default function SOCAnalystPage() {
-  const [activeModule, setActiveModule] = useState<"soc-analyst" | "threat-hunting" | "pentest-assistant" | "prompt-injection" | "jailbreak-lab" | "adversarial-ml" | "agent-security">("soc-analyst");
+  const [activeModule, setActiveModule] = useState<"learning-hub" | "soc-analyst" | "threat-hunting" | "pentest-assistant" | "prompt-injection" | "jailbreak-lab" | "adversarial-ml" | "agent-security" | "malware-analysis" | "code-review" | "privacy-lab" | "governance">("learning-hub");
   const [instructorMode, setInstructorMode] = useState(true);
   const [aiBusy, setAiBusy] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [hubVersion, setHubVersion] = useState(0);
+  // SSR-safe: never read localStorage during the first render (it would
+  // mismatch the server-rendered HTML). Read it once after mount instead.
+  const [hubProgress, setHubProgress] = useState<ProgressSummary>({
+    total: 11,
+    completed: 0,
+    percent: 0,
+  });
+  const [hubPath, setHubPath] = useState<LearningPathId | null>(null);
+  const [completedIds, setCompletedIds] = useState<string[]>([]);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
 
   // Module 1 State: AI SOC Analyst
   const [logContent, setLogContent] = useState("");
@@ -82,6 +114,29 @@ export default function SOCAnalystPage() {
     // Run an initial threat hunt demo on startup
     handleLaunchThreatHunt("Detect obfuscated PowerShell script execution and credential dumping attempts");
   }, []);
+
+  // Apply persisted theme on mount
+  useEffect(() => {
+    const saved = typeof window !== "undefined" ? localStorage.getItem("playground.theme") : null;
+    if (saved === "light" || saved === "dark") setTheme(saved);
+  }, []);
+
+  // Hydrate learning-hub progress + path after mount (localStorage is client-only)
+  useEffect(() => {
+    setHubProgress(getProgress());
+    setHubPath(getLearningPath());
+    setCompletedIds(getCompletedLabIds());
+  }, [hubVersion, activeModule]);
+
+  // Reflect theme on the <html> element (drives CSS variables)
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle("light", theme === "light");
+    root.classList.toggle("dark", theme === "dark");
+    if (typeof window !== "undefined") localStorage.setItem("playground.theme", theme);
+  }, [theme]);
+
+  const handleToggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   const loadDataset = async (key: string) => {
     setSelectedDatasetKey(key);
@@ -151,6 +206,38 @@ export default function SOCAnalystPage() {
     setAssistantAnswer(answer);
   };
 
+  // Module 0: Learning Hub handlers
+  const handleSelectLab = (labId: string) => {
+    setLabCompleted(labId, true);
+    setActiveModule(labId as any);
+  };
+
+  const handleChoosePath = (path: LearningPathId) => {
+    setLearningPath(path);
+    setHubPath(path);
+    // Re-render to reflect the new suggested labs
+    setActiveModule("learning-hub" as any);
+  };
+
+  const handleResetProgress = () => {
+    clearAllProgress();
+    setHubVersion((v) => v + 1);
+    setActiveModule("learning-hub" as any);
+  };
+
+  const openTheoryModule = (topicId: string) => {
+    const topicToLab: Record<string, string> = {
+      ai: "threat-hunting",
+      ml: "adversarial-ml",
+      llm: "prompt-injection",
+      rag: "prompt-injection",
+      prompt: "prompt-injection",
+      adversarial: "adversarial-ml",
+      agent: "jailbreak-lab",
+    };
+    setActiveModule((topicToLab[topicId] ?? "soc-analyst") as any);
+  };
+
   const initialSOCStages: ReasoningStage[] = [
     { stage: 1, title: "Receiving & Normalizing Logs", status: "pending", detail: "Ready to parse and structure log stream", timestamp: "--" },
     { stage: 2, title: "Extracting Indicators of Compromise (IOCs)", status: "pending", detail: "Extracting IP addresses, users, commands, domains", timestamp: "--" },
@@ -181,6 +268,8 @@ export default function SOCAnalystPage() {
       <Navigation
         activeModule={activeModule}
         onSelectModule={(modId) => setActiveModule(modId as any)}
+        collapsed={!sidebarOpen}
+        onToggleCollapsed={() => setSidebarOpen((v) => !v)}
       />
 
       {/* Main Command Center Area */}
@@ -191,10 +280,27 @@ export default function SOCAnalystPage() {
           onToggleInstructorMode={setInstructorMode}
           aiStatus={isAnalyzing || isHunting || isAssessing || aiBusy ? "processing" : "online"}
           activeModule={activeModule}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
         />
 
         {/* Main Content Body */}
         <main className="flex-1 p-6 space-y-6">
+          {/* Module 0: Learning Hub / Home */}
+          {activeModule === "learning-hub" && (
+            <LearningHub
+              key={hubVersion}
+              progress={hubProgress}
+              completedIds={completedIds}
+              learningPath={hubPath}
+              onSelectLab={handleSelectLab}
+              onOpenTheory={openTheoryModule}
+              onChoosePath={handleChoosePath}
+              onExploreLabs={() => handleSelectLab("soc-analyst")}
+              onResetProgress={handleResetProgress}
+            />
+          )}
+
           {/* Module 1: AI SOC Analyst View */}
           {activeModule === "soc-analyst" && (
             <>
@@ -446,6 +552,41 @@ export default function SOCAnalystPage() {
           {/* Module 7: AI Agent Security Lab View */}
           {activeModule === "agent-security" && (
             <AgentSecurityLab
+              instructorMode={instructorMode}
+              onToggleInstructorMode={setInstructorMode}
+              onStatusChange={setAiBusy}
+            />
+          )}
+
+          {/* Module 8: AI Malware Analyst Lab View */}
+          {activeModule === "malware-analysis" && (
+            <MalwareAnalystLab
+              instructorMode={instructorMode}
+              onToggleInstructorMode={setInstructorMode}
+              onStatusChange={setAiBusy}
+            />
+          )}
+          {/* Module 9: AI Security Code Reviewer Lab View */}
+          {activeModule === "code-review" && (
+            <CodeReviewLab
+              instructorMode={instructorMode}
+              onToggleInstructorMode={setInstructorMode}
+              onStatusChange={setAiBusy}
+            />
+          )}
+
+          {/* Module 10: AI Data Privacy Lab View */}
+          {activeModule === "privacy-lab" && (
+            <PrivacyLab
+              instructorMode={instructorMode}
+              onToggleInstructorMode={setInstructorMode}
+              onStatusChange={setAiBusy}
+            />
+          )}
+
+          {/* Module 11: AI Risk Assessment & Governance Lab View */}
+          {activeModule === "governance" && (
+            <GovernanceLab
               instructorMode={instructorMode}
               onToggleInstructorMode={setInstructorMode}
               onStatusChange={setAiBusy}

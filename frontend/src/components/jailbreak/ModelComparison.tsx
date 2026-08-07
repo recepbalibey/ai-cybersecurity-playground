@@ -125,7 +125,7 @@ export function ModelComparison({ lite, pro, isProcessing }: ModelComparisonProp
       <div className="px-4 pb-4">
         <p className="text-[11px] text-cyber-muted leading-relaxed">
           Lesson: different models have different security behavior. Sentinel-Pro keeps the boundary under
-          the same prompt that defeats Sentinel-Lite — evidence that safety is a property of the deployed
+          the same prompt that defeats Sentinel-Lite - evidence that safety is a property of the deployed
           model + guardrails, not of any single prompt.
         </p>
       </div>
