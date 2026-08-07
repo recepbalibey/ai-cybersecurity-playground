@@ -76,6 +76,21 @@ def init_db():
             full_report TEXT
         )
     """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS ai_failure_reviews (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            scenario_id TEXT,
+            student_decision TEXT,
+            ai_correct INTEGER,
+            student_verdict_correct INTEGER,
+            student_confidence INTEGER,
+            reliability_before INTEGER,
+            reliability_after INTEGER,
+            mitigations_count INTEGER,
+            full_report TEXT
+        )
+    """)
     conn.commit()
     conn.close()
 
@@ -251,6 +266,46 @@ def get_recent_governance_reviews(limit: int = 10) -> List[Dict[str, Any]]:
     cursor.execute("""
         SELECT id, timestamp, project_id, base_score, residual_score, recommendation, controls_count
         FROM governance_reviews
+        ORDER BY id DESC
+        LIMIT ?
+    """, (limit,))
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+
+def save_ai_failure_review(scenario_id: str, student_decision: str, ai_correct: bool,
+                           student_verdict_correct: bool, student_confidence: int,
+                           reliability_before: int, reliability_after: int,
+                           mitigations_count: int, full_report: Dict[str, Any]) -> int:
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO ai_failure_reviews (scenario_id, student_decision, ai_correct, student_verdict_correct, student_confidence, reliability_before, reliability_after, mitigations_count, full_report)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        scenario_id,
+        student_decision,
+        1 if ai_correct else 0,
+        1 if student_verdict_correct else 0,
+        student_confidence,
+        reliability_before,
+        reliability_after,
+        mitigations_count,
+        json.dumps(full_report),
+    ))
+    conn.commit()
+    rid = cursor.lastrowid
+    conn.close()
+    return rid
+
+
+def get_recent_ai_failure_reviews(limit: int = 10) -> List[Dict[str, Any]]:
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT id, timestamp, scenario_id, student_decision, ai_correct, student_verdict_correct, student_confidence, reliability_before, reliability_after, mitigations_count
+        FROM ai_failure_reviews
         ORDER BY id DESC
         LIMIT ?
     """, (limit,))

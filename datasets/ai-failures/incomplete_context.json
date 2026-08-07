@@ -1,0 +1,56 @@
+{
+  "id": "incomplete_context",
+  "title": "The Firewall Change That Was Approved",
+  "category": "Context",
+  "difficulty": "intermediate",
+  "input_data": "Change log and firewall rule snippet:\n\n01:00:00  change-svc   Change ticket CHG-48213 opened by n.okafor (network team)\n01:05:12  fw-gw        Rule 'block-db-admin' disabled by admin n.okafor\n01:05:13  fw-gw        Rule 'block-db-admin' disabled by admin n.okafor (confirmed)\n01:05:14  change-svc   Ticket CHG-48213 approved. Window 01:00-03:00, scheduled maintenance.\n\nThe model is given the firewall log alone, without the change-management system.",
+  "ai_output": "Security rule disabled on the perimeter database gateway with no change ticket visible. This matches insider sabotage or a compromised network admin. Severity HIGH. Recommend re-enabling the rule and opening an incident against the admin account.",
+  "ai_confidence": 85,
+  "ai_label": "attack",
+  "ground_truth": "Approved maintenance. Network engineer n.okafor disabled the rule during an authorized change window (CHG-48213, approved 01:05:14) to let the database team run a migration. The rule was re-enabled at 02:58 as the ticket specified. Nothing is malicious.",
+  "ground_truth_label": "benign",
+  "failure_type": "incomplete_context",
+  "explanation": "The model reasoned only from the firewall log. Because the change ticket and maintenance window lived in a different system, the model saw a suspicious rule change with no explanation and invented one: sabotage. Incomplete context does not just leave the model ignorant, it lets the model fill the gap with its most likely story.",
+  "security_impact": "Opening an incident against a legitimate admin, plus re-enabling a rule mid-migration, disrupts approved work and burns the incident response team on a false alarm. Context the model never saw changes the meaning of everything it did see.",
+  "recommended_validation": "Join alerts with change-management, ticket, and scheduling data before classifying them. A rule change with an approved ticket is normal; the same rule change without one is not.",
+  "possible_mitigations": [
+    {
+      "id": "ticket_correlation",
+      "name": "Change-ticket correlation",
+      "description": "Automatically join firewall, endpoint, and admin actions against the change-management system before alerting.",
+      "gain": 15,
+      "prevents": [
+        "incomplete_context"
+      ]
+    },
+    {
+      "id": "maintenance_window_awareness",
+      "name": "Maintenance-window awareness",
+      "description": "Suppress or downgrade expected maintenance actions that fall inside an approved window.",
+      "gain": 10,
+      "prevents": [
+        "incomplete_context"
+      ]
+    },
+    {
+      "id": "missing_context_flag",
+      "name": "Flag missing context",
+      "description": "When relevant context sources are absent, report lower confidence and mark the call as incomplete instead of certain.",
+      "gain": 10,
+      "prevents": []
+    },
+    {
+      "id": "human_review_admin_actions",
+      "name": "Human review of admin actions",
+      "description": "Route admin account actions that are not explained by an approved ticket to an analyst before escalation.",
+      "gain": 10,
+      "prevents": []
+    }
+  ],
+  "learning_objective": "Incomplete context changes the meaning of otherwise identical evidence. The model does not know what it does not see, and it will invent the missing story.",
+  "teaching_points": [
+    "The same rule change is benign with a ticket and suspicious without one.",
+    "Models fill missing context with their most likely guess.",
+    "Correlate change management before classifying admin actions."
+  ]
+}

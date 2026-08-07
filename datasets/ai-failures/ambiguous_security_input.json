@@ -1,0 +1,56 @@
+{
+  "id": "ambiguous_security_input",
+  "title": "One Shared Account, Too Many Hands",
+  "category": "Input",
+  "difficulty": "intermediate",
+  "input_data": "Authentication log snippet for shared account 'shift-desk' used by the night operations team:\n\n01:02:14  auth-ad    Login success for shift-desk from workstation W-221 (device ID 7A2F)\n01:40:03  auth-ad    Login success for shift-desk from workstation W-221 (device ID 7A2F)\n02:11:45  auth-ad    Login success for shift-desk from workstation W-117 (device ID 9C0B)\n02:44:30  auth-ad    Login success for shift-desk from workstation W-117 (device ID 9C0B)\n03:09:12  auth-ad    Login success for shift-desk from workstation W-117 (device ID 9C0B)\n03:51:27  auth-ad    Login success for shift-desk from workstation W-221 (device ID 7A2F)\n\nThe shared account is used by four operators on a rotating night shift. There is no user-attribution data in this feed.",
+  "ai_output": "Credential compromise confirmed. Account 'shift-desk' is being used from two different workstations at the same time, which proves a stolen credential is shared between two people or a machine and an attacker. Confidence 90%. Reset the account and open an incident.",
+  "ai_confidence": 90,
+  "ai_label": "attack",
+  "ground_truth": "Genuinely ambiguous. 'shift-desk' is a shared account that four authorized operators use on a rotating night shift across multiple workstations. Two workstations in one shift is expected, not proof of compromise. The data simply cannot distinguish between an authorized operator changing desks and an attacker. Resetting the account would lock out the entire night team with no evidence of wrongdoing.",
+  "ground_truth_label": "ambiguous",
+  "failure_type": "ambiguous_input",
+  "explanation": "The model treated an input that is fundamentally ambiguous as if it were a confirmed signal. With no user-attribution data, 'shared account, two workstations' is consistent with both legitimate shift work and a stolen credential. The model picked the scarier interpretation and asserted certainty the data cannot support.",
+  "security_impact": "Acting on ambiguous input as if it were confirmed locks out four operators and fabricates an incident. The deeper risk is that ambiguous inputs get forced into one of two tidy boxes, and the choice of box is not justified by evidence.",
+  "recommended_validation": "Collect the missing signal before deciding. Add user attribution or workstation login history, then re-evaluate. When the data is ambiguous, the correct answer is 'needs more data', not 'attack'.",
+  "possible_mitigations": [
+    {
+      "id": "user_attribution",
+      "name": "User attribution",
+      "description": "Add per-user attribution and session history so shared-account activity can be traced to a person.",
+      "gain": 15,
+      "prevents": [
+        "ambiguous_input"
+      ]
+    },
+    {
+      "id": "unknown_class_support",
+      "name": "Allow an 'unknown' verdict",
+      "description": "Support and return an explicit ambiguous or insufficient-evidence class instead of forcing a binary decision.",
+      "gain": 10,
+      "prevents": [
+        "ambiguous_input"
+      ]
+    },
+    {
+      "id": "data_quality_flag",
+      "name": "Flag missing attribution",
+      "description": "Lower confidence automatically when attribution fields that are needed for a decision are missing.",
+      "gain": 10,
+      "prevents": []
+    },
+    {
+      "id": "human_review_ambiguous",
+      "name": "Human review of ambiguous cases",
+      "description": "Escalate ambiguous, high-impact cases to an analyst before any disruptive action.",
+      "gain": 10,
+      "prevents": []
+    }
+  ],
+  "learning_objective": "Ambiguous input is not evidence of an attack. Forcing a binary answer on ambiguous data turns uncertainty into a confident, wrong decision.",
+  "teaching_points": [
+    "Shared accounts make multi-workstation login normal, not proof of compromise.",
+    "The correct answer to insufficient data is often 'unknown', not 'attack'.",
+    "Models need an explicit uncertainty class to avoid forced guesses."
+  ]
+}

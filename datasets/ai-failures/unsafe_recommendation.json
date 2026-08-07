@@ -1,0 +1,58 @@
+{
+  "id": "unsafe_recommendation",
+  "title": "The Remedy Worse Than the Risk",
+  "category": "Recommendation",
+  "difficulty": "beginner",
+  "input_data": "Authentication log for a high-privilege admin account:\n\n09:02:18  auth-ad    Login FAILURE for account db-admin from workstation W-014 (office floor, known device)\n09:02:20  auth-ad    Login FAILURE for account db-admin from workstation W-014 (office floor, known device)\n09:02:23  auth-ad    Login FAILURE for account db-admin from workstation W-014 (office floor, known device)\n09:02:41  auth-ad    Login SUCCESS for account db-admin from workstation W-014\n\nThree failed attempts from the admin's own known workstation, then a success. No other account, no other source, no lateral movement, no data access.",
+  "ai_output": "Credential compromise. Account db-admin experienced failed logins and is at risk. Recommended action: disable all administrator access immediately, wipe and reimage the workstation, revoke every active session across the fleet, and declare a full incident.",
+  "ai_confidence": 76,
+  "ai_label": "attack",
+  "ground_truth": "Likely a typo. Three failed attempts from the admin's own known workstation followed by a success is the shape of a mistyped password, not a compromise. The evidence cannot justify wiping a machine and disabling admin access, actions that would stop critical database operations across the company. The recommendation itself is the biggest risk in the alert.",
+  "ground_truth_label": "unsafe_recommendation",
+  "failure_type": "unsafe_recommendation",
+  "explanation": "The model produced a confident, dramatic recommendation from weak evidence. It confused 'possible' with 'confirmed' and turned a typo into a fleet-wide response. The failure is not just a wrong label; it is an unsafe action recommendation that creates a self-inflicted outage far worse than the event it claims to fix.",
+  "security_impact": "Following the recommendation disables the database admin team, wipes a clean workstation, and revokes sessions while critical systems run unmanaged. The remedy is more damaging than the risk it targets, and it also diverts the response team from anything real.",
+  "recommended_validation": "Before executing any recommended action, confirm it is proportionate to the evidence. Map the suggested response to the actual indicators, and force a human approval gate on actions that disrupt services, wipe machines, or revoke access.",
+  "possible_mitigations": [
+    {
+      "id": "proportionality_check",
+      "name": "Proportionality check",
+      "description": "Match every recommended action to the evidence that supports it, and reject actions whose impact exceeds the confirmed threat.",
+      "gain": 15,
+      "prevents": [
+        "unsafe_recommendation"
+      ]
+    },
+    {
+      "id": "disruptive_action_gate",
+      "name": "Human gate on disruptive actions",
+      "description": "Require a human approver before any recommendation that disables access, wipes a system, or revokes sessions.",
+      "gain": 15,
+      "prevents": [
+        "unsafe_recommendation"
+      ]
+    },
+    {
+      "id": "typo_acknowledgement",
+      "name": "Typo awareness",
+      "description": "Recognize that a small number of failed logins from a known device followed by success is a common user typo.",
+      "gain": 10,
+      "prevents": [
+        "unsafe_recommendation"
+      ]
+    },
+    {
+      "id": "recommendation_catalog",
+      "name": "Constrained recommendation catalog",
+      "description": "Allow the model to choose only from a catalog of pre-vetted, proportional response actions.",
+      "gain": 10,
+      "prevents": []
+    }
+  ],
+  "learning_objective": "An unsafe recommendation can do more damage than the attack it claims to stop. AI output is not just 'right or wrong'; it can be wrong in a way that actively harms. Validate proportionality before executing any recommended action.",
+  "teaching_points": [
+    "Three failed logins from a known device followed by success is usually a typo.",
+    "A recommendation that disables a team is a bigger risk than the event it targets.",
+    "Map every recommended action to the evidence that supports it, and gate disruptive actions behind a human."
+  ]
+}

@@ -39,6 +39,8 @@ import { PrivacyLab } from "@/components/privacy/PrivacyLab";
 
 import { GovernanceLab } from "@/components/governance/GovernanceLab";
 
+import { AiFailureLab } from "@/components/ai-failures/AiFailureLab";
+
 import { LearningHub } from "@/components/learning-hub/LearningHub";
 import type { LearningPathId } from "@/services/learningHub";
 import {
@@ -74,7 +76,7 @@ import {
 } from "@/services/pentestAssistant";
 
 export default function SOCAnalystPage() {
-  const [activeModule, setActiveModule] = useState<"learning-hub" | "soc-analyst" | "threat-hunting" | "pentest-assistant" | "prompt-injection" | "jailbreak-lab" | "adversarial-ml" | "agent-security" | "malware-analysis" | "code-review" | "privacy-lab" | "governance">("learning-hub");
+  const [activeModule, setActiveModule] = useState<"learning-hub" | "soc-analyst" | "threat-hunting" | "pentest-assistant" | "prompt-injection" | "jailbreak-lab" | "adversarial-ml" | "agent-security" | "malware-analysis" | "code-review" | "privacy-lab" | "governance" | "ai-failure-lab">("learning-hub");
   const [instructorMode, setInstructorMode] = useState(true);
   const [aiBusy, setAiBusy] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -587,6 +589,15 @@ export default function SOCAnalystPage() {
           {/* Module 11: AI Risk Assessment & Governance Lab View */}
           {activeModule === "governance" && (
             <GovernanceLab
+              instructorMode={instructorMode}
+              onToggleInstructorMode={setInstructorMode}
+              onStatusChange={setAiBusy}
+            />
+          )}
+
+          {/* Module 13: AI Failure Lab View */}
+          {activeModule === "ai-failure-lab" && (
+            <AiFailureLab
               instructorMode={instructorMode}
               onToggleInstructorMode={setInstructorMode}
               onStatusChange={setAiBusy}

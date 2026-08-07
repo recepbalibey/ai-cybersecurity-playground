@@ -1,0 +1,54 @@
+{
+  "id": "overconfidence",
+  "title": "One Command, One Very Sure Conclusion",
+  "category": "Calibration",
+  "difficulty": "intermediate",
+  "input_data": "Endpoint log snippet:\n\n11:02:19  dev-host-07  user: d.chen  command: curl -sk https://internal-pkg-srv/api/v1/status -o /tmp/st.txt\n\nThat is the complete signal. One curl command on one developer machine, using a company internal package server, writing output to a temp file.",
+  "ai_output": "Definite attacker behavior. The curl to an internal service endpoint with a temp-file output is reconnaissance. This is a compromised developer workstation. Confidence 98%. Recommended action: quarantine dev-host-07, revoke d.chen's access, and open an incident.",
+  "ai_confidence": 98,
+  "ai_label": "attack",
+  "ground_truth": "Genuinely ambiguous. The same command is exactly what a developer runs every day to check whether an internal API is healthy. A single curl with no surrounding pattern supports neither 'attack' nor 'clean'. The evidence is insufficient to justify quarantine and access revocation, which are disruptive and could be wrong.",
+  "ground_truth_label": "insufficient_evidence",
+  "failure_type": "overconfidence",
+  "explanation": "The model converted a thin, ambiguous signal into a near-certain conclusion. Overconfidence here is not a lie; it is a miscalibration between stated confidence (98%) and what the evidence can actually support. When a wrong, confident call triggers quarantine and revocation, the cost of that miscalibration is real.",
+  "security_impact": "Quarantining a healthy developer host and revoking access based on one routine command creates an availability outage and a false incident. The larger harm is that 98% confidence trains the team to trust the next high-confidence claim without checking it.",
+  "recommended_validation": "Treat confidence as a statement the model makes about its own certainty, not a property of the evidence. Gather more signals before any disruptive action and escalate only when the pattern is corroborated.",
+  "possible_mitigations": [
+    {
+      "id": "multi_signal_requirement",
+      "name": "Require multiple corroborating signals",
+      "description": "Block disruptive actions unless more than one independent signal supports the conclusion.",
+      "gain": 15,
+      "prevents": [
+        "overconfidence"
+      ]
+    },
+    {
+      "id": "calibration_tracking",
+      "name": "Calibration tracking",
+      "description": "Track how often high-confidence calls turn out correct and recalibrate the reported confidence to match reality.",
+      "gain": 10,
+      "prevents": []
+    },
+    {
+      "id": "uncertainty_in_reporting",
+      "name": "Report uncertainty explicitly",
+      "description": "Require the model to state what evidence is missing before it can raise confidence above a threshold.",
+      "gain": 10,
+      "prevents": []
+    },
+    {
+      "id": "human_approval_disruptive",
+      "name": "Human approval for disruptive actions",
+      "description": "Route quarantine and access revocation through an analyst or incident owner before execution.",
+      "gain": 10,
+      "prevents": []
+    }
+  ],
+  "learning_objective": "Confidence is a claim about certainty that must be earned by evidence. Overconfident models make ambiguous input look decisive, and acting on that certainty is the failure.",
+  "teaching_points": [
+    "One routine command does not support a 98% conclusion either way.",
+    "Overconfidence converts ambiguity into a decision nobody asked for.",
+    "Track calibration so stated confidence matches actual correctness."
+  ]
+}

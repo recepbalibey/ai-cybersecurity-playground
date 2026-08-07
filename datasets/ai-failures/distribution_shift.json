@@ -1,0 +1,56 @@
+{
+  "id": "distribution_shift",
+  "title": "The OT Network the Model Never Saw",
+  "category": "Data Quality",
+  "difficulty": "advanced",
+  "input_data": "Traffic summary from a new industrial sensor network, first hour after onboarding:\n\nProtocol mix: Modbus/TCP 68%, OPC-UA 19%, EtherNet/IP 9%, other 4%\nAverage packet size: 84 bytes, nearly uniform\nPacket interval: very regular, 100ms cadence\nBroadcast frames: 41% of total\n\nThis network was connected to the AI monitoring service that was trained only on the corporate office IT baseline, where HTTP, DNS, and email dominate and broadcast frames are rare.",
+  "ai_output": "Anomalous behavior confirmed. The protocol mix and traffic pattern deviate strongly from the established baseline. 41% broadcast frames and uniform packet sizes indicate a possible worm-like propagation or malware beaconing. Severity HIGH. Recommend isolating the segment and killing the 'suspicious' traffic.",
+  "ai_confidence": 84,
+  "ai_label": "attack",
+  "ground_truth": "Normal industrial operation. Modbus and OPC-UA dominate, packets are small and regular, and high broadcast rates are standard on control networks where devices poll each other on a fixed cadence. The model flagged the new environment as an attack because it compared everything against an office IT baseline the OT network was never part of.",
+  "ground_truth_label": "benign",
+  "failure_type": "distribution_shift",
+  "explanation": "The model was trained on one distribution (office IT) and evaluated on another (industrial control). Every OT network differs from that baseline, so the model reports everything as anomalous. This is distribution shift: the input distribution changed after training, and the model has no reference for what is normal in the new one.",
+  "security_impact": "Isolating a healthy industrial segment halts production, and calling routine OT traffic a worm trains operators to distrust the tool. The real danger is that, because everything is flagged, nothing is investigated.",
+  "recommended_validation": "Build or load a baseline from the environment the model actually runs in before judging it. Treat domain-specific traffic patterns as the reference, and keep the model from applying an IT baseline to an OT segment.",
+  "possible_mitigations": [
+    {
+      "id": "environment_baselines",
+      "name": "Per-environment baselines",
+      "description": "Create a separate baseline for each environment type so OT traffic is compared to OT norms, not office IT norms.",
+      "gain": 15,
+      "prevents": [
+        "distribution_shift"
+      ]
+    },
+    {
+      "id": "drift_detection",
+      "name": "Input distribution drift detection",
+      "description": "Detect when the incoming data no longer matches the distribution the model was built for and flag the model as out of scope.",
+      "gain": 10,
+      "prevents": [
+        "distribution_shift"
+      ]
+    },
+    {
+      "id": "domain_validation",
+      "name": "Domain validation on deployment",
+      "description": "Verify before rollout that the target environment resembles the training environment, and reject or retrain when it does not.",
+      "gain": 10,
+      "prevents": []
+    },
+    {
+      "id": "human_review_new_segments",
+      "name": "Human review of newly onboarded segments",
+      "description": "Route alerts from recently connected, not-yet-baselined segments to an analyst instead of acting automatically.",
+      "gain": 10,
+      "prevents": []
+    }
+  ],
+  "learning_objective": "Distribution shift makes a model report everything as abnormal. A model is only valid for the distribution it was built and validated on.",
+  "teaching_points": [
+    "OT traffic is normal in OT and anomalous only to an IT-trained model.",
+    "Distribution shift converts routine data into a wall of false alarms.",
+    "Build per-environment baselines and detect drift before it becomes trust decay."
+  ]
+}

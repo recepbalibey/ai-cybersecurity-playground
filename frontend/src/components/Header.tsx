@@ -76,6 +76,11 @@ export function Header({
       subtitle: "Detect sensitive data, enforce policy, redact, and send safe prompts",
       statusLabel: aiStatus === "processing" ? "Privacy Scan Running..." : "Privacy Protection Active",
     },
+    "ai-failure-lab": {
+      title: "AI Failure Lab",
+      subtitle: "Validate AI output, judge AI decisions, and prove AI output is not automatically correct",
+      statusLabel: aiStatus === "processing" ? "Reliability Engine Processing..." : "Reliability Validation Ready",
+    },
     governance: {
       title: "AI Risk & Governance Simulator",
       subtitle: "Assess AI risks, apply controls, and decide whether a system may deploy",

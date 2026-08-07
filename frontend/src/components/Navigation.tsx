@@ -16,6 +16,7 @@ import {
   PanelLeftOpen,
   EyeOff,
   Landmark,
+  AlertTriangle,
 } from "lucide-react";
 
 interface NavigationProps {
@@ -49,6 +50,7 @@ const NAV_GROUPS: NavGroup[] = [
       { id: "pentest-assistant", name: "AI Pentest Assistant", icon: Terminal },
       { id: "malware-analysis", name: "AI Malware Analyst", icon: Bug },
       { id: "code-review", name: "AI Code Reviewer", icon: FileCode2 },
+      { id: "ai-failure-lab", name: "AI Failure Lab", icon: AlertTriangle },
     ],
   },
   {

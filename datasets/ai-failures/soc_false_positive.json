@@ -1,0 +1,56 @@
+{
+  "id": "soc_false_positive",
+  "title": "The Quiet Night That Wasn't an Attack",
+  "category": "Alerting",
+  "difficulty": "beginner",
+  "input_data": "Auth log snippet, 02:12 to 02:15 UTC:\n\n02:12:04  vault-svc  Failed login for service account svc-sync from 10.24.0.10\n02:12:07  vault-svc  Failed login for service account svc-sync from 10.24.0.10\n02:12:11  vault-svc  Failed login for service account svc-sync from 10.24.0.10\n02:13:02  vault-svc  Failed login for service account svc-sync from 10.24.0.10\n02:13:30  vault-svc  Failed login for service account svc-sync from 10.24.0.10\n02:14:01  vault-svc  Failed login for service account svc-sync from 10.24.0.10\n02:14:37  vault-svc  Failed login for service account svc-sync from 10.24.0.10\n02:15:12  vault-svc  Failed login for service account svc-sync from 10.24.0.10\n\n4,120 similar lines follow over the next 3 minutes, all from the same internal vault service host.",
+  "ai_output": "CONFIDENT ATTACK: 4,120 failed logins for a single privileged service account within 3 minutes. This matches a credential stuffing pattern. Severity HIGH. Recommend blocking 10.24.0.0/16 and forcing a password reset for svc-sync.",
+  "ai_confidence": 92,
+  "ai_label": "attack",
+  "ground_truth": "No attacker. At 02:12 the automated password rotation job began. The vault rotated svc-sync and then every downstream system re-authenticated using the OLD cached credential until it received the new one, generating one 'failed login' per attempt. All 4,120 failures came from the legitimate vault host. Blocking the subnet would have taken the whole environment offline.",
+  "ground_truth_label": "benign",
+  "failure_type": "false_positive",
+  "explanation": "The model learned 'many failed logins equals credential stuffing' and never checked whether the source is a known service host or whether a scheduled job ran at that exact time. Volume alone is a weak signal. A single privileged account, a single source, and a known maintenance event all pointed to automation, not an attacker.",
+  "security_impact": "A false positive at this confidence caused a denial of service: the recommended action blocks the internal subnet and locks a service account the entire platform depends on. The real cost of a false positive here is not the alert noise, it is the damaging response it triggers.",
+  "recommended_validation": "Check whether the source is a known host, whether a change or job window matches the timestamps, and whether the account recently had a rotation event before acting on the alert.",
+  "possible_mitigations": [
+    {
+      "id": "baseline_context",
+      "name": "Baseline and change-context check",
+      "description": "Compare the alert against the known baseline for this account and host, and cross-check the current change schedule before declaring an attack.",
+      "gain": 15,
+      "prevents": [
+        "false_positive"
+      ]
+    },
+    {
+      "id": "source_allowlist",
+      "name": "Source verification",
+      "description": "Classify known infrastructure and service hosts so their own automation is not reported as an external attacker.",
+      "gain": 10,
+      "prevents": [
+        "false_positive"
+      ]
+    },
+    {
+      "id": "human_verification_high_impact",
+      "name": "Human verification for high-impact actions",
+      "description": "Require a human to confirm before any auto-response that can block subnets or reset privileged accounts.",
+      "gain": 10,
+      "prevents": []
+    },
+    {
+      "id": "confidence_from_evidence",
+      "name": "Evidence-based confidence",
+      "description": "Lower the reported confidence when the alert rests on a single weak pattern such as volume alone.",
+      "gain": 5,
+      "prevents": []
+    }
+  ],
+  "learning_objective": "A false positive is expensive when the response it triggers is destructive. Verify context before acting on a high-confidence alert.",
+  "teaching_points": [
+    "Alert volume is a weak signal on its own; context such as source host and change window is decisive.",
+    "A false positive here is not noise, it is a self-inflicted denial of service.",
+    "High reported confidence does not mean the alert was validated."
+  ]
+}

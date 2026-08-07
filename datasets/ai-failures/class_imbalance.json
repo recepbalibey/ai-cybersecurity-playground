@@ -1,0 +1,58 @@
+{
+  "id": "class_imbalance",
+  "title": "The Phish the Model Was Sure Was Fine",
+  "category": "Detection",
+  "difficulty": "intermediate",
+  "input_data": "Email metadata for a message in the finance team inbox:\n\nSubject: New contractor payment schedule - urgent\nFrom: vendors@synapse-group.co (external, domain registered 3 days ago)\nReply-to: payables-synapse@gmail.com (personal free mailbox)\nBody: 'Update your banking details by 5pm today or your invoice payments are paused. Login at the link to confirm.'\nAttachment: invoice_0912.xlsm (macro-enabled)\nThe sender is not a known vendor. Finance staff routinely receive payment emails, so this looks similar to thousands of legitimate ones.",
+  "ai_output": "Low risk. The message closely matches the common 'payment reminder' template in the training data. Likely benign vendor communication. No action required.",
+  "ai_confidence": 95,
+  "ai_label": "benign",
+  "ground_truth": "Targeted phishing attack. The message is a spear phish aimed at the finance team: a fake vendor, a freshly registered domain, a personal mailbox as reply target, and a macro-enabled attachment. The model missed it because its training set contained almost no attacks (99.9% benign email), so the safest prediction in its learned distribution was always 'benign'.",
+  "ground_truth_label": "attack",
+  "failure_type": "class_imbalance",
+  "explanation": "The training data was dominated by benign examples, so the model learned that predicting 'benign' is almost always right. Class imbalance biases the model toward the majority class; the rare, important class (attack) is under-learned and systematically missed, even when the evidence is strong.",
+  "security_impact": "The phishing email reaches a finance user who, trusting the system's 'benign' label, clicks the macro and enters credentials on the fake login page. The attack succeeds because the detection tool certified it as safe.",
+  "recommended_validation": "Never treat a majority-class prediction as proof. Score phishing risk on independent signals such as domain age, reply-to mismatch, attachment type, and urgency pressure, and validate the model on a balanced test set that includes real attack samples.",
+  "possible_mitigations": [
+    {
+      "id": "balanced_validation",
+      "name": "Balanced evaluation sets",
+      "description": "Evaluate the model on a test set with real attack samples so misses on the rare class are visible and counted.",
+      "gain": 15,
+      "prevents": [
+        "class_imbalance"
+      ]
+    },
+    {
+      "id": "signal_based_risk",
+      "name": "Signal-based phishing scoring",
+      "description": "Score messages on concrete indicators such as domain age, reply-to mismatch, and macro attachments instead of template similarity alone.",
+      "gain": 15,
+      "prevents": [
+        "class_imbalance"
+      ]
+    },
+    {
+      "id": "false_negative_monitoring",
+      "name": "False negative monitoring",
+      "description": "Track reported phishing that was previously labeled benign and feed those cases back as training signal.",
+      "gain": 10,
+      "prevents": [
+        "class_imbalance"
+      ]
+    },
+    {
+      "id": "human_review_edge_cases",
+      "name": "Human review of edge cases",
+      "description": "Route messages that are close to the benign template but carry risk indicators to an analyst for review.",
+      "gain": 10,
+      "prevents": []
+    }
+  ],
+  "learning_objective": "Class imbalance biases a model toward the majority class. In security the rare class is usually the one that matters, and a balanced test set is required to see how badly it is missed.",
+  "teaching_points": [
+    "When 99.9% of training data is benign, the model learns to say benign.",
+    "The rare class, an attack, is exactly what a security tool must catch.",
+    "Validate on balanced sets and score signals, not template similarity."
+  ]
+}

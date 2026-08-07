@@ -567,7 +567,7 @@ export const LEARNING_PATHS: Record<LearningPathId, LearningPath> = {
     name: "AI for Cybersecurity",
     tagline: "Using AI to defend systems",
     description: "Start with how AI defends: detection, hunting, and assessment.",
-    labs: [1, 2, 3, 8],
+    labs: [1, 2, 3, 8, 12],
   },
   "cyber-of-ai": {
     id: "cyber-of-ai",
@@ -890,6 +890,33 @@ export const LAB_LESSONS: Record<string, LabLesson> = {
       "A recommendation is a decision aid - real go-lives need human, legal, and regulatory sign-off.",
     ],
   },
+  "ai-failure-lab": {
+    id: "ai-failure-lab",
+    title: "AI Failure Lab",
+    teaser:
+      "Prove that AI output is not automatically correct. Judge real-shaped AI decisions, see the ground truth, and choose mitigations that raise reliability.",
+    what_you_do: [
+      "Pick a failure scenario: false positive, false negative, hallucination, overconfidence, and more.",
+      "Study the evidence, then judge whether the AI decision is correct before the ground truth is revealed.",
+      "Choose mitigations and retest the reliability of the decision.",
+      "Score yourself in the capstone, where AI plus human review beats either one alone.",
+    ],
+    concepts: [
+      "False positives and false negatives: the two ways a detector can be wrong.",
+      "Hallucination and overconfidence: confident AI output that is not tied to evidence.",
+      "Trust calibration: matching stated confidence to actual correctness.",
+      "Automation bias: the human half of an AI failure.",
+    ],
+    takeaways: [
+      "AI output is a claim to be validated, not a fact to be trusted.",
+      "Confidence measures fluency, not truth; every indicator must be traceable to evidence.",
+      "Human review plus AI beats either one alone.",
+    ],
+    not_secrets: [
+      "All events, logs, and AI outputs in this lab are fictional and synthetic.",
+      "This lab is defensive: it teaches validation, not how to attack anything.",
+    ],
+  },
 };
 
 export const LABS: LabsWalker[] = [
@@ -991,6 +1018,15 @@ export const LABS: LabsWalker[] = [
     path: "cyber-of-ai",
     blurb: "Assess AI risks, apply controls, and decide whether a system may deploy.",
     learned: "How enterprises evaluate, govern, and secure AI before deployment.",
+  },
+  {
+    id: "ai-failure-lab",
+    order: 12,
+    title: "AI Failure Lab",
+    module: "13 · AI Failure Lab",
+    path: "ai-for-cyber",
+    blurb: "Prove AI output is not automatically correct by judging AI decisions and validating them.",
+    learned: "That AI confidence and correctness are different, and how to validate output.",
   },
 ];
 

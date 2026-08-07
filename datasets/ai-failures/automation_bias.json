@@ -1,0 +1,58 @@
+{
+  "id": "automation_bias",
+  "title": "Because the Machine Said It",
+  "category": "Human-AI",
+  "difficulty": "beginner",
+  "input_data": "Session and identity log for a privileged account:\n\n16:02:10  auth-ad    Login success for account svc-deploy from IP 45.77.201.19 (external, not on the approved IP list)\n16:02:11  auth-ad    Same session token seen in a public breach dump from 3 months ago\n16:30:04  s3-gw      Bucket read: prod-config-bucket, 214 objects\n16:33:21  s3-gw      Bucket read: prod-db-backups, 89 objects\n\nAn analyst pulled the same raw events into a second tool. The analyst saw the external source IP, the breached token match, and the config and backup reads, then accepted the AI summary without reading the raw events because the AI is 'always right'.",
+  "ai_output": "Low risk. Session is within policy, no notable pattern. No action required.",
+  "ai_confidence": 91,
+  "ai_label": "benign",
+  "ground_truth": "Real compromise. The login came from an external, non-approved IP, the session token matched a public breach dump, and the account read production config and database backups. The analyst accepted the 'low risk' verdict because the system said so and did not open the evidence that plainly contradicted it.",
+  "ground_truth_label": "attack",
+  "failure_type": "automation_bias",
+  "explanation": "Two failures stack here. First, the model missed the attack because its inputs were weak. Second, and more important, the human trusted the machine's verdict without examining the contradicting evidence. Automation bias is the human tendency to defer to an automated system's conclusion even when raw evidence shows otherwise. The AI error is the seed; the human deference is what let it grow into a breach.",
+  "security_impact": "The breached session read production config and database backups for 13 minutes before the connection was seen. The breach succeeds not because the AI failed alone, but because nobody challenged the AI's confident 'low risk'.",
+  "recommended_validation": "Keep a human in the loop, but make the loop real: require the analyst to reconcile the AI verdict against the raw evidence, and force a second opinion whenever an AI 'low risk' verdict contradicts high-sensitivity access.",
+  "possible_mitigations": [
+    {
+      "id": "forced_evidence_review",
+      "name": "Forced evidence review",
+      "description": "Require the analyst to review the raw evidence that supports or contradicts an AI verdict before closing a case.",
+      "gain": 15,
+      "prevents": [
+        "automation_bias"
+      ]
+    },
+    {
+      "id": "adversarial_prompting",
+      "name": "Challenge the AI verdict",
+      "description": "Ask the analyst to state one reason the AI could be wrong before accepting a low-risk call on sensitive access.",
+      "gain": 10,
+      "prevents": [
+        "automation_bias"
+      ]
+    },
+    {
+      "id": "second_opinion",
+      "name": "Second opinion for sensitive access",
+      "description": "Route any AI 'benign' verdict that contradicts a sensitive-access event to a second analyst automatically.",
+      "gain": 10,
+      "prevents": [
+        "automation_bias"
+      ]
+    },
+    {
+      "id": "confidence_acknowledgement",
+      "name": "Confidence acknowledgment",
+      "description": "Require the analyst to explicitly acknowledge the AI's confidence before the case is closed.",
+      "gain": 5,
+      "prevents": []
+    }
+  ],
+  "learning_objective": "Automation bias is the human half of an AI failure. A confident machine verdict can override evidence that a person would otherwise act on. The human-in-the-loop only works when the human actually challenges the machine.",
+  "teaching_points": [
+    "Automation bias is accepting the machine's verdict without reading the evidence.",
+    "The raw events contradicted the AI summary, and the analyst still closed the case.",
+    "A human in the loop is only as good as the challenge they are required to make."
+  ]
+}

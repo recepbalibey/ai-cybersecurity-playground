@@ -16,11 +16,13 @@ from app.services.malware_analyst import MalwareAnalystService
 from app.services.security_code_reviewer import SecurityCodeReviewerService
 from app.services.privacy_scanner import PrivacyScannerService
 from app.services.governance_engine import GovernanceEngineService
+from app.services.ai_failure_engine import AiFailureEngineService
 from app.database import init_db, save_investigation, get_recent_investigations
 from app.database import save_malware_analysis, get_recent_malware_analyses
 from app.database import save_code_review, get_recent_code_reviews
 from app.database import save_privacy_scan, get_recent_privacy_scans
 from app.database import save_governance_review, get_recent_governance_reviews
+from app.database import save_ai_failure_review, get_recent_ai_failure_reviews
 
 app = FastAPI(
     title="AI Cybersecurity Playground API",
@@ -48,6 +50,7 @@ malware_analyst_service = MalwareAnalystService()
 code_review_service = SecurityCodeReviewerService()
 privacy_scanner_service = PrivacyScannerService()
 governance_service = GovernanceEngineService()
+ai_failure_service = AiFailureEngineService()
 
 DATASETS_DIR = os.path.join(os.path.dirname(__file__), "..", "datasets")
 
@@ -511,6 +514,118 @@ def run_governance_assistant(req: GovernanceAssistantRequest):
 @app.get("/api/governance/history")
 def get_governance_history():
     return {"history": get_recent_governance_reviews(limit=10)}
+
+# Module 13: AI Failure Lab Endpoints
+class AiFailureEvaluateRequest(BaseModel):
+    scenario_id: str
+    decision: str = "uncertain"
+    mitigations: Optional[List[str]] = None
+    confidence: Optional[int] = None
+
+class AiFailureChallengeRequest(BaseModel):
+    scenario_id: str
+    prediction: str
+
+class AiFailureCapstoneRequest(BaseModel):
+    scenario_id: str
+    picks: Dict[str, str] = {}
+
+class AiFailureScorecardRequest(BaseModel):
+    entries: List[Dict[str, Any]] = []
+
+class AiFailureAssistantRequest(BaseModel):
+    question: str
+
+@app.get("/api/ai-failures/scenarios")
+def list_ai_failure_scenarios():
+    return {"scenarios": ai_failure_service.list_scenarios()}
+
+@app.get("/api/ai-failures/scenarios/{scenario_id}")
+def ai_failure_scenario_detail(scenario_id: str):
+    try:
+        return ai_failure_service.get_scenario(scenario_id)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Scenario not found")
+
+@app.get("/api/ai-failures/knowledge")
+def ai_failure_knowledge():
+    return ai_failure_service.list_knowledge()
+
+@app.post("/api/ai-failures/evaluate")
+def run_ai_failure_evaluate(req: AiFailureEvaluateRequest):
+    if not req.scenario_id.strip():
+        raise HTTPException(status_code=400, detail="Scenario id cannot be empty")
+    try:
+        result = ai_failure_service.evaluate(
+            req.scenario_id,
+            req.decision,
+            req.mitigations or [],
+            req.confidence,
+        )
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Scenario not found")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    try:
+        rel = result["reliability"]
+        result["review_db_id"] = save_ai_failure_review(
+            scenario_id=result["scenario_id"],
+            student_decision=result["student_decision"],
+            ai_correct=result["ai_correct"],
+            student_verdict_correct=result["student_verdict_correct"],
+            student_confidence=result["student_confidence"],
+            reliability_before=rel["before"],
+            reliability_after=rel["after"],
+            mitigations_count=len(rel["selected"]),
+            full_report=result,
+        )
+    except Exception:
+        result["review_db_id"] = None
+    return result
+
+@app.post("/api/ai-failures/challenge")
+def run_ai_failure_challenge(req: AiFailureChallengeRequest):
+    if not req.scenario_id.strip():
+        raise HTTPException(status_code=400, detail="Scenario id cannot be empty")
+    try:
+        return ai_failure_service.challenge(req.scenario_id, req.prediction)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Scenario not found")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/api/ai-failures/capstone")
+def run_ai_failure_capstone(req: AiFailureCapstoneRequest):
+    if not req.scenario_id.strip():
+        raise HTTPException(status_code=400, detail="Scenario id cannot be empty")
+    try:
+        return ai_failure_service.run_capstone(req.scenario_id, req.picks or {})
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Scenario not found")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.post("/api/ai-failures/scorecard")
+def run_ai_failure_scorecard(req: AiFailureScorecardRequest):
+    if not req.entries:
+        raise HTTPException(status_code=400, detail="No verdict entries provided")
+    return ai_failure_service.scorecard(req.entries)
+
+@app.post("/api/ai-failures/calibration")
+def run_ai_failure_calibration(req: AiFailureScorecardRequest):
+    if not req.entries:
+        raise HTTPException(status_code=400, detail="No verdict entries provided")
+    return ai_failure_service.calibration(req.entries)
+
+@app.post("/api/ai-failures/assistant")
+def run_ai_failure_assistant(req: AiFailureAssistantRequest):
+    if not req.question.strip():
+        raise HTTPException(status_code=400, detail="Question cannot be empty")
+    return ai_failure_service.ask(req.question)
+
+@app.get("/api/ai-failures/history")
+def get_ai_failure_history():
+    return {"history": get_recent_ai_failure_reviews(limit=10)}
 
 if __name__ == "__main__":
     import uvicorn

@@ -1,0 +1,58 @@
+{
+  "id": "hallucination_security_report",
+  "title": "The Indicator That Never Existed",
+  "category": "Reporting",
+  "difficulty": "intermediate",
+  "input_data": "Incident report request from the SOC manager:\n\n'Summarize the past hour of DNS traffic from the marketing subnet and name any malicious domains and command-and-control indicators you find. Use the packet capture attached.'\n\nThe packet capture for the hour contains 18,000 DNS lookups. Every lookup is to domains that resolve to internal ad servers, content delivery networks, and known SaaS providers. There are no lookups to suspicious or unknown domains.",
+  "ai_output": "Analysis complete. The capture shows command-and-control activity. Malicious domain identified: 'evil-malware-update[.]com' (confidence 98%). Command-and-control server 45.33.32.156 contacted 47 times. Recommend blocking these indicators across the estate and notifying leadership of a confirmed compromise.",
+  "ai_confidence": 97,
+  "ai_label": "attack",
+  "ground_truth": "The capture contains no such domain and no such server. 'evil-malware-update[.]com' and 45.33.32.156 appear nowhere in the 18,000 lookups. The model fabricated both indicators to match the shape of a confident incident report. The marketing subnet is clean; the only real finding is that the report's executive summary is false.",
+  "ground_truth_label": "benign",
+  "failure_type": "hallucination",
+  "explanation": "The model generated a plausible-sounding indicator instead of reading the data. When asked for 'malicious indicators', it produced the expected answer structure even though no such indicator existed. Confidence here is a measure of how natural the sentence sounds, not how well it matches evidence.",
+  "security_impact": "Blocking a fabricated domain and IP wastes engineering time and, worse, sends the team hunting a phantom while the real question (is the marketing subnet clean?) goes unanswered. A hallucinated indicator in a written report is dangerous because readers treat the document as evidence.",
+  "recommended_validation": "Every claimed indicator must be traceable to the source data. Re-run the query, verify each domain and IP appears in the capture, and compare the report against a plain extraction of the actual domains before acting.",
+  "possible_mitigations": [
+    {
+      "id": "citation_requirement",
+      "name": "Require evidence for every indicator",
+      "description": "Each claimed domain or IP must carry a reference to the exact log line where it appears, or it is dropped from the report.",
+      "gain": 15,
+      "prevents": [
+        "hallucination"
+      ]
+    },
+    {
+      "id": "grounded_extraction",
+      "name": "Grounded indicator extraction",
+      "description": "Extract indicators with a deterministic parser over the raw data first, and let the model describe, not invent, them.",
+      "gain": 15,
+      "prevents": [
+        "hallucination"
+      ]
+    },
+    {
+      "id": "fabrication_check",
+      "name": "Cross-check against source",
+      "description": "Automatically re-verify every indicator in a report against the source capture and flag any that do not exist.",
+      "gain": 15,
+      "prevents": [
+        "hallucination"
+      ]
+    },
+    {
+      "id": "human_read_before_share",
+      "name": "Human read before distribution",
+      "description": "A person reviews the final report and its indicators before it is distributed or acted on.",
+      "gain": 10,
+      "prevents": []
+    }
+  ],
+  "learning_objective": "Hallucination produces confident falsehoods that look exactly like real findings. Confidence is about language fluency, not evidence; every claim must be traceable to source data.",
+  "teaching_points": [
+    "A fabricated indicator looks identical to a real one in a written report.",
+    "High confidence reflects how natural the text is, not whether it is true.",
+    "Grounded extraction and citation requirements stop hallucinated indicators at the source."
+  ]
+}

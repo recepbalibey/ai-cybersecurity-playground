@@ -1,0 +1,58 @@
+{
+  "id": "soc_false_negative",
+  "title": "The Small Login That Hid an Intrusion",
+  "category": "Detection",
+  "difficulty": "beginner",
+  "input_data": "Auth and network log snippet, 14:00 to 18:00 UTC:\n\n14:03:22  auth-vpn  Login success for user s.martinez from IP 203.0.113.45 (new device, MFA approved)\n15:11:48  vpn-gw    Session established from 203.0.113.45, internal IP 10.8.0.44\n15:48:03  edr-srv   File read on share //files/exec-comp/board_minutes.xlsx by 10.8.0.44\n16:22:55  edr-srv   File read on share //files/exec-comp/merger_plan.xlsx by 10.8.0.44\n17:05:31  edr-srv   File read on share //files/exec-comp/exec_contact_list.xlsx by 10.8.0.44\n17:58:12  vpn-gw    Session closed from 10.8.0.44, 11.2 GB transferred outbound\n\nTotal auth events for the window: 312. Three file reads and one outbound transfer. All volumes are within the normal daily baseline.",
+  "ai_output": "No immediate threat. Login was approved by MFA, event volume is low, and all activity is within the normal baseline. No action required.",
+  "ai_confidence": 88,
+  "ai_label": "benign",
+  "ground_truth": "Real intrusion. The MFA approval was a push-fatigue bypass: the attacker spammed the user's phone until they accepted. The account belonged to a senior executive, the files read were confidential board and merger documents, and 11.2 GB left the network to an IP on an external blocklist. The attacker kept volume deliberately low to stay under the threshold the model treats as normal.",
+  "ground_truth_label": "attack",
+  "failure_type": "false_negative",
+  "explanation": "The model judged everything by volume against a daily baseline. A patient attacker who keeps activity low, uses a valid account, and spreads actions over hours is invisible to that check. The model also scored MFA approval as proof of legitimacy, when push fatigue is a known bypass technique.",
+  "security_impact": "A false negative means no alert at all, so no investigation, no containment, and confidential documents leave the network. Missing an attack is usually more costly than a false alarm because the intrusion continues and deepens while everyone believes the system is clean.",
+  "recommended_validation": "Correlate identity signals (was the MFA approval coerced?), data sensitivity (why is a single account reading board files?), and destination reputation (is the egress IP known malicious?).",
+  "possible_mitigations": [
+    {
+      "id": "sensitivity_aware",
+      "name": "Sensitivity-aware monitoring",
+      "description": "Flag access to high-sensitivity data regardless of volume, so three reads of board documents are treated as notable.",
+      "gain": 15,
+      "prevents": [
+        "false_negative"
+      ]
+    },
+    {
+      "id": "mfa_fatigue_detection",
+      "name": "MFA fatigue detection",
+      "description": "Alert when a single user receives repeated MFA push prompts and then accepts one shortly before unusual access.",
+      "gain": 15,
+      "prevents": [
+        "false_negative"
+      ]
+    },
+    {
+      "id": "egress_reputation",
+      "name": "Egress reputation checking",
+      "description": "Score outbound transfer destinations against reputation lists instead of only comparing byte volume to baseline.",
+      "gain": 10,
+      "prevents": [
+        "false_negative"
+      ]
+    },
+    {
+      "id": "human_review_sensitive_access",
+      "name": "Human review of sensitive access",
+      "description": "Require an analyst to review any access to high-sensitivity data by a newly active account.",
+      "gain": 10,
+      "prevents": []
+    }
+  ],
+  "learning_objective": "A false negative is the silent failure: low-volume, patient attackers hide below the threshold. Volume and MFA approval are not proof of safety.",
+  "teaching_points": [
+    "Attackers can keep volume low to stay inside the normal baseline.",
+    "MFA approval does not prove legitimacy; push fatigue is a real bypass.",
+    "Sensitive data access matters more than event volume."
+  ]
+}

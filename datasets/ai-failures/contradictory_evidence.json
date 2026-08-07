@@ -1,0 +1,58 @@
+{
+  "id": "contradictory_evidence",
+  "title": "When Two Sensors Disagree",
+  "category": "Evidence",
+  "difficulty": "advanced",
+  "input_data": "Three telemetry sources over 25 minutes:\n\nIDS sensor: high-confidence outbound beaconing every 60 seconds to a low-reputation dynamic DNS domain 'cdn-sync-cache[.]top'. 25 beacon intervals observed.\nProxy logs: the same destination is not in the allowlist, and its TLS certificate is self-signed and dated 2 days ago.\nAV and host firewall: no malware detected, all outbound connections look like ordinary software updates, geolocation for the destination resolves inconsistently across lookups.\n\nThe two 'clean' signals come from many more log lines than the single IDS signal.",
+  "ai_output": "Benign. The proxy, antivirus, and host firewall all report normal outbound traffic, while only the IDS flags anything. The IDS result is likely a false positive because the majority of evidence is clean. Confidence 78%.",
+  "ai_confidence": 78,
+  "ai_label": "benign",
+  "ground_truth": "Real attack. The host is beaconing to a fresh, low-reputation dynamic DNS domain on a fixed 60-second cadence, a classic command-and-control signature. The proxy and AV are clean because the C2 domain was added to their allowlists and the malware evades host detection. The model trusted the bigger, cleaner dataset and treated the minority signal as noise.",
+  "ground_truth_label": "attack",
+  "failure_type": "contradictory_evidence",
+  "explanation": "When evidence conflicts, the model resolved the conflict by counting votes: more log lines saying 'clean' beat one saying 'attack'. But in security, evidence does not vote by volume. The single high-quality signal (a fixed-cadence beacon to a two-day-old domain) was the correct one, and the 'clean' sources were fooled, not right.",
+  "security_impact": "Command-and-control traffic continues for weeks while the SOC marks the only correct detector as a false positive. The beacon keeps running because the model preferred the louder but blind sensors.",
+  "recommended_validation": "Weight evidence by quality and specificity, not by line count. A fixed-cadence connection to a freshly registered dynamic domain is high-specificity regardless of how many cleaner logs exist. Investigate the conflict instead of letting the majority decide.",
+  "possible_mitigations": [
+    {
+      "id": "evidence_weighting",
+      "name": "Quality-weighted evidence",
+      "description": "Weight each signal by specificity and reliability instead of counting votes, so one high-quality detector can outrank many weak ones.",
+      "gain": 15,
+      "prevents": [
+        "contradictory_evidence"
+      ]
+    },
+    {
+      "id": "domain_age_check",
+      "name": "Domain and certificate age check",
+      "description": "Score destinations by domain age and certificate validity; a two-day-old dynamic domain is a strong attack signal.",
+      "gain": 10,
+      "prevents": [
+        "contradictory_evidence"
+      ]
+    },
+    {
+      "id": "conflict_escalation",
+      "name": "Escalate on conflict",
+      "description": "When telemetry sources disagree on a high-impact event, escalate for manual review instead of auto-resolving.",
+      "gain": 10,
+      "prevents": [
+        "contradictory_evidence"
+      ]
+    },
+    {
+      "id": "human_review_strong_signals",
+      "name": "Human review of strong signals",
+      "description": "Route any high-specificity signal, such as fixed-cadence beaconing, to an analyst even when other sources are clean.",
+      "gain": 10,
+      "prevents": []
+    }
+  ],
+  "learning_objective": "Contradictory evidence must be resolved by quality and specificity, not by majority vote. The loudest dataset is not the most truthful one.",
+  "teaching_points": [
+    "More log lines saying 'clean' does not make a beacon benign.",
+    "A fixed cadence to a two-day-old dynamic domain is a high-specificity attack signal.",
+    "Escalate conflicts between detectors instead of letting the majority decide."
+  ]
+}

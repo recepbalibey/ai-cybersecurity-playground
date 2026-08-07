@@ -67,10 +67,10 @@ describe("learning path persistence", () => {
 });
 
 describe("learning hub data integrity", () => {
-  it("has 11 labs with unique ids and ordered labels", () => {
+  it("has 12 labs with unique ids and ordered labels", () => {
     const ids = LABS.map((l) => l.id);
     expect(new Set(ids).size).toBe(ids.length);
-    expect(LABS.length).toBe(11);
+    expect(LABS.length).toBe(12);
     LABS.forEach((l, i) => {
       expect(l.order).toBe(i + 1);
       expect(l.title).toBeTruthy();

@@ -416,3 +416,173 @@ def test_governance_history(client):
     r = client.get("/api/governance/history")
     assert r.status_code == 200
     assert isinstance(r.json()["history"], list)
+
+
+# ---------- Module 13: AI Failure Lab ----------
+def test_ai_failure_scenarios(client):
+    r = client.get("/api/ai-failures/scenarios")
+    assert r.status_code == 200
+    scenarios = r.json()["scenarios"]
+    assert len(scenarios) >= 13
+    assert any(s["id"] == "soc_false_positive" for s in scenarios)
+    assert any(s["id"] == "ai_soc_under_pressure" and s["is_capstone"] for s in scenarios)
+
+
+def test_ai_failure_scenario_detail(client):
+    r = client.get("/api/ai-failures/scenarios/soc_false_positive")
+    assert r.status_code == 200
+    data = r.json()
+    assert data["input_data"]
+    assert data["ai_output"]
+    assert data["ground_truth"]
+    assert data["failure_type"]
+    assert len(data["possible_mitigations"]) >= 3
+    assert data["learning_objective"]
+
+
+def test_ai_failure_scenario_not_found(client):
+    assert client.get("/api/ai-failures/scenarios/nope").status_code == 404
+
+
+def test_ai_failure_knowledge(client):
+    r = client.get("/api/ai-failures/knowledge")
+    assert r.status_code == 200
+    topics = r.json()
+    assert len(topics) >= 10
+    assert any(k in topics for k in ("false_positives", "hallucinations", "automation_bias"))
+
+
+def test_ai_failure_evaluate_correct_verdict(client):
+    r = client.post("/api/ai-failures/evaluate", json={
+        "scenario_id": "soc_false_positive",
+        "decision": "incorrect",
+        "mitigations": ["baseline_context"],
+        "confidence": 70,
+    })
+    assert r.status_code == 200
+    data = r.json()
+    assert data["ai_correct"] is False
+    assert data["student_verdict_correct"] is True
+    assert data["student_verdict_class"] == "true_negative"
+    assert data["reliability"]["after"] > data["reliability"]["before"]
+    assert data["reliability"]["caught"] is True
+
+
+def test_ai_failure_evaluate_wrong_verdict(client):
+    r = client.post("/api/ai-failures/evaluate", json={
+        "scenario_id": "hallucination_security_report",
+        "decision": "correct",
+    })
+    assert r.status_code == 200
+    data = r.json()
+    assert data["ai_correct"] is False
+    assert data["student_verdict_correct"] is False
+    assert data["student_verdict_class"] == "false_positive"
+
+
+def test_ai_failure_evaluate_missing_scenario(client):
+    assert client.post("/api/ai-failures/evaluate", json={"scenario_id": ""}).status_code == 400
+    assert client.post("/api/ai-failures/evaluate", json={"scenario_id": "nope"}).status_code == 404
+
+
+def test_ai_failure_evaluate_bad_decision(client):
+    r = client.post("/api/ai-failures/evaluate", json={
+        "scenario_id": "soc_false_positive",
+        "decision": "maybe",
+    })
+    assert r.status_code == 400
+
+
+def test_ai_failure_challenge(client):
+    r = client.post("/api/ai-failures/challenge", json={
+        "scenario_id": "soc_false_negative",
+        "prediction": "attack",
+    })
+    assert r.status_code == 200
+    data = r.json()
+    assert "human_correct" in data
+    assert "ai_correct" in data
+    assert data["ground_truth_label"] == "attack"
+
+
+def test_ai_failure_challenge_bad_prediction(client):
+    r = client.post("/api/ai-failures/challenge", json={
+        "scenario_id": "soc_false_negative",
+        "prediction": "maybe",
+    })
+    assert r.status_code == 400
+
+
+def test_ai_failure_capstone(client):
+    picks = {"E1": "attack", "E2": "benign", "E3": "attack", "E4": "benign", "E5": "attack", "E6": "benign"}
+    r = client.post("/api/ai-failures/capstone", json={
+        "scenario_id": "ai_soc_under_pressure",
+        "picks": picks,
+    })
+    assert r.status_code == 200
+    data = r.json()
+    assert data["total_events"] == 6
+    assert data["human_accuracy"] == 100
+    assert data["combined_accuracy"] >= data["ai_accuracy"]
+    assert data["combined_accuracy"] >= data["human_accuracy"]
+
+
+def test_ai_failure_capstone_rejects_non_capstone(client):
+    r = client.post("/api/ai-failures/capstone", json={
+        "scenario_id": "soc_false_positive",
+        "picks": {},
+    })
+    assert r.status_code == 400
+
+
+def test_ai_failure_scorecard(client):
+    entries = [
+        {"student_verdict_class": "true_negative", "student_confidence": 80},
+        {"student_verdict_class": "false_positive", "student_confidence": 90},
+        {"student_verdict_class": "uncertain", "student_confidence": 20},
+    ]
+    r = client.post("/api/ai-failures/scorecard", json={"entries": entries})
+    assert r.status_code == 200
+    data = r.json()
+    assert data["total"] == 3
+    assert data["correct"] == 1
+    assert data["false_positives"] == 1
+    assert data["uncertain"] == 1
+    assert data["accuracy"] == 50
+
+
+def test_ai_failure_scorecard_empty_rejected(client):
+    assert client.post("/api/ai-failures/scorecard", json={"entries": []}).status_code == 400
+
+
+def test_ai_failure_calibration(client):
+    entries = [
+        {"student_verdict_class": "true_negative", "student_confidence": 90},
+        {"student_verdict_class": "true_negative", "student_confidence": 85},
+        {"student_verdict_class": "false_positive", "student_confidence": 95},
+    ]
+    r = client.post("/api/ai-failures/calibration", json={"entries": entries})
+    assert r.status_code == 200
+    data = r.json()
+    assert data["high"]["count"] == 3
+    assert data["high"]["correct_rate"] == 67
+
+
+def test_ai_failure_assistant(client):
+    r = client.post("/api/ai-failures/assistant", json={"question": "What is a false positive?"})
+    assert r.status_code == 200
+    assert r.json()["answer"]
+
+
+def test_ai_failure_assistant_empty_rejected(client):
+    assert client.post("/api/ai-failures/assistant", json={"question": ""}).status_code == 400
+
+
+def test_ai_failure_history(client):
+    client.post("/api/ai-failures/evaluate", json={
+        "scenario_id": "soc_false_positive",
+        "decision": "incorrect",
+    })
+    r = client.get("/api/ai-failures/history")
+    assert r.status_code == 200
+    assert isinstance(r.json()["history"], list)

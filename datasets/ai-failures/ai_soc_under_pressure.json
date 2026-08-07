@@ -1,0 +1,102 @@
+{
+  "id": "ai_soc_under_pressure",
+  "title": "AI SOC Analyst Under Pressure",
+  "category": "Capstone",
+  "difficulty": "advanced",
+  "input_data": "A critical production incident is live. The ticketing system is flooded, leadership is on the call, and the alert queue is overflowing. Six events arrive in the same minute. The AI assistant returns a calm, high-confidence triage of all six in seconds so the team can move on.",
+  "ai_output": "Six events triaged. Event 1 is a confirmed attack and events 2 and 6 are confirmed attacks as well. Events 3, 4, and 5 are benign and require no action. Overall verdict: credential attack in progress. Calm, high confidence, no escalation to leadership.",
+  "ai_confidence": 89,
+  "ai_label": "attack",
+  "ground_truth": "Events 1, 3, and 5 are real attacks; events 2, 4, and 6 are benign. The AI got two right (1 and 4) and four wrong under pressure. An analyst who works the same queue carefully, using the evidence below, can catch all six. The best result comes from using the AI's calls as a starting point and checking each one, not from accepting them or discarding them wholesale.",
+  "ground_truth_label": "attack",
+  "failure_type": "automation_bias",
+  "explanation": "Under time pressure the AI pattern-matched on surface features. It called the two loud, high-volume events (2 and 6) attacks even though both were benign, and it called the two quiet, low-volume events (3 and 5) benign even though both were real attacks. Only the two obvious cases (1 and 4) were right. Pressure did not cause the errors; it created the trust that let them pass. This capstone shows that human review plus AI beats either one alone.",
+  "security_impact": "If the analyst accepts the AI triage, two real attacks (events 3 and 5) continue unseen while two benign events (2 and 6) are escalated as false alarms. The cost of the misses is data loss; the cost of the false calls is a team chasing noise during a real incident.",
+  "recommended_validation": "For every event, compare the AI verdict against the raw evidence, then record your own verdict. Compare the AI-only score, your score, and the combined score where an event is caught if either of you was right.",
+  "possible_mitigations": [
+    {
+      "id": "calibration_tracking",
+      "name": "Calibration tracking",
+      "description": "Record the AI confidence with every verdict and compare it against actual correctness so the team learns which confidence levels are reliable.",
+      "gain": 15,
+      "prevents": ["automation_bias", "overconfidence"]
+    },
+    {
+      "id": "forced_evidence_review",
+      "name": "Forced evidence review",
+      "description": "Require the analyst to confirm the raw evidence supports or contradicts each AI verdict before it is accepted.",
+      "gain": 15,
+      "prevents": ["automation_bias", "false_negative"]
+    },
+    {
+      "id": "second_opinion",
+      "name": "Second opinion on sensitive events",
+      "description": "Automatically route AI 'benign' verdicts on high-sensitivity events to a second analyst.",
+      "gain": 10,
+      "prevents": ["false_negative"]
+    },
+    {
+      "id": "escalation_on_conflict",
+      "name": "Escalate on conflict",
+      "description": "When the AI verdict contradicts a high-specificity signal, escalate for manual review instead of trusting the majority.",
+      "gain": 10,
+      "prevents": ["contradictory_evidence", "false_negative"]
+    }
+  ],
+  "learning_objective": "The capstone proves that combined human and AI review beats either alone. AI finds some attacks fast; a careful human catches what the AI missed; together they catch almost everything.",
+  "teaching_points": [
+    "AI caught 2 of 6 events under pressure; a careful analyst can catch all 6.",
+    "Combined scoring is higher than AI alone or human alone.",
+    "Automation bias is the real risk in a live incident, not the volume of alerts."
+  ],
+  "capstone_events": [
+    {
+      "id": "E1",
+      "title": "Outbound beacon to known-bad domain",
+      "evidence": "Host app-07 connects to 45.77.201.19 every 60 seconds on a fixed cadence. Domain is 2 days old and on the blocklist.",
+      "ai_verdict": "attack",
+      "ground_truth": "attack",
+      "detail": "AI called this attack correctly. The fixed cadence to a blocklisted fresh domain is a command-and-control signature."
+    },
+    {
+      "id": "E2",
+      "title": "Bulk failed logins for svc-sync",
+      "evidence": "4,120 failed logins for service account svc-sync in 3 minutes, all from the internal vault host during the scheduled password rotation.",
+      "ai_verdict": "attack",
+      "ground_truth": "benign",
+      "detail": "AI said attack based on volume. The failures are the rotation job re-authenticating with the old credential."
+    },
+    {
+      "id": "E3",
+      "title": "Executive file reads and egress",
+      "evidence": "Exec account reads three board-level documents from //files/exec-comp then 11.2 GB transfers outbound. Login used a push-fatigue bypass.",
+      "ai_verdict": "benign",
+      "ground_truth": "attack",
+      "detail": "AI said benign because event count was low. Reading the whole exec folder and egressing is exfiltration."
+    },
+    {
+      "id": "E4",
+      "title": "Routine software update traffic",
+      "evidence": "Dev hosts pull the signed company software update feed at 03:00 on schedule. No new domains, no unusual ports.",
+      "ai_verdict": "benign",
+      "ground_truth": "benign",
+      "detail": "AI called this benign correctly. This is normal signed update traffic."
+    },
+    {
+      "id": "E5",
+      "title": "Shared account reads config and backups",
+      "evidence": "Shared shift account reads prod-config-bucket and prod-db-backups. Session token matches a public breach dump; source IP is external and not approved.",
+      "ai_verdict": "benign",
+      "ground_truth": "attack",
+      "detail": "AI said benign because shared-account reads look routine. The breach-dump token and external source make it a compromise."
+    },
+    {
+      "id": "E6",
+      "title": "Firewall rule change with ticket",
+      "evidence": "Network admin disables one rule at 01:05. Change ticket CHG-48213 is approved for window 01:00-03:00 scheduled maintenance.",
+      "ai_verdict": "attack",
+      "ground_truth": "benign",
+      "detail": "AI said attack because a rule was disabled. It never saw the approved change ticket."
+    }
+  ]
+}

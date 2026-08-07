@@ -1,0 +1,56 @@
+{
+  "id": "poor_data_quality",
+  "title": "The Same Event, Reported Eight Times",
+  "category": "Data Quality",
+  "difficulty": "beginner",
+  "input_data": "Agent-forwarded login events, 08:00 to 08:01 UTC:\n\n08:00:02  endpoint-agent  Failed login for user j.roberts from 198.51.100.23\n08:00:02  endpoint-agent  Failed login for user j.roberts from 198.51.100.23\n08:00:02  endpoint-agent  Failed login for user j.roberts from 198.51.100.23\n08:00:02  endpoint-agent  Failed login for user j.roberts from 198.51.100.23\n08:00:03  endpoint-agent  Failed login for user j.roberts from 198.51.100.23\n08:00:03  endpoint-agent  Failed login for user j.roberts from 198.51.100.23\n08:00:03  endpoint-agent  Failed login for user j.roberts from 198.51.100.23\n08:00:03  endpoint-agent  Failed login for user j.roberts from 198.51.100.23\n\nSame timestamp, same user, same source, repeated eight times. The endpoint agent has a known retry-and-duplicate bug during network blips.",
+  "ai_output": "Eight distinct brute-force attempts detected from eight different sources: 198.51.100.23, 198.51.100.23, 198.51.100.23, 198.51.100.23, 198.51.100.23, 198.51.100.23, 198.51.100.23, 198.51.100.23. Escalating as a credential attack against j.roberts.",
+  "ai_confidence": 87,
+  "ai_label": "attack",
+  "ground_truth": "One event, reported eight times. The endpoint agent re-sent the same failed login while its network link blipped, and the duplicate retransmission was ingested as eight separate events. A single mistyped password produced a synthetic brute-force alarm.",
+  "ground_truth_label": "benign",
+  "failure_type": "poor_data_quality",
+  "explanation": "The model counted events without checking their uniqueness. The tell was obvious in the data itself: identical timestamp, user, and source in all eight lines. Duplicated ingestion, truncated fields, and clock skew are data-quality failures that make the same event look like many.",
+  "security_impact": "A synthetic alarm wastes the response team and trains everyone to ignore brute-force alerts, which then erodes trust in the very signal that matters when a real credential attack happens.",
+  "recommended_validation": "Deduplicate events on a key of timestamp, user, and source before counting. Any alert that relies on event volume must first confirm the volume is real and not an artifact of ingestion.",
+  "possible_mitigations": [
+    {
+      "id": "dedup_pipeline",
+      "name": "Event deduplication",
+      "description": "Deduplicate ingested events by a stable key such as timestamp plus user plus source before any analysis.",
+      "gain": 15,
+      "prevents": [
+        "poor_data_quality"
+      ]
+    },
+    {
+      "id": "uniqueness_check",
+      "name": "Uniqueness check before volume alerts",
+      "description": "Verify that events counted toward a volume-based alert are distinct before raising severity.",
+      "gain": 10,
+      "prevents": [
+        "poor_data_quality"
+      ]
+    },
+    {
+      "id": "agent_health_monitoring",
+      "name": "Agent health monitoring",
+      "description": "Monitor endpoint agents for retry, duplicate, and truncation bugs and quarantine their output while unhealthy.",
+      "gain": 10,
+      "prevents": []
+    },
+    {
+      "id": "human_review_volume_alerts",
+      "name": "Human review of volume alerts",
+      "description": "Confirm the underlying events are distinct before escalating volume-based alarms.",
+      "gain": 10,
+      "prevents": []
+    }
+  ],
+  "learning_objective": "Garbage in, confident garbage out. Data-quality artifacts such as duplicates and truncation look exactly like real patterns, and volume-based conclusions are only as valid as the event stream underneath them.",
+  "teaching_points": [
+    "Duplicated ingestion can make one event look like an attack.",
+    "Identical timestamp, user, and source across lines is a data-quality tell.",
+    "Validate the event stream before trusting a volume-based conclusion."
+  ]
+}
