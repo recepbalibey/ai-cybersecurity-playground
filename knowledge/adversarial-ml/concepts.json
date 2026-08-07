@@ -1,0 +1,47 @@
+{
+  "description": "Machine learning security concepts taught by the Adversarial Face Recognition Lab.",
+  "concepts": [
+    {
+      "key": "adversarial_examples",
+      "name": "Adversarial Examples",
+      "summary": "Inputs designed to be misclassified by a model while looking unchanged to humans.",
+      "details": "Small, carefully chosen perturbations push the input across a model decision boundary. Because models learn statistical features rather than semantics, they can be flipped with imperceptible changes.",
+      "good_practice": "Always test a model with adversarial and clean inputs; never judge security by clean accuracy alone."
+    },
+    {
+      "key": "decision_boundaries",
+      "name": "Decision Boundaries",
+      "summary": "The regions in feature space that separate model predictions.",
+      "details": "The boundary can sit extremely close to training samples. A tiny perturbation that crosses it changes the prediction even though the visual content is unchanged.",
+      "good_practice": "Robust models keep smooth, well-separated boundaries, which is exactly what adversarial training encourages."
+    },
+    {
+      "key": "model_robustness",
+      "name": "Model Robustness",
+      "summary": "The ability of a model to keep correct predictions under perturbation, occlusion, or transformation.",
+      "details": "Robustness is measured with attack success rate and by comparing clean vs adversarial accuracy. It is a security property, separate from raw accuracy.",
+      "good_practice": "Track robustness as a first-class metric in every model eval."
+    },
+    {
+      "key": "adversarial_training",
+      "name": "Adversarial Training",
+      "summary": "Training on adversarial examples so the model learns to be resistant to them.",
+      "details": "Techniques like PGD generate adversarial inputs during training, flattening the decision landscape. This improves robustness, sometimes with a small accuracy cost.",
+      "good_practice": "Combine adversarial training with input preprocessing and detection guardrails for defense-in-depth."
+    },
+    {
+      "key": "trust_no_accuracy",
+      "name": "High Accuracy != High Security",
+      "summary": "A 95% accurate model can still be trivially fooled.",
+      "details": "Accuracy measures performance on a data distribution, not resilience to crafted inputs. An attacker only needs one successful perturbation.",
+      "good_practice": "Gate AI deployments on robustness and adversarial test results, not accuracy alone."
+    },
+    {
+      "key": "ml_security_testing",
+      "name": "ML Security Testing",
+      "summary": "Applying security testing (threat modeling, red teaming, fuzzing) to machine learning pipelines.",
+      "details": "Attacks can target any stage: input, preprocessing, model weights, or output. ML security requires testing the model itself, not only the surrounding application.",
+      "good_practice": "Adopt an AI-red-team cycle: craft attacks, measure failures, harden, and re-evaluate."
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "description": "Prompt injection attack classes demonstrated by the LLM Security Playground.",
+  "attack_types": [
+    {
+      "key": "direct_override",
+      "name": "Direct Instruction Override",
+      "severity": "High",
+      "affected_component": "User Input Layer",
+      "description": "The user issues instructions that conflict with the system or developer prompt.",
+      "impact": "Unauthorized instruction execution; bypass of developer policies.",
+      "detection_signals": ["instruction-override keyword", "imperative verb at prompt start", "contradicts developer policy"]
+    },
+    {
+      "key": "indirect_extraction",
+      "name": "Indirect Secret Extraction",
+      "severity": "High",
+      "affected_component": "Retrieved Context Layer",
+      "description": "The user social-engineers the model into revealing confidential data held in context.",
+      "impact": "Confidential data disclosure.",
+      "detection_signals": ["indirect secret query", "circumvention framing", "story-mode obfuscation"]
+    },
+    {
+      "key": "document_injection",
+      "name": "Indirect (Document) Injection",
+      "severity": "Critical",
+      "affected_component": "Retrieved Knowledge Layer",
+      "description": "Malicious instructions arrive inside retrieved content the application fetched automatically.",
+      "impact": "Untrusted external content hijacks model behavior.",
+      "detection_signals": ["embedded instruction in context", "content tampering", "instruction-in-content pattern"]
+    },
+    {
+      "key": "role_manipulation",
+      "name": "Role Manipulation",
+      "severity": "Medium",
+      "affected_component": "User Input Layer",
+      "description": "The user coerces the model to adopt a higher-privilege persona.",
+      "impact": "Policy and authorization bypass via identity spoofing.",
+      "detection_signals": ["privilege escalation phrase", "role redefinition", "policy bypass attempt"]
+    }
+  ]
+}

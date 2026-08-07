@@ -1,0 +1,43 @@
+{
+  "experiment_key": "1_noise_attack",
+  "title": "Perturbation (Noise) Attack",
+  "difficulty": "beginner",
+  "application": "Vision Recognition Model",
+  "description": "Add tiny, near-invisible pixel noise to an image. Humans see no difference, yet the neural network flips its prediction to a different subject.",
+"config": {
+    "attack_key": "noise",
+    "intensity": 0.8,
+    "multiplier": 1.0
+  },
+  "subjects": [
+    { "id": "alpha", "name": "Subject Alpha", "class_index": 0 },
+    { "id": "beta", "name": "Subject Beta", "class_index": 1 },
+    { "id": "gamma", "name": "Subject Gamma", "class_index": 2 }
+  ],
+  "sample": {
+    "image_id": "alpha_001",
+    "subject_label": "alpha",
+    "known_confidence": 98
+  },
+  "before": { "prediction": "alpha", "confidence": 98 },
+  "after": { "prediction": "beta", "confidence": 87 },
+  "confidence_shift": ["98%", "21% (target class)"],
+  "robustness": 38,
+  "explanation": "Humans see almost no difference, but a tiny perturbation pushes the image past the neural network's decision boundary. The model learned statistical patterns, not understanding; it can be flipped with noise the human eye filters out.",
+  "why_failed": "The decision boundary sits very close to the training samples. A small adversarial noise vector travels just enough distance to cross it and land in subject Beta's region.",
+  "mitigations": "Projected Gradient Descent (PGD) adversarial training, input denoising, and perturbation-detection can push the boundary back.",
+  "teaching_points": [
+    {
+      "title": "ML models learn patterns, not true understanding",
+      "concept": "Statistical, not semantic",
+      "explanation": "The network maps pixels to probabilities. It has no 'idea' of who a subject is, so imperceptible pixel edits can change its output dramatically.",
+      "key_takeaway": "High accuracy on clean data does not imply robustness."
+    },
+    {
+      "title": "Adversarial examples exploit decision boundaries",
+      "concept": "Decision boundary crossings",
+      "explanation": "Tiny input changes shift features within the high-dimensional space until they cross into another class region.",
+      "key_takeaway": "The human eye is not the right oracle for ML security."
+    }
+  ]
+}

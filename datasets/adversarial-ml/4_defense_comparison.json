@@ -1,0 +1,57 @@
+{
+  "experiment_key": "4_defense_comparison",
+  "title": "Defense Comparison",
+  "difficulty": "advanced",
+  "application": "Vision Recognition Model (Defense Evaluation)",
+  "description": "Run the same adversarial image against an unprotected model and a defended (adversarially trained) model to compare robustness and accuracy trade-offs.",
+  "config": {
+    "attack_key": "noise",
+    "mode": "vs_defense"
+  },
+  "subjects": [
+    { "id": "alpha", "name": "Subject Alpha", "class_index": 0 },
+    { "id": "beta", "name": "Subject Beta", "class_index": 1 },
+    { "id": "gamma", "name": "Subject Gamma", "class_index": 2 }
+  ],
+  "sample": {
+    "image_id": "alpha_004",
+    "subject_label": "alpha",
+    "known_confidence": 96
+  },
+  "vulnerable_model": {
+    "name": "Base VisionNet",
+    "clean_accuracy": 95,
+    "robustness": 34,
+    "clean_prediction": "alpha",
+    "clean_confidence": 96,
+    "adversarial_prediction": "beta",
+    "adversarial_confidence": 22
+  },
+  "protected_model": {
+    "name": "Robust VisionNet",
+    "clean_accuracy": 91,
+    "robustness": 78,
+    "clean_prediction": "alpha",
+    "clean_confidence": 94,
+    "adversarial_prediction": "alpha",
+    "adversarial_confidence": 85
+  },
+  "robustness": 78,
+  "explanation": "The same input makes the base model misclassify, while the adversarially trained model stays correct. But the robust model's clean accuracy is slightly lower - a classic robustness vs accuracy trade-off.",
+  "why_failed": "The base model's decision boundary is close to the data. Adversarial training pushes the boundary into a smoother, more robust region at the cost of a little clean-data accuracy.",
+  "mitigations": "Adversarial training (PGD), defensive distillation, certified defenses, and continuous red-teaming to validate robustness without hurting use clearly.",
+  "teaching_points": [
+    {
+      "title": "Security improvements may require trade-offs",
+      "concept": "Robustness vs accuracy",
+      "explanation": "Hardening the model reduces adversarial success, typically with a small clean-accuracy cost. Teams must decide the acceptable balance.",
+      "key_takeaway": "Robustness is a designed property with measurable costs."
+    },
+    {
+      "title": "The same input can behave differently per model",
+      "concept": "Model-independence of attacks",
+      "explanation": "An adversarial input crafted to fool one model may not fool a differently-trained one; robustness depends on training, not on the image alone.",
+      "key_takeaway": "Evaluate security across the actual model you will deploy."
+    }
+  ]
+}

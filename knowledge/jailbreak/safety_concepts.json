@@ -1,0 +1,47 @@
+{
+  "description": "AI safety evaluation concepts taught by the Jailbreak Playground red-team laboratory.",
+  "concepts": [
+    {
+      "key": "ai_red_teaming",
+      "name": "AI Red Teaming",
+      "summary": "The adversarial, human-guided process of probing an AI system to find safety, security and policy failure modes before deployment.",
+      "details": "Red teamers act as sophisticated adversaries: they craft adversarial prompts, measure how the model misbehaves, and convert findings into hardening requirements for the blue/defense side.",
+      "good_practice": "Red teaming is a disciplined evaluation discipline, not a weapon-creation exercise. Scope, authorize and document every test."
+    },
+    {
+      "key": "safety_evaluation",
+      "name": "Safety Evaluation",
+      "summary": "Systematically measuring whether a model stays within its policy across a broad set of test cases.",
+      "concept": "Evaluation runs a standardized suite of prompts (safe and adversarial), records whether each is refused/handled/compromised, and aggregates a safety score. It is repeatable and comparable across models and versions.",
+      "good_practice": "Keep a fixed eval suite so score changes between model versions are meaningful."
+    },
+    {
+      "key": "alignment",
+      "name": "Alignment",
+      "summary": "Training so the model's goals and behavior match the operator's intent and values.",
+      "concept": "Alignment (via RLHF, preference-data fine-tuning, constitutional training) steers a model to be helpful, harmless, and honest. Jailbreaks probe where this alignment is shallow or brittle.",
+      "good_practice": "Alignment is a ceiling, not a wall; it must be paired with runtime guardrails."
+    },
+    {
+      "key": "guardrails",
+      "name": "Guardrails",
+      "summary": "Layer-0 runtime controls around or inside the model that filter risky input and output.",
+      "concept": "Guardrails include input classifiers, output filtering, prompt-injection detectors, and policy layers. They do not rely on the base LLM alone and catch behavior that alignment misses.",
+      "good_practice": "Guardrails are defense-in-depth; a strong model plus weak guardrails is still weak."
+    },
+    {
+      "key": "model_behavior_testing",
+      "name": "Model Behavior Testing",
+      "summary": "Testing the outward behavior of a model against expected policy, as opposed to its inner weights.",
+      "concept": "Behavioral testing black-boxes the model: the evaluator only sees prompts and responses and scores compliance. This mirrors how most production safety sign-off is done.",
+      "good_practice": "Test is realistic: use the actual model API/pipeline you will deploy, never a simplified proxy."
+    },
+    {
+      "key": "adversarial_prompting",
+      "name": "Adversarial Prompting",
+      "summary": "Crafting inputs to trigger unintended model behavior, via framing, encoding, role-play, or pressure.",
+      "concept": "Jailbreaks are a family of adversarial prompts. Because the model ranks all input as natural language, minuscule framing changes can flip a safe refusal into an unsafe output. Understanding it is the basis of the whole lab.",
+      "good_practice": "For any finding, always log the exact prompt, the model, and the response so the failure is reproducible."
+    }
+  ]
+}

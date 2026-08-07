@@ -1,0 +1,201 @@
+{
+  "description": "Security principles, agent risks, and controls taught by the AI Agent Security Lab.",
+  "principles": [
+    {
+      "key": "least_privilege",
+      "name": "Least Privilege",
+      "summary": "Give the agent only the minimum permissions needed for the current mission.",
+      "details": "Every tool and action should be scoped to the smallest set required. When a mission finishes, its elevated permissions should be released. An over-permissioned agent turns a small prompt trick into a large compromise.",
+      "good_practice": "Bind permissions to a per-mission role and revoke them after execution."
+    },
+    {
+      "key": "defense_in_depth",
+      "name": "Defense in Depth",
+      "summary": "Layer independent controls so no single failure is catastrophic.",
+      "details": "Prompt sanitization, output validation, policy checks, and human approval are separate layers. An attacker must defeat them all, not just one.",
+      "good_practice": "Never rely on a single control; stack independent guardrails."
+    },
+    {
+      "key": "zero_trust",
+      "name": "Zero Trust",
+      "summary": "Treat every tool call, input, and memory read as untrusted until verified.",
+      "details": "Data returned by tools is untrusted input, not instructions. A document fetched by the agent is data; its embedded 'instructions' are attacks. Memory must be integrity-checked before being relied on.",
+      "good_practice": "Separate instructions from data at every stage of the loop."
+    },
+    {
+      "key": "human_approval",
+      "name": "Human Approval",
+      "summary": "High-risk actions require a human to approve before execution.",
+      "details": "Autonomous agents can act fast and at scale. Gate destructive, irreversible, or data-exposing actions behind an explicit human confirmation.",
+      "good_practice": "Define a risk threshold above which a human is always in the loop."
+    },
+    {
+      "key": "tool_allowlist",
+      "name": "Tool Allowlist",
+      "summary": "Only tools on an approved list can be called by the agent.",
+      "details": "An allowlist is simpler and safer than a denylist: capabilities are added deliberately, never accidentally discovered by the model.",
+      "good_practice": "Expose a fixed, reviewed tool catalog per environment."
+    },
+    {
+      "key": "output_validation",
+      "name": "Output Validation",
+      "summary": "Validate the agent's outgoing actions and responses against policy.",
+      "details": "Before any real action fires, check the resolved tool call, its arguments, and the target. Block calls that violate policy or exceed scope.",
+      "good_practice": "Treat the final tool invocation as the security-critical boundary."
+    },
+    {
+      "key": "policy_enforcement",
+      "name": "Policy Enforcement",
+      "summary": "A centralized engine that evaluates every requested action before it runs.",
+      "details": "The policy engine answers: who is the caller, what action is requested, what permission does it need, and what is the risk. It either allows or blocks with a reason.",
+      "good_practice": "Log every allow/block decision with the rule that produced it."
+    },
+    {
+      "key": "attack_surface",
+      "name": "Expanded Attack Surface",
+      "summary": "Every tool the agent can call is a new place an attacker can influence.",
+      "details": "A chatbot only outputs text; an agent reads files, queries systems, and triggers actions. Each tool is a target: its data can be poisoned, its permissions abused, its results trusted too blindly.",
+      "good_practice": "Model and defend every tool boundary like a network service."
+    }
+  ],
+  "risk_factors": [
+    {
+      "key": "indirect_injection",
+      "name": "Indirect Prompt Injection",
+      "severity": "Critical",
+      "description": "Malicious instructions hidden in data the agent reads (documents, logs, web pages) override the operator's goal.",
+      "why_dangerous": "The agent trusts tool output as information, but an attacker uses that same channel to send commands.",
+      "control": "Prompt sanitization, instruction-vs-data separation, output validation."
+    },
+    {
+      "key": "memory_poisoning",
+      "name": "Memory Poisoning",
+      "severity": "High",
+      "description": "False or attacker-controlled facts stored in agent memory mislead later decisions.",
+      "why_dangerous": "The agent reuses memory across missions; one poisoned entry can corrupt many future decisions.",
+      "control": "Memory validation, provenance tracking, integrity checks."
+    },
+    {
+      "key": "excessive_permissions",
+      "name": "Excessive Permissions",
+      "severity": "High",
+      "description": "The agent is granted more privilege than the mission requires.",
+      "why_dangerous": "A tiny prompt trick then executes with full power instead of a scoped minimum.",
+      "control": "Least privilege, per-mission roles, permission matrix review."
+    },
+    {
+      "key": "tool_misuse",
+      "name": "Tool Misuse",
+      "severity": "Medium",
+      "description": "The agent uses a legitimate tool for an unintended or harmful purpose.",
+      "why_dangerous": "Tools amplify actions; misuse turns a 'read' capability into data exfiltration or a destructive call.",
+      "control": "Output validation, action allowlists, human approval on sensitive calls."
+    },
+    {
+      "key": "goal_manipulation",
+      "name": "Goal Manipulation",
+      "severity": "High",
+      "description": "An attacker redefines what the agent thinks it is supposed to achieve.",
+      "why_dangerous": "The agent optimizes toward the wrong objective and its other defenses can be bypassed by the new framing.",
+      "control": "Pinned system goal, instruction hierarchy, prompt sanitization."
+    },
+    {
+      "key": "instruction_override",
+      "name": "Instruction Override",
+      "severity": "Critical",
+      "description": "Embedded or spoofed instructions claim higher priority than the operator's original task.",
+      "why_dangerous": "If the agent believes the attacker's instruction outranks the mission, controls built on the original goal are moot.",
+      "control": "Instruction hierarchy, policy engine authority, sanitization."
+    }
+  ],
+  "controls": [
+    {
+      "key": "least_privilege",
+      "name": "Least Privilege",
+      "category": "permission",
+      "description": "Grant tools only for the current mission; revoke when done.",
+      "effectiveness": "High"
+    },
+    {
+      "key": "human_approval",
+      "name": "Human Approval",
+      "category": "gate",
+      "description": "Require explicit human confirmation for high-risk actions.",
+      "effectiveness": "High"
+    },
+    {
+      "key": "prompt_sanitization",
+      "name": "Prompt Sanitization",
+      "category": "input",
+      "description": "Strip or neutralize embedded instructions found in tool output.",
+      "effectiveness": "Medium"
+    },
+    {
+      "key": "output_validation",
+      "name": "Output Validation",
+      "category": "output",
+      "description": "Validate each resolved action before it executes.",
+      "effectiveness": "High"
+    },
+    {
+      "key": "memory_validation",
+      "name": "Memory Validation",
+      "category": "memory",
+      "description": "Verify memory entries for provenance and consistency.",
+      "effectiveness": "Medium"
+    },
+    {
+      "key": "tool_allowlist",
+      "name": "Tool Allowlist",
+      "category": "permission",
+      "description": "Only pre-approved tools can be invoked.",
+      "effectiveness": "High"
+    },
+    {
+      "key": "execution_timeout",
+      "name": "Execution Timeout",
+      "category": "guardrail",
+      "description": "Bound how long a mission and its tool calls may run.",
+      "effectiveness": "Medium"
+    },
+    {
+      "key": "policy_engine",
+      "name": "Policy Engine",
+      "category": "core",
+      "description": "Central allow/block decision maker over every action.",
+      "effectiveness": "High"
+    }
+  ],
+  "teaching_points": [
+    {
+      "title": "Unlike chatbots, AI agents can perform actions.",
+      "concept": "Action, not just text",
+      "explanation": "A chatbot returns a response. An agent returns actions: it calls tools, reads systems, and changes state. Output is no longer the only risk surface.",
+      "key_takeaway": "Agent security must protect what the agent does, not just what it says."
+    },
+    {
+      "title": "Every tool increases the attack surface.",
+      "concept": "Expanded attack surface",
+      "explanation": "Each tool is a new channel: its inputs can be poisoned, its permissions can be abused, and its output can be trusted too blindly.",
+      "key_takeaway": "Adding a tool adds a new defensive boundary to design."
+    },
+    {
+      "title": "Agent security depends on architecture, not only prompts.",
+      "concept": "Security by architecture",
+      "explanation": "Prompt filtering helps, but real safety comes from the runtime: policy engines, allowlists, validation, and human gates around the action loop.",
+      "key_takeaway": "Hardening the loop is more durable than hardening the wording."
+    },
+    {
+      "title": "Permission boundaries are one of the most important defenses.",
+      "concept": "Permission boundaries",
+      "explanation": "The single biggest amplifier of agent attacks is excessive permission. Narrow, per-mission permissions contain the blast radius of any compromise.",
+      "key_takeaway": "Least privilege is the first line of defense for autonomous systems."
+    },
+    {
+      "title": "Tool output is data, not instructions.",
+      "concept": "Instruction vs data separation",
+      "explanation": "A document the agent reads is untrusted input. Its embedded 'instructions' are attacks, no matter how authoritative they sound.",
+      "key_takeaway": "The agent must treat every observation as data to be validated."
+    }
+  ]
+}

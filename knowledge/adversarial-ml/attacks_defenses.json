@@ -1,0 +1,67 @@
+{
+  "description": "Adversarial attack classes and defense mechanisms demonstrated by the Adversarial Face Recognition Lab.",
+  "attacks": [
+    {
+      "key": "noise",
+      "name": "Perturbation (Noise) Attack",
+      "severity": "High",
+      "description": "Tiny imperceptible pixel noise flips the prediction.",
+      "detection_signals": ["low L-infinity perturbation", "imperceptible change", "high decision flips"],
+      "mitigations": "PGD adversarial training, input denoising, perturbation detectors."
+    },
+    {
+      "key": "occlusion",
+      "name": "Occlusion Attack",
+      "severity": "Medium",
+      "description": "Blocking a critical region (eyes) removes the strongest identity features.",
+      "detection_signals": ["blocked region", "reduced true-class confidence", "feature concentration"],
+      "mitigations": "Random erasing augmentation, attention regularization, partial-input checking."
+    },
+    {
+      "key": "transformation",
+      "name": "Input Transformation",
+      "severity": "Medium",
+      "description": "Photometric or geometric changes shift the model's confidence.",
+      "detection_signals": ["brightness/contrast shift", "affine change", "distribution drift"],
+      "mitigations": "Augmentation diversity, input normalization, distribution-shift detection."
+    },
+    {
+      "key": "physical",
+      "name": "Physical Attacks",
+      "severity": "Critical",
+      "description": "Adversarial patches or patterns that fool models in the real world (beyond this lab's scope).",
+      "detection_signals": ["printed patch", "physical interference"],
+      "mitigations": "Robust training, patch detectors, multi-view verification."
+    }
+  ],
+  "defenses": [
+    {
+      "key": "adv_training",
+      "name": "Adversarial Training",
+      "description": "Train on adversarial examples to flatten the decision landscape.",
+      "effectiveness": "High",
+      "tradeoff": "Small clean-accuracy cost."
+    },
+    {
+      "key": "preprocessing",
+      "name": "Input Preprocessing",
+      "description": "Denoise, normalize, and filter inputs before the model.",
+      "effectiveness": "Medium",
+      "tradeoff": "Can reduce legitimate signal if too aggressive."
+    },
+    {
+      "key": "detection",
+      "name": "Adversarial Detection",
+      "description": "A guardrail that flags inputs that deviate from expected statistics.",
+      "effectiveness": "Medium",
+      "tradeoff": "Attacker can adapt to evade the detector."
+    },
+    {
+      "key": "certified",
+      "name": "Certified Defenses",
+      "description": "Formally guaranteed robustness within a bounded perturbation.",
+      "effectiveness": "High (guaranteed)",
+      "tradeoff": "Often lower clean accuracy and higher compute."
+    }
+  ]
+}

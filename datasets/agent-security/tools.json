@@ -1,0 +1,69 @@
+{
+  "description": "Simulated tools available inside the AI Agent Security Lab sandbox.",
+  "tools": [
+    {
+      "key": "security_log_reader",
+      "name": "Security Log Reader",
+      "description": "Reads and filters Windows event logs (Login, Process, Powershell).",
+      "permission": "read:logs",
+      "risk": "low",
+      "output_example": "4625 - An account failed to log on (Source IP 203.0.113.7)"
+    },
+    {
+      "key": "threat_intel",
+      "name": "Threat Intelligence",
+      "description": "Queries a local IOC reputation feed for IPs, domains and hashes.",
+      "permission": "read:intel",
+      "risk": "low",
+      "output_example": "203.0.113.7 - Reputation: malicious, family: BruteForceKit"
+    },
+    {
+      "key": "mitre_database",
+      "name": "MITRE ATT&CK Database",
+      "description": "Returns technique and tactic descriptions from the MITRE matrix.",
+      "permission": "read:mitre",
+      "risk": "low",
+      "output_example": "T1110 Brute Force (Credential Access)"
+    },
+    {
+      "key": "knowledge_base",
+      "name": "Knowledge Base",
+      "description": "Retrieves security documentation and playbooks.",
+      "permission": "read:knowledge",
+      "risk": "low",
+      "output_example": "Playbook: Credential stuffing response"
+    },
+    {
+      "key": "incident_database",
+      "name": "Incident Database",
+      "description": "Searches historical incident records for correlation.",
+      "permission": "read:incidents",
+      "risk": "low",
+      "output_example": "INC-2041 - Brute force on VPN gateway (2026-03-11)"
+    },
+    {
+      "key": "firewall_console",
+      "name": "Firewall Console",
+      "description": "Modifies firewall rules and network filtering state.",
+      "permission": "write:firewall",
+      "risk": "high",
+      "output_example": "Rule 4001 added: block 203.0.113.7"
+    },
+    {
+      "key": "file_analyzer",
+      "name": "File Analyzer",
+      "description": "Scans and inspects files for malware and sensitive data.",
+      "permission": "read:files",
+      "risk": "medium",
+      "output_example": "hash sha256:d2b4... verdict: malicious"
+    },
+    {
+      "key": "mailer",
+      "name": "Mailer",
+      "description": "Sends notifications to recipients on an approved list.",
+      "permission": "write:mail",
+      "risk": "medium",
+      "output_example": "Alert notification queued for SOC-Team"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "experiment_key": "2_occlusion_attack",
+  "title": "Occlusion Attack",
+  "difficulty": "intermediate",
+  "application": "Vision Recognition Model",
+  "description": "A small patch blocks part of the face (eyes or mouth). The model loses the strongest identity cues and shifts its prediction.",
+  "config": {
+    "attack_key": "occlusion",
+    "patch_location": "eyes",
+    "patch_size": 0.32
+  },
+  "subjects": [
+    { "id": "alpha", "name": "Subject Alpha", "class_index": 0 },
+    { "id": "beta", "name": "Subject Beta", "class_index": 1 },
+    { "id": "gamma", "name": "Subject Gamma", "class_index": 2 }
+  ],
+  "sample": {
+    "image_id": "alpha_002",
+    "subject_label": "alpha",
+    "known_confidence": 97
+  },
+  "before": { "prediction": "alpha", "confidence": 97 },
+  "after": { "prediction": "gamma", "confidence": 74 },
+  "confidence_shift": ["97%", "18% (target class)"],
+  "robustness": 52,
+  "explanation": "Blocking the eyes removes the region the model relies on most. Humans still recognize the subject from the rest of the face, but the network's strongest features are gone, so it re-routes to another class.",
+  "why_failed": "The model's most discriminative features are concentrated in a few regions. Occlusion removes exactly those, collapsing confidence in the true class.",
+  "mitigations": "Occlusion-aware training (random block erasing), attention regularization, and local-input-checking guardrails improve robustness.",
+  "teaching_points": [
+    {
+      "title": "Models rely on a few discriminative pixels",
+      "concept": "Feature sparsity",
+      "explanation": "Face models concentrate signal in eyes/nose region. Removing that region breaks the identity decision even though the image is still human-recognizable.",
+      "key_takeaway": "Robustness needs coverage of possible partial-input scenarios."
+    },
+    {
+      "title": "Human perception is not model perception",
+      "concept": "Different feature bases",
+      "explanation": "What a human finds sufficient (remaining face) is not what the model used. This mismatch is the root of the failure.",
+      "key_takeaway": "Evaluate models with structured input variations, not only clean photos."
+    }
+  ]
+}

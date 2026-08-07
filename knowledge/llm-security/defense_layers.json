@@ -1,0 +1,29 @@
+{
+  "description": "Standard defense layers applied in the LLM security playground's protected mode.",
+  "defense_layers": [
+    {
+      "key": "input_analysis",
+      "name": "Input Analysis",
+      "description": "Screens user input for instruction-override patterns, privilege-escalation phrases and marker strings before the input reaches the model.",
+      "trust_level": "user-layer guard"
+    },
+    {
+      "key": "context_separation",
+      "name": "Context Separation",
+      "description": "Encapsulates system and developer instructions as trusted, and marks user content and retrieved documents as untrusted with clear delimiters.",
+      "trust_level": "architectural boundary"
+    },
+    {
+      "key": "output_filtering",
+      "name": "Output Filtering",
+      "description": "Scans generated responses for leaked secrets or policy-violating content and sanitizes or blocks them.",
+      "trust_level": "egress guard"
+    },
+    {
+      "key": "policy_layer",
+      "name": "Security Policy Layer",
+      "description": "Enforces developer-defined invariants (e.g. never disclose secrets) as a separate check independent of the base prompt.",
+      "trust_level": "control plane"
+    }
+  ]
+}

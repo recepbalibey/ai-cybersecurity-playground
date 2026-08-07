@@ -1,0 +1,28 @@
+{
+  "patterns": [
+    {
+      "category": "Execution & Obfuscation",
+      "keywords": ["powershell", "encodedcommand", "scriptblock", "bypass", "hidden"],
+      "threat_name": "Obfuscated PowerShell Execution",
+      "mitre_id": "T1059.001"
+    },
+    {
+      "category": "Lateral Movement",
+      "keywords": ["smb", "psexec", "wmi", "ipc$", "admin$", "winrm"],
+      "threat_name": "SMB / WMI Remote Execution",
+      "mitre_id": "T1021.002"
+    },
+    {
+      "category": "Data Exfiltration",
+      "keywords": ["exfiltration", "upload", "outbound", "7z", "zip", "temp", "dns txt"],
+      "threat_name": "Staged Archive Exfiltration",
+      "mitre_id": "T1041"
+    },
+    {
+      "category": "Credential Access",
+      "keywords": ["brute force", "mimikatz", "lsass", "sekurlsa", "shadow"],
+      "threat_name": "Credential Access & Memory Theft",
+      "mitre_id": "T1003.001"
+    }
+  ]
+}

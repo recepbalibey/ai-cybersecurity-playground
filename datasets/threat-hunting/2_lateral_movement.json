@@ -1,0 +1,33 @@
+{
+  "scenario_key": "2_lateral_movement",
+  "title": "Search Internal Lateral Movement",
+  "objective": "Uncover anomalous SMB administrative share connections (IPC$, ADMIN$) and PsExec service execution across host boundaries.",
+  "target_environment": "corp.local Workstations & Domain Controllers",
+  "telemetry_sources": ["Windows Events", "Network Traffic", "Sysmon"],
+  "telemetry_events": [
+    {
+      "timestamp": "2026-08-06T19:25:10Z",
+      "host": "auth-gateway",
+      "user": "CORP\\rdevon",
+      "process": "psexec.exe",
+      "command": "psexec.exe \\\\dc-01.corp.local -u CORP\\Administrator -p ******** -s cmd.exe /c ipconfig /all",
+      "event_id": 4624
+    },
+    {
+      "timestamp": "2026-08-06T19:25:15Z",
+      "host": "dc-01",
+      "user": "CORP\\Administrator",
+      "process": "PSEXESVC.exe",
+      "command": "C:\\Windows\\PSEXESVC.exe (Created via Service Control Manager Event 7045)",
+      "event_id": 7045
+    },
+    {
+      "timestamp": "2026-08-06T19:26:01Z",
+      "host": "dc-01",
+      "user": "CORP\\Administrator",
+      "process": "wmic.exe",
+      "command": "wmic.exe /node:10.0.4.88 process call create 'cmd.exe /c vssadmin delete shadows /all /quiet'",
+      "event_id": 4688
+    }
+  ]
+}

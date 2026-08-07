@@ -1,0 +1,28 @@
+{
+  "rules": [
+    {
+      "key": "powershell_abuse",
+      "title": "Suspicious Obfuscated PowerShell Execution",
+      "sigma": "title: Suspicious PowerShell Execution\nlogsource:\n    category: process_creation\n    product: windows\ndetection:\n    selection:\n        Image|endswith: '\\powershell.exe'\n        CommandLine|contains:\n            - '-EncodedCommand'\n            - '-Enc'\n            - 'Invoke-Mimikatz'\n    condition: selection",
+      "kql": "DeviceProcessEvents\n| where ProcessCommandLine contains \"powershell\" and (ProcessCommandLine contains \"-Enc\" or ProcessCommandLine contains \"Invoke-Mimikatz\")\n| project TimeGenerated, DeviceName, AccountName, ProcessCommandLine",
+      "splunk": "index=windows EventCode=4688 Image=\"*powershell.exe\" (CommandLine=\"*-Enc*\" OR CommandLine=\"*Invoke-Mimikatz*\")\n| table _time, ComputerName, User, CommandLine",
+      "sql": "SELECT timestamp, host, user, command_line FROM windows_process_events WHERE process_name = 'powershell.exe' AND (command_line LIKE '%-Enc%' OR command_line LIKE '%Invoke-Mimikatz%');"
+    },
+    {
+      "key": "lateral_movement",
+      "title": "Anomalous Administrative SMB & Remote Execution",
+      "sigma": "title: SMB Admin Share Lateral Movement\nlogsource:\n    category: network_connection\n    product: windows\ndetection:\n    selection:\n        DestinationPort: 445\n        Image|endswith:\n            - '\\psexec.exe'\n            - '\\wmic.exe'\n    condition: selection",
+      "kql": "DeviceNetworkEvents\n| where RemotePort == 445 and (InitiatingProcessFileName in (\"psexec.exe\", \"wmic.exe\", \"cmd.exe\"))\n| project TimeGenerated, DeviceName, RemoteIP, InitiatingProcessCommandLine",
+      "splunk": "index=windows EventCode=5140 ShareName=\"*ADMIN$\" OR ShareName=\"*IPC$\"\n| table _time, ComputerName, SubjectUserName, SourceAddress, ShareName",
+      "sql": "SELECT timestamp, src_ip, dest_ip, share_name, user FROM smb_session_events WHERE share_name IN ('ADMIN$', 'IPC$', 'C$');"
+    },
+    {
+      "key": "data_exfiltration",
+      "title": "High-Volume Staged Archive Exfiltration",
+      "sigma": "title: Staged Archive Data Exfiltration\nlogsource:\n    category: file_event\n    product: windows\ndetection:\n    selection:\n        TargetFilename|endswith:\n            - '.7z'\n            - '.zip'\n            - '.rar'\n        TargetFilename|contains: '\\AppData\\Local\\Temp\\'\n    condition: selection",
+      "kql": "DeviceFileEvents\n| where FolderPath contains \"\\\\Temp\\\\\" and (FileName endsWith \".7z\" or FileName endsWith \".zip\")\n| join kind=inner (DeviceNetworkEvents | where TransferredBytes > 10000000) on DeviceId\n| project TimeGenerated, DeviceName, FileName, RemoteIP, TransferredBytes",
+      "splunk": "index=network (dest_port=443 OR dest_port=80) bytes_out>10000000\n| table _time, src_ip, dest_ip, bytes_out, http_user_agent",
+      "sql": "SELECT timestamp, src_ip, dest_ip, bytes_sent, target_archive FROM network_exfiltration_events WHERE bytes_sent > 10000000 ORDER BY bytes_sent DESC;"
+    }
+  ]
+}

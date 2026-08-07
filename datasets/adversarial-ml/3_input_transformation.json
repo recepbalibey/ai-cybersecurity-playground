@@ -1,0 +1,43 @@
+{
+  "experiment_key": "3_input_transformation",
+  "title": "Input Transformation",
+  "difficulty": "intermediate",
+  "application": "Vision Recognition Model",
+  "description": "Apply a subtle transformation to the image (a filter or brightness shift) that does not change identity for a human, but redistributes the model's confidence.",
+  "config": {
+    "attack_key": "transformation",
+    "transform_type": "photometric + affine blend",
+    "strength": 0.6
+  },
+  "subjects": [
+    { "id": "alpha", "name": "Subject Alpha", "class_index": 0 },
+    { "id": "beta", "name": "Subject Beta", "class_index": 1 },
+    { "id": "gamma", "name": "Subject Gamma", "class_index": 2 }
+  ],
+  "sample": {
+    "image_id": "alpha_003",
+    "subject_label": "alpha",
+    "known_confidence": 95
+  },
+  "before": { "prediction": "alpha", "confidence": 95 },
+  "after": { "prediction": "gamma", "confidence": 81 },
+  "confidence_shift": ["95%", "14% (target class)"],
+  "robustness": 58,
+  "explanation": "Photometric and affine changes alter the pixel distribution in ways the model treats as meaningful and identity-altering, even though a human recognizes the subject instantly.",
+  "why_failed": "The model normalizes on the training-domain appearance. Deviations in brightness/contrast move it away from the learned region for Subject Alpha.",
+  "mitigations": "Augmentation diversity (photometric + geometric) during training, input normalization pipelines, and distribution-shift detection.",
+  "teaching_points": [
+    {
+      "title": "Appearance statistics matter to models",
+      "concept": "Domain sensitivity",
+      "explanation": "Models implicitly rely on global appearance cues; altering brightness or contrast shifts features into another class's territory.",
+      "key_takeaway": "Robustness includes invariance to common transformations."
+    },
+    {
+      "title": "Preprocessing is part of the attack surface",
+      "concept": "Whole pipeline security",
+      "explanation": "The pipeline before the model (resizing, lighting) shapes predictions. Attackers can manipulate any step.",
+      "key_takeaway": "Security testing must cover the full inference pipeline."
+    }
+  ]
+}

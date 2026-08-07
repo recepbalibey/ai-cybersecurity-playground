@@ -1,0 +1,72 @@
+{
+  "dataset_name": "SSH & Web Portal Brute Force Attack",
+  "source": "Linux Auth Log / Nginx Access Log",
+  "target_system": "auth-gateway.internal.corp (192.168.1.105)",
+  "timestamp_range": "2026-08-06T14:22:00Z - 2026-08-06T14:28:45Z",
+  "log_entries": [
+    {
+      "timestamp": "2026-08-06T14:22:01Z",
+      "host": "auth-gateway",
+      "service": "sshd",
+      "event_id": 4625,
+      "severity": "WARNING",
+      "message": "Failed password for invalid user admin from 45.33.32.156 port 49152 ssh2"
+    },
+    {
+      "timestamp": "2026-08-06T14:22:03Z",
+      "host": "auth-gateway",
+      "service": "sshd",
+      "event_id": 4625,
+      "severity": "WARNING",
+      "message": "Failed password for invalid user root from 45.33.32.156 port 49154 ssh2"
+    },
+    {
+      "timestamp": "2026-08-06T14:22:05Z",
+      "host": "auth-gateway",
+      "service": "sshd",
+      "event_id": 4625,
+      "severity": "WARNING",
+      "message": "Failed password for user rdevon from 45.33.32.156 port 49158 ssh2"
+    },
+    {
+      "timestamp": "2026-08-06T14:22:12Z",
+      "host": "auth-gateway",
+      "service": "sshd",
+      "event_id": 4625,
+      "severity": "WARNING",
+      "message": "Failed password for user rdevon from 45.33.32.156 port 49162 ssh2"
+    },
+    {
+      "timestamp": "2026-08-06T14:25:30Z",
+      "host": "auth-gateway",
+      "service": "sshd",
+      "event_id": 4625,
+      "severity": "HIGH",
+      "message": "Burst authentication failure detected: 142 failed attempts in 180 seconds from origin IP 45.33.32.156"
+    },
+    {
+      "timestamp": "2026-08-06T14:28:10Z",
+      "host": "auth-gateway",
+      "service": "sshd",
+      "event_id": 4624,
+      "severity": "CRITICAL",
+      "message": "Accepted password for user rdevon from 45.33.32.156 port 51204 ssh2"
+    },
+    {
+      "timestamp": "2026-08-06T14:28:15Z",
+      "host": "auth-gateway",
+      "service": "bash",
+      "event_id": 1001,
+      "severity": "HIGH",
+      "message": "User rdevon spawned interactive shell [TTY=/dev/pts/2] from IP 45.33.32.156"
+    },
+    {
+      "timestamp": "2026-08-06T14:28:45Z",
+      "host": "auth-gateway",
+      "service": "sudo",
+      "event_id": 1002,
+      "severity": "CRITICAL",
+      "message": "rdevon : TTY=pts/2 ; PWD=/home/rdevon ; USER=root ; COMMAND=/usr/bin/cat /etc/shadow"
+    }
+  ]
+}

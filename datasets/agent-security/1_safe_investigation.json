@@ -1,0 +1,39 @@
+{
+  "scenario_key": "1_safe_investigation",
+  "title": "Safe Mission",
+  "difficulty": "beginner",
+  "category": "safe",
+  "category_name": "Benign Mission",
+  "description": "A clearly scoped mission: investigate repeated failed VPN logins. The agent plans, calls the allowed read-only tools, observes results, and completes within policy.",
+  "goal": "Investigate the recent spike of failed VPN login attempts and report the likely cause.",
+  "pinned_instructions": [
+    "You are a SOC analyst agent executing one scoped mission for an operator.",
+    "Use only the tools and permissions granted for this mission.",
+    "You may read logs and intelligence, but you may not change or delete anything."
+  ],
+  "attack": null,
+  "tools_allowed": [
+    "security_log_reader",
+    "threat_intel",
+    "mitre_database",
+    "knowledge_base",
+    "incident_database"
+  ],
+  "granted_permissions": ["read:logs", "read:intel", "read:mitre", "read:knowledge", "read:incidents"],
+  "plan": [
+    { "tool": "security_log_reader", "permission": "read:logs", "purpose": "Parse recent failed login events" },
+    { "tool": "threat_intel", "permission": "read:intel", "purpose": "Check reputation of the attacking IPs" },
+    { "tool": "mitre_database", "permission": "read:mitre", "purpose": "Map the pattern to MITRE ATT&CK techniques" },
+    { "tool": "incident_database", "permission": "read:incidents", "purpose": "Match against historical incidents" }
+  ],
+  "expected_outcome": "safe_complete",
+  "execution_time_ms": 4200,
+  "teaching_points": [
+    {
+      "title": "The agent read, reasoned, and acted — without abusing its powers",
+      "concept": "Goal-directed loop",
+      "explanation": "The agent planned, selected only the tools it needed, read observations, and produced a response. It never took a write or destructive action.",
+      "key_takeaway": "A well-scoped agent completes its mission with only read permissions."
+    }
+  ]
+}

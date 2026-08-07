@@ -1,0 +1,175 @@
+# ============================================
+# AI Cybersecurity Playground
+# Git Ignore Configuration
+# ============================================
+
+
+# ============================================
+# Environment Variables / Secrets
+# ============================================
+
+.env
+.env.*
+!.env.example
+
+# API keys
+*.key
+*.pem
+*.secret
+
+
+# ============================================
+# Frontend (Next.js / React / TypeScript)
+# ============================================
+
+frontend/node_modules/
+
+frontend/.next/
+
+frontend/out/
+
+frontend/dist/
+
+frontend/build/
+
+
+# Frontend environment files
+
+frontend/.env
+frontend/.env.local
+frontend/.env.development
+frontend/.env.production
+
+
+# TypeScript cache
+
+*.tsbuildinfo
+
+
+# ============================================
+# Backend (Python / FastAPI)
+# ============================================
+
+backend/__pycache__/
+
+backend/**/*.pyc
+
+backend/.pytest_cache/
+
+backend/.mypy_cache/
+
+
+# Python virtual environments
+
+backend/.venv/
+
+backend/venv/
+
+.venv/
+
+venv/
+
+
+# ============================================
+# Databases
+# ============================================
+
+*.sqlite
+*.sqlite3
+*.db
+
+
+# Keep database examples
+
+!datasets/**/*.db
+!datasets/**/*.sqlite
+
+
+# ============================================
+# AI / ML Files
+# ============================================
+
+# Large model files
+
+*.pt
+*.pth
+*.onnx
+*.h5
+*.bin
+
+# HuggingFace cache
+
+.cache/
+.huggingface/
+
+
+# ============================================
+# Logs
+# ============================================
+
+*.log
+
+logs/
+
+
+# ============================================
+# Uploads / User Data
+# ============================================
+
+uploads/
+
+tmp/
+
+temp/
+
+
+# ============================================
+# Node / Package Managers
+# ============================================
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.pnpm-debug.log*
+
+
+# ============================================
+# IDE
+# ============================================
+
+.vscode/
+
+.idea/
+
+
+# ============================================
+# Operating System
+# ============================================
+
+.DS_Store
+
+Thumbs.db
+
+
+# ============================================
+# Testing / Coverage
+# ============================================
+
+coverage/
+
+.nyc_output/
+
+
+# ============================================
+# Docker
+# ============================================
+
+*.pid
+
+
+# ============================================
+# Local Development
+# ============================================
+
+.local/
