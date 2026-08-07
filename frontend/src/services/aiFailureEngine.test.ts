@@ -113,23 +113,23 @@ describe("AI Failure Lab engine", () => {
     expect(perfect.ai_accuracy).toBeLessThan(perfect.combined_accuracy);
 
     const allAi = runAiFailureCapstone("ai_soc_under_pressure", {
-      E1: "benign", E2: "attack", E3: "benign", E4: "attack", E5: "benign", E6: "attack",
+      E1: "attack", E2: "attack", E3: "benign", E4: "benign", E5: "benign", E6: "attack",
     });
     expect(allAi.combined_accuracy).toBe(allAi.ai_accuracy);
   });
 
   it("capstone human catching a miss lifts the combined score", () => {
-    // AI only: correct on E2 (benign) and E6 (benign) -> 2/6
+    // AI is correct on E1 and E4 -> 2/6
     const blindAgreement = runAiFailureCapstone("ai_soc_under_pressure", {
-      E1: "benign", E2: "attack", E3: "benign", E4: "attack", E5: "benign", E6: "attack",
+      E1: "attack", E2: "attack", E3: "benign", E4: "benign", E5: "benign", E6: "attack",
     });
     expect(blindAgreement.ai_total).toBe(2);
     expect(blindAgreement.human_total).toBe(2);
     expect(blindAgreement.combined_total).toBe(2);
 
-    // Human catches E1 and E3 -> combined lifts to 4
+    // Human catches E3 and E5 (the AI misses) -> combined lifts to 4
     const partial = runAiFailureCapstone("ai_soc_under_pressure", {
-      E1: "attack", E2: "attack", E3: "attack", E4: "attack", E5: "benign", E6: "attack",
+      E1: "attack", E2: "attack", E3: "attack", E4: "benign", E5: "attack", E6: "attack",
     });
     expect(partial.combined_total).toBeGreaterThan(partial.ai_total);
   });
