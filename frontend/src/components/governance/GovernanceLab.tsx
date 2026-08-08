@@ -15,6 +15,7 @@ import {
   askGovernanceSmart,
   assessGovernanceSmart,
   compareGovernanceSmart,
+  fetchReviewHistory,
   type GovernanceResult,
   type GovernanceComparison,
 } from "@/services/governanceEngine";
@@ -27,6 +28,7 @@ import { GovernanceReview } from "./GovernanceReview";
 import { SecurityReport } from "./SecurityReport";
 import { ScenarioComparison } from "./ScenarioComparison";
 import { Assistant } from "./Assistant";
+import { HistoryPanel } from "@/components/history/HistoryPanel";
 import { InstructorPanel } from "./InstructorPanel";
 import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
@@ -345,6 +347,26 @@ export function GovernanceLab({
       {instructorMode && step >= 2 && (
         <InstructorPanel context={result.instructor_context} />
       )}
+
+      {/* recent reviews */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div className="lg:col-span-6 h-full">
+          <HistoryPanel
+            title="Recent Governance Reviews"
+            fetchRows={async () => {
+              const list = await fetchReviewHistory(5);
+              return list.map((r) => ({
+                id: r.id,
+                label: `${r.project_id.replace(/_/g, " ")} · ${r.controls_count} control${r.controls_count === 1 ? "" : "s"}`,
+                meta: new Date(r.timestamp).toLocaleString(),
+                badge: `${r.residual_score}/100`,
+                badgeTone: r.recommendation === "Deployment Not Recommended" ? "rose" : r.recommendation === "Further Testing Required" ? "amber" : "emerald",
+              }));
+            }}
+            emptyText="Reach the Report step to populate history"
+          />
+        </div>
+      </div>
     </div>
   );
 }

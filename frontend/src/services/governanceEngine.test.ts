@@ -14,6 +14,7 @@ import {
   askGovernance,
   assessGovernanceSmart,
   compareGovernanceSmart,
+  fetchReviewHistory as fetchGovernanceReviewHistory,
 } from "./governanceEngine";
 
 describe("AI Governance engine", () => {
@@ -153,6 +154,28 @@ describe("backend-first governance wrappers", () => {
     const res = await compareGovernanceSmart("resume_screening");
     expect(res.project_id).toBe("resume_screening");
     expect(res.difference).toBeGreaterThanOrEqual(0);
+    vi.restoreAllMocks();
+  });
+
+  it("fetchReviewHistory returns an empty list offline", async () => {
+    vi.spyOn(global, "fetch").mockRejectedValueOnce(new Error("offline"));
+    const list = await fetchGovernanceReviewHistory();
+    expect(list).toEqual([]);
+    vi.restoreAllMocks();
+  });
+
+  it("fetchReviewHistory prefers the backend history and applies the limit", async () => {
+    const history = [
+      { id: 3, timestamp: "2026-08-08T00:00:00", project_id: "resume_screening", base_score: 68, residual_score: 42, recommendation: "Further Testing Required", controls_count: 4 },
+      { id: 2, timestamp: "2026-08-07T00:00:00", project_id: "loan_underwriting", base_score: 55, residual_score: 21, recommendation: "Deployment Not Recommended", controls_count: 3 },
+    ];
+    vi.spyOn(global, "fetch").mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ history }),
+    } as Response);
+    const list = await fetchGovernanceReviewHistory(1);
+    expect(list.length).toBe(1);
+    expect(list[0].project_id).toBe("resume_screening");
     vi.restoreAllMocks();
   });
 });

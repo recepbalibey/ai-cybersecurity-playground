@@ -550,3 +550,31 @@ export async function compareGovernanceSmart(projectId: string): Promise<Governa
   if (remote) return remote;
   return compareGovernance(projectId);
 }
+
+export interface GovernanceReviewEntry {
+  id: number;
+  timestamp: string;
+  project_id: string;
+  base_score: number;
+  residual_score: number;
+  recommendation: string;
+  controls_count: number;
+}
+
+/**
+ * Backend-first recent reviews list. Prefers GET /api/governance/history
+ * (SQLite-persisted), returning an empty list when the API is unreachable.
+ */
+export async function fetchReviewHistory(limit = 5): Promise<GovernanceReviewEntry[]> {
+  const remote = await runRemoteHistory(limit);
+  if (remote) return remote;
+  return [];
+}
+
+export async function runRemoteHistory(limit = 5): Promise<GovernanceReviewEntry[] | null> {
+  const data = await tryApi<{ history?: GovernanceReviewEntry[] }>(
+    `/governance/history${limit != null ? `?limit=${limit}` : ""}`
+  );
+  if (data?.history) return data.history.slice(0, limit);
+  return null;
+}

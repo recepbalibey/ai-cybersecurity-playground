@@ -11,6 +11,7 @@ import {
   aiFailureScorecard,
   aiFailureCalibration,
   askAiFailure,
+  fetchReviewHistory as fetchAiFailureReviewHistory,
   FAILURE_TYPES,
 } from "./aiFailureEngine";
 
@@ -223,6 +224,29 @@ describe("backend-first AI failure wrappers", () => {
     const res = await aiFailureScorecardSmart(entries);
     expect(res.total).toBe(2);
     expect(res.false_positives).toBe(1);
+    vi.restoreAllMocks();
+  });
+
+  it("fetchReviewHistory returns an empty list offline", async () => {
+    vi.spyOn(global, "fetch").mockRejectedValueOnce(new Error("offline"));
+    const list = await fetchAiFailureReviewHistory();
+    expect(list).toEqual([]);
+    vi.restoreAllMocks();
+  });
+
+  it("fetchReviewHistory prefers the backend history and applies the limit", async () => {
+    const history = [
+      { id: 5, timestamp: "2026-08-08T00:00:00", scenario_id: "automation_bias", student_decision: "correct", ai_correct: 0, student_verdict_correct: 1, student_confidence: 0.9, reliability_before: 40, reliability_after: 75, mitigations_count: 2 },
+      { id: 4, timestamp: "2026-08-07T00:00:00", scenario_id: "stereotype_induction", student_decision: "incorrect", ai_correct: 1, student_verdict_correct: 0, student_confidence: 0.4, reliability_before: 55, reliability_after: 60, mitigations_count: 1 },
+    ];
+    vi.spyOn(global, "fetch").mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ history }),
+    } as Response);
+    const list = await fetchAiFailureReviewHistory(1);
+    expect(list.length).toBe(1);
+    expect(list[0].scenario_id).toBe("automation_bias");
+    expect(list[0].reliability_after).toBe(75);
     vi.restoreAllMocks();
   });
 });

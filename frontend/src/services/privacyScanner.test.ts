@@ -8,6 +8,7 @@ import {
   redactDocument,
   askPrivacy,
   runScanSmart,
+  fetchScanHistory,
   PRIVACY_SCENARIOS,
 } from "./privacyScanner";
 
@@ -166,6 +167,30 @@ describe("runScanSmart", () => {
     const res = await runScanSmart(doc, "customer_database");
     expect(res.classification.label).toBe("High");
     expect(res.risk.score).toBe(90);
+    vi.restoreAllMocks();
+  });
+});
+
+describe("fetchScanHistory", () => {
+  it("returns an empty list offline", async () => {
+    vi.spyOn(global, "fetch").mockRejectedValueOnce(new Error("offline"));
+    const list = await fetchScanHistory();
+    expect(list).toEqual([]);
+    vi.restoreAllMocks();
+  });
+
+  it("prefers the backend history and applies the limit", async () => {
+    const history = [
+      { id: 2, timestamp: "2026-08-08T00:00:00", scenario_id: "customer_database", classification: "High", risk_level: "High", risk_score: 90, findings_count: 4 },
+      { id: 1, timestamp: "2026-08-07T00:00:00", scenario_id: "employee_records", classification: "Medium", risk_level: "Medium", risk_score: 60, findings_count: 2 },
+    ];
+    vi.spyOn(global, "fetch").mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ history }),
+    } as Response);
+    const list = await fetchScanHistory(2);
+    expect(list.length).toBe(2);
+    expect(list[0].classification).toBe("High");
     vi.restoreAllMocks();
   });
 });

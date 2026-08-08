@@ -9,6 +9,7 @@ import {
   askAiFailureSmart,
   evaluateAiFailureSmart,
   runAiFailureCapstoneSmart,
+  fetchReviewHistory,
   type StudentDecision,
   type ScorecardEntry,
   type AiFailureEvaluation,
@@ -22,6 +23,7 @@ import { MitigationStep } from "./MitigationStep";
 import { Capstone } from "./Capstone";
 import { Scorecard } from "./Scorecard";
 import { KnowledgeExplorer } from "./KnowledgeExplorer";
+import { HistoryPanel } from "@/components/history/HistoryPanel";
 import { Assistant } from "./Assistant";
 import { InstructorPanel } from "./InstructorPanel";
 import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
@@ -457,6 +459,26 @@ export function AiFailureLab({
           failureName="Capstone"
         />
       )}
+
+      {/* recent reviews */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div className="lg:col-span-6 h-full">
+          <HistoryPanel
+            title="Recent AI Failure Reviews"
+            fetchRows={async () => {
+              const list = await fetchReviewHistory(5);
+              return list.map((r) => ({
+                id: r.id,
+                label: `${r.scenario_id.replace(/_/g, " ")} · ${r.student_decision}`,
+                meta: new Date(r.timestamp).toLocaleString(),
+                badge: `${r.reliability_before} → ${r.reliability_after}`,
+                badgeTone: r.student_verdict_correct ? "emerald" : "rose",
+              }));
+            }}
+            emptyText="Submit a verdict to populate history"
+          />
+        </div>
+      </div>
     </div>
   );
 }

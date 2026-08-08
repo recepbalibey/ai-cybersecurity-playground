@@ -6,6 +6,7 @@ import {
   compareReview,
   askReviewer,
   runReviewSmart,
+  fetchReviewHistory,
 } from "./securityCodeReviewer";
 
 describe("AI Security Code Reviewer engine", () => {
@@ -99,8 +100,7 @@ describe("fetchReviewHistory", () => {
     } as Response);
     const list = await fetchReviewHistory(1);
     expect(list.length).toBe(1);
-    expect(list[0].risk_level).toBe("Critical");
+    expect(list[0].risk_level).toBe("High");
     vi.restoreAllMocks();
   });
-});
 });

@@ -576,3 +576,28 @@ export async function aiFailureScorecardSmart(
   if (remote) return remote;
   return aiFailureScorecard(entries);
 }
+
+export interface AiFailureHistoryEntry {
+  id: number;
+  timestamp: string;
+  scenario_id: string;
+  student_decision: string;
+  ai_correct: number;
+  student_verdict_correct: number;
+  student_confidence: number;
+  reliability_before: number;
+  reliability_after: number;
+  mitigations_count: number;
+}
+
+/**
+ * Backend-first recent reviews list. Prefers GET /api/ai-failures/history
+ * (SQLite-persisted), returning an empty list when the API is unreachable.
+ */
+export async function fetchReviewHistory(limit = 5): Promise<AiFailureHistoryEntry[]> {
+  const data = await tryApi<{ history?: AiFailureHistoryEntry[] }>(
+    `/ai-failures/history${limit != null ? `?limit=${limit}` : ""}`
+  );
+  if (data?.history) return data.history.slice(0, limit);
+  return [];
+}
