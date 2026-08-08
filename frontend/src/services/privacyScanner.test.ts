@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import {
   scanDocument,
   detectPrivacyFindings,
@@ -7,6 +7,7 @@ import {
   evaluatePolicies,
   redactDocument,
   askPrivacy,
+  runScanSmart,
   PRIVACY_SCENARIOS,
 } from "./privacyScanner";
 
@@ -131,5 +132,40 @@ describe("askPrivacy", () => {
   });
   it("answers questions about policies", () => {
     expect(askPrivacy("what is a DLP policy")).toContain("Data loss prevention");
+  });
+});
+
+describe("runScanSmart", () => {
+  const doc = "Customer: Jane Roe\nEmail: jane@example.com\nCard: 4111 1111 1111 1111";
+
+  it("falls back to the local scanner offline", async () => {
+    vi.spyOn(global, "fetch").mockRejectedValueOnce(new Error("offline"));
+    const res = await runScanSmart(doc, "customer_database");
+    expect(res.findings.length).toBeGreaterThanOrEqual(3);
+    expect(res.classification.label).toBeTruthy();
+    vi.restoreAllMocks();
+  });
+
+  it("prefers the backend result when reachable", async () => {
+    vi.spyOn(global, "fetch").mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        scenario_id: "customer_database",
+        document: doc,
+        findings: [],
+        classification: { label: "High" },
+        risk: { score: 90 },
+        policies: [],
+        redaction: { redacted: "[REDACTED]" },
+        safe_prompt: "safe",
+        timeline: [],
+        summary: [],
+        instructor_context: {},
+      }),
+    } as Response);
+    const res = await runScanSmart(doc, "customer_database");
+    expect(res.classification.label).toBe("High");
+    expect(res.risk.score).toBe(90);
+    vi.restoreAllMocks();
   });
 });

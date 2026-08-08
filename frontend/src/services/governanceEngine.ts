@@ -462,6 +462,27 @@ export function askGovernance(question: string): string {
   return "This simulator teaches AI risk assessment and governance. Ask about risk scoring, controls, threat modeling frameworks, governance reviews, or model-specific threats.";
 }
 
+/**
+ * Backend-first assistant. Prefers POST /api/governance/assistant, falling
+ * back to the local rule engine when the API is unreachable or rejects.
+ */
+export async function askGovernanceSmart(question: string): Promise<string> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/governance/assistant`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question }),
+    });
+    if (res.ok) {
+      const data = (await res.json()) as { answer?: string };
+      if (data.answer) return data.answer;
+    }
+  } catch (err) {
+    console.warn("Backend API offline, using local governance assistant");
+  }
+  return askGovernance(question);
+}
+
 // ------------------------------------------------------------ backend
 
 async function tryApi<T>(path: string, init?: RequestInit): Promise<T | null> {
@@ -504,4 +525,28 @@ export async function runRemoteCompare(projectId: string): Promise<GovernanceCom
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ project_id: projectId }),
   });
+}
+
+/**
+ * Backend-first assessment. Prefers POST /api/governance/assess, falling
+ * back to the local deterministic engine when the API is unreachable so the
+ * lab keeps working offline.
+ */
+export async function assessGovernanceSmart(
+  projectId: string,
+  controls: string[] = []
+): Promise<GovernanceResult> {
+  const remote = await runRemoteAssessment(projectId, controls);
+  if (remote) return remote;
+  return assessGovernance(projectId, controls);
+}
+
+/**
+ * Backend-first comparison. Prefers POST /api/governance/compare, falling
+ * back to the local engine when the API is unreachable.
+ */
+export async function compareGovernanceSmart(projectId: string): Promise<GovernanceComparison> {
+  const remote = await runRemoteCompare(projectId);
+  if (remote) return remote;
+  return compareGovernance(projectId);
 }

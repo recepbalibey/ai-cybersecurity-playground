@@ -1,16 +1,18 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useRef } from "react";
 import { AlertTriangle, GraduationCap, ArrowLeft, ArrowRight, RefreshCcw } from "lucide-react";
 import { AI_FAILURE_SCENARIOS, AI_FAILURE_SCENARIO_BY_ID } from "@/data/aiFailures";
 import {
-  evaluateAiFailure,
-  runAiFailureCapstone,
   aiFailureScorecard,
   aiFailureCalibration,
-  askAiFailure,
+  askAiFailureSmart,
+  evaluateAiFailureSmart,
+  runAiFailureCapstoneSmart,
   type StudentDecision,
   type ScorecardEntry,
+  type AiFailureEvaluation,
+  type AiFailureCapstone,
 } from "@/services/aiFailureEngine";
 import { ScenarioSelector } from "./ScenarioSelector";
 import { EvidenceStep } from "./EvidenceStep";
@@ -44,7 +46,7 @@ interface StandardState {
   decision: StudentDecision | null;
   confidence: number;
   selectedMitigations: string[];
-  result: ReturnType<typeof evaluateAiFailure> | null;
+  result: AiFailureEvaluation | null;
 }
 
 const CHEAP_MESSAGES = [
@@ -85,10 +87,11 @@ export function AiFailureLab({
     result: null,
   });
   const [capstonePicks, setCapstonePicks] = useState<Record<string, string>>({});
-  const [capstoneResult, setCapstoneResult] = useState<ReturnType<typeof runAiFailureCapstone> | null>(null);
+  const [capstoneResult, setCapstoneResult] = useState<AiFailureCapstone | null>(null);
   const [verdictHistory, setVerdictHistory] = useState<ScorecardEntry[]>([]);
   const [qa, setQa] = useState<AssistantQA[]>([]);
   const [question, setQuestion] = useState("");
+  const qaSeq = useRef(0);
 
   const setProcessing = useCallback((v: boolean) => onStatusChange(v), [onStatusChange]);
 
@@ -134,17 +137,20 @@ export function AiFailureLab({
     }
   };
 
-  const ask = (q: string) => {
+  const ask = async (q: string) => {
     if (!q.trim()) return;
-    setQa((prev) => [...prev, { q, a: askAiFailure(q) }]);
+    const token = `__pending_${++qaSeq.current}`;
+    setQa((prev) => [...prev, { q, a: token }]);
     setQuestion("");
+    const a = await askAiFailureSmart(q);
+    setQa((prev) => prev.map((item) => (item.a === token ? { q, a } : item)));
   };
 
-  const handleVerdictSubmit = () => {
+  const handleVerdictSubmit = async () => {
     if (!standard.decision) return;
     setProcessing(true);
     markStarted("ai-failure-lab");
-    const result = evaluateAiFailure(
+    const result = await evaluateAiFailureSmart(
       standard.scenarioId,
       standard.decision,
       standard.selectedMitigations,
@@ -235,8 +241,8 @@ export function AiFailureLab({
                     : [...prev.selectedMitigations, id],
                 }))
               }
-              onRetest={() => {
-                const updated = evaluateAiFailure(
+              onRetest={async () => {
+                const updated = await evaluateAiFailureSmart(
                   standard.scenarioId,
                   standard.decision ?? "uncertain",
                   standard.selectedMitigations,
@@ -292,10 +298,10 @@ export function AiFailureLab({
           onPick={(eventId, verdict) =>
             setCapstonePicks((prev) => ({ ...prev, [eventId]: verdict }))
           }
-          onRun={() => {
+          onRun={async () => {
             setProcessing(true);
             markStarted("ai-failure-lab");
-            const result = runAiFailureCapstone(scenario.id, capstonePicks);
+            const result = await runAiFailureCapstoneSmart(scenario.id, capstonePicks);
             setCapstoneResult(result);
             setProcessing(false);
             markCompleted("ai-failure-lab");

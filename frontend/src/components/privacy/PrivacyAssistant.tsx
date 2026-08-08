@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { Bot, Send, ShieldQuestion } from "lucide-react";
-import { askPrivacy } from "@/services/privacyScanner";
+import { askPrivacySmart } from "@/services/privacyScanner";
 
 interface Message {
   role: "user" | "assistant";
@@ -26,16 +26,18 @@ export function PrivacyAssistant() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, typing]);
 
-  const send = (text: string) => {
+  const send = async (text: string) => {
     const q = text.trim();
     if (!q || typing) return;
     setMessages((m) => [...m, { role: "user", content: q }]);
     setInput("");
     setTyping(true);
-    setTimeout(() => {
-      setMessages((m) => [...m, { role: "assistant", content: askPrivacy(q) }]);
+    try {
+      const a = await askPrivacySmart(q);
+      setMessages((m) => [...m, { role: "assistant", content: a }]);
+    } finally {
       setTyping(false);
-    }, 500);
+    }
   };
 
   return (

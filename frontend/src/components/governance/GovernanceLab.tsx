@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import {
   ShieldCheck,
   GraduationCap,
@@ -12,7 +12,11 @@ import { GOVERNANCE_PROJECTS, GOVERNANCE_PROJECT_BY_ID } from "@/data/governance
 import {
   assessGovernance,
   compareGovernance,
-  askGovernance,
+  askGovernanceSmart,
+  assessGovernanceSmart,
+  compareGovernanceSmart,
+  type GovernanceResult,
+  type GovernanceComparison,
 } from "@/services/governanceEngine";
 import { ProjectSelector } from "./ProjectSelector";
 import { ArchitectureExplorer } from "./ArchitectureExplorer";
@@ -69,6 +73,7 @@ export function GovernanceLab({
   const [selectedComponentId, setSelectedComponentId] = useState("");
   const [qa, setQa] = useState<AssistantQA[]>([]);
   const [question, setQuestion] = useState("");
+  const qaSeq = useRef(0);
 
   const project = GOVERNANCE_PROJECT_BY_ID[projectId] ?? GOVERNANCE_PROJECTS[0];
 
@@ -77,6 +82,30 @@ export function GovernanceLab({
     [projectId, enabledControls]
   );
   const comparison = useMemo(() => compareGovernance(projectId), [projectId]);
+  const [remoteReport, setRemoteReport] = useState<GovernanceResult | null>(null);
+  const [remoteComparison, setRemoteComparison] = useState<GovernanceComparison | null>(null);
+
+  useEffect(() => {
+    if (step !== STEPS.length - 1) {
+      setRemoteReport(null);
+      setRemoteComparison(null);
+      return;
+    }
+    let cancelled = false;
+    setRemoteReport(null);
+    setRemoteComparison(null);
+    Promise.all([
+      assessGovernanceSmart(projectId, Array.from(enabledControls)),
+      compareGovernanceSmart(projectId),
+    ]).then(([newReport, newComparison]) => {
+      if (cancelled) return;
+      setRemoteReport(newReport);
+      setRemoteComparison(newComparison);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [step, projectId, enabledControls]);
 
   const setProcessing = useCallback(
     (val: boolean) => onStatusChange(val),
@@ -116,10 +145,13 @@ export function GovernanceLab({
     });
   };
 
-  const ask = (q: string) => {
+  const ask = async (q: string) => {
     if (!q.trim()) return;
-    setQa((prev) => [...prev, { q, a: askGovernance(q) }]);
+    const token = `__pending_${++qaSeq.current}`;
+    setQa((prev) => [...prev, { q, a: token }]);
     setQuestion("");
+    const a = await askGovernanceSmart(q);
+    setQa((prev) => prev.map((item) => (item.a === token ? { q, a } : item)));
   };
 
   const selectedThreat = result.threats.find((t) => t.id === selectedThreatId) ?? result.threats[0];
@@ -237,8 +269,8 @@ export function GovernanceLab({
 
         {step === 5 && (
           <>
-            <ScenarioComparison comparison={comparison} />
-            <SecurityReport report={result.report} />
+            <ScenarioComparison comparison={remoteComparison ?? comparison} />
+            <SecurityReport report={(remoteReport ?? result).report} />
           </>
         )}
       </div>

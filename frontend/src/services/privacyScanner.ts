@@ -619,6 +619,27 @@ export function askPrivacy(question: string): string {
   return "This lab teaches data protection before the model. Ask about PII, secrets, classification, DLP policies, redaction, or prompt hygiene.";
 }
 
+/**
+ * Backend-first assistant. Prefers POST /api/privacy/assistant, falling back
+ * to the local rule engine when the API is unreachable or rejects.
+ */
+export async function askPrivacySmart(question: string): Promise<string> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/privacy/assistant`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question }),
+    });
+    if (res.ok) {
+      const data = (await res.json()) as { answer?: string };
+      if (data.answer) return data.answer;
+    }
+  } catch (err) {
+    console.warn("Backend API offline, using local privacy assistant");
+  }
+  return askPrivacy(question);
+}
+
 // ------------------------------------------------------------ backend
 
 async function tryApi<T>(path: string, init?: RequestInit): Promise<T | null> {
@@ -653,6 +674,47 @@ export async function runRemoteScan(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ document, scenario_id: scenarioId ?? undefined }),
   });
+}
+
+/**
+ * Backend-first privacy scan. Prefers POST /api/privacy/scan, falling back
+ * to the local deterministic scanner when the API is unreachable so the lab
+ * keeps working offline.
+ */
+export async function runScanSmart(
+  document: string,
+  scenarioId?: string | null
+): Promise<PrivacyScanResult> {
+  const remote = await runRemoteScan(document, scenarioId);
+  if (remote) return remote;
+  return scanDocument(document, scenarioId ?? undefined);
+}
+
+export interface ScanHistoryEntry {
+  id: number;
+  timestamp: string;
+  scenario_id: string;
+  classification: string;
+  risk_level: string;
+  risk_score: number;
+  findings_count: number;
+}
+
+/**
+ * Backend-first recent scans list. Prefers GET /api/privacy/history
+ * (SQLite-persisted), returning an empty list when the API is unreachable.
+ */
+export async function fetchScanHistory(limit = 5): Promise<ScanHistoryEntry[]> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/privacy/history`);
+    if (res.ok) {
+      const data = (await res.json()) as { history?: ScanHistoryEntry[] };
+      if (Array.isArray(data.history)) return data.history.slice(0, limit);
+    }
+  } catch (err) {
+    console.warn("Backend API offline, scan history unavailable");
+  }
+  return [];
 }
 
 export { PRIVACY_SCENARIOS };

@@ -18,6 +18,7 @@ import {
   Landmark,
   AlertTriangle,
 } from "lucide-react";
+import { AccentSwitcher } from "./effects/AccentSwitcher";
 
 interface NavigationProps {
   activeModule: string;
@@ -149,16 +150,22 @@ export function Navigation({
       {/* Footer System Status */}
       <div className="p-3.5 border-t border-cyber-border bg-cyber-base/50">
         {collapsed ? (
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center gap-2.5">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <AccentSwitcher collapsed />
           </div>
         ) : (
-          <div className="flex items-center justify-between text-xs font-mono text-cyber-muted">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              SYS_OK
-            </span>
-            <span>SOC_NODE_01</span>
+          <div className="space-y-2.5">
+            <div className="flex items-center justify-between text-xs font-mono text-cyber-muted">
+              <span className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                SYS_OK
+              </span>
+              <span>SOC_NODE_01</span>
+            </div>
+            <div className="pt-2 border-t border-cyber-border">
+              <AccentSwitcher />
+            </div>
           </div>
         )}
       </div>

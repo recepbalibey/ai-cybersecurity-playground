@@ -64,6 +64,7 @@ import {
 import {
   fetchDatasetContent,
   analyzeLogs,
+  fetchDatasets,
   AIAnalysisResult,
   ReasoningStage,
 } from "@/services/aiAnalyst";
@@ -159,6 +160,13 @@ function SOCAnalystApp() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [currentStageIndex, setCurrentStageIndex] = useState(0);
   const [analysisResult, setAnalysisResult] = useState<AIAnalysisResult | null>(null);
+  const [sampleDatasets, setSampleDatasets] = useState<
+    { key: string; label: string; desc: string }[]
+  >([
+    { key: "bruteforce", label: "Load Brute Force Attack", desc: "SSH authentication surge & escalation" },
+    { key: "powershell_attack", label: "Load Suspicious PowerShell", desc: "Obfuscated scriptblock & Mimikatz dump" },
+    { key: "malware_execution", label: "Load Malware Execution", desc: "Process injection, registry & C2 beacon" },
+  ]);
 
   // Module 2 State: AI Threat Hunting Assistant
   const [isHunting, setIsHunting] = useState(false);
@@ -175,6 +183,19 @@ function SOCAnalystApp() {
     loadDataset("bruteforce");
     // Run an initial threat hunt demo on startup
     handleLaunchThreatHunt("Detect obfuscated PowerShell script execution and credential dumping attempts");
+    // Backend-first dataset list (local fallback in fetchDatasets)
+    fetchDatasets().then((list) => {
+      const datasets = Array.isArray(list) ? list : [];
+      if (datasets.length > 0) {
+        setSampleDatasets(
+          datasets.map((d) => ({
+            key: d.key ?? d.filename?.replace(/\.json$/, ""),
+            label: d.name ? `Load ${d.name}` : "Load Sample Dataset",
+            desc: d.source ? `${d.source} · ${d.entry_count} events` : `${d.entry_count} events`,
+          }))
+        );
+      }
+    });
   }, []);
 
   // Apply persisted theme on mount
@@ -415,6 +436,7 @@ function SOCAnalystApp() {
                     onStartAnalysis={handleStartAnalysis}
                     isAnalyzing={isAnalyzing}
                     selectedDatasetName={selectedDatasetName}
+                    sampleDatasets={sampleDatasets}
                   />
                 </div>
 

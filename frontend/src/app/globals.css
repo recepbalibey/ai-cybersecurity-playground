@@ -15,11 +15,72 @@
   --cb-muted: 100 116 139;       /* #64748b */
   --cb-text: 226 232 240;        /* #e2e8f0 */
   --cb-heading: 248 250 252;     /* #f8fafc */
-  --cb-cyan: 6 182 212;          /* #06b6d4 */
-  --cb-cyan-dark: 8 145 178;     /* #0891b2 */
-  --cb-accent: 6 182 212;        /* #06b6d4 */
-  --cb-accent-hover: 8 145 178;  /* #0891b2 */
-  --cb-accent-mute: 14 116 144;  /* #0e7490 */
+
+  /* Accent palette scale (default: cyan). Overridden per theme below.
+     Utilities like text-cyan-400 / border-cyan-500 read these triplets. */
+  --accent-50: 236 254 255;      /* cyan-50  #ecfeff */
+  --accent-100: 207 250 254;     /* cyan-100 #cffafe */
+  --accent-200: 165 243 252;     /* cyan-200 #a5f3fc */
+  --accent-300: 103 232 249;     /* cyan-300 #67e8f9 */
+  --accent-400: 34 211 238;      /* cyan-400 #22d3ee */
+  --accent-500: 6 182 212;       /* cyan-500 #06b6d4 */
+  --accent-600: 8 145 178;       /* cyan-600 #0891b2 */
+  --accent-700: 14 116 144;      /* cyan-700 #0e7490 */
+  --accent-800: 21 94 117;       /* cyan-800 #155e75 */
+  --accent-900: 22 78 99;        /* cyan-900 #164e63 */
+  --accent-950: 8 51 68;         /* cyan-950 #083344 */
+
+  --cb-cyan: var(--accent-500);
+  --cb-cyan-dark: var(--accent-600);
+  --cb-accent: var(--accent-500);
+  --cb-accent-hover: var(--accent-600);
+  --cb-accent-mute: var(--accent-700);
+}
+
+/* ------------------------------------------------------------------ */
+/* Accent A/B presets (opt-in). html[data-accent] overrides the       */
+/* palette scale + the single glow convars so every module swaps live. */
+/* ------------------------------------------------------------------ */
+:root[data-accent="electric-blue"] {
+  --accent-50: 239 246 255;   /* blue-50  #eff6ff */
+  --accent-100: 219 234 254;  /* blue-100 #dbeafe */
+  --accent-200: 191 219 254;  /* blue-200 #bfdbfe */
+  --accent-300: 147 197 253;  /* blue-300 #93c5fd */
+  --accent-400: 96 165 250;   /* blue-400 #60a5fa */
+  --accent-500: 59 130 246;   /* blue-500 #3b82f6 */
+  --accent-600: 37 99 235;    /* blue-600 #2563eb */
+  --accent-700: 29 78 216;    /* blue-700 #1d4ed8 */
+  --accent-800: 30 64 175;    /* blue-800 #1e40af */
+  --accent-900: 30 58 138;    /* blue-900 #1e3a8a */
+  --accent-950: 23 37 84;     /* blue-950 #172554 */
+}
+
+:root[data-accent="teal"] {
+  --accent-50: 240 253 250;   /* teal-50  #f0fdfa */
+  --accent-100: 204 251 241;  /* teal-100 #ccfbf1 */
+  --accent-200: 153 246 228;  /* teal-200 #99f6e4 */
+  --accent-300: 94 234 212;   /* teal-300 #5eead4 */
+  --accent-400: 45 212 191;   /* teal-400 #2dd4bf */
+  --accent-500: 20 184 166;   /* teal-500 #14b8a6 */
+  --accent-600: 13 148 136;   /* teal-600 #0d9488 */
+  --accent-700: 15 118 110;   /* teal-700 #0f766e */
+  --accent-800: 17 94 89;     /* teal-800 #115e59 */
+  --accent-900: 19 78 74;     /* teal-900 #134e4a */
+  --accent-950: 4 47 46;      /* teal-950 #042f2e */
+}
+
+:root[data-accent="violet"] {
+  --accent-50: 245 243 255;   /* violet-50  #f5f3ff */
+  --accent-100: 237 233 254;  /* violet-100 #ede9fe */
+  --accent-200: 221 214 254;  /* violet-200 #ddd6fe */
+  --accent-300: 196 181 253;  /* violet-300 #c4b5fd */
+  --accent-400: 167 139 250;  /* violet-400 #a78bfa */
+  --accent-500: 139 92 246;   /* violet-500 #8b5cf6 */
+  --accent-600: 124 58 237;   /* violet-600 #7c3aed */
+  --accent-700: 109 40 217;   /* violet-700 #6d28d9 */
+  --accent-800: 91 33 182;    /* violet-800 #5b21b6 */
+  --accent-900: 76 29 149;    /* violet-900 #4c1d95 */
+  --accent-950: 46 16 101;    /* violet-950 #2e1065 */
 }
 
 html.light {
@@ -32,18 +93,29 @@ html.light {
   --cb-muted: 100 116 139;       /* #64748b */
   --cb-text: 51 65 85;           /* #334155 */
   --cb-heading: 15 23 42;        /* #0f172a */
-  --cb-cyan: 8 145 178;          /* #0891b2 */
-  --cb-cyan-dark: 14 116 144;    /* #0e7490 */
-  --cb-accent: 8 145 178;        /* #0891b2 */
-  --cb-accent-hover: 14 116 144; /* #0e7490 */
-  --cb-accent-mute: 103 199 217; /* #67c7d9 */
+  --accent-50: 236 254 255;      /* cyan-50  #ecfeff */
+  --accent-100: 207 250 254;     /* cyan-100 #cffafe */
+  --accent-200: 165 243 252;     /* cyan-200 #a5f3fc */
+  --accent-300: 103 232 249;     /* cyan-300 #67e8f9 */
+  --accent-400: 34 211 238;      /* cyan-400 #22d3ee */
+  --accent-500: 8 145 178;       /* cyan-600 #0891b2 (pulled one step for text contrast) */
+  --accent-600: 14 116 144;      /* cyan-700 #0e7490 */
+  --accent-700: 21 94 117;       /* cyan-800 #155e75 */
+  --accent-800: 22 78 99;        /* cyan-900 #164e63 */
+  --accent-900: 8 51 68;         /* cyan-950 #083344 */
+  --accent-950: 6 34 46;         /* deep cyan */
+  --cb-cyan: var(--accent-500);
+  --cb-cyan-dark: var(--accent-600);
+  --cb-accent: var(--accent-500);
+  --cb-accent-hover: var(--accent-600);
+  --cb-accent-mute: var(--accent-300);
 }
 
 @layer base {
   body {
     background-color: rgb(var(--cb-base));
     color: rgb(var(--cb-text));
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-inter), 'Inter', sans-serif;
     font-size: 0.9375rem; /* 15px default base */
     line-height: 1.6;
     overflow-x: hidden;

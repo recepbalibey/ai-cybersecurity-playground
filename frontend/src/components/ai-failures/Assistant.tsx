@@ -37,7 +37,14 @@ export function Assistant({ qa, question, onQuestion, onAsk, examples }: Assista
               {x.q}
             </div>
             <div className="text-[11px] text-cyber-muted rounded-md bg-slate-900/60 px-2 py-1 leading-snug">
-              {x.a}
+              {x.a.startsWith("__pending_") ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                  Thinking…
+                </span>
+              ) : (
+                x.a
+              )}
             </div>
           </div>
         ))}

@@ -374,6 +374,30 @@ export function askReviewer(question: string, exampleId?: string | null): string
   return "I can explain OWASP/CWE mapping, whether a fix is deployable, why AI can miss issues, and how reviews fit into DevSecOps.";
 }
 
+/**
+ * Backend-first assistant. Prefers POST /api/code-review/assistant, falling
+ * back to the local rule engine when the API is unreachable or rejects.
+ */
+export async function askReviewerSmart(
+  question: string,
+  exampleId?: string | null
+): Promise<string> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/code-review/assistant`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question, example_id: exampleId ?? null }),
+    });
+    if (res.ok) {
+      const data = (await res.json()) as { answer?: string };
+      if (data.answer) return data.answer;
+    }
+  } catch (err) {
+    console.warn("Backend API offline, using local code-review assistant");
+  }
+  return askReviewer(question, exampleId);
+}
+
 export const INSTRUCTOR = {
   teaching_points: [
     {
@@ -441,6 +465,48 @@ export async function runRemoteReview(
     body: JSON.stringify({ code, language: language ?? undefined, example_id: exampleId ?? undefined }),
   });
   return data;
+}
+
+/**
+ * Backend-first code review. Prefers POST /api/code-review/review, falling
+ * back to the local deterministic reviewer when the API is unreachable so
+ * the lab keeps working offline.
+ */
+export async function runReviewSmart(
+  code: string,
+  language?: string,
+  exampleId?: string | null
+): Promise<ReviewResult> {
+  const remote = await runRemoteReview(code, language, exampleId);
+  if (remote) return remote;
+  return reviewCode(code, language ?? "python", exampleId ?? null);
+}
+
+export interface ReviewHistoryEntry {
+  id: number;
+  timestamp: string;
+  language: string;
+  risk_level: string;
+  security_score_before: number;
+  security_score_after: number;
+  findings_count: number;
+}
+
+/**
+ * Backend-first recent reviews list. Prefers GET /api/code-review/history
+ * (SQLite-persisted), returning an empty list when the API is unreachable.
+ */
+export async function fetchReviewHistory(limit = 5): Promise<ReviewHistoryEntry[]> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/code-review/history`);
+    if (res.ok) {
+      const data = (await res.json()) as { history?: ReviewHistoryEntry[] };
+      if (Array.isArray(data.history)) return data.history.slice(0, limit);
+    }
+  } catch (err) {
+    console.warn("Backend API offline, review history unavailable");
+  }
+  return [];
 }
 
 export { REVIEW_EXAMPLES };

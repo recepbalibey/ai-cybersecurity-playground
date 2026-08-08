@@ -24,9 +24,22 @@ const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const dpr = Math.min(2, window.devicePixelRatio || 1);
 
     // Resolve --cb-accent (e.g. "6 182 212") into a plain rgba() prefix;
-    // canvas fillStyle cannot use CSS custom properties.
-    const accent = getComputedStyle(wrap).getPropertyValue("--cb-accent").trim() || "6 182 212";
-    const rgb = accent.replace(/\s+/g, ",");
+    // canvas fillStyle cannot use CSS custom properties. Refreshed when the
+    // accent theme (html[data-accent]) changes.
+    let rgb = "";
+    const resolveAccent = () => {
+      const accent = getComputedStyle(wrap).getPropertyValue("--cb-accent").trim() || "6 182 212";
+      rgb = accent.replace(/\s+/g, ",");
+    };
+    resolveAccent();
+    const accentObs = new MutationObserver((muts) => {
+      if (muts.some((m) => m.attributeName === "data-accent")) {
+        resolveAccent();
+        if (reduce) draw();
+        else tick();
+      }
+    });
+    accentObs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-accent"] });
 
     let w = 0;
     let h = 0;
@@ -122,6 +135,7 @@ const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     return () => {
       document.removeEventListener("pointermove", onDocMove);
       window.removeEventListener("resize", resize);
+      accentObs.disconnect();
       cancelAnimationFrame(raf);
       running = false;
     };

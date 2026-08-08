@@ -16,6 +16,7 @@ interface LogInvestigationPanelProps {
   onStartAnalysis: () => void;
   isAnalyzing: boolean;
   selectedDatasetName: string;
+  sampleDatasets?: { key: string; label: string; desc: string }[];
 }
 
 export function LogInvestigationPanel({
@@ -25,6 +26,7 @@ export function LogInvestigationPanel({
   onStartAnalysis,
   isAnalyzing,
   selectedDatasetName,
+  sampleDatasets,
 }: LogInvestigationPanelProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -40,7 +42,7 @@ export function LogInvestigationPanel({
     }
   };
 
-  const sampleDatasets = [
+  const datasets = sampleDatasets ?? [
     {
       key: "bruteforce",
       label: "Load Brute Force Attack",
@@ -102,7 +104,7 @@ export function LogInvestigationPanel({
               Sample Datasets (Live Classroom Demos)
             </div>
             <div className="grid grid-cols-1 gap-2">
-              {sampleDatasets.map((ds) => (
+              {datasets.map((ds) => (
                 <button
                   key={ds.key}
                   onClick={() => onSelectDataset(ds.key)}

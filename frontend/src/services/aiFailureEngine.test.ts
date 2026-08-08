@@ -1,8 +1,11 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { AI_FAILURE_SCENARIOS } from "../data/aiFailures";
 import {
   evaluateAiFailure,
   runAiFailureCapstone,
+  evaluateAiFailureSmart,
+  runAiFailureCapstoneSmart,
+  aiFailureScorecardSmart,
   aiFailureReliabilityBefore,
   aiFailureReliabilityAfter,
   aiFailureScorecard,
@@ -176,5 +179,50 @@ describe("AI Failure Lab engine", () => {
     const rel = aiFailureReliabilityAfter("automation_bias", ["forced_evidence_review"]);
     const evalRes = evaluateAiFailure("automation_bias", "incorrect", ["forced_evidence_review"], 50);
     expect(rel.after).toBe(evalRes.reliability.after);
+  });
+});
+
+describe("backend-first AI failure wrappers", () => {
+  it("evaluateAiFailureSmart falls back to the local engine offline", async () => {
+    vi.spyOn(global, "fetch").mockRejectedValueOnce(new Error("offline"));
+    const res = await evaluateAiFailureSmart("automation_bias", "correct", [], 40);
+    expect(res.failure_type).toBe("automation_bias");
+    expect(res.ai_correct).toBe(false);
+    vi.restoreAllMocks();
+  });
+
+  it("evaluateAiFailureSmart prefers the backend result when reachable", async () => {
+    const backend = evaluateAiFailure("automation_bias", "correct", [], 40);
+    vi.spyOn(global, "fetch").mockResolvedValueOnce({
+      ok: true,
+      json: async () => backend,
+    } as Response);
+    const res = await evaluateAiFailureSmart("automation_bias", "correct", [], 40);
+    expect(res.student_verdict_class).toBe("false_positive");
+    vi.restoreAllMocks();
+  });
+
+  it("runAiFailureCapstoneSmart falls back offline", async () => {
+    vi.spyOn(global, "fetch").mockRejectedValueOnce(new Error("offline"));
+    const cap = AI_FAILURE_SCENARIOS.find((s) => Array.isArray(s.capstone_events))!;
+    const events = cap.capstone_events ?? [];
+    const picks: Record<string, string> = {};
+    events.forEach((ev, i) => (picks[ev.id] = i % 2 ? ev.ground_truth : "benign"));
+    const res = await runAiFailureCapstoneSmart(cap.id, picks);
+    expect(res.scenario_id).toBe(cap.id);
+    expect(res.total_events).toBe(events.length);
+    vi.restoreAllMocks();
+  });
+
+  it("aiFailureScorecardSmart falls back offline", async () => {
+    vi.spyOn(global, "fetch").mockRejectedValueOnce(new Error("offline"));
+    const entries = [
+      { student_verdict_class: "true_positive" as const, student_confidence: 90 },
+      { student_verdict_class: "false_positive" as const, student_confidence: 95 },
+    ];
+    const res = await aiFailureScorecardSmart(entries);
+    expect(res.total).toBe(2);
+    expect(res.false_positives).toBe(1);
+    vi.restoreAllMocks();
   });
 });

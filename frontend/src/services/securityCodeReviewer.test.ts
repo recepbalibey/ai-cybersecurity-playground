@@ -1,10 +1,11 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import {
   REVIEW_EXAMPLES,
   reviewCode,
   detectLanguage,
   compareReview,
   askReviewer,
+  runReviewSmart,
 } from "./securityCodeReviewer";
 
 describe("AI Security Code Reviewer engine", () => {
@@ -56,4 +57,50 @@ describe("AI Security Code Reviewer engine", () => {
   it("answers owasp questions", () => {
     expect(askReviewer("owasp").toLowerCase()).toContain("owasp");
   });
+});
+
+describe("runReviewSmart", () => {
+  it("falls back to the local reviewer offline", async () => {
+    vi.spyOn(global, "fetch").mockRejectedValueOnce(new Error("offline"));
+    const res = await runReviewSmart('cur.execute(f"SELECT * FROM users WHERE name=\'{u}\'")', "python");
+    expect(res.findings.length).toBeGreaterThan(0);
+    expect(res.risk_level).toBe("Critical");
+    vi.restoreAllMocks();
+  });
+
+it("prefers the backend result when reachable", async () => {
+    const backendResult = reviewCode('cur.execute(f"SELECT * FROM users")', "python");
+    vi.spyOn(global, "fetch").mockResolvedValueOnce({
+      ok: true,
+      json: async () => backendResult,
+    } as Response);
+    const res = await runReviewSmart("some code", "python");
+    expect(res.findings.length).toBeGreaterThan(0);
+    vi.restoreAllMocks();
+  });
+});
+
+describe("fetchReviewHistory", () => {
+  it("returns an empty list offline", async () => {
+    vi.spyOn(global, "fetch").mockRejectedValueOnce(new Error("offline"));
+    const list = await fetchReviewHistory();
+    expect(list).toEqual([]);
+    vi.restoreAllMocks();
+  });
+
+  it("prefers the backend history and applies the limit", async () => {
+    const history = [
+      { id: 2, timestamp: "2026-08-08T00:00:00", language: "python", risk_level: "High", security_score_before: 40, security_score_after: 90, findings_count: 3 },
+      { id: 1, timestamp: "2026-08-07T00:00:00", language: "cpp", risk_level: "Medium", security_score_before: 60, security_score_after: 85, findings_count: 2 },
+    ];
+    vi.spyOn(global, "fetch").mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ history }),
+    } as Response);
+    const list = await fetchReviewHistory(1);
+    expect(list.length).toBe(1);
+    expect(list[0].risk_level).toBe("Critical");
+    vi.restoreAllMocks();
+  });
+});
 });

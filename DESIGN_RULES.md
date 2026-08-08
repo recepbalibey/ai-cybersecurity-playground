@@ -43,6 +43,13 @@ Colors communicate **meaning**, not decoration.
 - **Base** - one muted dark background (`#070a0f`), one surface (`#0d121d`).
 - **Accent** - exactly one accent color (`#06b6d4` cyan) used for the primary
   action and active states. Never gradient fills, never rainbow.
+- **Accent presets** - an opt-in A/B switcher lives in the sidebar footer
+  (`html[data-accent]`, persisted to `localStorage["cyber-accent"]`). Presets
+  only retone the *accent scale* (`--accent-50..950`, aliased to Tailwind's
+  `cyan-*` utilities and `--cb-accent` convars); they never change semantic
+  colors (rose/amber/emerald stay reserved for meaning). Keep the palette to
+  curated, single-hue families — cyan (default), electric-blue, teal, violet.
+  Never add rainbow multi-hue accents.
 - **Semantic colors only for meaning:**
   - Critical → rose/red
   - Warning → amber
@@ -50,7 +57,8 @@ Colors communicate **meaning**, not decoration.
   - Information → cyan (the accent)
 
 Rules:
-- No bright purple. No blue-cyan gradients. No rainbow multi-color panels.
+- No bright purple in the *default* theme; purple only appears via the
+  opt-in accent preset. No blue-violet gradients. No rainbow multi-color panels.
 - No decorative colored borders on idle elements - use neutral borders
   (`slate-800` family).
 - Color must be the *last* differentiator; combine it with shape/text/icon.
@@ -59,8 +67,10 @@ Rules:
 
 ## 3. Typography
 
-- **Sans** - Inter for all UI text.
-- **Mono** - JetBrains Mono for logs, data, timestamps, and technical tokens.
+- **Sans** - Inter for all UI text (bundled via `next/font`, exposed as
+  `--font-inter`).
+- **Mono** - JetBrains Mono for logs, data, timestamps, and technical tokens
+  (bundled via `next/font`, exposed as `--font-jb-mono`).
   Mono is for *content that is read*, not decoration.
 - Sizes: 15px base. Titles `text-base`-`text-xl`. Never shrink below 10px.
 - Uppercase labels only in mono, `tracking-wider`, muted color, max 11px.

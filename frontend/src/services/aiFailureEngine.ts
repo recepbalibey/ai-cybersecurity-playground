@@ -443,6 +443,27 @@ export function askAiFailure(question: string): string {
   return "This lab teaches why AI output is not automatically correct. Ask about false positives, false negatives, hallucinations, confidence calibration, distribution shift, class imbalance, automation bias, or mitigations.";
 }
 
+/**
+ * Backend-first assistant. Prefers POST /api/ai-failures/assistant, falling
+ * back to the local rule engine when the API is unreachable or rejects.
+ */
+export async function askAiFailureSmart(question: string): Promise<string> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/ai-failures/assistant`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question }),
+    });
+    if (res.ok) {
+      const data = (await res.json()) as { answer?: string };
+      if (data.answer) return data.answer;
+    }
+  } catch (err) {
+    console.warn("Backend API offline, using local AI-failure assistant");
+  }
+  return askAiFailure(question);
+}
+
 // ------------------------------------------------------------ backend
 
 async function tryApi<T>(path: string, init?: RequestInit): Promise<T | null> {
@@ -513,4 +534,45 @@ export async function runRemoteAiFailureScorecard(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ entries }),
   });
+}
+
+/**
+ * Backend-first evaluation. Prefers POST /api/ai-failures/evaluate, falling
+ * back to the local deterministic engine when the API is unreachable so the
+ * lab keeps working offline.
+ */
+export async function evaluateAiFailureSmart(
+  scenarioId: string,
+  decision: StudentDecision,
+  mitigations: string[] = [],
+  studentConfidence = 50
+): Promise<AiFailureEvaluation> {
+  const remote = await runRemoteAiFailureEvaluation(scenarioId, decision, mitigations, studentConfidence);
+  if (remote) return remote;
+  return evaluateAiFailure(scenarioId, decision, mitigations, studentConfidence);
+}
+
+/**
+ * Backend-first capstone. Prefers POST /api/ai-failures/capstone, falling
+ * back to the local engine when the API is unreachable.
+ */
+export async function runAiFailureCapstoneSmart(
+  scenarioId: string,
+  picks: Record<string, string>
+): Promise<AiFailureCapstone> {
+  const remote = await runRemoteAiFailureCapstone(scenarioId, picks);
+  if (remote) return remote;
+  return runAiFailureCapstone(scenarioId, picks);
+}
+
+/**
+ * Backend-first scorecard. Prefers POST /api/ai-failures/scorecard, falling
+ * back to the local engine when the API is unreachable.
+ */
+export async function aiFailureScorecardSmart(
+  entries: ScorecardEntry[]
+): Promise<AiFailureScorecard> {
+  const remote = await runRemoteAiFailureScorecard(entries);
+  if (remote) return remote;
+  return aiFailureScorecard(entries);
 }

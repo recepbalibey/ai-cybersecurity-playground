@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { GOVERNANCE_PROJECTS } from "../data/governance";
 import {
   GOVERNANCE_CONTROLS,
@@ -12,6 +12,8 @@ import {
   aggregateScore,
   recommendationFor,
   askGovernance,
+  assessGovernanceSmart,
+  compareGovernanceSmart,
 } from "./governanceEngine";
 
 describe("AI Governance engine", () => {
@@ -122,5 +124,35 @@ describe("AI Governance engine", () => {
         expect(i.practical).toBeTruthy();
       });
     });
+  });
+});
+
+describe("backend-first governance wrappers", () => {
+  it("assessGovernanceSmart falls back to the local engine offline", async () => {
+    vi.spyOn(global, "fetch").mockRejectedValueOnce(new Error("offline"));
+    const res = await assessGovernanceSmart("resume_screening", []);
+    expect(res.project_id).toBe("resume_screening");
+    expect(res.threats.length).toBeGreaterThan(0);
+    vi.restoreAllMocks();
+  });
+
+  it("assessGovernanceSmart prefers the backend result when reachable", async () => {
+    const backend = assessGovernance("resume_screening", []);
+    vi.spyOn(global, "fetch").mockResolvedValueOnce({
+      ok: true,
+      json: async () => backend,
+    } as Response);
+    const res = await assessGovernanceSmart("resume_screening", []);
+    expect(res.project_id).toBe("resume_screening");
+    expect(res.residual_score).toBe(backend.residual_score);
+    vi.restoreAllMocks();
+  });
+
+  it("compareGovernanceSmart falls back to the local engine offline", async () => {
+    vi.spyOn(global, "fetch").mockRejectedValueOnce(new Error("offline"));
+    const res = await compareGovernanceSmart("resume_screening");
+    expect(res.project_id).toBe("resume_screening");
+    expect(res.difference).toBeGreaterThanOrEqual(0);
+    vi.restoreAllMocks();
   });
 });

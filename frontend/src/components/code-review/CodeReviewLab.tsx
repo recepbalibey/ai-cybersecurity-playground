@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { ShieldCheck, Play, RotateCcw, GraduationCap, Sparkles } from "lucide-react";
 import { REVIEW_EXAMPLES, type RiskLevel } from "@/data/securityCode";
 import {
-  reviewCode,
+  runReviewSmart,
   compareReview,
-  askReviewer,
+  askReviewerSmart,
+  fetchReviewHistory,
   INSTRUCTOR,
   type ReviewResult,
   type CodeFinding,
@@ -20,6 +21,7 @@ import { ReviewFlowPanel } from "./ReviewFlowPanel";
 import { SecureDevChecklist } from "./SecureDevChecklist";
 import { ReviewComparisonPanel } from "./ReviewComparisonPanel";
 import { InstructorPanel } from "./InstructorPanel";
+import { HistoryPanel } from "@/components/history/HistoryPanel";
 import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface CodeReviewLabProps {
@@ -54,6 +56,7 @@ export function CodeReviewLab({
   const [selectedFindingId, setSelectedFindingId] = useState<string | null>(null);
   const [qa, setQa] = useState<AssistantQA[]>([]);
   const [question, setQuestion] = useState("");
+  const qaSeq = useRef(0);
 
   const setProcessing = useCallback(
     (val: boolean) => {
@@ -81,7 +84,7 @@ export function CodeReviewLab({
     setQa([]);
     markStarted("code-review");
     await new Promise((r) => setTimeout(r, 450));
-    const res = reviewCode(code, language, exampleId || null);
+    const res = await runReviewSmart(code, language, exampleId || null);
     setResult(res);
     setSelectedFindingId(res.findings[0]?.id ?? null);
     setProcessing(false);
@@ -94,10 +97,13 @@ export function CodeReviewLab({
     setQa([]);
   };
 
-  const ask = (q: string) => {
+  const ask = async (q: string) => {
     if (!q.trim()) return;
-    setQa((prev) => [...prev, { q, a: askReviewer(q, exampleId || null) }]);
+    const token = `__pending_${++qaSeq.current}`;
+    setQa((prev) => [...prev, { q, a: token }]);
     setQuestion("");
+    const a = await askReviewerSmart(q, exampleId || null);
+    setQa((prev) => prev.map((item) => (item.a === token ? { q, a } : item)));
   };
 
   const selectedFinding: CodeFinding | null =
@@ -225,6 +231,22 @@ export function CodeReviewLab({
         </div>
       </div>
 
+      {/* recent reviews */}
+      <HistoryPanel
+        title="Recent Reviews"
+        fetchRows={async () => {
+          const list = await fetchReviewHistory(5);
+          return list.map((r) => ({
+            id: r.id,
+            label: `${r.language} · ${r.findings_count} finding${r.findings_count === 1 ? "" : "s"}`,
+            meta: new Date(r.timestamp).toLocaleString(),
+            badge: `${r.security_score_before} → ${r.security_score_after}`,
+            badgeTone: r.risk_level === "Critical" || r.risk_level === "High" ? "rose" : r.risk_level === "Medium" ? "amber" : "emerald",
+          }));
+        }}
+        emptyText="Run a review to populate history"
+      />
+
       {instructorMode && (
         <InstructorPanel context={result?.instructor_context ?? INSTRUCTOR} />
       )}
@@ -270,7 +292,14 @@ function AssistantPanel({ qa, question, onQuestion, onAsk, examples }: {
               {x.q}
             </div>
             <div className="text-[11px] text-cyber-muted rounded-md bg-slate-900/60 px-2 py-1 leading-snug">
-              {x.a}
+              {x.a.startsWith("__pending_") ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                  Thinking…
+                </span>
+              ) : (
+                x.a
+              )}
             </div>
           </div>
         ))}

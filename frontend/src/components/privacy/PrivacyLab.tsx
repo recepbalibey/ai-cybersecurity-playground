@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { ShieldCheck, Play, RotateCcw, GraduationCap, Lock } from "lucide-react";
 import { PRIVACY_SCENARIOS } from "@/data/privacy";
-import { scanDocument, type PrivacyScanResult } from "@/services/privacyScanner";
+import { runScanSmart, fetchScanHistory, type PrivacyScanResult } from "@/services/privacyScanner";
 import { DocumentViewer } from "@/components/privacy/DocumentViewer";
 import { PrivacyFindingsPanel } from "@/components/privacy/PrivacyFindingsPanel";
 import { PrivacyFindingDetail } from "@/components/privacy/PrivacyFindingDetail";
@@ -13,6 +13,7 @@ import { RedactionPanel } from "@/components/privacy/RedactionPanel";
 import { PrivacyTimeline } from "@/components/privacy/PrivacyTimeline";
 import { PrivacyAssistant } from "@/components/privacy/PrivacyAssistant";
 import { PrivacyInstructorPanel } from "@/components/privacy/PrivacyInstructorPanel";
+import { HistoryPanel } from "@/components/history/HistoryPanel";
 import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface PrivacyLabProps {
@@ -49,7 +50,7 @@ export function PrivacyLab({
     setResult(null);
     setSelectedFindingId(null);
     markStarted("privacy-lab");
-    const res = scanDocument(scenario.document, scenario.id);
+    const res = await runScanSmart(scenario.document, scenario.id);
     setResult(res);
     for (let i = 0; i < res.timeline.length; i++) {
       setActiveStage(i);
@@ -252,6 +253,21 @@ export function PrivacyLab({
           </div>
         </div>
       )}
+
+      {/* recent scans */}
+      <HistoryPanel
+        title="Recent Scans"
+        fetchRows={async () => {
+          const list = await fetchScanHistory(5);
+          return list.map((s) => ({
+            id: s.id,
+            label: `${s.scenario_id.replace(/_/g, " ")} · ${s.findings_count} finding${s.findings_count === 1 ? "" : "s"}`,
+            meta: new Date(s.timestamp).toLocaleString(),
+            badge: `${s.classification} · ${s.risk_level}`,
+          }));
+        }}
+        emptyText="Run a scan to populate history"
+      />
     </div>
   );
 }
