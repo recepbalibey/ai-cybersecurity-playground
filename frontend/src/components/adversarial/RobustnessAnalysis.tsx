@@ -13,7 +13,10 @@ export function RobustnessAnalysis({ result, isProcessing }: RobustnessAnalysisP
   if (isProcessing) {
     return (
       <div className="cyber-panel border border-cyber-border p-5 rounded-lg flex flex-col items-center justify-center gap-3 min-h-[220px]">
-        <span className="w-5 h-5 rounded-full border-2 border-cyan-500 border-t-transparent animate-spin" />
+        <span className="electron" style={{ "--orb-size": "20px" } as React.CSSProperties}>
+          <i />
+          <i />
+        </span>
         <span className="text-xs font-mono text-cyber-muted animate-pulse">Evaluating robustness…</span>
       </div>
     );

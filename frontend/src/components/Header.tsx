@@ -119,7 +119,9 @@ export function Header({
             }`}
           >
             {aiStatus === "processing" ? (
-              <span className="live-dot" aria-hidden="true" />
+              <span className="sonar flex h-2.5 w-2.5">
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
+              </span>
             ) : (
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>

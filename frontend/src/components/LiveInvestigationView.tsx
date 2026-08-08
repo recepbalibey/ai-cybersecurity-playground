@@ -40,13 +40,23 @@ export function LiveInvestigationView({
       {/* Main Content Area */}
       <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto bg-grid-pattern relative">
         {/* Holographic Header Telemetry */}
-        <div className="p-3.5 bg-slate-950/80 border border-slate-800 rounded flex items-center justify-between">
+        <div
+          className={`p-3.5 bg-slate-950/80 border border-slate-800 rounded flex items-center justify-between holo-reticle ${
+            isAnalyzing ? "border-cyan-500/40" : ""
+          }`}
+        >
           <div className="flex items-center gap-3">
-            <Radio
-              className={`w-5 h-5 ${
-                isAnalyzing ? "text-cyan-400 animate-pulse" : "text-emerald-400"
+            <span
+              className={`relative flex h-6 w-6 items-center justify-center rounded-full ${
+                isAnalyzing ? "radar-sweep radar-live" : ""
               }`}
-            />
+            >
+              <Radio
+                className={`w-5 h-5 ${
+                  isAnalyzing ? "text-cyan-400 animate-pulse" : "text-emerald-400"
+                }`}
+              />
+            </span>
             <div>
               <div className="text-sm font-semibold text-cyber-heading">
                 AI Cognitive Reasoning Pipeline

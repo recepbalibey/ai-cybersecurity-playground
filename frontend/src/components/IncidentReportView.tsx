@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { IncidentReport } from "@/services/aiAnalyst";
 import { ConceptChip } from "@/components/effects/ConceptChip";
+import { HoloTerm } from "@/components/effects/HoloTerm";
 
 interface IncidentReportViewProps {
   report: IncidentReport;
@@ -213,14 +214,20 @@ ${report.recommended_actions
         {/* Concepts to dig deeper into */}
         <div className="flex flex-wrap items-center gap-2 border-t border-cyber-border pt-4 text-sm text-cyber-muted">
           <span className="font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
-            Dig deeper:
-          </span>
+              Dig deeper:
+            </span>
           <ConceptChip
             label="Machine Learning"
             topicId="ml"
             onOpenTheory={onOpenTheory}
             className="text-xs"
           />
+          <span className="text-xs text-cyber-muted">
+            <HoloTerm
+              term="False positive"
+              definition="A legitimate event the AI wrongly flags as an attack; tuning this trade-off is the core skill of an analyst."
+            />
+          </span>
           <ConceptChip
             label="IOC analysis"
             topicId="detection"

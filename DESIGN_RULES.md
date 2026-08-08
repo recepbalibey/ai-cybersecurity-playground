@@ -141,12 +141,28 @@ Banned: floating objects, continuous decorative motion, glow that never stops.
 
 While the user *is touching the screen*, stronger effects are intended:
 
+- Sheen sweep + glow on primary buttons, lift + glow on interactive rows
+  (`hover-lift`), slide-in arrows (`slide-arrow`), text glow
+  (`hover-text-glow`), animated progress fills (`progress-fill`).
 - **Holographic border** that circles a card while hovered (`holo-border`).
 - **Tilt + cursor spotlight** on main cards (`HoloTilt`).
 - **Cursor-following halo** behind the whole workspace (`CursorHalo`).
 - Sheen sweep + glow on primary buttons, lift + glow on interactive rows
   (`hover-lift`), slide-in arrows (`slide-arrow`), text glow
   (`hover-text-glow`), animated progress fills (`progress-fill`).
+- **Electron orbit loader** (`electron`) replaces the plain spinner wherever
+  an AI starts working - a glowing core with two electrons circling it.
+- **Radar sweep** (`radar-sweep`) - a rotating conic beam + concentric
+  detector rings that appear on live elements while streaming or on hover
+  (`radar-live` / `radar-hover`); **sonar ping** (`sonar`) ripples outward
+  twice from a live indicator.
+- **Holo-reticle** (`holo-reticle`) - scope corner brackets + a horizontal
+  tickline that snap onto the dominant input / element on hover.
+- **Holo-glitch** (`holo-glitch`) - a subtle accent RGB-split text-shift on
+  hover for key labels, kept inside the palette (no rainbow).
+- **Glossary terms** (`HoloTerm`) - dashed-accent inline terms that float a
+  holographic definition bubble while hovered; the student-facing quick-answer
+  layer used inside reports.
 
 Rules for every reaction effect:
 

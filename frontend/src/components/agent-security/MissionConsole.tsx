@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Terminal, Play, RotateCcw, LoaderCircle, Target } from "lucide-react";
+import { Terminal, Play, RotateCcw, Target } from "lucide-react";
 import { AgentScenario } from "@/services/agentSecurity";
 
 interface MissionConsoleProps {
@@ -97,7 +97,11 @@ export function MissionConsole({
         >
           {isProcessing ? (
             <>
-              <LoaderCircle className="w-4 h-4 animate-spin" /> Running Mission…
+              <span className="electron mr-1" style={{ "--orb-size": "16px" } as React.CSSProperties}>
+                <i />
+                <i />
+              </span>
+              <span>Running Mission…</span>
             </>
           ) : (
             <>

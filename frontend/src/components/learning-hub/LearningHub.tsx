@@ -244,10 +244,10 @@ function Hero({
   onExploreLabs: () => void;
 }) {
   return (
-    <div className="panel holo-panel holo-border relative overflow-hidden p-8">
+    <div className="panel holo-panel holo-border relative overflow-hidden p-8 radar-hover">
       <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-cyan-500/5 blur-3xl" />
-      <div className="relative space-y-4">
+      <div className="holo-reticle relative space-y-4">
         <p className="font-mono text-xs uppercase tracking-wider text-cyber-muted">
           AI Cybersecurity Playground
         </p>

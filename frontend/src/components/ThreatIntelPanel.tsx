@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { IOCs, MitreMapping } from "@/services/aiAnalyst";
 import { ConceptChip } from "@/components/effects/ConceptChip";
+import { HoloTerm } from "@/components/effects/HoloTerm";
 
 interface ThreatIntelPanelProps {
   severity: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
@@ -57,7 +58,13 @@ export function ThreatIntelPanel({
         {/* Section 1: Detected Indicators of Compromise */}
         <div>
           <div className="text-xs text-cyber-muted font-mono uppercase mb-2">
-            Detected Indicators of Compromise (IOCs)
+            Detected Indicators of Compromise ({" "}
+            <HoloTerm
+              term="IOCs"
+              topicId="detection"
+              definition="Indicators of compromise: forensic artifacts (IPs, hashes, domains, commands) that reveal a system was attacked or compromised."
+            />
+            )
           </div>
 
           <div className="space-y-2.5">
@@ -149,6 +156,11 @@ export function ThreatIntelPanel({
                 label="why mapping matters"
                 topicId="detection"
                 className="ml-1 text-[11px] normal-case"
+              />
+              {" "}
+              <HoloTerm
+                term="what is it?"
+                definition="MITRE ATT&CK is a public knowledge base of real-world attacker tactics and techniques that security teams use to label and hunt adversary behavior."
               />
             </span>
             <span>{mitreMappings.length} Techniques Mapped</span>

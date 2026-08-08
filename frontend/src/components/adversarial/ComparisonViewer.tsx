@@ -185,7 +185,10 @@ export function ComparisonViewer({ result, isProcessing }: ComparisonViewerProps
 
       {isProcessing ? (
         <div className="cyber-panel border border-cyber-border p-6 rounded-lg flex items-center justify-center gap-3">
-          <span className="w-4 h-4 rounded-full border-2 border-cyan-500 border-t-transparent animate-spin" />
+          <span className="electron" style={{ "--orb-size": "18px" } as React.CSSProperties}>
+            <i />
+            <i />
+          </span>
           <span className="text-xs font-mono text-cyber-muted animate-pulse">Running adversarial inference…</span>
         </div>
       ) : result ? (

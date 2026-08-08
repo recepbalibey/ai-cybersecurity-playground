@@ -77,8 +77,11 @@ export function ControlPanel({
       >
         {isProcessing ? (
           <>
-            <span className="w-4 h-4 rounded-full border-2 border-slate-900 border-t-transparent animate-spin" />
-            Running…
+            <span className="electron" style={{ "--orb-size": "16px" } as React.CSSProperties}>
+              <i />
+              <i />
+            </span>
+            <span className="ml-1.5">Running…</span>
           </>
         ) : (
           <>

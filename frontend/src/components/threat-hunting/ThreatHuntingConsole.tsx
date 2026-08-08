@@ -52,7 +52,7 @@ export function ThreatHuntingConsole({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <Search className="w-5 h-5 text-cyan-400" />
-          <h2 className="text-base font-bold text-cyber-heading uppercase tracking-wider font-mono">
+          <h2 className="holo-glitch text-base font-bold text-cyber-heading uppercase tracking-wider font-mono">
             Threat Hunting Console
           </h2>
         </div>
@@ -63,7 +63,7 @@ export function ThreatHuntingConsole({
 
       {/* Main Input Form */}
       <form onSubmit={handleSubmit} className="space-y-3">
-        <div className="relative">
+        <div className="relative holo-reticle">
           <input
             type="text"
             value={queryInput}
@@ -84,7 +84,10 @@ export function ThreatHuntingConsole({
           >
             {isHunting ? (
               <>
-                <div className="w-3.5 h-3.5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></div>
+                <span className="electron mr-1" style={{ "--orb-size": "16px" } as React.CSSProperties}>
+                  <i />
+                  <i />
+                </span>
                 <span>Hunting...</span>
               </>
             ) : (

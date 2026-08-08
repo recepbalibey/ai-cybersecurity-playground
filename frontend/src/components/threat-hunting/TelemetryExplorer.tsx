@@ -86,6 +86,7 @@ export function TelemetryExplorer({
                   {isHunting && src.active && (
                     <span className="text-cyan-400 animate-pulse font-semibold">
                       SCANNING...
+                      <span className="sonar ml-1.5 inline-block h-2 w-2 rounded-full bg-cyan-400 align-middle" />
                     </span>
                   )}
                 </div>

@@ -3,6 +3,7 @@
 import React from "react";
 import { ShieldAlert, AlertTriangle, Terminal, User, Server } from "lucide-react";
 import { ThreatFinding } from "@/services/threatHunter";
+import { HoloTerm } from "@/components/effects/HoloTerm";
 
 interface ThreatFindingsProps {
   findings: ThreatFinding[];
@@ -77,8 +78,15 @@ export function ThreatFindings({
               </div>
 
               <div className="flex items-center justify-between text-xs font-mono text-cyber-muted pt-1">
-                <span>MITRE ATT&CK: {f.mitre}</span>
-                <span className="text-cyan-400 font-semibold">
+                <span>
+                  <HoloTerm
+                    term="MITRE ATT&CK"
+                    topicId="detection"
+                    definition="A public knowledge base of adversary tactics, techniques, and procedures (TTPs) used to categorize how attacks happen."
+                  />
+                  : {f.mitre}
+                </span>
+                <span className="holo-glitch text-cyan-400 font-semibold">
                   VERIFIED ANOMALY
                 </span>
               </div>

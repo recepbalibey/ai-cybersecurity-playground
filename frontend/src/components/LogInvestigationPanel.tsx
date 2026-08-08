@@ -78,7 +78,7 @@ export function LogInvestigationPanel({
 
       <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto">
         {/* Upload & Sample Datasets Bar */}
-        <div className="flex flex-col gap-3">
+        <div className="holo-reticle flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <input
               type="file"
@@ -187,7 +187,10 @@ export function LogInvestigationPanel({
         >
           {isAnalyzing ? (
             <>
-              <div className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></div>
+              <span className="electron mr-1" style={{ "--orb-size": "18px" } as React.CSSProperties}>
+                <i />
+                <i />
+              </span>
               <span>AI Analyst Processing Telemetry...</span>
             </>
           ) : (
