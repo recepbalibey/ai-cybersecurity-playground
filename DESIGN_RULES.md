@@ -147,9 +147,6 @@ While the user *is touching the screen*, stronger effects are intended:
 - **Holographic border** that circles a card while hovered (`holo-border`).
 - **Tilt + cursor spotlight** on main cards (`HoloTilt`).
 - **Cursor-following halo** behind the whole workspace (`CursorHalo`).
-- Sheen sweep + glow on primary buttons, lift + glow on interactive rows
-  (`hover-lift`), slide-in arrows (`slide-arrow`), text glow
-  (`hover-text-glow`), animated progress fills (`progress-fill`).
 - **Electron orbit loader** (`electron`) replaces the plain spinner wherever
   an AI starts working - a glowing core with two electrons circling it.
 - **Radar sweep** (`radar-sweep`) - a rotating conic beam + concentric
@@ -163,6 +160,13 @@ While the user *is touching the screen*, stronger effects are intended:
 - **Glossary terms** (`HoloTerm`) - dashed-accent inline terms that float a
   holographic definition bubble while hovered; the student-facing quick-answer
   layer used inside reports.
+- **Holographic gauge** (`HoloGauge`) - a radial arc that fills in with an
+  animated count-up of the score, a rotating conic sweep while focused, and a
+  hover-hand hovering _why this number matters_ note. Used for confidence /
+  quality readouts so students learn what the metric means.
+- **Cursor matrix** (`HoloMatrix`) - a canvas lattice behind hero banners or
+  panel headers whose cells light up and ripple near the pointer and settle
+  back when you leave; hidden at rest.
 
 Rules for every reaction effect:
 

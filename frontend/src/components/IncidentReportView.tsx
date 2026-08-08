@@ -12,6 +12,8 @@ import {
 import { IncidentReport } from "@/services/aiAnalyst";
 import { ConceptChip } from "@/components/effects/ConceptChip";
 import { HoloTerm } from "@/components/effects/HoloTerm";
+import { HoloGauge } from "@/components/effects/HoloGauge";
+import { HoloMatrix } from "@/components/effects/HoloMatrix";
 
 interface IncidentReportViewProps {
   report: IncidentReport;
@@ -84,8 +86,11 @@ ${report.recommended_actions
   return (
     <div className="cyber-panel holo-panel border border-cyber-border overflow-hidden">
       {/* Report Header */}
-      <div className="p-4.5 border-b border-cyber-border bg-cyber-surface/80 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <div className="p-4.5 border-b border-cyber-border bg-cyber-surface/80 flex items-center justify-between relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 opacity-50">
+          <HoloMatrix />
+        </div>
+        <div className="flex items-center gap-3 relative">
           <FileText className="w-5 h-5 text-cyan-400" />
           <div>
             <h2 className="text-base font-bold text-cyber-heading uppercase tracking-wider font-mono">
@@ -98,7 +103,7 @@ ${report.recommended_actions
         </div>
 
         {/* Export Buttons */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 relative">
           <button
             onClick={handleExportJSON}
             className="h-9 px-3.5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-mono text-cyan-300 flex items-center gap-2 transition-all font-semibold"
@@ -171,9 +176,13 @@ ${report.recommended_actions
               <div className="text-xs text-cyber-muted font-mono uppercase">
                 AI Confidence Score
               </div>
-              <div className="text-base font-mono font-bold text-emerald-400 mt-1">
-                {report.risk_assessment.ai_confidence_score}
-              </div>
+              <HoloGauge
+                value={parseFloat(report.risk_assessment.ai_confidence_score)}
+                label="Confidence"
+                tone="emerald"
+                integer
+                note="What drives this number? The AI weighs how specific the evidence is, how many independent signals agree, and how often this pattern has turned out to be real before."
+              />
             </div>
             <div className="p-4 bg-slate-950/60 border border-slate-800 rounded">
               <div className="text-xs text-cyber-muted font-mono uppercase">

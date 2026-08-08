@@ -24,6 +24,7 @@ import { cn } from "@/lib/cn";
 import { TheoryFlow, FlowLegend } from "./TheoryFlow";
 import { LabLessonModal } from "./LabLessonModal";
 import { HoloTilt } from "@/components/effects/HoloTilt";
+import { HoloMatrix } from "@/components/effects/HoloMatrix";
 import { getLabBrief } from "@/data/labBriefData";
 
 export interface LearningHubProps {
@@ -245,6 +246,9 @@ function Hero({
 }) {
   return (
     <div className="panel holo-panel holo-border relative overflow-hidden p-8 radar-hover">
+      <div className="pointer-events-none absolute inset-0 opacity-70">
+        <HoloMatrix />
+      </div>
       <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-cyan-500/5 blur-3xl" />
       <div className="holo-reticle relative space-y-4">

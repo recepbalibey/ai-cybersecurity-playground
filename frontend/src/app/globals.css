@@ -1233,3 +1233,164 @@ button[class*="border-accent"]:active { transform: translateY(0) scale(0.98); }
   .holo-glitch, .holo-term { transition: none; }
 }
 
+/* ------------------------------------------------------------------ */
+/* Interactive experience layer pt.4                                   */
+/* Holographic gauges + cursor-reactive matrix lattice. Same contract: */
+/* effects react to hover / pointer / live state only, single accent.  */
+/* ------------------------------------------------------------------ */
+
+/* Holographic radial gauge: an SVG arc that fills to the value, a      */
+/* conic sweep while hovered, a live count-up of the number, and an    */
+/* education note that fades in on hover. Tone comes from --gauge-rgb. */
+.holo-gauge {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  outline: none;
+}
+.holo-gauge-track {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 132px;
+  height: 132px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.holo-gauge-arc-bg {
+  fill: none;
+  stroke: rgb(var(--cb-border) / 0.7);
+  stroke-width: 5;
+}
+.holo-gauge-arc {
+  fill: none;
+  stroke: rgb(var(--gauge-rgb, var(--cb-accent)));
+  stroke-width: 5;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(0 0 6px rgb(var(--gauge-rgb, var(--cb-accent)) / 0.55));
+  transition: stroke-dasharray 320ms ease;
+}
+.holo-gauge-ring {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 132px;
+  height: 132px;
+  border-radius: 999px;
+  transition: border-color 200ms ease, box-shadow 260ms ease;
+}
+.holo-gauge:focus-visible .holo-gauge-ring,
+.holo-gauge:hover .holo-gauge-ring {
+  border-color: rgb(var(--cb-accent) / 0.5);
+  box-shadow: 0 0 22px rgb(var(--cb-accent) / 0.22), inset 0 0 18px rgb(var(--cb-accent) / 0.08);
+}
+.holo-gauge-sweep {
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgb(var(--cb-accent) / 0.16) 70deg,
+    transparent 140deg,
+    transparent 360deg
+  );
+  -webkit-mask-image: radial-gradient(circle, #000 0 64%, transparent 72%);
+  mask-image: radial-gradient(circle, #000 0 64%, transparent 72%);
+  animation: holo-gauge-spin 2.4s linear infinite;
+  pointer-events: none;
+}
+@keyframes holo-gauge-spin {
+  to { transform: rotate(360deg); }
+}
+.holo-gauge-num {
+  position: relative;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 26px;
+  font-weight: 700;
+  color: rgb(var(--cb-heading));
+  transition: color 160ms ease, text-shadow 160ms ease;
+}
+.holo-gauge:hover .holo-gauge-num {
+  color: rgb(var(--gauge-rgb, var(--cb-accent)));
+  text-shadow: 0 0 14px rgb(var(--gauge-rgb, var(--cb-accent)) / 0.5);
+}
+.holo-gauge-num em {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  color: rgb(var(--cb-muted));
+  margin-left: 1px;
+}
+.holo-gauge-label {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(var(--cb-muted));
+}
+.holo-gauge-sub {
+  font-size: 11px;
+  color: rgb(var(--cb-muted));
+}
+.holo-gauge-note {
+  position: relative;
+  display: block;
+  max-width: 200px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: rgb(var(--cb-text));
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 300ms ease, opacity 260ms ease, margin 260ms ease;
+}
+.holo-gauge-note.is-on {
+  max-height: 90px;
+  opacity: 1;
+  margin-top: 2px;
+}
+.holo-gauge-note i {
+  position: absolute;
+  left: -8px;
+  top: 4px;
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgb(var(--cb-accent));
+  box-shadow: 0 0 6px rgb(var(--cb-accent) / 0.8);
+}
+.holo-gauge:focus-visible {
+  outline: 2px solid rgb(var(--cb-accent) / 0.55);
+  outline-offset: 3px;
+}
+
+/* Cursor-reactive matrix lattice (HoloMatrix). A decorative canvas layer */
+/* that wakes cells near the pointer. Hidden behind content; the JS       */
+/* listens on document so a pointer-events:none layer still tracks.       */
+.holo-matrix {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.holo-matrix-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .holo-gauge-sweep { animation: none; display: none; }
+  .holo-gauge-arc { transition: none; }
+  .holo-gauge-note { max-height: 90px; opacity: 1; margin-top: 2px; }
+  .holo-gauge-num em { display: none; }
+}
+

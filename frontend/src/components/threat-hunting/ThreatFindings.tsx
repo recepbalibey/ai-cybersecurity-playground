@@ -4,6 +4,7 @@ import React from "react";
 import { ShieldAlert, AlertTriangle, Terminal, User, Server } from "lucide-react";
 import { ThreatFinding } from "@/services/threatHunter";
 import { HoloTerm } from "@/components/effects/HoloTerm";
+import { HoloGauge } from "@/components/effects/HoloGauge";
 
 interface ThreatFindingsProps {
   findings: ThreatFinding[];
@@ -28,7 +29,7 @@ export function ThreatFindings({
         </div>
         <div className="flex items-center gap-3">
           <span className="text-xs font-mono px-2.5 py-1 rounded bg-cyan-950/60 border border-cyan-500/40 text-cyan-300 font-bold">
-            QUALITY SCORE: {qualityScore}%
+            QUALITY: {qualityScore}%
           </span>
           <span className="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 font-bold">
             CONFIDENCE: {confidence}
@@ -37,6 +38,20 @@ export function ThreatFindings({
       </div>
 
       <div className="p-4 flex-1 flex flex-col gap-3 overflow-y-auto">
+        <div className="grid grid-cols-2 gap-3">
+          <HoloGauge
+            value={qualityScore}
+            label="Hunting Quality"
+            tone="accent"
+            note="Quality reflects how many hunters agree, whether the evidence is specific, and whether detections are real signals — not noise."
+          />
+          <HoloGauge
+            value={parseFloat(confidence)}
+            label="AI Confidence"
+            tone="emerald"
+            note="Confidence is what the AI would bet on this being real attacker activity, based on how well the clues line up."
+          />
+        </div>
         <div className="text-xs text-cyber-muted font-mono uppercase mb-1">
           Discovered Suspicious Behaviors ({findings.length})
         </div>
