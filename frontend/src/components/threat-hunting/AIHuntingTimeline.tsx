@@ -62,6 +62,19 @@ export function AIHuntingTimeline({
           </div>
         </div>
 
+        {/* Packet flow rail - active during a hunt */}
+        <div
+          className={`packet-rail relative h-3 rounded-full border ${
+            isHunting
+              ? "border-cyan-500/40 bg-cyan-950/20"
+              : "border-slate-800 bg-slate-900/40"
+          }`}
+        >
+          <span className="packet" />
+          <span className="packet packet-delay-1" />
+          <span className="packet packet-delay-2" />
+        </div>
+
         {/* 5-Step Timeline List */}
         <div className="space-y-3 relative">
           {timeline.map((step, idx) => {

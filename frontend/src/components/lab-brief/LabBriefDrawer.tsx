@@ -18,6 +18,7 @@ import { getLabBrief, type LabBrief } from "@/data/labBriefData";
 import { THEORY_TOPICS } from "@/services/learningHub";
 import { useLabBrief } from "./LabBriefContext";
 import { cn } from "@/lib/cn";
+import { ConceptChip } from "@/components/effects/ConceptChip";
 
 function TheoryPreview({ topicId, label }: { topicId: string; label: string }) {
   const topic = THEORY_TOPICS.find((t) => t.id === topicId);
@@ -240,6 +241,19 @@ export function LabBriefDrawer() {
                   <TheoryPreview key={l.topicId} topicId={l.topicId} label={l.label} />
                 ))}
               </div>
+            )}
+            {brief.theoryLinks.length > 0 && (
+              <p className="pt-2 text-[12px] text-cyber-muted">
+                Related concept:{" "}
+                {brief.theoryLinks.map((l) => (
+                  <ConceptChip
+                    key={l.topicId}
+                    label={THEORY_TOPICS.find((t) => t.id === l.topicId)?.title ?? l.label}
+                    topicId={l.topicId}
+                    className="mr-1"
+                  />
+                ))}
+              </p>
             )}
           </CollapsibleSection>
 

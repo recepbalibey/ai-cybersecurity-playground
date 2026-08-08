@@ -23,6 +23,8 @@ import {
 import { cn } from "@/lib/cn";
 import { TheoryFlow, FlowLegend } from "./TheoryFlow";
 import { LabLessonModal } from "./LabLessonModal";
+import { HoloTilt } from "@/components/effects/HoloTilt";
+import { getLabBrief } from "@/data/labBriefData";
 
 export interface LearningHubProps {
   progress: {
@@ -486,10 +488,11 @@ function LabGrid({
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {LABS.map((lab) => {
+          const brief = getLabBrief(lab.id);
           return (
-        <div
+        <HoloTilt
           key={lab.id}
-          className="panel flex flex-col gap-3 p-5 transition-colors hover:border-accent/40"
+          className="panel flex flex-col gap-3 p-5"
         >
           <div className="flex items-center justify-between">
             <span className="font-mono text-xs text-cyber-muted">{lab.module}</span>
@@ -505,6 +508,19 @@ function LabGrid({
           </div>
           <h4 className="font-medium text-cyber-heading">{lab.title}</h4>
           <p className="text-sm text-cyber-muted">{lab.blurb}</p>
+          {brief && (
+            <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-cyber-muted">
+              <span className="rounded border border-cyber-border px-1.5 py-0.5">
+                {brief.difficulty}
+              </span>
+              <span className="rounded border border-cyber-border px-1.5 py-0.5">
+                {brief.estimatedTime}
+              </span>
+              <span className="truncate rounded border border-cyber-border px-1.5 py-0.5">
+                {brief.skills.join(" · ")}
+              </span>
+            </div>
+          )}
           <p className="text-xs text-cyber-text/70">
             <span className="font-medium text-cyber-muted">You'll learn: </span>
             {lab.learned}
@@ -525,7 +541,7 @@ function LabGrid({
               Understand the lab
             </button>
           </div>
-        </div>
+        </HoloTilt>
           );
         })}
       </div>

@@ -10,12 +10,14 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { IncidentReport } from "@/services/aiAnalyst";
+import { ConceptChip } from "@/components/effects/ConceptChip";
 
 interface IncidentReportViewProps {
   report: IncidentReport;
+  onOpenTheory?: (topicId: string) => void;
 }
 
-export function IncidentReportView({ report }: IncidentReportViewProps) {
+export function IncidentReportView({ report, onOpenTheory }: IncidentReportViewProps) {
 
   const handleExportJSON = () => {
     const dataStr =
@@ -206,6 +208,25 @@ ${report.recommended_actions
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Concepts to dig deeper into */}
+        <div className="flex flex-wrap items-center gap-2 border-t border-cyber-border pt-4 text-sm text-cyber-muted">
+          <span className="font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+            Dig deeper:
+          </span>
+          <ConceptChip
+            label="Machine Learning"
+            topicId="ml"
+            onOpenTheory={onOpenTheory}
+            className="text-xs"
+          />
+          <ConceptChip
+            label="IOC analysis"
+            topicId="detection"
+            onOpenTheory={onOpenTheory}
+            className="text-xs"
+          />
         </div>
       </div>
     </div>

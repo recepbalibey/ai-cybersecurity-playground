@@ -148,11 +148,21 @@ export function LogInvestigationPanel({
           <div className="flex-1 p-3.5 overflow-auto font-mono text-sm text-slate-200 leading-relaxed scanline-overlay">
             {logLines.length > 0 ? (
               logLines.map((line, idx) => (
-                <div key={idx} className="flex gap-3 hover:bg-slate-900/60 py-0.5 rounded">
+                <div
+                  key={idx}
+                  className={`flex gap-3 hover:bg-slate-900/60 py-0.5 rounded ${
+                    isAnalyzing && idx === 0 ? "log-scan-line" : ""
+                  }`}
+                >
                   <span className="text-slate-600 select-none w-7 text-right shrink-0">
                     {idx + 1}
                   </span>
-                  <span className="break-all whitespace-pre-wrap">{line}</span>
+                  <span className="break-all whitespace-pre-wrap">
+                    {line}
+                    {isAnalyzing && idx === logLines.length - 1 && (
+                      <span className="caret-blink" />
+                    )}
+                  </span>
                 </div>
               ))
             ) : (

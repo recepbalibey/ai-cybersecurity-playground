@@ -265,6 +265,9 @@ function SOCAnalystApp() {
       prompt: "prompt-injection",
       adversarial: "adversarial-ml",
       agent: "jailbreak-lab",
+      hunting: "threat-hunting",
+      detection: "threat-hunting",
+      pentest: "pentest-assistant",
     };
     setActiveModule((topicToLab[topicId] ?? "soc-analyst") as any);
   };
@@ -307,6 +310,12 @@ function SOCAnalystApp() {
 
   return (
     <div className="flex h-screen bg-cyber-base overflow-hidden">
+      {/* Animated lab backdrop (grid + drifting particles) */}
+      <div className="cyber-backdrop" aria-hidden="true">
+        <div className="cyber-backdrop-grid" />
+        <div className="cyber-backdrop-particles" />
+      </div>
+
       {/* Left Sidebar Navigation */}
       <Navigation
         activeModule={activeModule}
@@ -316,7 +325,7 @@ function SOCAnalystApp() {
       />
 
       {/* Main Command Center Area */}
-      <div className="flex-1 flex flex-col h-screen overflow-y-auto">
+      <div className="flex-1 flex flex-col h-screen overflow-y-auto relative z-10">
         {/* Command Center Header */}
         <Header
           instructorMode={instructorMode}
@@ -403,7 +412,10 @@ function SOCAnalystApp() {
 
               {analysisResult && (
                 <div className="pt-2">
-                  <IncidentReportView report={analysisResult.report} />
+                  <IncidentReportView
+                    report={analysisResult.report}
+                    onOpenTheory={openTheoryModule}
+                  />
                 </div>
               )}
             </>
@@ -485,6 +497,7 @@ function SOCAnalystApp() {
                   <ThreatHuntingReportView
                     report={huntResult.report}
                     qualityScore={huntResult.quality_score}
+                    onOpenTheory={openTheoryModule}
                   />
                 </div>
               )}
@@ -559,7 +572,10 @@ function SOCAnalystApp() {
               {/* Section 6: Professional Pentest Report */}
               {pentestResult && (
                 <div className="pt-2">
-                  <PentestReportView report={pentestResult.report} />
+                  <PentestReportView
+                    report={pentestResult.report}
+                    onOpenTheory={openTheoryModule}
+                  />
                 </div>
               )}
             </>

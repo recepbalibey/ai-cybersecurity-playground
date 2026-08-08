@@ -3,6 +3,7 @@
 import React from "react";
 import { CheckCircle, ArrowRight, RotateCcw } from "lucide-react";
 import type { LabBrief } from "@/data/labBriefData";
+import { LearningMoment } from "@/components/effects/LearningMoment";
 
 interface LabCompletionProps {
   brief: LabBrief;
@@ -13,7 +14,10 @@ interface LabCompletionProps {
 
 export function LabCompletion({ brief, onRetry, onNext, nextLabel }: LabCompletionProps) {
   return (
-    <div className="cyber-panel border border-emerald-500/30 p-6 rounded-lg space-y-5" role="status">
+    <div
+      className="cyber-panel success-ring border border-emerald-500/30 p-6 rounded-lg space-y-5"
+      role="status"
+    >
       <div className="flex items-center gap-3">
         <CheckCircle className="h-5 w-5 text-emerald-400" strokeWidth={1.75} />
         <div>
@@ -24,13 +28,25 @@ export function LabCompletion({ brief, onRetry, onNext, nextLabel }: LabCompleti
         </div>
       </div>
 
+      <LearningMoment
+        episode={{
+          what: `You completed the ${brief.title} lab and closed out its mission.`,
+          why: brief.whatYouLearned[0] ?? "You validated an AI security decision against the evidence.",
+          tryNext: brief.description.split(".")[0] + " — try a fresh scenario to practice.",
+        }}
+      />
+
       <div className="space-y-2">
         <p className="font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
           What you learned
         </p>
         <ul className="space-y-1.5">
-          {brief.whatYouLearned.map((l) => (
-            <li key={l} className="flex items-start gap-2 text-[13px] text-cyber-text">
+          {brief.whatYouLearned.map((l, i) => (
+            <li
+              key={l}
+              className="decode-enter flex items-start gap-2 text-[13px] text-cyber-text"
+              style={{ animationDelay: `${i * 90}ms` }}
+            >
               <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" strokeWidth={1.75} />
               {l}
             </li>

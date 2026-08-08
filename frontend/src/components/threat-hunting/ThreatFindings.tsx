@@ -51,9 +51,9 @@ export function ThreatFindings({
                   {f.title}
                 </span>
                 <span
-                  className={`text-xs font-mono px-2 py-0.5 rounded font-bold uppercase ${
+                  className={`relative text-xs font-mono px-2 py-0.5 rounded font-bold uppercase ${
                     f.severity === "CRITICAL"
-                      ? "bg-red-950/60 text-red-400 border border-red-500/40"
+                      ? "alert-ping bg-red-950/60 text-red-400 border border-red-500/40"
                       : "bg-orange-950/60 text-orange-400 border border-orange-500/40"
                   }`}
                 >

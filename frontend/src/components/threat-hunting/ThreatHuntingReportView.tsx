@@ -10,15 +10,18 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { ThreatHuntingReport } from "@/services/threatHunter";
+import { ConceptChip } from "@/components/effects/ConceptChip";
 
 interface ThreatHuntingReportViewProps {
   report: ThreatHuntingReport;
   qualityScore: number;
+  onOpenTheory?: (topicId: string) => void;
 }
 
 export function ThreatHuntingReportView({
   report,
   qualityScore,
+  onOpenTheory,
 }: ThreatHuntingReportViewProps) {
   const handleExportJSON = () => {
     const dataStr =
@@ -189,6 +192,25 @@ ${report.recommended_actions
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Concepts to dig deeper into */}
+        <div className="flex flex-wrap items-center gap-2 border-t border-cyber-border pt-4 text-sm text-cyber-muted">
+          <span className="font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+            Dig deeper:
+          </span>
+          <ConceptChip
+            label="Threat Hunting"
+            topicId="hunting"
+            onOpenTheory={onOpenTheory}
+            className="text-xs"
+          />
+          <ConceptChip
+            label="Detection Engineering"
+            topicId="detection"
+            onOpenTheory={onOpenTheory}
+            className="text-xs"
+          />
         </div>
       </div>
     </div>

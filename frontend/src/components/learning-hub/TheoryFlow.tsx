@@ -69,7 +69,13 @@ export function TheoryFlow({
   edges: [string, string][];
 }) {
   const markerId = useId().replace(/:/g, "");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  // Start with the first model node selected so the live data flow is
+  // visible immediately instead of only after a click.
+  const initialSelected = useMemo(
+    () => nodes.find((n) => n.kind === "model")?.id ?? null,
+    [nodes]
+  );
+  const [selectedId, setSelectedId] = useState<string | null>(initialSelected);
 
   const layout = useMemo(() => {
     const byId = new Map<string, FlowNode>();

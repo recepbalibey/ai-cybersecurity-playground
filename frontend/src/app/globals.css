@@ -445,3 +445,263 @@ html.light .gov-cell-informational:hover { background: rgb(100 116 139 / 0.3); }
   }
 }
 
+/* ------------------------------------------------------------------ */
+/* Reusable interaction effects (UI layer)                             */
+/* Every effect has a prefers-reduced-motion escape hatch.             */
+/* ------------------------------------------------------------------ */
+
+/* Animated lab backdrop: a slowly drifting grid plus soft "data
+   particles" drifting up. Pure transform/opacity animations. */
+.cyber-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: radial-gradient(1200px 700px at 80% -10%, rgb(var(--cb-accent) / 0.07), transparent 60%),
+    radial-gradient(900px 600px at -10% 100%, rgb(var(--cb-cyan-dark) / 0.06), transparent 55%),
+    rgb(var(--cb-base));
+}
+
+.cyber-backdrop-grid {
+  position: absolute;
+  inset: -50%;
+  background-image: radial-gradient(rgb(var(--cb-border) / 0.35) 1px, transparent 1px);
+  background-size: 28px 28px;
+  animation: backdrop-drift 90s linear infinite;
+  mask-image: radial-gradient(120% 120% at 50% 30%, black 40%, transparent 85%);
+}
+
+@keyframes backdrop-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(56px, 56px, 0); }
+}
+
+.cyber-backdrop-particles {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(2px 2px at 18% 30%, rgb(var(--cb-accent) / 0.7), transparent 2px),
+    radial-gradient(2px 2px at 65% 20%, rgb(var(--cb-accent) / 0.5), transparent 2px),
+    radial-gradient(1.5px 1.5px at 40% 55%, rgb(var(--cb-text) / 0.45), transparent 1.5px),
+    radial-gradient(2px 2px at 85% 65%, rgb(var(--cb-accent) / 0.45), transparent 2px),
+    radial-gradient(1.5px 1.5px at 12% 78%, rgb(var(--cb-text) / 0.4), transparent 1.5px),
+    radial-gradient(2px 2px at 50% 88%, rgb(var(--cb-accent) / 0.5), transparent 2px);
+  animation: particles-rise 26s linear infinite;
+}
+
+@keyframes particles-rise {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(0, -120px, 0); }
+}
+
+/* Holographic panel: a conic glow that sweeps across on hover, plus a
+   faint idle sheen. Drop `holo-panel` on a `cyber-panel` / `.panel` to
+   subscribe. The gradient is a 1px ring drawn above the surface and a
+   low-alpha sheen; both are pointer-events:none so content stays clear. */
+.holo-panel {
+  position: relative;
+  transition: border-color 200ms ease, box-shadow 250ms ease;
+}
+
+.holo-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    transparent 20%,
+    rgb(var(--cb-accent) / 0.55) 40%,
+    rgb(var(--cb-heading) / 0.18) 50%,
+    rgb(var(--cb-accent) / 0.55) 60%,
+    transparent 80%);
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transform: translateX(-25%);
+  transition: opacity 300ms ease, transform 400ms ease;
+  pointer-events: none;
+}
+
+.holo-panel:hover::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.holo-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg,
+    transparent 30%,
+    rgb(var(--cb-heading) / 0.07) 46%,
+    transparent 60%);
+  transform: translateX(-130%);
+  transition: transform 600ms ease;
+  pointer-events: none;
+}
+
+.holo-panel:hover::after {
+  transform: translateX(130%);
+}
+
+/* Gentle glow lift on any panel card when hovered (non-decorative: it
+   signals the card is interactive). */
+.cyber-panel:not(.no-hover), .panel:not(.no-hover) {
+  transition: border-color 200ms ease, box-shadow 250ms ease, transform 200ms ease;
+}
+.cyber-panel:not(.no-hover):hover,
+.panel:not(.no-hover):hover {
+  border-color: rgb(var(--cb-accent) / 0.45);
+}
+
+/* Data packet flow along a horizontal rail (timelines / phase bars). */
+.packet-rail {
+  position: relative;
+  overflow: hidden;
+}
+
+.packet {
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 99px;
+  background: rgb(var(--cb-accent));
+  box-shadow: 0 0 8px rgb(var(--cb-accent) / 0.8);
+  transform: translate(-50%, -50%);
+  animation: packet-travel 2.4s linear infinite;
+  opacity: 0;
+}
+
+.packet-delay-1 { animation-delay: 0.8s; }
+.packet-delay-2 { animation-delay: 1.6s; }
+
+@keyframes packet-travel {
+  0%   { left: -2%; opacity: 0; }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { left: 102%; opacity: 0; }
+}
+
+/* Scanning caret for log lines while processing. */
+.log-scan-line {
+  position: relative;
+}
+
+.log-scan-line::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgb(var(--cb-accent) / 0.14), transparent);
+  animation: log-scan 1.6s ease-in-out infinite;
+}
+
+@keyframes log-scan {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.caret-blink {
+  display: inline-block;
+  width: 7px;
+  height: 13px;
+  margin-left: 2px;
+  background: rgb(var(--cb-accent));
+  vertical-align: text-bottom;
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  0%, 45% { opacity: 1; }
+  46%, 100% { opacity: 0; }
+}
+
+/* Staggered "decode" text entrance. Add inline animation-delay per item. */
+.decode-enter {
+  opacity: 0;
+  animation: decode-in 0.4s ease-out forwards;
+}
+
+@keyframes decode-in {
+  from { opacity: 0; transform: translateY(6px); filter: blur(2px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+/* Success ring pulse (subtle, no confetti). */
+.success-ring {
+  position: relative;
+}
+
+.success-ring::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 2px solid rgb(16 185 129 / 0.7);
+  animation: ring-pulse 1.6s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes ring-pulse {
+  0%   { transform: scale(1); opacity: 0.7; }
+  70%, 100% { transform: scale(1.25); opacity: 0; }
+}
+
+/* Alert ping that radiates from a flagged element. */
+.alert-ping::before,
+.alert-ping::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 2px solid rgb(244 63 94 / 0.7);
+  animation: alert-ping 1.8s ease-out infinite;
+  pointer-events: none;
+}
+.alert-ping::after { animation-delay: 0.9s; }
+
+@keyframes alert-ping {
+  0%   { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+/* Tilt-card: uses --tilt-x / --tilt-y set from JS; do not care if unset. */
+.tilt-card {
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateZ(0);
+  transition: transform 120ms ease-out, box-shadow 250ms ease, border-color 200ms ease;
+  will-change: transform;
+}
+
+.tilt-card:hover {
+  box-shadow: 0 18px 40px -18px rgb(var(--cb-accent) / 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyber-backdrop-grid,
+  .cyber-backdrop-particles,
+  .packet,
+  .log-scan-line::after,
+  .caret-blink,
+  .decode-enter,
+  .success-ring::after,
+  .alert-ping::before,
+  .alert-ping::after,
+  .holo-panel::before,
+  .holo-panel::after {
+    animation: none !important;
+  }
+  .cyber-backdrop-grid { transform: none; }
+  .decode-enter { opacity: 1; }
+  .tilt-card { transition: none; }
+}
+
