@@ -45,6 +45,7 @@ import { LabBriefProvider, useLabBrief } from "@/components/lab-brief/LabBriefCo
 import { LabBriefDrawer } from "@/components/lab-brief/LabBriefDrawer";
 import { LabCompletion } from "@/components/lab-brief/LabCompletion";
 import { getLabBrief } from "@/data/labBriefData";
+import { CursorHalo } from "@/components/effects/CursorHalo";
 
 import { LearningHub } from "@/components/learning-hub/LearningHub";
 import type { LearningPathId } from "@/services/learningHub";
@@ -315,6 +316,9 @@ function SOCAnalystApp() {
         <div className="cyber-backdrop-grid" />
         <div className="cyber-backdrop-particles" />
       </div>
+
+      {/* Cursor-following holographic halo */}
+      <CursorHalo />
 
       {/* Left Sidebar Navigation */}
       <Navigation

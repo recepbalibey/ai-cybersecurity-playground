@@ -7,6 +7,12 @@ The goal is a professional, calm, educational security platform - not a
 "cyberpunk dashboard". Each screen answers **one question** and reveals
 complexity gradually.
 
+That said, this is a **hands-on laboratory**: strong holographic effects are
+welcome whenever they *react to the user* (hover, pointer move, press, live
+analysis). Effects must stay within the single accent color, must never make
+text harder to read, and should switch off for "reduce motion" users. The
+ratio to keep is: **rest = calm, react = alive**.
+
 ---
 
 ## 1. Core principle: one question per screen
@@ -130,6 +136,24 @@ Banned: floating objects, continuous decorative motion, glow that never stops.
 - Completion → subtle highlight, no confetti.
 - Animation duration 200-600ms, ease-out, no infinite loops except the
   scanning/progress indicator.
+
+### 9a. Interactive (reaction) effects
+
+While the user *is touching the screen*, stronger effects are intended:
+
+- **Holographic border** that circles a card while hovered (`holo-border`).
+- **Tilt + cursor spotlight** on main cards (`HoloTilt`).
+- **Cursor-following halo** behind the whole workspace (`CursorHalo`).
+- Sheen sweep + glow on primary buttons, lift + glow on interactive rows
+  (`hover-lift`), slide-in arrows (`slide-arrow`), text glow
+  (`hover-text-glow`), animated progress fills (`progress-fill`).
+
+Rules for every reaction effect:
+
+1. It only runs in response to a user action (hover / pointer / press),
+   never on idle.
+2. Content stays readable: effects are overlays, never full-opacity.
+3. Every effect has a `prefers-reduced-motion` escape hatch.
 
 ---
 

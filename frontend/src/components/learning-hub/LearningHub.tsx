@@ -80,7 +80,7 @@ export function LearningHub({
             </span>
             <div className="h-1.5 w-28 overflow-hidden rounded-full bg-cyber-border">
               <div
-                className="h-full rounded-full bg-emerald-400"
+                className="h-full rounded-full bg-emerald-400 progress-fill"
                 style={{ width: `${progress.percent}%` }}
               />
             </div>
@@ -244,7 +244,7 @@ function Hero({
   onExploreLabs: () => void;
 }) {
   return (
-    <div className="panel holo-panel relative overflow-hidden p-8">
+    <div className="panel holo-panel holo-border relative overflow-hidden p-8">
       <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-cyan-500/5 blur-3xl" />
       <div className="relative space-y-4">
@@ -300,7 +300,7 @@ function PathChoice({
           return (
             <HoloTilt
               key={id}
-              className="group panel p-5"
+              className="group panel holo-border p-5"
               maxTilt={4}
             >
               <button
@@ -503,7 +503,7 @@ function LabGrid({
           return (
         <HoloTilt
           key={lab.id}
-          className="panel flex flex-col gap-3 p-5"
+          className="panel holo-border flex flex-col gap-3 p-5"
         >
           <div className="flex items-center justify-between">
             <span className="font-mono text-xs text-cyber-muted">{lab.module}</span>
@@ -607,7 +607,7 @@ function LabRow({
   return (
     <button
       onClick={onSelect}
-      className="flex w-full items-center justify-between gap-3 rounded-lg border border-cyber-border bg-cyber-surface/40 px-4 py-3 text-left transition-colors hover:border-accent/40 hover:bg-cyber-surface"
+      className="group hover-lift flex w-full items-center justify-between gap-3 rounded-lg border border-cyber-border bg-cyber-surface/40 px-4 py-3 text-left transition-colors hover:border-accent/40 hover:bg-cyber-surface"
     >
       <div className="flex items-center gap-3">
         {completed ? (
@@ -620,7 +620,7 @@ function LabRow({
           <p className="text-xs text-cyber-muted">{lab.module}</p>
         </div>
       </div>
-      <ArrowRight className="h-4 w-4 shrink-0 text-cyber-muted" />
+      <ArrowRight className="slide-arrow h-4 w-4 shrink-0 text-cyber-muted" />
     </button>
   );
 }
@@ -635,10 +635,10 @@ function TheoryRow({
   return (
     <button
       onClick={onOpen}
-      className="flex w-full items-center gap-3 rounded-md px-2 py-2 text-left hover:bg-cyber-surface-hover"
+      className="group hover-lift flex w-full items-center gap-3 rounded-md px-2 py-2 text-left transition-colors hover:bg-cyber-surface-hover"
     >
       <BookOpen className="h-4 w-4 shrink-0 text-cyber-muted" />
-      <span className="text-sm text-cyber-text">{topic.title}</span>
+      <span className="hover-text-glow text-sm text-cyber-text">{topic.title}</span>
     </button>
   );
 }

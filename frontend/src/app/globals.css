@@ -677,12 +677,13 @@ html.light .gov-cell-informational:hover { background: rgb(100 116 139 / 0.3); }
 
 /* Tilt-card: uses --tilt-x / --tilt-y set from JS; do not care if unset. */
 .tilt-card {
-  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateZ(0);
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1)) translateZ(0);
   transition: transform 120ms ease-out, box-shadow 250ms ease, border-color 200ms ease;
   will-change: transform;
 }
 
 .tilt-card:hover {
+  --tilt-scale: 1.02;
   box-shadow: 0 18px 40px -18px rgb(var(--cb-accent) / 0.4);
 }
 
@@ -753,5 +754,169 @@ html.light .gov-cell-informational:hover { background: rgb(100 116 139 / 0.3); }
   .cyber-backdrop-grid { transform: none; }
   .decode-enter { opacity: 1; }
   .tilt-card { transition: none; }
+  .tilt-card:hover { --tilt-scale: 1; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Interactive experience layer                                        */
+/* Hover and cursor-reactive effects. They run only while the user     */
+/* reacts (hover, pointer move, press), never on idle. Every effect    */
+/* has a prefers-reduced-motion escape hatch.                          */
+/* ------------------------------------------------------------------ */
+
+/* Cursor-following holographic halo. Position is driven by the        */
+/* CursorHalo component via --halo-x / --halo-y (in px).               */
+.cursor-halo {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    640px 460px at var(--halo-x, 50%) var(--halo-y, -10%),
+    rgb(var(--cb-accent) / 0.14),
+    transparent 66%
+  );
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.cursor-halo.active { opacity: 1; }
+
+/* Primary accent buttons: sheen sweep, glow, press feedback.          */
+/* Matches the shared CTA pattern (bg-accent + dark text). */
+button[class*="bg-accent"] {
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 220ms ease, transform 140ms ease, filter 160ms ease;
+}
+button[class*="bg-accent"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-130%);
+  background: linear-gradient(115deg,
+    transparent 32%,
+    rgb(var(--cb-heading) / 0.4) 50%,
+    transparent 68%);
+  transition: transform 500ms ease;
+  pointer-events: none;
+}
+button[class*="bg-accent"]:hover {
+  box-shadow: 0 0 22px rgb(var(--cb-accent) / 0.5), 0 10px 20px -12px rgb(var(--cb-accent) / 0.55);
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+button[class*="bg-accent"]:hover::after { transform: translateX(130%); }
+button[class*="bg-accent"]:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: none;
+}
+
+/* Secondary accent-outline buttons: soft glow and slight lift. */
+button[class*="border-accent"] {
+  transition: box-shadow 220ms ease, transform 140ms ease, background-color 160ms ease;
+}
+button[class*="border-accent"]:hover {
+  box-shadow: 0 0 18px rgb(var(--cb-accent) / 0.3), inset 0 0 14px rgb(var(--cb-accent) / 0.06);
+  transform: translateY(-1px);
+}
+button[class*="border-accent"]:active { transform: translateY(0) scale(0.98); }
+
+/* Interactive row / card: lift + glow on hover (opt-in class). */
+.hover-lift {
+  transition: transform 180ms ease, box-shadow 240ms ease, border-color 200ms ease;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -16px rgb(var(--cb-accent) / 0.4);
+  border-color: rgb(var(--cb-accent) / 0.45);
+}
+.hover-lift:active { transform: translateY(-1px) scale(0.99); }
+
+/* Animated holographic border: a conic edge that circles the card     */
+/* while hovered. @property lets the angle interpolate smoothly.       */
+@property --holo-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.holo-border { position: relative; }
+.holo-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--holo-angle),
+    transparent 0deg,
+    rgb(var(--cb-accent) / 0.9) 80deg,
+    transparent 160deg,
+    transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  pointer-events: none;
+}
+.holo-border:hover::before {
+  opacity: 1;
+  animation: holo-border-roll 2.2s linear infinite;
+}
+@keyframes holo-border-roll {
+  to { --holo-angle: 360deg; }
+}
+
+/* Slide-in arrow cue for rows that show a forward direction. */
+.slide-arrow {
+  display: inline-flex;
+  transition: transform 180ms ease, color 180ms ease, text-shadow 180ms ease;
+}
+.group:hover .slide-arrow {
+  transform: translateX(4px);
+  color: rgb(var(--cb-accent));
+  text-shadow: 0 0 10px rgb(var(--cb-accent) / 0.6);
+}
+
+/* Text glow for hover-reactive labels (nav, links, chips). */
+.hover-text-glow {
+  transition: color 180ms ease, text-shadow 180ms ease;
+}
+.hover-text-glow:hover {
+  color: rgb(var(--cb-accent));
+  text-shadow: 0 0 14px rgb(var(--cb-accent) / 0.55);
+}
+
+/* Animated progress fill with a moving light stripe. */
+.progress-fill {
+  position: relative;
+  overflow: hidden;
+  transition: width 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.progress-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.35), transparent);
+  transform: translateX(-100%);
+  animation: progress-sweep 1.8s ease-in-out infinite;
+}
+@keyframes progress-sweep {
+  100% { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-halo { opacity: 0; }
+  button[class*="bg-accent"],
+  button[class*="border-accent"],
+  .hover-lift,
+  .slide-arrow,
+  .hover-text-glow { transition: none; }
+  button[class*="bg-accent"]::after,
+  .progress-fill::after,
+  .holo-border:hover::before { animation: none; }
+  button[class*="bg-accent"]:hover,
+  button[class*="border-accent"]:hover,
+  .hover-lift:hover { transform: none; box-shadow: none; }
 }
 
