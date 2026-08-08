@@ -63,7 +63,7 @@ export function LogInvestigationPanel({
   return (
     <div className="cyber-panel flex flex-col h-full overflow-hidden border border-cyber-border">
       {/* Panel Header */}
-      <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between">
+      <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
         <div className="flex items-center gap-2.5">
           <Terminal className="w-4 h-4 text-cyan-400" />
           <h2 className="text-base font-semibold text-cyber-heading uppercase tracking-wider font-mono">
@@ -106,7 +106,7 @@ export function LogInvestigationPanel({
                 <button
                   key={ds.key}
                   onClick={() => onSelectDataset(ds.key)}
-                  className="px-3.5 py-2.5 bg-slate-950/60 hover:bg-slate-900 border border-slate-800 hover:border-cyan-500/40 rounded text-left transition-all group flex items-center justify-between"
+                  className="chip-holo px-3.5 py-2.5 bg-slate-950/60 hover:bg-slate-900 border border-slate-800 hover:border-cyan-500/40 rounded text-left transition-all group flex items-center justify-between"
                 >
                   <div>
                     <div className="text-sm font-semibold text-cyber-text group-hover:text-cyan-300">

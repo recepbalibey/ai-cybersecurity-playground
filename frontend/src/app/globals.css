@@ -918,5 +918,84 @@ button[class*="border-accent"]:active { transform: translateY(0) scale(0.98); }
   button[class*="bg-accent"]:hover,
   button[class*="border-accent"]:hover,
   .hover-lift:hover { transform: none; box-shadow: none; }
+  .holo-scan::after,
+  .corner-frame::before,
+  .reveal-up { transition: none; opacity: 1; transform: none; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Interactive experience layer pt.2                                   */
+/* Section-repeat title sweeps, holographic corner brackets, chips     */
+/* and scroll reveals. Same contract: effect only reacts to the user   */
+/* and has a prefers-reduced-motion escape hatch.                      */
+/* ------------------------------------------------------------------ */
+
+/* Holographic scan across a row (used on panel headers) on hover. */
+.holo-scan { position: relative; overflow: hidden; }
+.holo-scan::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg,
+    transparent 42%,
+    rgb(var(--cb-accent) / 0.16) 50%,
+    transparent 58%);
+  transform: translateX(-130%) skewX(-12deg);
+  transition: transform 700ms ease;
+  pointer-events: none;
+}
+.holo-scan:hover::after { transform: translateX(130%) skewX(-12deg); }
+
+/* Holographic corner brackets that snap inward on hover. */
+.corner-frame { position: relative; }
+.corner-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(rgb(var(--cb-accent)) 0 0) 0 0 / 16px 1px,
+    linear-gradient(rgb(var(--cb-accent)) 0 0) 0 0 / 1px 16px,
+    linear-gradient(rgb(var(--cb-accent)) 0 0) 100% 0 / 16px 1px,
+    linear-gradient(rgb(var(--cb-accent)) 0 0) 100% 0 / 1px 16px,
+    linear-gradient(rgb(var(--cb-accent)) 0 0) 0 100% / 16px 1px,
+    linear-gradient(rgb(var(--cb-accent)) 0 0) 0 100% / 1px 16px,
+    linear-gradient(rgb(var(--cb-accent)) 0 0) 100% 100% / 16px 1px,
+    linear-gradient(rgb(var(--cb-accent)) 0 0) 100% 100% / 1px 16px;
+  background-repeat: no-repeat;
+  background-position: 0 0, 0 0, 100% 0, 100% 0, 0 100%, 0 100%, 100% 100%, 100% 100%;
+  background-size: 16px 2px, 2px 16px, 16px 2px, 2px 16px, 16px 2px, 2px 16px, 16px 2px, 2px 16px;
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 260ms ease, transform 320ms ease;
+  pointer-events: none;
+}
+.corner-frame:hover::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Interactive chips: glow + accent tint on hover. */
+.chip-holo {
+  transition: border-color 200ms ease, background-color 200ms ease,
+    box-shadow 220ms ease, color 200ms ease;
+}
+.chip-holo:hover {
+  border-color: rgb(var(--cb-accent) / 0.6);
+  background-color: rgb(var(--cb-accent) / 0.1);
+  color: rgb(var(--cb-accent));
+  box-shadow: 0 0 12px rgb(var(--cb-accent) / 0.35);
+}
+
+/* Scroll reveal. `.reveal-up` starts hidden; the Reveal component adds
+   `.reveal-in` when it enters the viewport. */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 560ms ease, transform 560ms ease;
+}
+.reveal-up.reveal-in {
+  opacity: 1;
+  transform: translateY(0);
 }
 

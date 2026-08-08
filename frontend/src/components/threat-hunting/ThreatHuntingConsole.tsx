@@ -47,7 +47,7 @@ export function ThreatHuntingConsole({
   };
 
   return (
-    <div className="cyber-panel border border-cyber-border p-6 rounded-lg space-y-4">
+    <div className="cyber-panel corner-frame border border-cyber-border p-6 rounded-lg space-y-4">
       {/* Console Title */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
