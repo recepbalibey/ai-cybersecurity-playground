@@ -127,13 +127,13 @@ export function Navigation({
                       collapsed ? "justify-center px-0" : ""
                     } ${
                       isActive
-                        ? "bg-accent/10 border border-accent/40 text-accent"
+                        ? "bg-accent/10 border border-accent/40 text-accent shadow-cyan-glow"
                         : "text-cyber-text hover:bg-cyber-surface-hover hover:text-white"
                     }`}
                   >
                     <Icon
                       className={`w-4 h-4 shrink-0 ${
-                        isActive ? "text-accent" : "text-cyber-muted"
+                        isActive ? "text-accent" : "text-cyber-muted group-hover:text-accent"
                       }`}
                       strokeWidth={1.75}
                     />

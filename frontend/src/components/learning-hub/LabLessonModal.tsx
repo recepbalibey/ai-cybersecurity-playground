@@ -60,7 +60,11 @@ export function LabLessonModal({
             <SectionTitle icon={ListChecks} title="What you will do" />
             <ol className="space-y-2">
               {lesson.what_you_do.map((step, i) => (
-                <li key={i} className="flex items-start gap-2.5 text-sm text-cyber-text">
+                <li
+                  key={i}
+                  style={{ animationDelay: `${i * 70}ms` }}
+                  className="decode-enter flex items-start gap-2.5 text-sm text-cyber-text"
+                >
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-accent/40 bg-accent/10 font-mono text-[10px] font-medium text-accent">
                     {i + 1}
                   </span>

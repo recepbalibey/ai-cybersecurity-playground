@@ -9,6 +9,7 @@ import {
   Server,
 } from "lucide-react";
 import { IOCs, MitreMapping } from "@/services/aiAnalyst";
+import { ConceptChip } from "@/components/effects/ConceptChip";
 
 interface ThreatIntelPanelProps {
   severity: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
@@ -67,10 +68,11 @@ export function ThreatIntelPanel({
                 <span>Origin IP Addresses ({iocs.ips.length})</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
-                {iocs.ips.map((ip) => (
+                {iocs.ips.map((ip, idx) => (
                   <span
                     key={ip}
-                    className="font-mono text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyan-300 font-medium"
+                    style={{ animationDelay: `${idx * 70}ms` }}
+                    className="decode-enter font-mono text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyan-300 font-medium"
                   >
                     {ip}
                   </span>
@@ -85,10 +87,11 @@ export function ThreatIntelPanel({
                 <span>Targeted User Accounts ({iocs.users.length})</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
-                {iocs.users.map((u) => (
+                {iocs.users.map((u, idx) => (
                   <span
                     key={u}
-                    className="font-mono text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-amber-300 font-medium"
+                    style={{ animationDelay: `${idx * 70}ms` }}
+                    className="decode-enter font-mono text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-amber-300 font-medium"
                   >
                     {u}
                   </span>
@@ -103,10 +106,11 @@ export function ThreatIntelPanel({
                 <span>Target Systems ({iocs.hosts.length})</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
-                {iocs.hosts.map((h) => (
+                {iocs.hosts.map((h, idx) => (
                   <span
                     key={h}
-                    className="font-mono text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-emerald-300 font-medium"
+                    style={{ animationDelay: `${idx * 70}ms` }}
+                    className="decode-enter font-mono text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-emerald-300 font-medium"
                   >
                     {h}
                   </span>
@@ -139,15 +143,23 @@ export function ThreatIntelPanel({
         {/* Section 2: MITRE ATT&CK Mapping */}
         <div className="flex-1">
           <div className="text-xs text-cyber-muted font-mono uppercase mb-2 flex items-center justify-between">
-            <span>MITRE ATT&CK Mapping</span>
+            <span>
+              MITRE ATT&CK Mapping{" "}
+              <ConceptChip
+                label="why mapping matters"
+                topicId="detection"
+                className="ml-1 text-[11px] normal-case"
+              />
+            </span>
             <span>{mitreMappings.length} Techniques Mapped</span>
           </div>
 
           <div className="space-y-2.5">
-            {mitreMappings.map((technique) => (
+            {mitreMappings.map((technique, idx) => (
               <div
                 key={technique.id}
-                className="p-3.5 bg-slate-950/80 border border-slate-800 rounded hover:border-cyan-500/40 transition-all"
+                style={{ animationDelay: `${120 + idx * 90}ms` }}
+                className="decode-enter p-3.5 bg-slate-950/80 border border-slate-800 rounded holo-panel hover:border-cyan-500/40 transition-all"
               >
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="font-mono text-xs font-bold text-cyan-400 px-2 py-0.5 bg-cyan-950/60 border border-cyan-500/30 rounded">

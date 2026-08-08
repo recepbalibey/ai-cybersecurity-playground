@@ -244,8 +244,9 @@ function Hero({
   onExploreLabs: () => void;
 }) {
   return (
-    <div className="panel relative overflow-hidden p-8">
+    <div className="panel holo-panel relative overflow-hidden p-8">
       <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-cyan-500/5 blur-3xl" />
       <div className="relative space-y-4">
         <p className="font-mono text-xs uppercase tracking-wider text-cyber-muted">
           AI Cybersecurity Playground
@@ -297,18 +298,23 @@ function PathChoice({
         {(Object.keys(LEARNING_PATHS) as LearningPathId[]).map((id) => {
           const p = LEARNING_PATHS[id];
           return (
-            <button
+            <HoloTilt
               key={id}
-              onClick={() => onChoosePath(id)}
-              className="group flex flex-col items-start gap-2 rounded-lg border border-cyber-border bg-cyber-surface/40 p-5 text-left transition-colors hover:border-accent/40 hover:bg-cyber-surface"
+              className="group panel p-5"
+              maxTilt={4}
             >
-              <span className="flex items-center gap-2 font-medium text-cyber-heading">
-                {p.name}
-                <ArrowRight className="h-4 w-4 text-cyber-muted transition-colors group-hover:text-accent" />
-              </span>
-              <span className="text-sm text-cyber-muted">{p.tagline}</span>
-              <span className="text-sm text-cyber-text">{p.description}</span>
-            </button>
+              <button
+                onClick={() => onChoosePath(id)}
+                className="flex w-full flex-col items-start gap-2 text-left"
+              >
+                <span className="flex items-center gap-2 font-medium text-cyber-heading">
+                  {p.name}
+                  <ArrowRight className="h-4 w-4 text-cyber-muted transition-colors group-hover:text-accent" />
+                </span>
+                <span className="text-sm text-cyber-muted">{p.tagline}</span>
+                <span className="text-sm text-cyber-text">{p.description}</span>
+              </button>
+            </HoloTilt>
           );
         })}
       </div>
@@ -345,20 +351,21 @@ function BigPicture() {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {columns.map((col) => (
-        <div
+        <HoloTilt
           key={col.title}
-          className="rounded-lg border border-cyber-border bg-cyber-surface/40 p-5"
+          className="group panel p-5"
+          maxTilt={3}
         >
           <h4 className={cn("text-sm font-semibold", col.color)}>{col.title}</h4>
           <ul className="mt-3 space-y-2">
             {col.points.map((pt) => (
               <li key={pt} className="flex items-center gap-2 text-sm text-cyber-text">
-                <CheckCircle2 className="h-4 w-4 shrink-0 text-cyber-muted" />
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-cyber-muted transition-colors group-hover:text-accent" />
                 {pt}
               </li>
             ))}
           </ul>
-        </div>
+        </HoloTilt>
       ))}
     </div>
   );
@@ -404,7 +411,7 @@ function TheoryLibrary({
 
       <div className="space-y-6">
         {/* Lesson header */}
-        <div className="panel p-6">
+        <div className="panel holo-panel p-6">
           <h3 className="text-lg font-semibold text-cyber-heading">
             {selected.title}
           </h3>
@@ -418,7 +425,7 @@ function TheoryLibrary({
         </div>
 
         {/* Schematic */}
-        <div className="panel p-6">
+        <div className="panel holo-panel p-6">
           <p className="mb-4 font-mono text-xs uppercase tracking-wider text-cyber-muted">
             How it works
           </p>
@@ -429,7 +436,7 @@ function TheoryLibrary({
         </div>
 
         {/* Teaching text */}
-        <div className="panel space-y-5 p-6">
+        <div className="panel holo-panel space-y-5 p-6">
           {selected.sections.map((s) => (
             <div key={s.title}>
               <h4 className="font-medium text-cyber-heading">{s.title}</h4>
@@ -441,13 +448,17 @@ function TheoryLibrary({
         </div>
 
         {/* Takeaways */}
-        <div className="panel p-6">
+        <div className="panel holo-panel p-6">
           <p className="mb-3 font-mono text-xs uppercase tracking-wider text-cyber-muted">
             Key takeaways
           </p>
           <ul className="space-y-2">
-            {selected.takeaways.map((t) => (
-              <li key={t} className="flex items-start gap-2 text-sm text-cyber-text">
+            {selected.takeaways.map((t, idx) => (
+              <li
+                key={t}
+                style={{ animationDelay: `${idx * 90}ms` }}
+                className="decode-enter flex items-start gap-2 text-sm text-cyber-text"
+              >
                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
                 {t}
               </li>

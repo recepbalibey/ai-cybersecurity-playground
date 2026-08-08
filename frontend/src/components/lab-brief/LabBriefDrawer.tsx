@@ -258,7 +258,7 @@ export function LabBriefDrawer() {
           </CollapsibleSection>
 
           {/* 03 - your mission (always visible) */}
-          <div className="rounded-lg border border-cyber-border bg-cyber-surface-hover/40 p-4 space-y-3">
+          <div className="holo-panel rounded-lg border border-cyber-border bg-cyber-surface-hover/40 p-4 space-y-3">
             <div className="flex items-center gap-2">
               <span className="font-mono text-[10px] text-cyber-muted tracking-wider">03</span>
               <Target className="h-4 w-4 text-accent" strokeWidth={1.75} />
@@ -272,8 +272,12 @@ export function LabBriefDrawer() {
                 Mission objectives
               </p>
               <ul className="space-y-1.5">
-                {brief.missionObjectives.map((o) => (
-                  <li key={o} className="flex items-start gap-2 text-[13px] text-cyber-text">
+                {brief.missionObjectives.map((o, i) => (
+                  <li
+                    key={o}
+                    style={{ animationDelay: `${i * 70}ms` }}
+                    className="decode-enter flex items-start gap-2 text-[13px] text-cyber-text"
+                  >
                     <span className="mt-0.5 block h-3.5 w-3.5 shrink-0 rounded border border-cyber-border-light" />
                     {o}
                   </li>

@@ -76,7 +76,7 @@ export function LiveInvestigationView({
                 key={stage.stage}
                 className={`p-4 rounded-lg border transition-all duration-300 relative ${
                   isCurrent
-                    ? "bg-cyan-950/40 border-cyan-500/60 shadow-cyan-glow"
+                    ? "bg-cyan-950/40 border-cyan-500/60 shadow-cyan-glow holo-panel"
                     : isCompleted
                     ? "bg-slate-900/60 border-slate-800/80"
                     : "bg-slate-950/30 border-slate-900/50 opacity-40"

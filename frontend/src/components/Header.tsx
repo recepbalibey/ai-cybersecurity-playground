@@ -111,11 +111,21 @@ export function Header({
             {moduleConfig.title}
           </h1>
           {/* AI Status Badge */}
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-            </span>
+          <div
+            className={`flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-mono transition-colors ${
+              aiStatus === "processing"
+                ? "bg-cyan-950/40 border-cyan-500/40 text-cyan-300"
+                : "bg-emerald-950/40 border-emerald-500/30 text-emerald-400"
+            }`}
+          >
+            {aiStatus === "processing" ? (
+              <span className="live-dot" aria-hidden="true" />
+            ) : (
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+            )}
             <span className="font-semibold">{moduleConfig.statusLabel}</span>
           </div>
         </div>

@@ -35,6 +35,21 @@ export function LabMission({ brief, currentStep = -1, onViewBrief, className }: 
           <span>{steps.length}</span>
         </span>
       )}
+      {showProgress && (
+        <span
+          className="hidden w-16 shrink-0 overflow-hidden rounded-full border border-cyber-border bg-cyber-surface-hover/60 h-1 lg:block"
+          role="progressbar"
+          aria-valuenow={((clampedStep + 1) / steps.length) * 100}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`${brief.title} mission progress`}
+        >
+          <span
+            className="block h-full rounded-full bg-accent transition-all duration-500"
+            style={{ width: `${((clampedStep + 1) / steps.length) * 100}%` }}
+          />
+        </span>
+      )}
       <button
         type="button"
         onClick={onViewBrief}

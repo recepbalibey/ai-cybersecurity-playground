@@ -70,7 +70,8 @@ export function LogInvestigationPanel({
             Log Investigation Panel
           </h2>
         </div>
-        <span className="text-xs text-cyber-muted font-mono uppercase">
+        <span className="flex items-center gap-1.5 text-xs text-cyber-muted font-mono uppercase">
+          {isAnalyzing && <span className="live-dot" aria-hidden="true" />}
           {selectedDatasetName}
         </span>
       </div>

@@ -46,7 +46,8 @@ export function TelemetryExplorer({
             return (
               <div
                 key={idx}
-                className={`p-3.5 rounded-lg border transition-all ${
+                style={{ animationDelay: `${idx * 80}ms` }}
+                className={`decode-enter holo-panel p-3.5 rounded-lg border transition-all ${
                   isHunting && src.active
                     ? "bg-cyan-950/40 border-cyan-500/50 shadow-cyan-glow"
                     : src.active

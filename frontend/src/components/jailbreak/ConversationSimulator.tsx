@@ -107,7 +107,7 @@ export function ConversationSimulator({
         <span
           className={`text-[11px] font-mono px-2.5 py-1 rounded font-bold uppercase ${
             result?.status === "COMPROMISED"
-              ? "bg-red-950/60 text-red-400 border border-red-500/40"
+              ? "alert-ping relative bg-red-950/60 text-red-400 border border-red-500/40"
               : result?.status === "BLOCKED"
               ? "bg-emerald-950/60 text-emerald-400 border border-emerald-500/40"
               : "bg-slate-900 text-slate-400 border border-slate-700"
@@ -154,15 +154,19 @@ export function ConversationSimulator({
           </div>
         )}
 
-        {result && (
-          <div className="space-y-3">
+{result && (
+        <div className="space-y-3">
+          <div className="decode-enter">
             <Card kind="user" content={result.prompt} />
+          </div>
+          <div className="decode-enter" style={{ animationDelay: "150ms" }}>
             <Card
               kind={result.status === "BLOCKED" ? "alert" : "ai"}
               content={result.response}
             />
           </div>
-        )}
+        </div>
+      )}
 
         {!result && !isProcessing && (
           <div className="flex flex-col items-center justify-center text-center py-10 flex-1">

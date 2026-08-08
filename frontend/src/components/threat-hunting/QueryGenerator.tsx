@@ -34,7 +34,7 @@ export function QueryGenerator({ queries }: QueryGeneratorProps) {
   };
 
   return (
-    <div className="cyber-panel border border-cyber-border overflow-hidden flex flex-col h-full">
+    <div className="cyber-panel holo-panel border border-cyber-border overflow-hidden flex flex-col h-full">
       {/* Panel Header */}
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between">
         <div className="flex items-center gap-2.5">

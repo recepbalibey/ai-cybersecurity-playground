@@ -686,6 +686,56 @@ html.light .gov-cell-informational:hover { background: rgb(100 116 139 / 0.3); }
   box-shadow: 0 18px 40px -18px rgb(var(--cb-accent) / 0.4);
 }
 
+/* Cursor-following holographic spotlight for interactive cards.
+   `--holo-x` / `--holo-y` (in px) are set by HoloTilt; the radial glow
+   is a pointer-events:none overlay so content stays fully readable. */
+.holo-spot {
+  position: relative;
+  overflow: hidden;
+}
+
+.holo-spot::before {
+  content: "";
+  position: absolute;
+  inset: -40px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    220px 160px at
+      var(--holo-x, 50%) var(--holo-y, 50%),
+    rgb(var(--cb-accent) / 0.16),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.holo-spot:hover::before {
+  opacity: 1;
+}
+
+/* Small pulsing "live" beacon used while streams are active. */
+.live-dot {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  border-radius: 99px;
+  background: rgb(16 185 129 / 1);
+}
+
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 99px;
+  background: rgb(16 185 129 / 0.8);
+  animation: alert-ping 1.8s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot::after { animation: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cyber-backdrop-grid,
   .cyber-backdrop-particles,

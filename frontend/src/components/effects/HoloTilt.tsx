@@ -8,6 +8,8 @@ interface HoloTiltProps {
   className?: string;
   maxTilt?: number;
   glow?: boolean;
+  /** Adds a cursor-following holographic spotlight overlay. */
+  spotlight?: boolean;
 }
 
 export function HoloTilt({
@@ -15,6 +17,7 @@ export function HoloTilt({
   className,
   maxTilt = 6,
   glow = true,
+  spotlight = true,
 }: HoloTiltProps) {
   const ref = useRef<HTMLDivElement>(null);
   const raf = useRef<number | null>(null);
@@ -30,9 +33,13 @@ export function HoloTilt({
       raf.current = requestAnimationFrame(() => {
         el.style.setProperty("--tilt-x", `${-py * maxTilt}deg`);
         el.style.setProperty("--tilt-y", `${px * maxTilt}deg`);
+        if (spotlight) {
+          el.style.setProperty("--holo-x", `${e.clientX - rect.left}px`);
+          el.style.setProperty("--holo-y", `${e.clientY - rect.top}px`);
+        }
       });
     },
-    [maxTilt]
+    [maxTilt, spotlight]
   );
 
   const onPointerLeave = useCallback(() => {
@@ -47,7 +54,7 @@ export function HoloTilt({
       ref={ref}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
-      className={cn("tilt-card", glow && "holo-panel", className)}
+      className={cn("tilt-card", glow && "holo-panel", spotlight && "holo-spot", className)}
     >
       {children}
     </div>
