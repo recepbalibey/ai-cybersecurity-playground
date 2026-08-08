@@ -47,7 +47,7 @@ export function ThreatIntelPanel({
         </div>
         {/* Severity Badge */}
         <div
-          className={`px-3 py-1 rounded border font-mono text-xs font-bold uppercase ${getSeverityBadge()}`}
+          className={`chip-holo px-3 py-1 rounded border font-mono text-xs font-bold uppercase ${getSeverityBadge()}`}
         >
           SEVERITY: {severity}
         </div>

@@ -314,7 +314,7 @@ export function AiFailureLab({
   return (
     <div className="space-y-6">
       {/* status header */}
-      <div className="cyber-panel border border-cyber-border p-4 rounded-lg flex items-center justify-between flex-wrap gap-3">
+      <div className="cyber-panel border border-cyber-border p-4 rounded-lg flex items-center justify-between flex-wrap gap-3 holo-scan">
         <div className="flex items-center gap-2.5">
           <AlertTriangle className="w-5 h-5 text-amber-400" />
           <h2 className="text-base font-bold text-cyber-heading uppercase tracking-wider font-mono">

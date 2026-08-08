@@ -106,7 +106,7 @@ export function Header({
     <header className="h-20 bg-cyber-surface border-b border-cyber-border px-6 flex items-center justify-between sticky top-0 z-10">
       {/* Title & Subtitle */}
       <div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 holo-scan">
           <h1 className="text-xl font-bold text-cyber-heading tracking-tight">
             {moduleConfig.title}
           </h1>

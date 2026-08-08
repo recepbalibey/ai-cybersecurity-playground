@@ -106,7 +106,7 @@ export function CodeReviewLab({
   return (
     <div className="space-y-6">
       {/* status header */}
-      <div className="cyber-panel border border-cyber-border p-4 rounded-lg flex items-center justify-between flex-wrap gap-3">
+      <div className="cyber-panel border border-cyber-border p-4 rounded-lg flex items-center justify-between flex-wrap gap-3 holo-scan">
         <div className="flex items-center gap-2.5">
           <ShieldCheck className="w-5 h-5 text-cyan-400" />
           <h2 className="text-base font-bold text-cyber-heading uppercase tracking-wider font-mono">
@@ -281,7 +281,7 @@ function AssistantPanel({ qa, question, onQuestion, onAsk, examples }: {
             <button
               key={e}
               onClick={() => onAsk(e)}
-              className="text-[10px] px-2 py-1 rounded-full border border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300"
+              className="chip-holo text-[10px] px-2 py-1 rounded-full border border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300"
             >
               {e}
             </button>

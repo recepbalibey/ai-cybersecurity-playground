@@ -46,6 +46,7 @@ import { LabBriefDrawer } from "@/components/lab-brief/LabBriefDrawer";
 import { LabCompletion } from "@/components/lab-brief/LabCompletion";
 import { getLabBrief } from "@/data/labBriefData";
 import { CursorHalo } from "@/components/effects/CursorHalo";
+import { Reveal } from "@/components/effects/Reveal";
 
 import { LearningHub } from "@/components/learning-hub/LearningHub";
 import type { LearningPathId } from "@/services/learningHub";
@@ -415,12 +416,14 @@ function SOCAnalystApp() {
               </div>
 
               {analysisResult && (
-                <div className="pt-2">
-                  <IncidentReportView
-                    report={analysisResult.report}
-                    onOpenTheory={openTheoryModule}
-                  />
-                </div>
+                <Reveal delay={120}>
+                  <div className="pt-2">
+                    <IncidentReportView
+                      report={analysisResult.report}
+                      onOpenTheory={openTheoryModule}
+                    />
+                  </div>
+                </Reveal>
               )}
             </>
           )}
@@ -497,13 +500,15 @@ function SOCAnalystApp() {
 
               {/* Section 6: Threat Hunting Report */}
               {huntResult && (
-                <div className="pt-2">
-                  <ThreatHuntingReportView
-                    report={huntResult.report}
-                    qualityScore={huntResult.quality_score}
-                    onOpenTheory={openTheoryModule}
-                  />
-                </div>
+                <Reveal delay={120}>
+                  <div className="pt-2">
+                    <ThreatHuntingReportView
+                      report={huntResult.report}
+                      qualityScore={huntResult.quality_score}
+                      onOpenTheory={openTheoryModule}
+                    />
+                  </div>
+                </Reveal>
               )}
             </>
           )}
@@ -575,12 +580,14 @@ function SOCAnalystApp() {
 
               {/* Section 6: Professional Pentest Report */}
               {pentestResult && (
-                <div className="pt-2">
-                  <PentestReportView
-                    report={pentestResult.report}
-                    onOpenTheory={openTheoryModule}
-                  />
-                </div>
+                <Reveal delay={120}>
+                  <div className="pt-2">
+                    <PentestReportView
+                      report={pentestResult.report}
+                      onOpenTheory={openTheoryModule}
+                    />
+                  </div>
+                </Reveal>
               )}
             </>
           )}
@@ -671,12 +678,14 @@ function SOCAnalystApp() {
               const brief = getLabBrief(activeModule);
               if (!brief) return null;
               return (
-                <LabCompletion
-                  brief={brief}
-                  onRetry={() => resetLab(activeModule)}
-                  onNext={nextLabId ? handleNextLab : undefined}
-                  nextLabel={nextLabId ? "Continue to next lab" : undefined}
-                />
+                <Reveal>
+                  <LabCompletion
+                    brief={brief}
+                    onRetry={() => resetLab(activeModule)}
+                    onNext={nextLabId ? handleNextLab : undefined}
+                    nextLabel={nextLabId ? "Continue to next lab" : undefined}
+                  />
+                </Reveal>
               );
             })()
           )}

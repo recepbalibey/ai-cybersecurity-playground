@@ -48,7 +48,7 @@ export function Assistant({ qa, question, onQuestion, onAsk, examples }: Assista
             <button
               key={e}
               onClick={() => onAsk(e)}
-              className="text-[10px] px-2 py-1 rounded-full border border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300"
+              className="chip-holo text-[10px] px-2 py-1 rounded-full border border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300"
             >
               {e}
             </button>

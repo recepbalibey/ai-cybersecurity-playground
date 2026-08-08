@@ -191,7 +191,7 @@ export function PromptInjectionLab({
       />
 
       {/* Compare Mode Toggle */}
-      <div className="flex items-center justify-between gap-3 px-4 py-3 bg-slate-950/60 border border-slate-800 rounded-lg">
+      <div className="flex items-center justify-between gap-3 px-4 py-3 bg-slate-950/60 border border-slate-800 rounded-lg holo-scan">
         <div className="flex items-center gap-3">
           <GitCompareArrows className="w-4 h-4 text-cyan-400" />
           <div>

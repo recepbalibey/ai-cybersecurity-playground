@@ -300,7 +300,7 @@ function PathChoice({
           return (
             <HoloTilt
               key={id}
-              className="group panel holo-border p-5"
+              className="group panel p-5"
               maxTilt={4}
             >
               <button
@@ -503,7 +503,7 @@ function LabGrid({
           return (
         <HoloTilt
           key={lab.id}
-          className="panel holo-border flex flex-col gap-3 p-5"
+          className="panel flex flex-col gap-3 p-5"
         >
           <div className="flex items-center justify-between">
             <span className="font-mono text-xs text-cyber-muted">{lab.module}</span>

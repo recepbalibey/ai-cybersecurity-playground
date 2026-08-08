@@ -14,7 +14,7 @@ export function TeachingOverlay({
   onClose,
 }: TeachingOverlayProps) {
   return (
-    <div className="p-5 bg-cyan-950/30 border border-cyan-500/40 rounded-lg shadow-cyan-glow space-y-4 relative mb-6">
+    <div className="p-5 bg-cyan-950/30 border border-cyan-500/40 rounded-lg shadow-cyan-glow space-y-4 relative mb-6 corner-frame">
       {/* Drawer Header */}
       <div className="flex items-center justify-between border-b border-cyan-500/30 pb-3">
         <div className="flex items-center gap-2.5">
@@ -36,7 +36,7 @@ export function TeachingOverlay({
         {teachingPoints.map((tp, idx) => (
           <div
             key={idx}
-            className="p-4 bg-slate-950/80 border border-slate-800 rounded flex flex-col justify-between"
+            className="chip-holo p-4 bg-slate-950/80 border border-slate-800 rounded flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center gap-2 text-sm font-semibold text-cyan-300 mb-1.5">

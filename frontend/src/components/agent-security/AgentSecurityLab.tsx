@@ -137,7 +137,7 @@ export function AgentSecurityLab({ onStatusChange }: AgentSecurityLabProps) {
   return (
     <div className="space-y-6">
       {/* Lab status strip */}
-      <div className="cyber-panel border border-cyber-border p-4 rounded-lg">
+      <div className="cyber-panel corner-frame border border-cyber-border p-4 rounded-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <Bot className="w-5 h-5 text-cyan-400" />
