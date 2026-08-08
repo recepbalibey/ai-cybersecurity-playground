@@ -380,7 +380,7 @@ function SOCAnalystApp() {
         />
 
         {/* Main Content Body */}
-        <main className="flex-1 p-6 space-y-6">
+        <main className="mx-auto flex-1 w-full max-w-[1600px] p-4 sm:p-6 space-y-6">
           {/* Module 0: Learning Hub / Home */}
           {activeModule === "learning-hub" && (
             <LearningHub
@@ -406,8 +406,8 @@ function SOCAnalystApp() {
                 />
               )}
 
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[580px]">
-                <div className="lg:col-span-4 h-full">
+              <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 min-h-[420px] xl:min-h-[580px]">
+                <div className="xl:col-span-4 h-full">
                   <LogInvestigationPanel
                     logContent={logContent}
                     onLogContentChange={setLogContent}
@@ -418,7 +418,7 @@ function SOCAnalystApp() {
                   />
                 </div>
 
-                <div className="lg:col-span-4 h-full">
+                <div className="xl:col-span-4 h-full">
                   <LiveInvestigationView
                     stages={analysisResult?.reasoning_stages || initialSOCStages}
                     currentStageIndex={currentStageIndex}
@@ -426,7 +426,7 @@ function SOCAnalystApp() {
                   />
                 </div>
 
-                <div className="lg:col-span-4 h-full">
+                <div className="xl:col-span-4 h-full">
                   <ThreatIntelPanel
                     severity={analysisResult?.severity || "HIGH"}
                     iocs={
@@ -483,9 +483,9 @@ function SOCAnalystApp() {
               />
 
               {/* 3-Column Grid for Workflow, Telemetry, and Query Generation */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[520px]">
+              <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 min-h-[420px] xl:min-h-[520px]">
                 {/* Section 2: AI Hunting Timeline (4 Cols) */}
-                <div className="lg:col-span-4 h-full">
+                <div className="xl:col-span-4 h-full">
                   <AIHuntingTimeline
                     timeline={huntResult?.timeline || initialHuntingTimeline}
                     currentStepIndex={currentHuntingStepIndex}
@@ -494,7 +494,7 @@ function SOCAnalystApp() {
                 </div>
 
                 {/* Section 3: Telemetry Explorer (4 Cols) */}
-                <div className="lg:col-span-4 h-full">
+                <div className="xl:col-span-4 h-full">
                   <TelemetryExplorer
                     sources={
                       huntResult?.telemetry_sources || [
@@ -509,7 +509,7 @@ function SOCAnalystApp() {
                 </div>
 
                 {/* Section 4: Detection Query Generator (4 Cols) */}
-                <div className="lg:col-span-4 h-full">
+                <div className="xl:col-span-4 h-full">
                   <QueryGenerator
                     queries={
                       huntResult?.queries || {
@@ -525,8 +525,8 @@ function SOCAnalystApp() {
 
               {/* Section 5: Threat Findings */}
               {huntResult && (
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                  <div className="lg:col-span-12">
+                <div className="grid grid-cols-1 gap-6">
+                  <div className="w-full">
                     <ThreatFindings
                       findings={huntResult.findings}
                       qualityScore={huntResult.quality_score}
@@ -568,9 +568,9 @@ function SOCAnalystApp() {
               />
 
               {/* 3-Column Grid: Attack Surface, Strategy, Assistant */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[520px]">
+              <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 min-h-[420px] xl:min-h-[520px]">
                 {/* Section 2: AI Attack Surface Map (4 Cols) */}
-                <div className="lg:col-span-4 h-full">
+                <div className="xl:col-span-4 h-full">
                   <AttackSurfaceMap
                     components={
                       pentestResult?.attack_surface || [
@@ -585,7 +585,7 @@ function SOCAnalystApp() {
                 </div>
 
                 {/* Section 3: AI Testing Strategy (4 Cols) */}
-                <div className="lg:col-span-4 h-full">
+                <div className="xl:col-span-4 h-full">
                   <PentestStrategyTimeline
                     phases={pentestResult?.phases || initialPentestPhases}
                     currentPhaseIndex={currentPhaseIndex}
@@ -594,7 +594,7 @@ function SOCAnalystApp() {
                 </div>
 
                 {/* Section 5: Security Testing Assistant (4 Cols) */}
-                <div className="lg:col-span-4 h-full">
+                <div className="xl:col-span-4 h-full">
                   <SecurityTestingAssistant
                     onAsk={handleAskAssistant}
                     isAssessing={isAssessing}
@@ -605,8 +605,8 @@ function SOCAnalystApp() {
 
               {/* Section 4: Vulnerability Analysis */}
               {pentestResult && (
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                  <div className="lg:col-span-12">
+                <div className="grid grid-cols-1 gap-6">
+                  <div className="w-full">
                     <VulnerabilityAnalysis
                       findings={pentestResult.findings}
                       riskLevel={pentestResult.risk_level}
