@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
 import { LogInvestigationPanel } from "@/components/LogInvestigationPanel";
@@ -93,7 +93,45 @@ export default function SOCAnalystPage() {
 
 function SOCAnalystApp() {
   const { markStarted, markCompleted, setMissionStep, resetLab, completedLabs, closeBrief } = useLabBrief();
-  const [activeModule, setActiveModule] = useState<"learning-hub" | "soc-analyst" | "threat-hunting" | "pentest-assistant" | "prompt-injection" | "jailbreak-lab" | "adversarial-ml" | "agent-security" | "malware-analysis" | "code-review" | "privacy-lab" | "governance" | "ai-failure-lab">("learning-hub");
+
+  const MODULE_IDS = [
+    "learning-hub", "soc-analyst", "threat-hunting", "pentest-assistant",
+    "prompt-injection", "jailbreak-lab", "adversarial-ml", "agent-security",
+    "malware-analysis", "code-review", "privacy-lab", "governance", "ai-failure-lab",
+  ] as const;
+  type ModuleId = (typeof MODULE_IDS)[number];
+  const DEFAULT_MODULE: ModuleId = "learning-hub";
+
+  const moduleFromHash = (hash: string): ModuleId => {
+    const m = hash.replace(/^#\/?/, "");
+    return (MODULE_IDS as readonly string[]).includes(m) ? (m as ModuleId) : DEFAULT_MODULE;
+  };
+
+  const [activeModule, setActiveModule] = useState<ModuleId>(DEFAULT_MODULE);
+
+  /* Restore the active module from the URL hash on first load (deep links). */
+  useEffect(() => {
+    setActiveModule(moduleFromHash(window.location.hash));
+  }, []);
+
+  /* Push a real history entry whenever the module changes, so the browser
+     back/forward buttons walk back through the modules instead of exiting
+     the app entirely. */
+  const navigate = useCallback((next: ModuleId) => {
+    setActiveModule(next);
+    if (typeof window === "undefined") return;
+    const target = `#/${next}`;
+    if (window.location.hash !== target) {
+      window.history.pushState({ module: next }, "", target);
+    }
+  }, []);
+
+  /* Back / forward: restore the module from whatever hash the browser moved to. */
+  useEffect(() => {
+    const onPopState = () => setActiveModule(moduleFromHash(window.location.hash));
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
 
   useEffect(() => {
     closeBrief();
@@ -242,20 +280,20 @@ function SOCAnalystApp() {
   // Module 0: Learning Hub handlers
   const handleSelectLab = (labId: string) => {
     setLabCompleted(labId, true);
-    setActiveModule(labId as any);
+    navigate(labId as ModuleId);
   };
 
   const handleChoosePath = (path: LearningPathId) => {
     setLearningPath(path);
     setHubPath(path);
     // Re-render to reflect the new suggested labs
-    setActiveModule("learning-hub" as any);
+    navigate("learning-hub");
   };
 
   const handleResetProgress = () => {
     clearAllProgress();
     setHubVersion((v) => v + 1);
-    setActiveModule("learning-hub" as any);
+    navigate("learning-hub");
   };
 
   const openTheoryModule = (topicId: string) => {
@@ -271,7 +309,7 @@ function SOCAnalystApp() {
       detection: "threat-hunting",
       pentest: "pentest-assistant",
     };
-    setActiveModule((topicToLab[topicId] ?? "soc-analyst") as any);
+    navigate((topicToLab[topicId] ?? "soc-analyst") as ModuleId);
   };
 
   const initialSOCStages: ReasoningStage[] = [
@@ -307,7 +345,7 @@ function SOCAnalystApp() {
 
   const handleNextLab = () => {
     if (!nextLabId) return;
-    setActiveModule(nextLabId as any);
+    navigate(nextLabId as ModuleId);
   };
 
   return (
@@ -324,7 +362,7 @@ function SOCAnalystApp() {
       {/* Left Sidebar Navigation */}
       <Navigation
         activeModule={activeModule}
-        onSelectModule={(modId) => setActiveModule(modId as any)}
+        onSelectModule={(modId) => navigate(modId as ModuleId)}
         collapsed={!sidebarOpen}
         onToggleCollapsed={() => setSidebarOpen((v) => !v)}
       />
