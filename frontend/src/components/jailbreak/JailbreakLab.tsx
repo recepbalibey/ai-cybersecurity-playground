@@ -30,6 +30,7 @@ import { ModelComparison } from "@/components/jailbreak/ModelComparison";
 import { AttackAnalysisView } from "@/components/jailbreak/AttackAnalysisView";
 import { AISecurityConcepts } from "@/components/jailbreak/AISecurityConcepts";
 import { ProgressAchievements } from "@/components/jailbreak/ProgressAchievements";
+import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface JailbreakLabProps {
   instructorMode: boolean;
@@ -42,6 +43,7 @@ export function JailbreakLab({
   onToggleInstructorMode,
   onStatusChange,
 }: JailbreakLabProps) {
+  const { markStarted, markCompleted } = useLabBrief();
   const [scenarios, setScenarios] = useState<JailbreakScenario[]>([]);
   const [models, setModels] = useState<JailbreakModel[]>([]);
   const [categories, setCategories] = useState<AttackCategory[]>([]);
@@ -108,6 +110,7 @@ export function JailbreakLab({
     setResult(null);
     setShowCompare(false);
 
+    markStarted("jailbreak-lab");
     const res = await evaluateJailbreak(prompt, scenarioKey, modelKey);
     setResult(res);
     setResults((prev) => {
@@ -118,6 +121,7 @@ export function JailbreakLab({
 
     await new Promise((r) => setTimeout(r, 500));
     setProcessing(false);
+    markCompleted("jailbreak-lab");
   };
 
   const runComparison = async (prompt: string) => {
@@ -126,6 +130,7 @@ export function JailbreakLab({
     setShowCompare(true);
     setResult(null);
 
+    markStarted("jailbreak-lab");
     const both = await evaluateBoth(prompt, scenarioKey);
     setCompare(both);
 
@@ -137,6 +142,7 @@ export function JailbreakLab({
 
     await new Promise((r) => setTimeout(r, 500));
     setProcessing(false);
+    markCompleted("jailbreak-lab");
   };
 
   const runTestCase = async (text: string) => {

@@ -24,6 +24,7 @@ import { SecurityReport } from "./SecurityReport";
 import { ScenarioComparison } from "./ScenarioComparison";
 import { Assistant } from "./Assistant";
 import { InstructorPanel } from "./InstructorPanel";
+import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface GovernanceLabProps {
   instructorMode: boolean;
@@ -57,6 +58,7 @@ export function GovernanceLab({
   onToggleInstructorMode,
   onStatusChange,
 }: GovernanceLabProps) {
+  const { markStarted, markCompleted, setMissionStep } = useLabBrief();
   const [projectId, setProjectId] = useState("resume_screening");
   const [step, setStep] = useState(0);
   const [maxReached, setMaxReached] = useState(0);
@@ -82,8 +84,15 @@ export function GovernanceLab({
   );
 
   const goToStep = (target: number) => {
+    if (target > 0 && target > maxReached) {
+      markStarted("governance");
+      setMissionStep("governance", Math.max(0, target - 1));
+    }
     setStep(target);
     if (target > maxReached) setMaxReached(target);
+    if (target === STEPS.length - 1) {
+      markCompleted("governance");
+    }
     setProcessing(false);
   };
 

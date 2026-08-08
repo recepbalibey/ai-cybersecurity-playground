@@ -20,6 +20,7 @@ import { ReviewFlowPanel } from "./ReviewFlowPanel";
 import { SecureDevChecklist } from "./SecureDevChecklist";
 import { ReviewComparisonPanel } from "./ReviewComparisonPanel";
 import { InstructorPanel } from "./InstructorPanel";
+import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface CodeReviewLabProps {
   instructorMode: boolean;
@@ -44,6 +45,7 @@ export function CodeReviewLab({
   onToggleInstructorMode,
   onStatusChange,
 }: CodeReviewLabProps) {
+  const { markStarted, markCompleted } = useLabBrief();
   const [code, setCode] = useState(() => REVIEW_EXAMPLES[0].vulnerable_code);
   const [language, setLanguage] = useState<string>(REVIEW_EXAMPLES[0].language);
   const [exampleId, setExampleId] = useState<string>(REVIEW_EXAMPLES[0].id);
@@ -77,11 +79,13 @@ export function CodeReviewLab({
     setResult(null);
     setSelectedFindingId(null);
     setQa([]);
+    markStarted("code-review");
     await new Promise((r) => setTimeout(r, 450));
     const res = reviewCode(code, language, exampleId || null);
     setResult(res);
     setSelectedFindingId(res.findings[0]?.id ?? null);
     setProcessing(false);
+    markCompleted("code-review");
   };
 
   const handleReset = () => {

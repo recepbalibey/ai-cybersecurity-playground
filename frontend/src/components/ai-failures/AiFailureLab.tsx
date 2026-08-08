@@ -22,6 +22,7 @@ import { Scorecard } from "./Scorecard";
 import { KnowledgeExplorer } from "./KnowledgeExplorer";
 import { Assistant } from "./Assistant";
 import { InstructorPanel } from "./InstructorPanel";
+import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface AiFailureLabProps {
   instructorMode: boolean;
@@ -70,6 +71,7 @@ export function AiFailureLab({
   onToggleInstructorMode,
   onStatusChange,
 }: AiFailureLabProps) {
+  const { markStarted, markCompleted } = useLabBrief();
   const [view, setView] = useState<View>({ kind: "scenarios" });
   const [scenarioId, setScenarioId] = useState("soc_false_positive");
   const [challengeMode, setChallengeMode] = useState(false);
@@ -141,6 +143,7 @@ export function AiFailureLab({
   const handleVerdictSubmit = () => {
     if (!standard.decision) return;
     setProcessing(true);
+    markStarted("ai-failure-lab");
     const result = evaluateAiFailure(
       standard.scenarioId,
       standard.decision,
@@ -154,6 +157,7 @@ export function AiFailureLab({
     setStandard((prev) => ({ ...prev, result }));
     setProcessing(false);
     setView({ kind: "standard", step: 2 });
+    markCompleted("ai-failure-lab");
   };
 
   const renderView = () => {
@@ -290,9 +294,11 @@ export function AiFailureLab({
           }
           onRun={() => {
             setProcessing(true);
+            markStarted("ai-failure-lab");
             const result = runAiFailureCapstone(scenario.id, capstonePicks);
             setCapstoneResult(result);
             setProcessing(false);
+            markCompleted("ai-failure-lab");
           }}
         />
       );

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
 import { LogInvestigationPanel } from "@/components/LogInvestigationPanel";
@@ -41,6 +41,11 @@ import { GovernanceLab } from "@/components/governance/GovernanceLab";
 
 import { AiFailureLab } from "@/components/ai-failures/AiFailureLab";
 
+import { LabBriefProvider, useLabBrief } from "@/components/lab-brief/LabBriefContext";
+import { LabBriefDrawer } from "@/components/lab-brief/LabBriefDrawer";
+import { LabCompletion } from "@/components/lab-brief/LabCompletion";
+import { getLabBrief } from "@/data/labBriefData";
+
 import { LearningHub } from "@/components/learning-hub/LearningHub";
 import type { LearningPathId } from "@/services/learningHub";
 import {
@@ -50,6 +55,7 @@ import {
   setLearningPath,
   setLabCompleted,
   clearAllProgress,
+  LABS,
   type ProgressSummary,
 } from "@/services/learningHub";
 
@@ -76,7 +82,21 @@ import {
 } from "@/services/pentestAssistant";
 
 export default function SOCAnalystPage() {
+  return (
+    <LabBriefProvider>
+      <SOCAnalystApp />
+    </LabBriefProvider>
+  );
+}
+
+function SOCAnalystApp() {
+  const { markStarted, markCompleted, setMissionStep, resetLab, completedLabs, closeBrief } = useLabBrief();
   const [activeModule, setActiveModule] = useState<"learning-hub" | "soc-analyst" | "threat-hunting" | "pentest-assistant" | "prompt-injection" | "jailbreak-lab" | "adversarial-ml" | "agent-security" | "malware-analysis" | "code-review" | "privacy-lab" | "governance" | "ai-failure-lab">("learning-hub");
+
+  useEffect(() => {
+    closeBrief();
+  }, [activeModule, closeBrief]);
+
   const [instructorMode, setInstructorMode] = useState(true);
   const [aiBusy, setAiBusy] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -157,6 +177,7 @@ export default function SOCAnalystPage() {
   const handleStartAnalysis = async () => {
     if (!logContent.trim()) return;
 
+    markStarted("soc-analyst");
     setIsAnalyzing(true);
     setCurrentStageIndex(0);
 
@@ -164,10 +185,12 @@ export default function SOCAnalystPage() {
 
     for (let i = 0; i < result.reasoning_stages.length; i++) {
       setCurrentStageIndex(i);
+      setMissionStep("soc-analyst", i);
       await new Promise((resolve) => setTimeout(resolve, 450));
     }
 
     setAnalysisResult(result);
+    markCompleted("soc-analyst");
     setIsAnalyzing(false);
   };
 
@@ -175,14 +198,17 @@ export default function SOCAnalystPage() {
     setIsHunting(true);
     setCurrentHuntingStepIndex(0);
 
+    markStarted("threat-hunting");
     const result = await runThreatHunt(query);
 
     for (let i = 0; i < result.timeline.length; i++) {
       setCurrentHuntingStepIndex(i);
+      setMissionStep("threat-hunting", i);
       await new Promise((resolve) => setTimeout(resolve, 400));
     }
 
     setHuntResult(result);
+    markCompleted("threat-hunting");
     setIsHunting(false);
   };
 
@@ -192,14 +218,17 @@ export default function SOCAnalystPage() {
     setPentestResult(null);
     setAssistantAnswer(null);
 
+    markStarted("pentest-assistant");
     const result = await runPentestAssessment(config);
 
     for (let i = 0; i < result.phases.length; i++) {
       setCurrentPhaseIndex(i);
+      setMissionStep("pentest-assistant", i);
       await new Promise((resolve) => setTimeout(resolve, 400));
     }
 
     setPentestResult(result);
+    markCompleted("pentest-assistant");
     setIsAssessing(false);
   };
 
@@ -263,6 +292,18 @@ export default function SOCAnalystPage() {
     { phase: 4, name: "Authorization Testing", detail: "Ready to test object-level access controls", timestamp: "--" },
     { phase: 5, name: "Reporting", detail: "Ready to synthesize professional pentest report", timestamp: "--" },
   ];
+
+  const nextLabId = useMemo(() => {
+    const order = LABS.map((l) => l.id);
+    const idx = order.indexOf(activeModule as string);
+    if (idx < 0) return null;
+    return order[idx + 1] ?? null;
+  }, [activeModule]);
+
+  const handleNextLab = () => {
+    if (!nextLabId) return;
+    setActiveModule(nextLabId as any);
+  };
 
   return (
     <div className="flex h-screen bg-cyber-base overflow-hidden">
@@ -603,8 +644,26 @@ export default function SOCAnalystPage() {
               onStatusChange={setAiBusy}
             />
           )}
+
+          {/* Lab completion - rendered when the active lab is completed */}
+          {activeModule !== "learning-hub" && completedLabs.has(activeModule) && (
+            (() => {
+              const brief = getLabBrief(activeModule);
+              if (!brief) return null;
+              return (
+                <LabCompletion
+                  brief={brief}
+                  onRetry={() => resetLab(activeModule)}
+                  onNext={nextLabId ? handleNextLab : undefined}
+                  nextLabel={nextLabId ? "Continue to next lab" : undefined}
+                />
+              );
+            })()
+          )}
         </main>
       </div>
+
+      <LabBriefDrawer />
     </div>
   );
 }

@@ -18,6 +18,7 @@ import { AttackFlowVisualization } from "@/components/llm-lab/AttackFlowVisualiz
 import { CompareMode } from "@/components/llm-lab/CompareMode";
 import { AttackReplay, ReplayEntry } from "@/components/llm-lab/AttackReplay";
 import { TeachingOverlay } from "@/components/TeachingOverlay";
+import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface PromptInjectionLabProps {
   instructorMode: boolean;
@@ -30,6 +31,7 @@ export function PromptInjectionLab({
   onToggleInstructorMode,
   onStatusChange,
 }: PromptInjectionLabProps) {
+  const { markStarted, markCompleted } = useLabBrief();
   const [scenarios, setScenarios] = useState<
     {
       key: string;
@@ -92,12 +94,16 @@ export function PromptInjectionLab({
     setResult(null);
     setShowCompare(false);
 
+    markStarted("prompt-injection");
     const res = await simulateAttack(payloadText, scenarioKey, mode);
     setResult(res);
 
     await new Promise((resolve) => setTimeout(resolve, 500));
     setProcessing(false);
     setAttackCount((c) => c + 1);
+    if (res.status === "SUCCESS" || res.status === "BLOCKED") {
+      markCompleted("prompt-injection");
+    }
 
     recordHistory({
       id: `${Date.now()}`,

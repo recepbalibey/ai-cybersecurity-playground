@@ -2,6 +2,10 @@
 
 import React from "react";
 import { BookOpen, Moon, Sun } from "lucide-react";
+import { getLabBrief } from "@/data/labBriefData";
+import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
+import { LabBriefButton } from "@/components/lab-brief/LabBriefButton";
+import { LabMission } from "@/components/lab-brief/LabMission";
 
 interface HeaderProps {
   instructorMode: boolean;
@@ -20,6 +24,12 @@ export function Header({
   theme = "dark",
   onToggleTheme,
 }: HeaderProps) {
+  const { toggleBrief, openBrief, startedLabs, missionSteps, openLabId } = useLabBrief();
+  const brief = getLabBrief(activeModule);
+  const isStarted = brief ? startedLabs.has(brief.id) : false;
+  const currentStep = brief ? (missionSteps[brief.id] ?? -1) : -1;
+  const briefOpen = brief ? openLabId === brief.id : false;
+
   const moduleConfig = {
     "learning-hub": {
       title: "Learning Hub",
@@ -110,10 +120,27 @@ export function Header({
           </div>
         </div>
         <p className="text-xs text-cyber-muted mt-0.5">{moduleConfig.subtitle}</p>
+        {brief && isStarted && (
+          <LabMission
+            brief={brief}
+            currentStep={currentStep}
+            onViewBrief={() => openBrief(brief.id)}
+            className="mt-1.5"
+          />
+        )}
       </div>
 
       {/* Right Tools & Instructor Mode */}
       <div className="flex items-center gap-4">
+        {/* Lab Brief */}
+        {brief && (
+          <LabBriefButton
+            labId={brief.id}
+            open={briefOpen}
+            onToggle={() => toggleBrief(brief.id)}
+          />
+        )}
+
         {/* Theme Toggle */}
         <button
           onClick={onToggleTheme}

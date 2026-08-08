@@ -21,6 +21,7 @@ import { SecurityMonitor } from "@/components/agent-security/SecurityMonitor";
 import { PolicyEnginePanel } from "@/components/agent-security/PolicyEnginePanel";
 import { AttackPanel } from "@/components/agent-security/AttackPanel";
 import { EducationPanel } from "@/components/agent-security/EducationPanel";
+import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface AgentSecurityLabProps {
   instructorMode: boolean;
@@ -38,6 +39,7 @@ const DEFAULT_CONTROLS = new Set([
 ]);
 
 export function AgentSecurityLab({ onStatusChange }: AgentSecurityLabProps) {
+  const { markStarted, markCompleted } = useLabBrief();
   const [scenarios, setScenarios] = useState<AgentScenario[]>([]);
   const [tools, setTools] = useState<AgentTool[]>([]);
   const [controlsList, setControlsList] = useState<SecurityControl[]>([]);
@@ -94,22 +96,26 @@ export function AgentSecurityLab({ onStatusChange }: AgentSecurityLabProps) {
     if (isProcessing) return;
     setProcessing(true);
     setResult(null);
+    markStarted("agent-security");
     const res = await runAgentMission(goal, selectedKey, Array.from(activeControls));
     setResult(res);
     await animate(res);
     setTotalMissions((n) => n + 1);
     setProcessing(false);
+    markCompleted("agent-security");
   };
 
   const handleRunProtected = async () => {
     if (isProcessing) return;
     setProcessing(true);
     setCompare(true);
+    markStarted("agent-security");
     const allControls = controlsList.map((c) => c.key);
     const res = await runAgentMission(goal, selectedKey, allControls);
     setProtectedResult(res);
     await animate(res);
     setProcessing(false);
+    markCompleted("agent-security");
   };
 
   const handleReset = () => {

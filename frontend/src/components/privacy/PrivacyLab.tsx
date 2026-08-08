@@ -13,6 +13,7 @@ import { RedactionPanel } from "@/components/privacy/RedactionPanel";
 import { PrivacyTimeline } from "@/components/privacy/PrivacyTimeline";
 import { PrivacyAssistant } from "@/components/privacy/PrivacyAssistant";
 import { PrivacyInstructorPanel } from "@/components/privacy/PrivacyInstructorPanel";
+import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface PrivacyLabProps {
   instructorMode: boolean;
@@ -25,6 +26,7 @@ export function PrivacyLab({
   onToggleInstructorMode,
   onStatusChange,
 }: PrivacyLabProps) {
+  const { markStarted, markCompleted, setMissionStep } = useLabBrief();
   const [selectedId, setSelectedId] = useState(PRIVACY_SCENARIOS[0].id);
   const [result, setResult] = useState<PrivacyScanResult | null>(null);
   const [selectedFindingId, setSelectedFindingId] = useState<string | null>(null);
@@ -46,14 +48,17 @@ export function PrivacyLab({
     setProcessing(true);
     setResult(null);
     setSelectedFindingId(null);
+    markStarted("privacy-lab");
     const res = scanDocument(scenario.document, scenario.id);
     setResult(res);
     for (let i = 0; i < res.timeline.length; i++) {
       setActiveStage(i);
+      setMissionStep("privacy-lab", i);
       await new Promise((r) => setTimeout(r, 320));
     }
     setActiveStage(null);
     setProcessing(false);
+    markCompleted("privacy-lab");
   };
 
   const handleReset = () => {

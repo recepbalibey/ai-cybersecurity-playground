@@ -21,6 +21,7 @@ import { RobustnessAnalysis } from "@/components/adversarial/RobustnessAnalysis"
 import { KnowledgePane } from "@/components/adversarial/KnowledgePane";
 import { ControlPanel } from "@/components/adversarial/ControlPanel";
 import { ProgressPanel } from "@/components/adversarial/ProgressPanel";
+import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface AdversarialLabProps {
   instructorMode: boolean;
@@ -31,6 +32,7 @@ interface AdversarialLabProps {
 export function AdversarialLab({
   onStatusChange,
 }: AdversarialLabProps) {
+  const { markStarted, markCompleted } = useLabBrief();
   const [experiments, setExperiments] = useState<VisionExperiment[]>([]);
   const [concepts, setConcepts] = useState<VisionConcept[]>([]);
   const [attacks, setAttacks] = useState<AttackMethod[]>([]);
@@ -75,6 +77,7 @@ export function AdversarialLab({
   const handleRun = async () => {
     if (isProcessing) return;
     setProcessing(true);
+    markStarted("adversarial-ml");
     const res = await runVisionAnalysis(experimentKey, mode);
     setResult(res);
     setResults((prev) => {
@@ -83,6 +86,7 @@ export function AdversarialLab({
     });
     await new Promise((r) => setTimeout(r, 300));
     setProcessing(false);
+    markCompleted("adversarial-ml");
   };
 
   const handleSelect = (key: string) => {
