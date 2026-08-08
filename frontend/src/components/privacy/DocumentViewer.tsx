@@ -134,7 +134,7 @@ export function DocumentViewer({ document, findings, redacted, title, subtitle }
       {/* body */}
       <div className="flex flex-1 min-h-[420px] bg-slate-950/40">
         <div className="w-11 shrink-0 border-r border-cyber-border text-right text-[11px] leading-[1.55] font-mono select-none py-3 overflow-hidden">
-          {lines.map((l, i) => (
+          {lines.map((_, i) => (
             <div key={i} className="pr-2 text-slate-600" style={{ height: 17 }}>
               {i + 1}
             </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Server, Activity, Database, Cloud, Wifi } from "lucide-react";
+import { Server, Database, Cloud, Wifi } from "lucide-react";
 import { TelemetrySource } from "@/services/threatHunter";
 
 interface TelemetryExplorerProps {

@@ -7,7 +7,6 @@ import {
   FileText,
   AlertTriangle,
   ArrowDown,
-  Terminal,
 } from "lucide-react";
 import { TrustAnalysis } from "@/services/llmSecuritySimulator";
 

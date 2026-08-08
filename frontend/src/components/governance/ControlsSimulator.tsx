@@ -68,7 +68,7 @@ export function ControlsSimulator({
                         {c.name}
                       </span>
                       {c.baseline && (
-                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded border border-slate-600 text-slate-400 uppercase tracking-wider">
+                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded border border-slate-600 text-slate-400 uppercase tracking-wider">
                           Baseline
                         </span>
                       )}

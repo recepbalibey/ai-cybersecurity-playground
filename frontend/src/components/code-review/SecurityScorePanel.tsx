@@ -4,13 +4,6 @@ import React from "react";
 import { ShieldCheck } from "lucide-react";
 import type { RiskLevel } from "@/data/securityCode";
 
-interface Props {
-  before: number;
-  after: number;
-  confidence: number;
-  risk: RiskLevel;
-}
-
 const RISK_COLOR: Record<string, string> = {
   Critical: "text-red-300 border-red-500/50 bg-red-950/30",
   High: "text-orange-300 border-orange-500/50 bg-orange-950/30",

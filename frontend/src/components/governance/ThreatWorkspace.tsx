@@ -66,7 +66,7 @@ export function ThreatWorkspace({
                   >
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-[12px] font-semibold text-cyber-heading leading-snug">{t.name}</span>
-                      <span className={`shrink-0 text-[9px] font-mono px-1.5 py-0.5 rounded border ${LEVEL_COLOR[t.base_level] ?? ""}`}>
+                      <span className={`shrink-0 text-[10px] font-mono px-1.5 py-0.5 rounded border ${LEVEL_COLOR[t.base_level] ?? ""}`}>
                         {t.base_level}
                       </span>
                     </div>

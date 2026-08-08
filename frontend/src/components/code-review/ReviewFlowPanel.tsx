@@ -14,7 +14,7 @@ export function ReviewFlowPanel({ stages, active, done }: Props) {
   return (
     <div className="cyber-panel border border-cyber-border rounded-lg p-4 overflow-hidden">
       <div className="flex items-center gap-2 mb-3">
-        <Radar className="w-4 h-4 text-violet-400" />
+        <Radar className="w-4 h-4 text-cyan-400" />
         <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">Analysis Pipeline</h3>
       </div>
 
@@ -35,7 +35,7 @@ export function ReviewFlowPanel({ stages, active, done }: Props) {
                   done ? "border-emerald-500/60 text-emerald-300" : "border-slate-600 text-slate-500"
                 }`}
               >
-                {done ? <Check className="w-3 h-3" /> : <span className="text-[9px] font-mono">{s.step}</span>}
+                {done ? <Check className="w-3 h-3" /> : <span className="text-[10px] font-mono">{s.step}</span>}
               </span>
               <div className="min-w-0">
                 <div className="text-[12px] font-semibold text-cyber-heading">{s.name}</div>

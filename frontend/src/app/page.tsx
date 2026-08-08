@@ -55,7 +55,6 @@ import {
   getLearningPath,
   getCompletedLabIds,
   setLearningPath,
-  setLabCompleted,
   clearAllProgress,
   LABS,
   type ProgressSummary,
@@ -134,18 +133,24 @@ function SOCAnalystApp() {
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
+  /* Any module navigation invalidates in-flight run flows. */
+  useEffect(() => {
+    runTokenRef.current += 1;
+  }, [activeModule]);
+
   useEffect(() => {
     closeBrief();
   }, [activeModule, closeBrief]);
 
   const [instructorMode, setInstructorMode] = useState(true);
   const [aiBusy, setAiBusy] = useState(false);
+  const [backendOnline, setBackendOnline] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [hubVersion, setHubVersion] = useState(0);
   // SSR-safe: never read localStorage during the first render (it would
   // mismatch the server-rendered HTML). Read it once after mount instead.
   const [hubProgress, setHubProgress] = useState<ProgressSummary>({
-    total: 11,
+    total: LABS.length,
     completed: 0,
     percent: 0,
   });
@@ -153,9 +158,12 @@ function SOCAnalystApp() {
   const [completedIds, setCompletedIds] = useState<string[]>([]);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
 
+// Invalidated whenever the user navigates, so staged run flows in a
+// previous module can't keep firing state updates into a stale view.
+const runTokenRef = useRef(0);
+
   // Module 1 State: AI SOC Analyst
   const [logContent, setLogContent] = useState("");
-  const [selectedDatasetKey, setSelectedDatasetKey] = useState("bruteforce");
   const [selectedDatasetName, setSelectedDatasetName] = useState("SSH Brute Force Attack");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [currentStageIndex, setCurrentStageIndex] = useState(0);
@@ -181,9 +189,6 @@ function SOCAnalystApp() {
 
   useEffect(() => {
     loadDataset("bruteforce");
-    // Run an initial threat hunt demo on startup
-    handleLaunchThreatHunt("Detect obfuscated PowerShell script execution and credential dumping attempts");
-    // Backend-first dataset list (local fallback in fetchDatasets)
     fetchDatasets().then((list) => {
       const datasets = Array.isArray(list) ? list : [];
       if (datasets.length > 0) {
@@ -204,6 +209,14 @@ function SOCAnalystApp() {
     if (saved === "light" || saved === "dark") setTheme(saved);
   }, []);
 
+  // Probe the FastAPI backend so the UI can surface offline fallback mode
+  useEffect(() => {
+    const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    fetch(`${base}/api/health`)
+      .then((res) => setBackendOnline(res.ok))
+      .catch(() => setBackendOnline(false));
+  }, []);
+
   // Hydrate learning-hub progress + path after mount (localStorage is client-only)
   useEffect(() => {
     setHubProgress(getProgress());
@@ -222,7 +235,6 @@ function SOCAnalystApp() {
   const handleToggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   const loadDataset = async (key: string) => {
-    setSelectedDatasetKey(key);
     const content = await fetchDatasetContent(key);
     setLogContent(content);
 
@@ -237,7 +249,8 @@ function SOCAnalystApp() {
 
   const handleStartAnalysis = async () => {
     if (!logContent.trim()) return;
-
+    const token = runTokenRef.current + 1;
+    runTokenRef.current = token;
     markStarted("soc-analyst");
     setIsAnalyzing(true);
     setCurrentStageIndex(0);
@@ -245,17 +258,22 @@ function SOCAnalystApp() {
     const result = await analyzeLogs(logContent, selectedDatasetName);
 
     for (let i = 0; i < result.reasoning_stages.length; i++) {
+      if (runTokenRef.current !== token) return;
       setCurrentStageIndex(i);
       setMissionStep("soc-analyst", i);
       await new Promise((resolve) => setTimeout(resolve, 450));
     }
+    if (runTokenRef.current !== token) return;
 
     setAnalysisResult(result);
     markCompleted("soc-analyst");
     setIsAnalyzing(false);
+    setMissionStep("soc-analyst", -1);
   };
 
   const handleLaunchThreatHunt = async (query: string) => {
+    const token = runTokenRef.current + 1;
+    runTokenRef.current = token;
     setIsHunting(true);
     setCurrentHuntingStepIndex(0);
 
@@ -263,10 +281,12 @@ function SOCAnalystApp() {
     const result = await runThreatHunt(query);
 
     for (let i = 0; i < result.timeline.length; i++) {
+      if (runTokenRef.current !== token) return;
       setCurrentHuntingStepIndex(i);
       setMissionStep("threat-hunting", i);
       await new Promise((resolve) => setTimeout(resolve, 400));
     }
+    if (runTokenRef.current !== token) return;
 
     setHuntResult(result);
     markCompleted("threat-hunting");
@@ -274,6 +294,8 @@ function SOCAnalystApp() {
   };
 
   const handleStartAssessment = async (config: PentestTargetConfig) => {
+    const token = runTokenRef.current + 1;
+    runTokenRef.current = token;
     setIsAssessing(true);
     setCurrentPhaseIndex(0);
     setPentestResult(null);
@@ -283,10 +305,12 @@ function SOCAnalystApp() {
     const result = await runPentestAssessment(config);
 
     for (let i = 0; i < result.phases.length; i++) {
+      if (runTokenRef.current !== token) return;
       setCurrentPhaseIndex(i);
       setMissionStep("pentest-assistant", i);
       await new Promise((resolve) => setTimeout(resolve, 400));
     }
+    if (runTokenRef.current !== token) return;
 
     setPentestResult(result);
     markCompleted("pentest-assistant");
@@ -300,7 +324,6 @@ function SOCAnalystApp() {
 
   // Module 0: Learning Hub handlers
   const handleSelectLab = (labId: string) => {
-    setLabCompleted(labId, true);
     navigate(labId as ModuleId);
   };
 
@@ -394,7 +417,7 @@ function SOCAnalystApp() {
         <Header
           instructorMode={instructorMode}
           onToggleInstructorMode={setInstructorMode}
-          aiStatus={isAnalyzing || isHunting || isAssessing || aiBusy ? "processing" : "online"}
+          aiStatus={isAnalyzing || isHunting || isAssessing || aiBusy ? "processing" : backendOnline ? "online" : "offline"}
           activeModule={activeModule}
           theme={theme}
           onToggleTheme={handleToggleTheme}
@@ -655,8 +678,6 @@ function SOCAnalystApp() {
           {/* Module 4: Prompt Injection Lab View */}
           {activeModule === "prompt-injection" && (
             <PromptInjectionLab
-              instructorMode={instructorMode}
-              onToggleInstructorMode={setInstructorMode}
               onStatusChange={setAiBusy}
             />
           )}
@@ -664,8 +685,6 @@ function SOCAnalystApp() {
           {/* Module 5: Jailbreak Playground View */}
           {activeModule === "jailbreak-lab" && (
             <JailbreakLab
-              instructorMode={instructorMode}
-              onToggleInstructorMode={setInstructorMode}
               onStatusChange={setAiBusy}
             />
           )}
@@ -673,8 +692,6 @@ function SOCAnalystApp() {
           {/* Module 6: Adversarial ML Lab View */}
           {activeModule === "adversarial-ml" && (
             <AdversarialLab
-              instructorMode={instructorMode}
-              onToggleInstructorMode={setInstructorMode}
               onStatusChange={setAiBusy}
             />
           )}
@@ -682,8 +699,6 @@ function SOCAnalystApp() {
           {/* Module 7: AI Agent Security Lab View */}
           {activeModule === "agent-security" && (
             <AgentSecurityLab
-              instructorMode={instructorMode}
-              onToggleInstructorMode={setInstructorMode}
               onStatusChange={setAiBusy}
             />
           )}
@@ -723,11 +738,10 @@ function SOCAnalystApp() {
             />
           )}
 
-          {/* Module 13: AI Failure Lab View */}
+          {/* Module 12: AI Failure Lab View */}
           {activeModule === "ai-failure-lab" && (
             <AiFailureLab
               instructorMode={instructorMode}
-              onToggleInstructorMode={setInstructorMode}
               onStatusChange={setAiBusy}
             />
           )}

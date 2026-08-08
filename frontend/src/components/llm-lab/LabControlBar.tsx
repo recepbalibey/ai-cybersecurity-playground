@@ -105,6 +105,7 @@ export function LabControlBar({
           </div>
           <div className="mt-2">
             <select
+              aria-label="Attack scenario"
               value={scenarioKey}
               onChange={(e) => onScenarioChange(e.target.value)}
               className="w-full h-10 px-3 bg-slate-950 border border-slate-700/80 rounded-lg text-sm text-cyber-heading focus:outline-none focus:border-cyan-500 transition-all"

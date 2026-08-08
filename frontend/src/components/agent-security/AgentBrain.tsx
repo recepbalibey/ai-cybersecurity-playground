@@ -66,7 +66,7 @@ export function AgentBrain({ result, isProcessing, activeStage }: AgentBrainProp
                     : nodeColor(n)
                 }`}
               >
-                <div className="w-9 h-9 shrink-0 rounded-md bg-slate-950/70 border border-slate-700/60 flex items-center justify-center text-[9px] font-mono text-cyan-300">
+                <div className="w-9 h-9 shrink-0 rounded-md bg-slate-950/70 border border-slate-700/60 flex items-center justify-center text-[10px] font-mono text-cyan-300">
                   {NODE_ICONS[n.node] ?? "NODE"}
                 </div>
                 <div className="flex-1 min-w-0">

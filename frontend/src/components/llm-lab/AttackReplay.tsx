@@ -63,12 +63,23 @@ export function AttackReplay({
       return;
     }
     const timeout = setTimeout(() => {
-      setCurrentIndex((c) => c + 1);
+      setCurrentIndex((c) => {
+        const next = Math.min(c + 1, history.length - 1);
+        return next;
+      });
     }, 800);
     return () => clearTimeout(timeout);
   }, [isPlaying, currentIndex, history.length]);
 
   const current = history[currentIndex];
+
+  // Re-run the currently highlighted attack so the visual replay drives a
+  // real execution (flush on every advance).
+  useEffect(() => {
+    if (currentIndex >= 0 && current) {
+      onReplay(current);
+    }
+  }, [currentIndex]);
 
   return (
     <div className="cyber-panel border border-cyber-border overflow-hidden flex flex-col h-full">
@@ -107,6 +118,8 @@ export function AttackReplay({
         <button
           onClick={reset}
           disabled={currentIndex < 0}
+          aria-label="Reset replay"
+          title="Reset replay"
           className="px-3 h-8 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-bold flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <RotateCcw className="w-3.5 h-3.5" />
@@ -134,13 +147,14 @@ export function AttackReplay({
         ) : (
           <div className="space-y-1.5">
             {history.map((entry, idx) => (
-              <div
+              <button
                 key={entry.id}
+                type="button"
                 onClick={() => {
                   setCurrentIndex(idx);
                   setIsPlaying(false);
                 }}
-                className={`p-2.5 rounded-lg border cursor-pointer transition-all ${
+                className={`w-full text-left p-2.5 rounded-lg border cursor-pointer transition-all ${
                   idx === currentIndex
                     ? "bg-cyan-950/30 border-cyan-500/50 shadow-cyan-glow"
                     : "bg-slate-950/60 border-slate-800 hover:border-slate-600"
@@ -163,7 +177,7 @@ export function AttackReplay({
                 <p className="text-[11px] text-slate-300 font-mono break-all">
                   {entry.payload}
                 </p>
-              </div>
+              </button>
             ))}
           </div>
         )}

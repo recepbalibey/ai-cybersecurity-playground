@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Zap, Activity, ShieldCheck, Crosshair, Trophy } from "lucide-react";
+import { Zap, Activity, Crosshair, Trophy } from "lucide-react";
 import { VisionExperiment, VisionAnalysisResult } from "@/services/visionSecurity";
 
 interface ControlPanelProps {
@@ -17,7 +17,7 @@ function Stat({ label, value, accent }: { label: string; value: string | number;
   return (
     <div className="flex flex-col items-center justify-center p-2.5 rounded-md bg-slate-950/60 border border-slate-800">
       <span className={`text-lg font-bold font-mono ${accent ?? "text-cyber-heading"}`}>{value}</span>
-      <span className="text-[9px] font-mono text-cyber-muted uppercase tracking-wider mt-0.5">{label}</span>
+      <span className="text-[10px] font-mono text-cyber-muted uppercase tracking-wider mt-0.5">{label}</span>
     </div>
   );
 }

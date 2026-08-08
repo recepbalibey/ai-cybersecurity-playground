@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { BookOpen, ShieldAlert, Award, Activity } from "lucide-react";
+import { BookOpen, ShieldAlert, CheckCircle2, Activity } from "lucide-react";
 import { MissionResult } from "@/services/agentSecurity";
 
 interface EducationPanelProps {
@@ -44,7 +44,7 @@ export function EducationPanel({ principles, riskFactors, result, totalMissions 
             <button
               key={id}
               onClick={() => setTab(id)}
-              className={`flex-1 px-1 py-1.5 rounded text-[9px] font-semibold uppercase tracking-wide transition-all ${
+              className={`flex-1 px-1 py-1.5 rounded text-[10px] font-semibold uppercase tracking-wide transition-all ${
                 tab === id ? "bg-amber-500/20 text-amber-300 border border-amber-500/40" : "bg-slate-950/60 text-slate-400 border border-slate-800"
               }`}
             >
@@ -80,7 +80,7 @@ export function EducationPanel({ principles, riskFactors, result, totalMissions 
             <div key={r.key} className="p-3 bg-slate-950/60 border border-slate-800 rounded-md">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-rose-300">{r.name}</span>
-                <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border ${
+                <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded border ${
                   r.severity === "Critical" ? "border-rose-500 text-rose-400" : r.severity === "High" ? "border-orange-500 text-orange-400" : "border-amber-500 text-amber-400"
                 }`}>{r.severity}</span>
               </div>
@@ -96,7 +96,10 @@ export function EducationPanel({ principles, riskFactors, result, totalMissions 
               <div className="text-xs font-bold text-cyber-heading mb-1">{p.name}</div>
               <div className="text-[10px] text-cyan-300/90 font-mono mb-1.5">{p.summary}</div>
               <p className="text-[11px] text-cyber-muted leading-relaxed">{p.details}</p>
-              <p className="text-[11px] text-emerald-300/80 mt-2 font-mono">✓ {p.good_practice}</p>
+              <p className="text-[11px] text-emerald-300/80 mt-2 font-mono flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                {p.good_practice}
+              </p>
             </div>
           ))}
 

@@ -85,7 +85,7 @@ export function PolicyEnginePanel({ controls, activeControls, onToggle, result }
                   {d.detail}
                 </div>
                 {d.reason && (
-                  <div className="text-[9px] font-mono text-cyber-muted">
+                  <div className="text-[10px] font-mono text-cyber-muted">
                     reason: {d.reason}
                   </div>
                 )}

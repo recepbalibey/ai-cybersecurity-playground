@@ -328,7 +328,7 @@ function logits(exp: LocalExperiment, prediction: string, confidence: number): L
 
 const AFFECTED_PIXELS: Record<AttackType, number> = { noise: 0.06, occlusion: 0.32, transformation: 0.42 };
 
-function timeline(attackType: AttackType, outcome: OutcomeType): TimelineStage[] {
+function timeline(_attackType: AttackType, outcome: OutcomeType): TimelineStage[] {
   return [
     { stage: "Image received", status: "complete", detail: "Input passed into the pipeline" },
     { stage: "Preprocessing", status: "complete", detail: "Normalized and resized" },

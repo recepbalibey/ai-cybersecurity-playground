@@ -128,7 +128,6 @@ export interface GovernanceResult {
 
 // ------------------------------------------------------------ scoring
 
-const CRITICALITY_INDEX: Record<string, number> = { Critical: 0, High: 1, Medium: 2, Low: 3 };
 const LEVEL_INDEX: Record<string, number> = { Critical: 0, High: 1, Medium: 2, Low: 3, Informational: 4 };
 
 function weight(likelihood: number, impact: number): number {

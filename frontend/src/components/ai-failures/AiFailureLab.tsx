@@ -30,7 +30,6 @@ import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface AiFailureLabProps {
   instructorMode: boolean;
-  onToggleInstructorMode: (val: boolean) => void;
   onStatusChange: (processing: boolean) => void;
 }
 
@@ -72,7 +71,6 @@ const STANDARD_STEPS = [
 
 export function AiFailureLab({
   instructorMode,
-  onToggleInstructorMode,
   onStatusChange,
 }: AiFailureLabProps) {
   const { markStarted, markCompleted } = useLabBrief();
@@ -98,7 +96,6 @@ export function AiFailureLab({
   const setProcessing = useCallback((v: boolean) => onStatusChange(v), [onStatusChange]);
 
   const scenario = AI_FAILURE_SCENARIO_BY_ID[scenarioId] ?? AI_FAILURE_SCENARIOS[0];
-  const isCapstone = Array.isArray(scenario.capstone_events);
   const capstoneEvents = scenario.capstone_events ?? [];
 
   const scorecard = useMemo(() => aiFailureScorecard(verdictHistory), [verdictHistory]);
@@ -293,7 +290,6 @@ export function AiFailureLab({
     if (view.kind === "capstone") {
       return (
         <Capstone
-          scenarioId={scenario.id}
           events={capstoneEvents}
           picks={capstonePicks}
           result={capstoneResult}

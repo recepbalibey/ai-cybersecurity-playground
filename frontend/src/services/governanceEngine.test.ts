@@ -10,7 +10,6 @@ import {
   assessGovernance,
   compareGovernance,
   aggregateScore,
-  recommendationFor,
   askGovernance,
   assessGovernanceSmart,
   compareGovernanceSmart,

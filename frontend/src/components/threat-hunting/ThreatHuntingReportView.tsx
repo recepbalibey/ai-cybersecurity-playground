@@ -7,7 +7,6 @@ import {
   ShieldCheck,
   Search,
   CheckSquare,
-  AlertTriangle,
 } from "lucide-react";
 import { ThreatHuntingReport } from "@/services/threatHunter";
 import { ConceptChip } from "@/components/effects/ConceptChip";

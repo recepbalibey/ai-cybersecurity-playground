@@ -64,7 +64,7 @@ export function GovernanceReview({ review }: GovernanceReviewProps) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <RiskSection icon={Building2} title="Business Risk" accent="text-cyan-400" data={review.business_risk} />
         <RiskSection icon={ShieldCheck} title="Security Risk" accent="text-red-400" data={review.security_risk} />
-        <RiskSection icon={EyeOff} title="Privacy Risk" accent="text-violet-400" data={review.privacy_risk} />
+        <RiskSection icon={EyeOff} title="Privacy Risk" accent="text-cyan-400" data={review.privacy_risk} />
         <RiskSection icon={Activity} title="Operational Risk" accent="text-amber-400" data={review.operational_risk} />
       </div>
 

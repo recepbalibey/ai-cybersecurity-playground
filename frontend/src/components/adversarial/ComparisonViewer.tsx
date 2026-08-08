@@ -33,7 +33,7 @@ function PredCard({
       <div className="flex justify-center">
         <div className="relative rounded-xl bg-slate-950/80 border border-slate-800 p-2">
           <SyntheticFace subject={pred.prediction} overlay={overlay} size={150} />
-          <span className="absolute bottom-1 right-2 text-[9px] font-mono text-cyan-400/70">
+          <span className="absolute bottom-1 right-2 text-[10px] font-mono text-cyan-400/70">
             {overlay !== "none" ? overlay.toUpperCase() : "ORIGINAL"}
           </span>
         </div>

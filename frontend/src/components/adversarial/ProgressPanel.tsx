@@ -107,10 +107,10 @@ export function ProgressPanel({ results, experiments }: ProgressPanelProps) {
               <div className="flex-1">
                 <div className="text-xs font-bold text-cyber-heading flex items-center gap-2">
                   {a.name}
-                  {has && <span className="text-[9px] font-mono text-amber-300 border border-amber-500/40 rounded px-1">UNLOCKED</span>}
+                  {has && <span className="text-[10px] font-mono text-amber-300 border border-amber-500/40 rounded px-1">UNLOCKED</span>}
                 </div>
                 <p className="text-[10px] text-cyber-muted mt-0.5">{a.desc}</p>
-                <p className="text-[9px] font-mono text-cyber-muted/60 mt-0.5">Hint: {a.hint}</p>
+                <p className="text-[10px] font-mono text-cyber-muted/60 mt-0.5">Hint: {a.hint}</p>
               </div>
             </div>
           );

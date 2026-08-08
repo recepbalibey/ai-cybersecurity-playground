@@ -21,7 +21,7 @@ export function PolicyPanel({ policies }: { policies: PolicyResult[] }) {
   return (
     <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
-        <Gavel className="w-4 h-4 text-violet-400" />
+        <Gavel className="w-4 h-4 text-cyan-400" />
         <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">Policy Engine</h3>
         {blocked > 0 && (
           <span className="ml-auto text-[10px] font-mono px-2 py-0.5 rounded border border-red-500/40 text-red-300">
@@ -38,7 +38,7 @@ export function PolicyPanel({ policies }: { policies: PolicyResult[] }) {
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-[12px] font-semibold text-cyber-heading">{p.name}</span>
-                <span className={`text-[9px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border ${STATUS_STYLE[p.status]}`}>
+                <span className={`text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border ${STATUS_STYLE[p.status]}`}>
                   {p.status}
                 </span>
               </div>

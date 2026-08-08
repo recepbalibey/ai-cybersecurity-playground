@@ -1023,7 +1023,7 @@ export const LABS: LabsWalker[] = [
     id: "ai-failure-lab",
     order: 12,
     title: "AI Failure Lab",
-    module: "13 · AI Failure Lab",
+    module: "12 · AI Failure Lab",
     path: "ai-for-cyber",
     blurb: "Prove AI output is not automatically correct by judging AI decisions and validating them.",
     learned: "That AI confidence and correctness are different, and how to validate output.",

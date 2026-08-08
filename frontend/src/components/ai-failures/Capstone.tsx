@@ -5,7 +5,6 @@ import { Siren, CheckCircle2, XCircle } from "lucide-react";
 import type { AiFailureCapstone, CapstoneEventResult } from "@/services/aiFailureEngine";
 
 interface CapstoneProps {
-  scenarioId: string;
   events: { id: string; title: string; evidence: string }[];
   picks: Record<string, string>;
   result: AiFailureCapstone | null;
@@ -52,7 +51,6 @@ function renderEventRow(ev: CapstoneEventResult) {
 }
 
 export function Capstone({
-  scenarioId,
   events,
   picks,
   result,

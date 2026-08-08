@@ -65,7 +65,7 @@ export function RobustnessAnalysis({ result, isProcessing }: RobustnessAnalysisP
             style={{ width: `${result.robustness}%` }}
           />
         </div>
-        <div className="flex justify-between mt-1 text-[9px] font-mono text-cyber-muted">
+        <div className="flex justify-between mt-1 text-[10px] font-mono text-cyber-muted">
           <span>0 - VULNERABLE</span>
           <span>100 - HARDENED</span>
         </div>

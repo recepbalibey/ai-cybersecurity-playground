@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ShieldAlert, AlertTriangle, Terminal, User, Server } from "lucide-react";
+import { ShieldAlert, User, Server } from "lucide-react";
 import { ThreatFinding } from "@/services/threatHunter";
 import { HoloTerm } from "@/components/effects/HoloTerm";
 import { HoloGauge } from "@/components/effects/HoloGauge";
@@ -14,9 +14,10 @@ interface ThreatFindingsProps {
 
 export function ThreatFindings({
   findings,
-  qualityScore,
-  confidence,
+  qualityScore = 0,
+  confidence = "0%",
 }: ThreatFindingsProps) {
+  const confidenceValue = Math.max(0, Math.min(100, Number(String(confidence).replace(/%/g, "")) || 0));
   return (
     <div className="cyber-panel border border-cyber-border overflow-hidden flex flex-col h-full">
       {/* Panel Header */}
@@ -46,7 +47,7 @@ export function ThreatFindings({
             note="Quality reflects how many hunters agree, whether the evidence is specific, and whether detections are real signals — not noise."
           />
           <HoloGauge
-            value={parseFloat(confidence)}
+            value={confidenceValue}
             label="AI Confidence"
             tone="emerald"
             note="Confidence is what the AI would bet on this being real attacker activity, based on how well the clues line up."

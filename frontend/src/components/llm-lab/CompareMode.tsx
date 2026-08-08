@@ -5,7 +5,6 @@ import {
   GitCompareArrows,
   ShieldCheck,
   ShieldAlert,
-  ArrowRight,
   Terminal,
 } from "lucide-react";
 import { CompareStep } from "@/services/llmSecuritySimulator";

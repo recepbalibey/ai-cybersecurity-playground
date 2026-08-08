@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ClipboardCheck, ScanSearch, Cpu, FileBarChart, Loader2 } from "lucide-react";
+import { ClipboardCheck, ScanSearch, Cpu, FileBarChart, Loader2, Check } from "lucide-react";
 import { TimelineStage } from "@/services/jailbreakEvaluator";
 
 interface SecurityAssessmentTimelineProps {
@@ -56,7 +56,7 @@ export function SecurityAssessmentTimeline({
                     : "bg-slate-900 text-slate-500 border border-slate-700"
                 }`}
               >
-                ✓
+                <Check className="w-3 h-3" aria-label="Complete" />
               </span>
             </div>
           );

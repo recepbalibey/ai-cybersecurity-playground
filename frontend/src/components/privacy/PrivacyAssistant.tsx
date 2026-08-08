@@ -43,7 +43,7 @@ export function PrivacyAssistant() {
   return (
     <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden flex flex-col h-full">
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
-        <Bot className="w-4 h-4 text-violet-400" />
+        <Bot className="w-4 h-4 text-cyan-400" />
         <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">Privacy Assistant</h3>
         <span className="ml-auto text-[10px] font-mono text-cyber-muted flex items-center gap-1">
           <ShieldQuestion className="w-3 h-3" /> Ask a question
@@ -105,7 +105,7 @@ export function PrivacyAssistant() {
         <button
           type="submit"
           disabled={!input.trim() || typing}
-          className="h-9 px-3 rounded-md bg-violet-600 hover:bg-violet-500 disabled:opacity-40 text-slate-950 flex items-center gap-1.5 text-xs font-bold"
+          className="h-9 px-3 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-slate-950 flex items-center gap-1.5 text-xs font-bold"
         >
           <Send className="w-3.5 h-3.5" />
           Ask

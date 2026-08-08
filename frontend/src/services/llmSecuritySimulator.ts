@@ -541,7 +541,7 @@ function fallbackSimulate(
 
   const detectedSignals =
     status === "BLOCKED"
-      ? attackType.detectionSignals.filter((s, i) => i < (flagged ? 3 : 2))
+      ? attackType.detectionSignals.filter((_, i) => i < (flagged ? 3 : 2))
       : [];
 
   const teachingPoints: TeachingPoint[] = [

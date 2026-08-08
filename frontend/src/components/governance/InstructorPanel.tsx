@@ -29,17 +29,17 @@ const FALLBACK: InstructorContext = {
 export function InstructorPanel({ context }: { context?: InstructorContext }) {
   const ctx = context ?? FALLBACK;
   return (
-    <div className="cyber-panel border border-violet-500/40 rounded-lg p-4 space-y-4">
+    <div className="cyber-panel border border-cyan-500/40 rounded-lg p-4 space-y-4">
       <div className="flex items-center gap-2">
-        <GraduationCap className="w-5 h-5 text-violet-300" />
-        <h3 className="text-xs font-bold text-violet-200 uppercase tracking-wider font-mono">Instructor Notes</h3>
+        <GraduationCap className="w-5 h-5 text-cyan-300" />
+        <h3 className="text-xs font-bold text-cyan-200 uppercase tracking-wider font-mono">Instructor Notes</h3>
       </div>
 
       <div className="space-y-3">
         {ctx.teaching_points.map((tp) => (
           <div key={tp.title} className="rounded-md border border-cyber-border bg-slate-900/40 p-3">
-            <div className="text-[12px] font-bold text-violet-200">{tp.title}</div>
-            <div className="text-[11px] text-violet-300/80 italic mt-0.5">{tp.concept}</div>
+            <div className="text-[12px] font-bold text-cyan-200">{tp.title}</div>
+            <div className="text-[11px] text-cyan-300/80 italic mt-0.5">{tp.concept}</div>
             <p className="text-[12px] text-cyber-muted mt-1.5">{tp.explanation}</p>
             <div className="mt-2 text-[11px] text-emerald-300 font-mono">Takeaway: {tp.key_takeaway}</div>
           </div>

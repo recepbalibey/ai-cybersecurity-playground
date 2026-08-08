@@ -69,6 +69,7 @@ export function Assistant({ qa, question, onQuestion, onAsk, examples }: Assista
           }}
         >
           <input
+            aria-label="Ask the assistant a question"
             value={question}
             onChange={(e) => onQuestion(e.target.value)}
             placeholder="Ask a question..."

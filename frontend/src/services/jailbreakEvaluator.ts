@@ -363,7 +363,7 @@ function hashString(s: string): number {
 
 function fallbackEvaluate(prompt: string, scenarioKey: string, modelKey: ModelKey): EvaluationResult {
   const entry = SCENARIOS[scenarioKey] ?? SCENARIOS["1_role_manipulation"];
-  const { meta, system_prompt, safety_rules, benign_response, test_case } = entry;
+  const { meta, benign_response, test_case } = entry;
   const model = findModel(modelKey);
   const category = findCategory(meta.category);
 

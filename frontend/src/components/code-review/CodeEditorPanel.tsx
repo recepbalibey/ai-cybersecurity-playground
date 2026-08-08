@@ -1,18 +1,10 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import { Code2, Play, RotateCcw, BookOpenCheck } from "lucide-react";
 import { REVIEW_EXAMPLES } from "@/data/securityCode";
 import { highlightHtml } from "./highlight";
 import type { CodeFinding, ReviewResult } from "@/services/securityCodeReviewer";
-
-const SEVERITY_TAG: Record<string, string> = {
-  Critical: "border-red-500/50 text-red-300 bg-red-950/30",
-  High: "border-orange-500/50 text-orange-300 bg-orange-950/30",
-  Medium: "border-yellow-500/50 text-yellow-300 bg-yellow-950/30",
-  Low: "border-sky-500/50 text-sky-300 bg-sky-950/30",
-  Informational: "border-slate-600 text-slate-300 bg-slate-800/30",
-};
 
 interface Props {
   code: string;
@@ -52,7 +44,6 @@ export function CodeEditorPanel({
   onSelectExample, onRun, onReset, isRunning, teaching, onToggleTeaching, findings,
   result,
 }: Props) {
-  const [scrollTop, setScrollTop] = useState(0);
   const preRef = useRef<HTMLPreElement>(null);
 
   const lineCount = code.split("\n").length;
@@ -61,7 +52,6 @@ export function CodeEditorPanel({
 
   const handleScroll = (e: React.UIEvent<HTMLTextAreaElement>) => {
     const v = e.currentTarget.scrollTop;
-    setScrollTop(v);
     if (preRef.current) preRef.current.scrollTop = v;
   };
 

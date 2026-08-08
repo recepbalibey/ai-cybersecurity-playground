@@ -37,11 +37,6 @@ export function ConversationSimulator({
     onRun(input.trim());
   };
 
-  const runPreset = (text: string) => {
-    setInput(text);
-    onRun(text);
-  };
-
   const Card = ({
     content,
     kind,

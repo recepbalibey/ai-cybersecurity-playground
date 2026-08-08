@@ -102,6 +102,13 @@ export function Header({
     statusLabel: "AI Online",
   };
 
+  const resolvedStatusLabel =
+    aiStatus === "processing"
+      ? moduleConfig.statusLabel
+      : aiStatus === "offline"
+      ? "Local analysis mode (backend offline)"
+      : moduleConfig.statusLabel;
+
   return (
     <header className="h-20 bg-cyber-surface border-b border-cyber-border px-6 flex items-center justify-between sticky top-0 z-10">
       {/* Title & Subtitle */}
@@ -115,6 +122,8 @@ export function Header({
             className={`flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-mono transition-colors ${
               aiStatus === "processing"
                 ? "bg-cyan-950/40 border-cyan-500/40 text-cyan-300"
+                : aiStatus === "offline"
+                ? "bg-amber-950/40 border-amber-500/40 text-amber-300"
                 : "bg-emerald-950/40 border-emerald-500/30 text-emerald-400"
             }`}
           >
@@ -122,13 +131,17 @@ export function Header({
               <span className="sonar flex h-2.5 w-2.5">
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
               </span>
+            ) : aiStatus === "offline" ? (
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-400"></span>
+              </span>
             ) : (
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
               </span>
             )}
-            <span className="font-semibold">{moduleConfig.statusLabel}</span>
+            <span className="font-semibold">{resolvedStatusLabel}</span>
           </div>
         </div>
         <p className="text-xs text-cyber-muted mt-0.5">{moduleConfig.subtitle}</p>
@@ -186,8 +199,11 @@ export function Header({
           </div>
 
           <button
+            role="switch"
+            aria-checked={instructorMode}
+            aria-label="Toggle instructor mode"
             onClick={() => onToggleInstructorMode(!instructorMode)}
-            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
               instructorMode ? "bg-accent" : "bg-cyber-border-light"
             }`}
           >

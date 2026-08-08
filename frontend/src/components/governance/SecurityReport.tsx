@@ -36,7 +36,7 @@ export function SecurityReport({ report }: SecurityReportProps) {
           >
             <Download className="w-3.5 h-3.5" /> Export / Print
           </button>
-          <span className="text-[10px] font-mono text-slate-500">PDF export is a placeholder</span>
+          <span className="text-[10px] font-mono text-slate-500">Use browser print-to-PDF</span>
         </div>
       </div>
 
@@ -128,7 +128,7 @@ export function SecurityReport({ report }: SecurityReportProps) {
             <ul className="space-y-1">
               {report.residual_risks.map((r, i) => (
                 <li key={i} className="text-[11px] flex items-start gap-1.5">
-                  <span className={`shrink-0 text-[9px] font-mono border rounded px-1 ${LEVEL_STYLE[r.level] ?? ""}`}>
+                  <span className={`shrink-0 text-[10px] font-mono border rounded px-1 ${LEVEL_STYLE[r.level] ?? ""}`}>
                     {r.level}
                   </span>
                   <span>{r.name}</span>

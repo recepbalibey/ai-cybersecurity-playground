@@ -28,7 +28,6 @@ export function AttackPanel({
   };
 
   const rf = result ? riskFactors[result.category] : undefined;
-  const outcomeOk = result?.outcome === "safe_complete";
 
   const riskName = rf?.name ?? "Unknown attack";
   const riskSeverity = rf?.severity ?? "-";
@@ -60,7 +59,7 @@ export function AttackPanel({
           <div className="flex items-center justify-between mb-1">
             <span className="text-xs font-bold text-cyber-heading">{riskName}</span>
             <span
-              className={`text-[9px] font-mono px-1.5 py-0.5 rounded border ${
+              className={`text-[10px] font-mono px-1.5 py-0.5 rounded border ${
                 outcomeBlocker(result.outcome) ? "border-rose-500 text-rose-400" : "border-emerald-500 text-emerald-400"
               }`}
             >
@@ -129,7 +128,7 @@ function outcomeBlocker(o?: string): boolean {
 function ResultLine({ label, value, dangerous }: { label: string; value: string; dangerous?: boolean }) {
   return (
     <div className="flex items-center justify-between py-0.5">
-      <span className="text-[9px] font-mono text-cyber-muted uppercase">{label}</span>
+      <span className="text-[10px] font-mono text-cyber-muted uppercase">{label}</span>
       <span className={`text-[10px] font-mono ${dangerous ? "text-rose-400" : "text-cyber-heading"}`}>{value}</span>
     </div>
   );

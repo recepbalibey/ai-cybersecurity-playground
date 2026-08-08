@@ -14,7 +14,6 @@ import {
   LABS,
   LAB_LESSONS,
   suggestedLabsBy,
-  isLabCompleted,
   type LearningPathId,
   type TheoryTopic,
   type LabsWalker,
@@ -127,7 +126,6 @@ export function LearningHub({
       <div className="min-h-0 flex-1">
         {activeSection === "overview" && (
           <Overview
-            progress={progress}
             learningPath={learningPath}
             onChoosePath={onChoosePath}
             onSelectLab={onSelectLab}
@@ -145,7 +143,7 @@ export function LearningHub({
           />
         )}
         {activeSection === "labs" && (
-          <LabGrid onSelectLab={onSelectLab} />
+          <LabGrid onSelectLab={onSelectLab} done={done} />
         )}
       </div>
     </div>
@@ -157,7 +155,6 @@ export function LearningHub({
 /* ------------------------------------------------------------------ */
 
 function Overview({
-  progress,
   learningPath,
   onChoosePath,
   onSelectLab,
@@ -166,7 +163,6 @@ function Overview({
   suggested,
   done,
 }: {
-  progress: LearningHubProps["progress"];
   learningPath: LearningPathId | null;
   onChoosePath: LearningHubProps["onChoosePath"];
   onSelectLab: LearningHubProps["onSelectLab"];
@@ -494,8 +490,10 @@ function TheoryLibrary({
 
 function LabGrid({
   onSelectLab,
+  done,
 }: {
   onSelectLab: (labId: string) => void;
+  done: Set<string>;
 }) {
   const [openLesson, setOpenLesson] = useState<LabLesson | null>(null);
 
@@ -511,7 +509,7 @@ function LabGrid({
         >
           <div className="flex items-center justify-between">
             <span className="font-mono text-xs text-cyber-muted">{lab.module}</span>
-            {isLabCompleted(lab.id) ? (
+            {done.has(lab.id) ? (
               <span className="flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-950/30 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-emerald-400">
                 <CheckCircle2 className="h-3 w-3" /> Done
               </span>

@@ -4,7 +4,6 @@ import React from "react";
 import {
   Trophy,
   ShieldCheck,
-  ShieldAlert,
   CheckCircle2,
   AlertTriangle,
   Activity,
@@ -16,7 +15,7 @@ interface RedTeamScoreboardProps {
 }
 
 export function RedTeamScoreboard({ summary }: RedTeamScoreboardProps) {
-  const score = summary.safety_score;
+  const score = Math.max(0, Math.min(100, Number(summary.safety_score) || 0));
   const ringColor =
     score >= 80 ? "stroke-emerald-400" : score >= 50 ? "stroke-amber-400" : "stroke-red-400";
   const pct = (value: number) => (summary.tests_completed ? Math.round((value / summary.tests_completed) * 100) : 0);

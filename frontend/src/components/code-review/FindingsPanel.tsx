@@ -58,7 +58,7 @@ export function FindingsPanel({ findings, selectedId, onSelect }: Props) {
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-[12px] font-semibold text-cyber-heading">{f.title}</span>
-                    <span className={`text-[9px] font-mono px-1 py-0.5 rounded border ${SEVERITY_STYLE[f.severity]}`}>
+                    <span className={`text-[10px] font-mono px-1 py-0.5 rounded border ${SEVERITY_STYLE[f.severity]}`}>
                       {f.severity}
                     </span>
                   </div>

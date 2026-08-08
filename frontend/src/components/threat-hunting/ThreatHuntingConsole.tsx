@@ -111,11 +111,12 @@ export function ThreatHuntingConsole({
             return (
               <button
                 key={idx}
+                disabled={isHunting}
                 onClick={() => {
                   setQueryInput(preset.query);
                   onSearch(preset.query);
                 }}
-                className="px-3.5 py-2.5 bg-slate-950/70 hover:bg-slate-900 border border-slate-800 hover:border-cyan-500/50 rounded-md text-left transition-all group flex items-center justify-between"
+                className="px-3.5 py-2.5 bg-slate-950/70 hover:bg-slate-900 border border-slate-800 hover:border-cyan-500/50 rounded-md text-left transition-all group flex items-center justify-between disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-slate-800"
               >
                 <div className="flex items-center gap-2.5">
                   <Icon className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors shrink-0" />

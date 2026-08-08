@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Terminal, Copy, Check, Code2 } from "lucide-react";
+import { Copy, Check, Code2 } from "lucide-react";
 
 interface QueryGeneratorProps {
   queries: {

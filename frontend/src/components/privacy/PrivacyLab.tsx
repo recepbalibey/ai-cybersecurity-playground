@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import { ShieldCheck, Play, RotateCcw, GraduationCap, Lock } from "lucide-react";
 import { PRIVACY_SCENARIOS } from "@/data/privacy";
 import { runScanSmart, fetchScanHistory, type PrivacyScanResult } from "@/services/privacyScanner";
@@ -44,6 +44,13 @@ export function PrivacyLab({
     [onStatusChange]
   );
 
+  const mountedRef = useRef(true);
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
   const handleRun = async () => {
     if (isProcessing) return;
     setProcessing(true);
@@ -51,12 +58,15 @@ export function PrivacyLab({
     setSelectedFindingId(null);
     markStarted("privacy-lab");
     const res = await runScanSmart(scenario.document, scenario.id);
+    if (!mountedRef.current) return;
     setResult(res);
     for (let i = 0; i < res.timeline.length; i++) {
+      if (!mountedRef.current) return;
       setActiveStage(i);
       setMissionStep("privacy-lab", i);
       await new Promise((r) => setTimeout(r, 320));
     }
+    if (!mountedRef.current) return;
     setActiveStage(null);
     setProcessing(false);
     markCompleted("privacy-lab");

@@ -20,7 +20,6 @@ interface SecurityAnalysisPanelProps {
     riskLevel: "high" | "medium" | "low";
     notes: string[];
   } | null;
-  blockers: string[];
 }
 
 function layerIcon(layer: DefenseLayer) {
@@ -62,7 +61,6 @@ function FileAlertBlock({
 export function SecurityAnalysisPanel({
   defenseLayers,
   attackAnalysis,
-  blockers,
 }: SecurityAnalysisPanelProps) {
   const hasActiveDefenses = (defenseLayers ?? []).some((l) => l.active);
 

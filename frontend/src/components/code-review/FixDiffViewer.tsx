@@ -15,7 +15,6 @@ interface Props {
   before: string;
   after: string;
   improvements: string[];
-  language: string;
 }
 
 function diffRows(before: string, after: string): Row[] {
@@ -90,7 +89,7 @@ const RIGHT_CLS: Record<Row["type"], string> = {
   added: "bg-emerald-950/40 text-emerald-300",
 };
 
-export function FixDiffViewer({ before, after, improvements, language }: Props) {
+export function FixDiffViewer({ before, after, improvements }: Props) {
   const rows = diffRows(before, after);
 
   return (

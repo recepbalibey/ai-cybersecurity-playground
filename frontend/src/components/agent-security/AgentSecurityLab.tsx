@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Bot, Cpu } from "lucide-react";
 import {
   AgentScenario,
@@ -24,8 +24,6 @@ import { EducationPanel } from "@/components/agent-security/EducationPanel";
 import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface AgentSecurityLabProps {
-  instructorMode: boolean;
-  onToggleInstructorMode: (val: boolean) => void;
   onStatusChange: (processing: boolean) => void;
 }
 
@@ -83,9 +81,18 @@ export function AgentSecurityLab({ onStatusChange }: AgentSecurityLabProps) {
     [onStatusChange]
   );
 
+  const runToken = useRef(0);
+  const mountedRef = useRef(true);
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
   const animate = async (result: MissionResult) => {
     const nodes = result.graph ?? [];
     for (let i = 0; i < nodes.length; i++) {
+      if (!mountedRef.current) return;
       setActiveStage(`graph_${i}`);
       await new Promise((r) => setTimeout(r, 380));
     }
@@ -94,12 +101,15 @@ export function AgentSecurityLab({ onStatusChange }: AgentSecurityLabProps) {
 
   const handleRun = async () => {
     if (isProcessing) return;
+    const token = ++runToken.current;
     setProcessing(true);
     setResult(null);
     markStarted("agent-security");
     const res = await runAgentMission(goal, selectedKey, Array.from(activeControls));
+    if (runToken.current !== token) return;
     setResult(res);
     await animate(res);
+    if (runToken.current !== token) return;
     setTotalMissions((n) => n + 1);
     setProcessing(false);
     markCompleted("agent-security");
@@ -107,13 +117,16 @@ export function AgentSecurityLab({ onStatusChange }: AgentSecurityLabProps) {
 
   const handleRunProtected = async () => {
     if (isProcessing) return;
+    const token = ++runToken.current;
     setProcessing(true);
     setCompare(true);
     markStarted("agent-security");
     const allControls = controlsList.map((c) => c.key);
     const res = await runAgentMission(goal, selectedKey, allControls);
+    if (runToken.current !== token) return;
     setProtectedResult(res);
     await animate(res);
+    if (runToken.current !== token) return;
     setProcessing(false);
     markCompleted("agent-security");
   };

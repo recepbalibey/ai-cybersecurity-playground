@@ -7,10 +7,9 @@ import { EvaluationResult } from "@/services/jailbreakEvaluator";
 interface ModelComparisonProps {
   lite: EvaluationResult | null;
   pro: EvaluationResult | null;
-  isProcessing: boolean;
 }
 
-export function ModelComparison({ lite, pro, isProcessing }: ModelComparisonProps) {
+export function ModelComparison({ lite, pro }: ModelComparisonProps) {
   const renderCard = (model: EvaluationResult | null, accent: "lite" | "pro") => {
     if (!model) {
       return (

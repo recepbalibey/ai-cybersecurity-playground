@@ -3,10 +3,8 @@
 import React from "react";
 import {
   ShieldCheck,
-  ShieldAlert,
   Activity,
   Crosshair,
-  Percent,
   GitCommitHorizontal,
 } from "lucide-react";
 import { EvaluationResult } from "@/services/jailbreakEvaluator";

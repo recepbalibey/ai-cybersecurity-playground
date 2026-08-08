@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { ShieldCheck, Play, RotateCcw, GraduationCap, Sparkles } from "lucide-react";
-import { REVIEW_EXAMPLES, type RiskLevel } from "@/data/securityCode";
+import { REVIEW_EXAMPLES } from "@/data/securityCode";
 import {
   runReviewSmart,
-  compareReview,
   askReviewerSmart,
   fetchReviewHistory,
   INSTRUCTOR,
@@ -66,6 +65,13 @@ export function CodeReviewLab({
     [onStatusChange]
   );
 
+  const mountedRef = useRef(true);
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
   const handleSelectExample = (id: string) => {
     const ex = REVIEW_EXAMPLES.find((e) => e.id === id);
     if (!ex) return;
@@ -84,7 +90,9 @@ export function CodeReviewLab({
     setQa([]);
     markStarted("code-review");
     await new Promise((r) => setTimeout(r, 450));
+    if (!mountedRef.current) return;
     const res = await runReviewSmart(code, language, exampleId || null);
+    if (!mountedRef.current) return;
     setResult(res);
     setSelectedFindingId(res.findings[0]?.id ?? null);
     setProcessing(false);
@@ -212,7 +220,6 @@ export function CodeReviewLab({
               before={result.fix.before}
               after={result.fix.after}
               improvements={result.fix.improvements}
-              language={result.language}
             />
           </div>
         </div>

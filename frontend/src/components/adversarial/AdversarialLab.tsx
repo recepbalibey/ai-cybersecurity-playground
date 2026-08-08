@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
-import { Activity, GitCompareArrows } from "lucide-react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { GitCompareArrows } from "lucide-react";
 import {
   VisionExperiment,
   VisionConcept,
@@ -24,8 +24,6 @@ import { ProgressPanel } from "@/components/adversarial/ProgressPanel";
 import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface AdversarialLabProps {
-  instructorMode: boolean;
-  onToggleInstructorMode: (val: boolean) => void;
   onStatusChange: (processing: boolean) => void;
 }
 
@@ -45,6 +43,7 @@ export function AdversarialLab({
   const [isProcessing, setIsProcessing] = useState(false);
   const [result, setResult] = useState<VisionAnalysisResult | null>(null);
   const [results, setResults] = useState<VisionAnalysisResult[]>([]);
+  const runToken = useRef(0);
 
   useEffect(() => {
     let active = true;
@@ -76,15 +75,18 @@ export function AdversarialLab({
 
   const handleRun = async () => {
     if (isProcessing) return;
+    const token = ++runToken.current;
     setProcessing(true);
     markStarted("adversarial-ml");
     const res = await runVisionAnalysis(experimentKey, mode);
+    if (runToken.current !== token) return;
     setResult(res);
     setResults((prev) => {
       const next = [...prev, res];
       return next.slice(-40);
     });
     await new Promise((r) => setTimeout(r, 300));
+    if (runToken.current !== token) return;
     setProcessing(false);
     markCompleted("adversarial-ml");
   };

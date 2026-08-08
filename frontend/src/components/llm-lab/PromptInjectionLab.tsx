@@ -17,18 +17,13 @@ import { SecurityAnalysisPanel } from "@/components/llm-lab/SecurityAnalysisPane
 import { AttackFlowVisualization } from "@/components/llm-lab/AttackFlowVisualization";
 import { CompareMode } from "@/components/llm-lab/CompareMode";
 import { AttackReplay, ReplayEntry } from "@/components/llm-lab/AttackReplay";
-import { TeachingOverlay } from "@/components/TeachingOverlay";
 import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface PromptInjectionLabProps {
-  instructorMode: boolean;
-  onToggleInstructorMode: (val: boolean) => void;
   onStatusChange: (processing: boolean) => void;
 }
 
 export function PromptInjectionLab({
-  instructorMode,
-  onToggleInstructorMode,
   onStatusChange,
 }: PromptInjectionLabProps) {
   const { markStarted, markCompleted } = useLabBrief();
@@ -54,7 +49,6 @@ export function PromptInjectionLab({
   } | null>(null);
   const [showCompare, setShowCompare] = useState(false);
   const [history, setHistory] = useState<ReplayEntry[]>([]);
-  const [attackCount, setAttackCount] = useState(0);
   const timeouts = useRef<number[]>([]);
 
   React.useEffect(() => {
@@ -87,20 +81,21 @@ export function PromptInjectionLab({
     setHistory((h) => [entry, ...h].slice(0, 50));
   }, []);
 
-  const runAttack = async (payloadText: string) => {
+  const runAttack = async (payloadText: string, modeOverride?: LabMode) => {
     if (!payloadText.trim() || isProcessing) return;
+    const activeMode = modeOverride ?? mode;
     setPayload(payloadText);
+    setMode(activeMode);
     setProcessing(true);
     setResult(null);
     setShowCompare(false);
 
     markStarted("prompt-injection");
-    const res = await simulateAttack(payloadText, scenarioKey, mode);
+    const res = await simulateAttack(payloadText, scenarioKey, activeMode);
     setResult(res);
 
     await new Promise((resolve) => setTimeout(resolve, 500));
     setProcessing(false);
-    setAttackCount((c) => c + 1);
     if (res.status === "SUCCESS" || res.status === "BLOCKED") {
       markCompleted("prompt-injection");
     }
@@ -109,13 +104,9 @@ export function PromptInjectionLab({
       id: `${Date.now()}`,
       timestamp: new Date().toLocaleTimeString("en-GB", { hour12: false }),
       payload: payloadText,
-      mode,
+      mode: activeMode,
       status: res.status,
     });
-
-    if (instructorMode && res.teachingPoints && res.teachingPoints.length > 0) {
-      // Surface teaching via overlay handled by parent if enabled
-    }
   };
 
   const runCompare = async (payloadText: string) => {
@@ -130,7 +121,6 @@ export function PromptInjectionLab({
 
     await new Promise((resolve) => setTimeout(resolve, 500));
     setProcessing(false);
-    setAttackCount((c) => c + 1);
 
     recordHistory({
       id: `${Date.now()}`,
@@ -142,8 +132,7 @@ export function PromptInjectionLab({
   };
 
   const replayEntry = async (entry: ReplayEntry) => {
-    setMode(entry.mode);
-    await runAttack(entry.payload);
+    await runAttack(entry.payload, entry.mode);
   };
 
   const currentScenario = scenarios.find((s) => s.key === scenarioKey);
@@ -242,7 +231,6 @@ export function PromptInjectionLab({
             <SecurityAnalysisPanel
               defenseLayers={result?.defenseLayers ?? []}
               attackAnalysis={attackAnalysis}
-              blockers={result?.status === "BLOCKED" ? [result.reason] : []}
             />
           </div>
         </div>

@@ -7,7 +7,6 @@ import {
   JailbreakModel,
   AttackCategory,
   SafetyConcept,
-  ScenarioData,
   EvaluationResult,
   ModelKey,
   Difficulty,
@@ -33,14 +32,10 @@ import { ProgressAchievements } from "@/components/jailbreak/ProgressAchievement
 import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 
 interface JailbreakLabProps {
-  instructorMode: boolean;
-  onToggleInstructorMode: (val: boolean) => void;
   onStatusChange: (processing: boolean) => void;
 }
 
 export function JailbreakLab({
-  instructorMode,
-  onToggleInstructorMode,
   onStatusChange,
 }: JailbreakLabProps) {
   const { markStarted, markCompleted } = useLabBrief();
@@ -59,9 +54,14 @@ export function JailbreakLab({
     lite: EvaluationResult | null;
     pro: EvaluationResult | null;
   }>({ lite: null, pro: null });
-  const [showCompare, setShowCompare] = useState(false);
+const [showCompare, setShowCompare] = useState(false);
 
-  const [results, setResults] = useState<EvaluationResult[]>([]);
+const aggregateRef = useRef<EvaluationResult[]>([]);
+
+const pushResult = (res: EvaluationResult) => {
+  aggregateRef.current = [...aggregateRef.current, res];
+  aggregateScore(aggregateRef.current).then(setSummary);
+};
   const [summary, setSummary] = useState<ScoreboardSummary>({
     tests_completed: 0,
     blocked: 0,
@@ -104,6 +104,13 @@ export function JailbreakLab({
     [onStatusChange]
   );
 
+  const mountedRef = useRef(true);
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
   const runEvaluation = async (prompt: string) => {
     if (!prompt.trim() || isProcessing) return;
     setProcessing(true);
@@ -112,14 +119,12 @@ export function JailbreakLab({
 
     markStarted("jailbreak-lab");
     const res = await evaluateJailbreak(prompt, scenarioKey, modelKey);
+    if (!mountedRef.current) return;
     setResult(res);
-    setResults((prev) => {
-      const next = [...prev, res];
-      aggregateScore(next).then(setSummary);
-      return next;
-    });
+    pushResult(res);
 
     await new Promise((r) => setTimeout(r, 500));
+    if (!mountedRef.current) return;
     setProcessing(false);
     markCompleted("jailbreak-lab");
   };
@@ -132,15 +137,14 @@ export function JailbreakLab({
 
     markStarted("jailbreak-lab");
     const both = await evaluateBoth(prompt, scenarioKey);
+    if (!mountedRef.current) return;
     setCompare(both);
 
-    setResults((prev) => {
-      const next = [...prev, both.lite, both.pro];
-      aggregateScore(next).then(setSummary);
-      return next;
-    });
+    pushResult(both.lite);
+    pushResult(both.pro);
 
     await new Promise((r) => setTimeout(r, 500));
+    if (!mountedRef.current) return;
     setProcessing(false);
     markCompleted("jailbreak-lab");
   };
@@ -295,7 +299,6 @@ export function JailbreakLab({
           <ModelComparison
             lite={compare.lite}
             pro={compare.pro}
-            isProcessing={isProcessing}
           />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <AttackAnalysisView result={compare.pro} />
