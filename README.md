@@ -6,6 +6,8 @@ Students work inside a simulated security command center. They run "live" invest
 
 > **This is only a sandbox for learning.** Every dataset, target, finding, and scenario is **simulated**. The app never connects to, attacks, or tests real systems, real people, or real APIs. It teaches concepts. It does not probe production environments.
 
+![AI Cybersecurity Playground demo](demo.gif)
+
 ---
 
 ## Table of Contents
