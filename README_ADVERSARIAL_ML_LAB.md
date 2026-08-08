@@ -7,11 +7,11 @@ An interactive **machine-learning security** laboratory that teaches how adversa
 ---
 
 ## 🎯 Learning Objectives
-1. **Adversarial Examples** — understand that a tiny, human-imperceptible change can completely flip a model's prediction.
-2. **Decision Boundaries** — see how a small perturbation can cross the boundary between classes in feature space.
-3. **Robustness vs. Accuracy** — measure the model's ability to resist attacks and accept the deliberate trade-offs of hardening it.
-4. **Attack Classes** — compare perturbation (noise) attacks, occlusion attacks, and input transformations.
-5. **ML Security Testing** — apply an AI-red-team cycle (craft attack → measure failure → harden → re-evaluate) to a machine-learning pipeline.
+1. **Adversarial Examples**: understand that a tiny, human-imperceptible change can completely flip a model's prediction.
+2. **Decision Boundaries**: see how a small perturbation can cross the boundary between classes in feature space.
+3. **Robustness vs. Accuracy**: measure the model's ability to resist attacks and accept the deliberate trade-offs of hardening it.
+4. **Attack Classes**: compare perturbation (noise) attacks, occlusion attacks, and input transformations.
+5. **ML Security Testing**: apply an AI-red-team cycle (craft attack → measure failure → harden → re-evaluate) to a machine-learning pipeline.
 
 ---
 
@@ -30,12 +30,12 @@ Robustness Evaluation → clean / misclassified / blocked / defended
 ```
 
 Every attack produces:
-- **Before / After prediction** — synthetic face rendering with a confidence bar graph for each class.
-- **Confidence shift** — how wrong the model becomes under the attack.
-- **Robustness score** — simulated security metric (higher = harder to fool).
-- **What happened / Why it failed / Mitigations** — a written analyst narrative.
-- **Model Decision Timeline** — image → preprocessing → features → prediction → adversarial check.
-- **Teaching Points** — a portable-concept lesson for classroom use (Instructor Mode).
+- **Before / After prediction**: synthetic face rendering with a confidence bar graph for each class.
+- **Confidence shift**: how wrong the model becomes under the attack.
+- **Robustness score**: simulated security metric (higher = harder to fool).
+- **What happened / Why it failed / Mitigations**: a written analyst narrative.
+- **Model Decision Timeline**: image → preprocessing → features → prediction → adversarial check.
+- **Teaching Points**: a portable-concept lesson for classroom use (Instructor Mode).
 
 ---
 
@@ -54,7 +54,7 @@ Every attack produces:
 
 ## 🧭 Knowledge Base (`knowledge/adversarial-ml/`)
 
-### Concepts (`concepts.json`) — 6 lessons
+### Concepts (`concepts.json`): 6 lessons
 - **Adversarial Examples**, **Decision Boundaries**, **Model Robustness**, **Adversarial Training**, **High Accuracy != High Security**, **ML Security Testing**
 
 ### Attacks & Defenses (`attacks_defenses.json`)
@@ -65,16 +65,16 @@ Every attack produces:
 
 ## 🏆 Gamification / Achievements
 Learners unlock tiers by running experiments across the attack surface:
-- **ML Security Novice** — run your first attack.
-- **Adversarial Tester** — fully compromise a subject with an adversarial input.
-- **Defense Engineer** — complete the defense comparison.
-- **AI Red Team Specialist** — uncover a robustness weakness across noise, occlusion, and transformation.
+- **ML Security Novice**: run your first attack.
+- **Adversarial Tester**: fully compromise a subject with an adversarial input.
+- **Defense Engineer**: complete the defense comparison.
+- **AI Red Team Specialist**: uncover a robustness weakness across noise, occlusion, and transformation.
 
 ---
 
 ## 🚀 Run
 ```bash
-# Backend (FastAPI) — serves /api/vision/experiments, /concepts, /attacks-defenses, /analyze
+# Backend (FastAPI): serves /api/vision/experiments, /concepts, /attacks-defenses, /analyze
 cd backend && ./venv/bin/uvicorn main:app --reload
 
 # Frontend (Next.js)

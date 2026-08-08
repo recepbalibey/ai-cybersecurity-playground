@@ -2,19 +2,19 @@
 
 An interactive **AI Agent Security Operations Center** that demonstrates how autonomous AI agents make decisions and take actions, and how those decisions can be **abused** and **protected**.
 
-Traditional LLMs generate text. AI agents **act**: they plan, call tools, read systems, and change state. That capability is powerful — and it is also a new, large attack surface.
+Traditional LLMs generate text. AI agents **act**: they plan, call tools, read systems, and change state. That capability is powerful, and it also opens a new, large attack surface.
 
 > **Controlled educational sandbox.** Fully simulated. No email, cloud, OS, browser, or real-API access. Every tool is a local fake returning canned data. Students safely observe, attack, and defend autonomous AI systems.
 
 ---
 
 ## 🎯 Learning Objectives
-1. **Agents vs. Chatbots** — understand that an agent can perform actions, not just generate text.
-2. **Agent Loop** — see the Goal → Planner → Memory → Tool Selection → Tool Execution → Observation → Decision → Final Response cycle.
-3. **Why Agents Add Risk** — recognize that every tool expands the attack surface (indirect injection, memory poisoning, excessive permissions).
-4. **Attacks** — simulate indirect prompt injection, memory poisoning, tool misuse, permission escalation, goal manipulation, and instruction override.
-5. **Defense** — layer least privilege, human approval, prompt sanitization, memory validation, tool allowlists, and a policy engine.
-6. **Security Architecture** — learn that agent security depends on the runtime (policy engines, permission boundaries), not only prompt wording.
+1. **Agents vs. Chatbots**: understand that an agent can perform actions, not just generate text.
+2. **Agent Loop**: see the Goal → Planner → Memory → Tool Selection → Tool Execution → Observation → Decision → Final Response cycle.
+3. **Why Agents Add Risk**: recognize that every tool expands the attack surface (indirect injection, memory poisoning, excessive permissions).
+4. **Attacks**: simulate indirect prompt injection, memory poisoning, tool misuse, permission escalation, goal manipulation, and instruction override.
+5. **Defense**: layer least privilege, human approval, prompt sanitization, memory validation, tool allowlists, and a policy engine.
+6. **Security Architecture**: learn that agent security depends on the runtime (policy engines, permission boundaries), not only prompt wording.
 
 ---
 
@@ -103,14 +103,14 @@ Every tool call shows its permission, status, last execution, and execution deta
 
 Toggleable so students see the effect of each layer:
 
-- **Least Privilege** — scoped, per-mission permissions, revoked when done.
-- **Human Approval** — high-risk actions require explicit confirmation.
-- **Prompt Sanitization** — neutralize embedded instructions in tool output.
-- **Output Validation** — validate each resolved action before it executes.
-- **Memory Validation** — check provenance and consistency of memory.
-- **Tool Allowlist** — only pre-approved tools can be invoked.
-- **Execution Timeout** — bound mission and tool-call runtime.
-- **Policy Engine** — central allow/block decision maker.
+- **Least Privilege**: scoped, per-mission permissions, revoked when done.
+- **Human Approval**: high-risk actions require explicit confirmation.
+- **Prompt Sanitization**: neutralize embedded instructions in tool output.
+- **Output Validation**: validate each resolved action before it executes.
+- **Memory Validation**: check provenance and consistency of memory.
+- **Tool Allowlist**: only pre-approved tools can be invoked.
+- **Execution Timeout**: bound mission and tool-call runtime.
+- **Policy Engine**: central allow/block decision maker.
 
 Determine it yourself: run the **same mission** with controls **off** (unprotected) vs **on** (protected) and compare the outcome.
 
@@ -146,14 +146,14 @@ Discussion questions surfaced in the UI:
 ---
 
 ## 🏆 Interactive Features
-- **Mission Timeline** — step-by-step agent loop visualization.
-- **Execution Graph** — holographic connectors animating Goal → Planner → Memory → Tool → Policy → Decision → Output.
-- **Policy Decision Log** — every allow/block with reason.
-- **Permission Matrix** — tool-permission-risk overview.
-- **Risk Meter** — LOW / MEDIUM / HIGH live risk.
-- **Security Event Stream** — live feed of allowed/blocked actions.
-- **Agent Security Score** — missions count + blocked-to-done tally.
-- **Compare Protected** — same mission, unprotected vs protected.
+- **Mission Timeline**: step-by-step agent loop visualization.
+- **Execution Graph**: holographic connectors animating Goal → Planner → Memory → Tool → Policy → Decision → Output.
+- **Policy Decision Log**: every allow/block with reason.
+- **Permission Matrix**: tool-permission-risk overview.
+- **Risk Meter**: LOW / MEDIUM / HIGH live risk.
+- **Security Event Stream**: live feed of allowed/blocked actions.
+- **Agent Security Score**: missions count + blocked-to-done tally.
+- **Compare Protected**: same mission, unprotected vs protected.
 
 ---
 

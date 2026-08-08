@@ -10,11 +10,11 @@ An interactive LLM **red-teaming** laboratory that teaches how security research
 ---
 
 ## 🎯 Learning Objectives
-1. **AI Red Teaming** — understand the disciplined, authorized process of probing a model to find safety failure modes before deployment.
-2. **Safety Evaluation** — measure behavior over a standardized suite of adversarial test cases, not a single prompt.
-3. **Jailbreak Categories** — recognize role manipulation, context switching, instruction conflict, encoding, multi-turn, and social engineering.
-4. **Why Resistance Is Hard** — see that all LLM input is language, so tiny framing changes can flip a refusal into unsafe output.
-5. **Defense** — study guardrails (input classifiers, output filters, policy layers) and alignment, and how improvements are verified across model versions.
+1. **AI Red Teaming**: understand the disciplined, authorized process of probing a model to find safety failure modes before deployment.
+2. **Safety Evaluation**: measure behavior over a standardized suite of adversarial test cases, not a single prompt.
+3. **Jailbreak Categories**: recognize role manipulation, context switching, instruction conflict, encoding, multi-turn, and social engineering.
+4. **Why Resistance Is Hard**: see that all LLM input is language, so tiny framing changes can flip a refusal into unsafe output.
+5. **Defense**: study guardrails (input classifiers, output filters, policy layers) and alignment, and how improvements are verified across model versions.
 
 ---
 
@@ -67,9 +67,9 @@ Each is shown in the **AI Security Concepts** panel with a "good practice" teach
 
 ## 📊 UI (three-column security testing interface)
 
-- **Left — Attack Library**: browse attack techniques with description, difficulty and learning objective.
-- **Center — Conversation Simulator**: user prompt → model processing → response, with a live safety status badge and inline refusal alerts.
-- **Right — Safety Evaluation**: risk level, model behavior, safety-score progress ring, signals detected, and lesson.
+- **Left: Attack Library**: browse attack techniques with description, difficulty and learning objective.
+- **Center: Conversation Simulator**: user prompt → model processing → response, with a live safety status badge and inline refusal alerts.
+- **Right: Safety Evaluation**: risk level, model behavior, safety-score progress ring, signals detected, and lesson.
 
 Plus the **Red Team Scoreboard** (tests completed / blocked / needs improvement / safety score with progress ring), **Security Assessment Timeline**, **Attack Analysis**, **Model Comparison**, **AI Security Concepts**, and **Progress & Achievements** ranks.
 
@@ -128,7 +128,7 @@ Open **Jailbreak Lab** (Live Demo) in the sidebar. If the backend is stopped, th
 ## 🏫 Classroom Exercises
 1. **Identity is a boundary**: run a role-attack on Sentinel-Lite vs Sentinel-Pro. Why does one keep its identity and the other surrender it?
 2. **One test is not enough.** Run 15 different prompts and watch the scoreboard change. Why is a single pass meaningless?
-3. **Framing slide** — have students write their own hidden-context or Base64 prompt and predict whether each model blocks it before running.
+3. **Framing slide**: have students write their own hidden-context or Base64 prompt and predict whether each model blocks it before running.
 4. **Defense design.** After a Compromised result, propose which guardrail (input classifier / output filter / policy layer) would have stopped it.
 5. **Classroom reflection:** *Which defense mechanism made the difference? How should an organization evaluate and sign off a model before deployment?*
 
