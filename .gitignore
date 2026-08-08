@@ -173,3 +173,5 @@ coverage/
 # ============================================
 
 .local/
+# oversized generated demo files
+demo.gif
