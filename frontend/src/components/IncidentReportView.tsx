@@ -21,6 +21,10 @@ interface IncidentReportViewProps {
 }
 
 export function IncidentReportView({ report, onOpenTheory }: IncidentReportViewProps) {
+  const confidence = Math.max(
+    0,
+    Math.min(100, Number(String(report.risk_assessment.ai_confidence_score ?? "").replace(/%/g, "")) || 0)
+  );
 
   const handleExportJSON = () => {
     const dataStr =
@@ -177,7 +181,7 @@ ${report.recommended_actions
                 AI Confidence Score
               </div>
               <HoloGauge
-                value={parseFloat(report.risk_assessment.ai_confidence_score)}
+                value={confidence}
                 label="Confidence"
                 tone="emerald"
                 integer

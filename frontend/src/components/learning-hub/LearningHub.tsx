@@ -256,7 +256,7 @@ function Hero({
           defending systems with AI to securing AI itself.
         </h1>
         <p className="max-w-2xl text-base text-cyber-text">
-          Seven hands-on labs let you defend with AI and attack AI. Pick a
+          {LABS.length} hands-on labs let you defend with AI and attack AI. Pick a
           learning path and open the first lab.
         </p>
         <div className="flex flex-wrap items-center gap-3 pt-2">

@@ -84,6 +84,7 @@ export function AgentSecurityLab({ onStatusChange }: AgentSecurityLabProps) {
   const runToken = useRef(0);
   const mountedRef = useRef(true);
   useEffect(() => {
+    mountedRef.current = true;
     return () => {
       mountedRef.current = false;
     };
