@@ -51,6 +51,7 @@ import { useKeyboardNav } from "@/hooks/useKeyboardNav";
 import { KeyboardShortcutsHelp } from "@/components/KeyboardShortcutsHelp";
 import { CommandPalette } from "@/components/CommandPalette";
 import { subscribeOverlay } from "@/lib/overlayActivity";
+import { ToastProvider, useToast } from "@/components/toast/ToastProvider";
 
 import { LearningHub } from "@/components/learning-hub/LearningHub";
 import type { LearningPathId } from "@/services/learningHub";
@@ -91,13 +92,16 @@ import {
 export default function SOCAnalystPage() {
   return (
     <LabBriefProvider>
-      <SOCAnalystApp />
+      <ToastProvider>
+        <SOCAnalystApp />
+      </ToastProvider>
     </LabBriefProvider>
   );
 }
 
 function SOCAnalystApp() {
   const { markStarted, markCompleted, setMissionStep, resetLab, completedLabs, closeBrief, openLabId } = useLabBrief();
+  const { toast } = useToast();
 
   const MODULE_IDS = [
     "learning-hub", "soc-analyst", "threat-hunting", "pentest-assistant",
@@ -243,6 +247,7 @@ const runTokenRef = useRef(0);
 
   // Persist in-memory completion into localStorage so the hub progress and
   // sidebar checkmarks survive a refresh and stay in sync with the lab runs.
+  const prevCompletedRef = useRef<Set<string>>(new Set());
   useEffect(() => {
     if (typeof window === "undefined") return;
     for (const id of Array.from(completedLabs)) setLabCompleted(id, true);
@@ -250,7 +255,17 @@ const runTokenRef = useRef(0);
       setHubProgress(getProgress());
       setCompletedIds(getCompletedLabIds());
     }
-  }, [completedLabs]);
+    const newlyDone = Array.from(completedLabs).filter((id) => !prevCompletedRef.current.has(id));
+    if (newlyDone.length > 0) {
+      const lab = LABS.find((l) => l.id === newlyDone[newlyDone.length - 1]);
+      toast({
+        title: lab ? `Lab completed: ${lab.title}` : "Lab completed",
+        description: lab ? `Milestone ${lab.order} of ${LABS.length} logged.` : "Progress saved.",
+        tone: "success",
+      });
+    }
+    prevCompletedRef.current = new Set(completedLabs);
+  }, [completedLabs, toast]);
 
   // Reflect theme on the <html> element (drives CSS variables)
   useEffect(() => {
@@ -260,7 +275,14 @@ const runTokenRef = useRef(0);
     if (typeof window !== "undefined") localStorage.setItem("playground.theme", theme);
   }, [theme]);
 
-  const handleToggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
+  const handleToggleTheme = () => {
+    setTheme((t) => (t === "dark" ? "light" : "dark"));
+    const next = theme === "dark" ? "light" : "dark";
+    toast({
+      title: next === "dark" ? "Dark mode on" : "Light mode on",
+      tone: "info",
+    });
+  };
 
   const loadDataset = async (key: string) => {
     const content = await fetchDatasetContent(key);
@@ -381,6 +403,11 @@ const runTokenRef = useRef(0);
     clearAllProgress();
     setHubVersion((v) => v + 1);
     navigate("learning-hub");
+    toast({
+      title: "Progress reset",
+      description: "Completed labs have been cleared.",
+      tone: "warning",
+    });
   };
 
   const openTheoryModule = (topicId: string) => {
