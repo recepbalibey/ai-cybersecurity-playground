@@ -37,6 +37,8 @@ export function LabControlBar({
     (s) => s.difficulty === difficulty
   );
 
+  const lock = isProcessing;
+
   return (
     <div className="cyber-panel border border-cyber-border p-5 rounded-lg space-y-4">
       <div className="flex items-center justify-between">
@@ -60,22 +62,24 @@ export function LabControlBar({
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => onModeChange("vulnerable")}
+              disabled={lock}
               className={`px-3 py-3 rounded-lg border text-xs font-bold flex items-center justify-center gap-2 transition-all ${
                 mode === "vulnerable"
                   ? "bg-red-950/40 border-red-500/60 text-red-300 shadow-red-glow"
                   : "bg-slate-950/70 border-slate-800 text-slate-400 hover:border-slate-600"
-              }`}
+              } ${lock ? "opacity-40 cursor-not-allowed" : ""}`}
             >
               <ShieldAlert className="w-4 h-4" />
               Vulnerable App
             </button>
             <button
               onClick={() => onModeChange("protected")}
+              disabled={lock}
               className={`rounded-lg border text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
                 mode === "protected"
                   ? "bg-emerald-950/40 border-emerald-500/60 text-emerald-300 shadow-emerald-glow"
                   : "bg-slate-950/70 border-slate-800 text-slate-400 hover:border-slate-600"
-              }`}
+              } ${lock ? "opacity-40 cursor-not-allowed" : ""}`}
             >
               <ShieldCheck className="w-4 h-4" />
               Protected App
@@ -93,11 +97,12 @@ export function LabControlBar({
               <button
                 key={d.value}
                 onClick={() => onDifficultyChange(d.value)}
+                disabled={lock}
                 className={`px-3 py-3 rounded-lg border text-[11px] font-semibold flex-1 transition-all ${
                   difficulty === d.value
                     ? "bg-cyan-950/40 border-cyan-500/60 text-cyan-300"
                     : "bg-slate-950/70 border-slate-800 text-slate-400 hover:border-slate-600"
-                }`}
+                } ${lock ? "opacity-40 cursor-not-allowed" : ""}`}
               >
                 {d.label}
               </button>
@@ -107,8 +112,11 @@ export function LabControlBar({
             <select
               aria-label="Attack scenario"
               value={scenarioKey}
+              disabled={lock}
               onChange={(e) => onScenarioChange(e.target.value)}
-              className="w-full h-10 px-3 bg-slate-950 border border-slate-700/80 rounded-lg text-sm text-cyber-heading focus:outline-none focus:border-cyan-500 transition-all"
+              className={`w-full h-10 px-3 bg-slate-950 border border-slate-700/80 rounded-lg text-sm text-cyber-heading focus:outline-none focus:border-cyan-500 transition-all ${
+                lock ? "opacity-40 cursor-not-allowed" : ""
+              }`}
             >
               {filtered.length === 0 &&
                 scenarios.map((s) => (

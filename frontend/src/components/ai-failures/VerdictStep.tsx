@@ -9,6 +9,7 @@ interface VerdictStepProps {
   confidence: number;
   onDecision: (d: StudentDecision) => void;
   onConfidence: (v: number) => void;
+  isProcessing?: boolean;
   onSubmit: () => void;
 }
 
@@ -17,6 +18,7 @@ export function VerdictStep({
   confidence,
   onDecision,
   onConfidence,
+  isProcessing = false,
   onSubmit,
 }: VerdictStepProps) {
   const options: { value: StudentDecision; label: string; icon: typeof ThumbsUp; note: string }[] = [
@@ -85,10 +87,10 @@ export function VerdictStep({
 
       <button
         onClick={onSubmit}
-        disabled={!decision}
+        disabled={!decision || isProcessing}
         className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-slate-950 text-xs font-bold transition-all"
       >
-        Submit verdict and reveal ground truth
+        {isProcessing ? "Evaluating…" : "Submit verdict and reveal ground truth"}
       </button>
     </div>
   );

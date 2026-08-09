@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import {
   AlertTriangle,
   ArrowRight,
@@ -10,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import type { LabLesson } from "@/services/learningHub";
+import { useOverlaySignal } from "@/lib/overlayActivity";
 
 export function LabLessonModal({
   lesson,
@@ -20,6 +22,19 @@ export function LabLessonModal({
   onClose: () => void;
   onOpenLab: () => void;
 }) {
+  useOverlaySignal(true);
+
+  useEffect(() => {
+    const onKeyDown = (ev: KeyboardEvent) => {
+      if (ev.key === "Escape") {
+        ev.preventDefault();
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-cyber-base/70 p-4 backdrop-blur-sm"

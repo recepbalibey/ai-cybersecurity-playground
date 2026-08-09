@@ -111,7 +111,8 @@ export function MissionConsole({
         </button>
         <button
           onClick={onReset}
-          className="w-full flex items-center justify-center gap-2 h-9 rounded-lg border border-slate-700 bg-slate-900/60 text-cyber-text text-xs font-semibold hover:border-cyan-500/60 transition-all"
+          disabled={isProcessing}
+          className="w-full flex items-center justify-center gap-2 h-9 rounded-lg border border-slate-700 bg-slate-900/60 text-cyber-text text-xs font-semibold hover:border-cyan-500/60 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
         >
           <RotateCcw className="w-3.5 h-3.5" /> Reset
         </button>

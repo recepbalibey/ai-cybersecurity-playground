@@ -33,7 +33,7 @@ export function ConversationSimulator({
 
   const handleRun = (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!input.trim() && !isProcessing) return;
+    if (!input.trim() || isProcessing) return;
     onRun(input.trim());
   };
 

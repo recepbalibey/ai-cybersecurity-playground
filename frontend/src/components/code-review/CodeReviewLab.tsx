@@ -56,6 +56,7 @@ export function CodeReviewLab({
   const [qa, setQa] = useState<AssistantQA[]>([]);
   const [question, setQuestion] = useState("");
   const qaSeq = useRef(0);
+  const [historyVersion, setHistoryVersion] = useState(0);
 
   const setProcessing = useCallback(
     (val: boolean) => {
@@ -97,6 +98,7 @@ export function CodeReviewLab({
     setResult(res);
     setSelectedFindingId(res.findings[0]?.id ?? null);
     setProcessing(false);
+    setHistoryVersion((v) => v + 1);
     markCompleted("code-review");
   };
 
@@ -254,6 +256,7 @@ export function CodeReviewLab({
           }));
         }}
         emptyText="Run a review to populate history"
+        refreshKey={historyVersion}
       />
 
       {instructorMode && (

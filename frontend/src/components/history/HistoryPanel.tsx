@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { History, FileWarning } from "lucide-react";
 
 export type BadgeTone = "rose" | "amber" | "yellow" | "emerald" | "neutral";
@@ -34,6 +34,8 @@ interface HistoryPanelProps {
   fetchRows: () => Promise<HistoryRow[]>;
   loadingText?: string;
   emptyText?: string;
+  /** Bump to force a refresh (e.g. after a new review is created). */
+  refreshKey?: number;
 }
 
 export function HistoryPanel({
@@ -41,18 +43,22 @@ export function HistoryPanel({
   fetchRows,
   loadingText = "Loading history…",
   emptyText = "Run an analysis to populate history",
+  refreshKey = 0,
 }: HistoryPanelProps) {
   const [rows, setRows] = useState<HistoryRow[] | null>(null);
+  const fetchRef = useRef(fetchRows);
+  fetchRef.current = fetchRows;
 
   useEffect(() => {
     let cancelled = false;
-    fetchRows().then((list) => {
+    setRows(null);
+    fetchRef.current().then((list) => {
       if (!cancelled) setRows(list);
     });
     return () => {
       cancelled = true;
     };
-  }, [fetchRows]);
+  }, [refreshKey]);
 
   return (
     <div className="cyber-panel border border-cyber-border rounded-lg p-4">

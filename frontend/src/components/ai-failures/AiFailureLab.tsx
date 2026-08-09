@@ -92,6 +92,8 @@ export function AiFailureLab({
   const [qa, setQa] = useState<AssistantQA[]>([]);
   const [question, setQuestion] = useState("");
   const qaSeq = useRef(0);
+  const [running, setRunning] = useState(false);
+  const [historyVersion, setHistoryVersion] = useState(0);
 
   const setProcessing = useCallback((v: boolean) => onStatusChange(v), [onStatusChange]);
 
@@ -146,8 +148,9 @@ export function AiFailureLab({
   };
 
   const handleVerdictSubmit = async () => {
-    if (!standard.decision) return;
+    if (!standard.decision || running) return;
     setProcessing(true);
+    setRunning(true);
     markStarted("ai-failure-lab");
     const result = await evaluateAiFailureSmart(
       standard.scenarioId,
@@ -161,6 +164,8 @@ export function AiFailureLab({
     ]);
     setStandard((prev) => ({ ...prev, result }));
     setProcessing(false);
+    setRunning(false);
+    setHistoryVersion((v) => v + 1);
     setView({ kind: "standard", step: 2 });
     markCompleted("ai-failure-lab");
   };
@@ -220,6 +225,7 @@ export function AiFailureLab({
               confidence={standard.confidence}
               onDecision={(d) => setStandard((prev) => ({ ...prev, decision: d }))}
               onConfidence={(v) => setStandard((prev) => ({ ...prev, confidence: v }))}
+              isProcessing={running}
               onSubmit={handleVerdictSubmit}
             />
           )}
@@ -240,7 +246,10 @@ export function AiFailureLab({
                     : [...prev.selectedMitigations, id],
                 }))
               }
+              isProcessing={running}
               onRetest={async () => {
+                if (running) return;
+                setRunning(true);
                 const updated = await evaluateAiFailureSmart(
                   standard.scenarioId,
                   standard.decision ?? "uncertain",
@@ -248,6 +257,7 @@ export function AiFailureLab({
                   standard.confidence
                 );
                 setStandard((prev) => ({ ...prev, result: updated }));
+                setRunning(false);
               }}
               onReset={() => {
                 setView({ kind: "scenarios" });
@@ -297,13 +307,18 @@ export function AiFailureLab({
             setCapstonePicks((prev) => ({ ...prev, [eventId]: verdict }))
           }
           onRun={async () => {
+            if (running) return;
             setProcessing(true);
+            setRunning(true);
             markStarted("ai-failure-lab");
             const result = await runAiFailureCapstoneSmart(scenario.id, capstonePicks);
             setCapstoneResult(result);
             setProcessing(false);
+            setRunning(false);
+            setHistoryVersion((v) => v + 1);
             markCompleted("ai-failure-lab");
           }}
+          isProcessing={running}
         />
       );
     }
@@ -472,6 +487,7 @@ export function AiFailureLab({
               }));
             }}
             emptyText="Submit a verdict to populate history"
+            refreshKey={historyVersion}
           />
         </div>
       </div>

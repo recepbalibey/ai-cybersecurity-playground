@@ -158,6 +158,8 @@ export function PromptInjectionLab({
 
   const defenseLayersForFlow = result
     ? result.defenseLayers.map((l) => ({ name: l.name, active: l.active }))
+    : compare?.protected
+    ? compare.protected.defenseLayers.map((l) => ({ name: l.name, active: l.active }))
     : [];
 
   return (

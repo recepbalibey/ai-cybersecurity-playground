@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { BookOpen, Moon, Sun } from "lucide-react";
+import { BookOpen, Moon, Sun, Keyboard, Search } from "lucide-react";
 import { getLabBrief } from "@/data/labBriefData";
 import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
 import { LabBriefButton } from "@/components/lab-brief/LabBriefButton";
@@ -14,6 +14,8 @@ interface HeaderProps {
   activeModule?: string;
   theme?: "dark" | "light";
   onToggleTheme?: () => void;
+  onToggleShortcuts?: () => void;
+  onToggleCommand?: () => void;
 }
 
 export function Header({
@@ -23,6 +25,8 @@ export function Header({
   activeModule = "soc-analyst",
   theme = "dark",
   onToggleTheme,
+  onToggleShortcuts,
+  onToggleCommand,
 }: HeaderProps) {
   const { toggleBrief, openBrief, startedLabs, missionSteps, openLabId } = useLabBrief();
   const brief = getLabBrief(activeModule);
@@ -164,6 +168,30 @@ export function Header({
             open={briefOpen}
             onToggle={() => toggleBrief(brief.id)}
           />
+        )}
+
+        {/* Command Palette */}
+        {onToggleCommand && (
+          <button
+            onClick={onToggleCommand}
+            title="Command palette (⌘K)"
+            aria-label="Open command palette"
+            className="flex h-10 w-10 items-center justify-center rounded-md border border-cyber-border bg-cyber-surface text-cyber-muted transition-colors hover:text-accent"
+          >
+            <Search className="h-4 w-4" strokeWidth={1.75} />
+          </button>
+        )}
+
+        {/* Shortcuts Hint */}
+        {onToggleShortcuts && (
+          <button
+            onClick={onToggleShortcuts}
+            title="Keyboard shortcuts (?)"
+            aria-label="Open keyboard shortcuts help"
+            className="flex h-10 w-10 items-center justify-center rounded-md border border-cyber-border bg-cyber-surface text-cyber-muted transition-colors hover:text-accent"
+          >
+            <Keyboard className="h-4 w-4" strokeWidth={1.75} />
+          </button>
         )}
 
         {/* Theme Toggle */}

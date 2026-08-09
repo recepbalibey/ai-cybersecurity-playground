@@ -33,6 +33,7 @@ export function PrivacyLab({
   const [selectedFindingId, setSelectedFindingId] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeStage, setActiveStage] = useState<number | null>(null);
+  const [historyVersion, setHistoryVersion] = useState(0);
 
   const scenario = PRIVACY_SCENARIOS.find((s) => s.id === selectedId) ?? PRIVACY_SCENARIOS[0];
 
@@ -70,6 +71,7 @@ export function PrivacyLab({
     if (!mountedRef.current) return;
     setActiveStage(null);
     setProcessing(false);
+    setHistoryVersion((v) => v + 1);
     markCompleted("privacy-lab");
   };
 
@@ -278,6 +280,7 @@ export function PrivacyLab({
           }));
         }}
         emptyText="Run a scan to populate history"
+        refreshKey={historyVersion}
       />
     </div>
   );

@@ -10,6 +10,7 @@ interface CapstoneProps {
   result: AiFailureCapstone | null;
   onPick: (eventId: string, verdict: string) => void;
   onRun: () => void;
+  isProcessing?: boolean;
 }
 
 const VERDICT_OPTIONS = [
@@ -56,6 +57,7 @@ export function Capstone({
   result,
   onPick,
   onRun,
+  isProcessing = false,
 }: CapstoneProps) {
   const allPicked = events.every((ev) => picks[ev.id]);
   const ready = allPicked && !result;
@@ -101,10 +103,10 @@ export function Capstone({
           ))}
           <button
             onClick={onRun}
-            disabled={!ready}
+            disabled={!ready || isProcessing}
             className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-slate-950 text-xs font-bold transition-all"
           >
-            {allPicked ? "Score the capstone" : "Pick a verdict for every event"}
+            {isProcessing ? "Scoring…" : allPicked ? "Score the capstone" : "Pick a verdict for every event"}
           </button>
         </div>
       )}

@@ -10,6 +10,7 @@ interface MitigationStepProps {
   onToggle: (id: string) => void;
   onRetest: () => void;
   onReset: () => void;
+  isProcessing?: boolean;
 }
 
 export function MitigationStep({
@@ -18,6 +19,7 @@ export function MitigationStep({
   onToggle,
   onRetest,
   onReset,
+  isProcessing = false,
 }: MitigationStepProps) {
   const reliability = result.reliability;
 
@@ -103,9 +105,10 @@ export function MitigationStep({
       <div className="flex items-center gap-3 flex-wrap">
         <button
           onClick={onRetest}
-          className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 text-slate-950 text-xs font-bold flex items-center gap-2 transition-all"
+          disabled={isProcessing}
+          className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-slate-950 text-xs font-bold flex items-center gap-2 transition-all"
         >
-          <RotateCcw className="w-4 h-4" /> Retest reliability
+          <RotateCcw className="w-4 h-4" /> {isProcessing ? "Retesting…" : "Retest reliability"}
         </button>
         <button
           onClick={onReset}

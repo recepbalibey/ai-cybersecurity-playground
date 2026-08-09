@@ -76,6 +76,7 @@ export function GovernanceLab({
   const [qa, setQa] = useState<AssistantQA[]>([]);
   const [question, setQuestion] = useState("");
   const qaSeq = useRef(0);
+  const [historyVersion, setHistoryVersion] = useState(0);
 
   const project = GOVERNANCE_PROJECT_BY_ID[projectId] ?? GOVERNANCE_PROJECTS[0];
 
@@ -123,6 +124,7 @@ export function GovernanceLab({
     if (target > maxReached) setMaxReached(target);
     if (target === STEPS.length - 1) {
       markCompleted("governance");
+      setHistoryVersion((v) => v + 1);
     }
     setProcessing(false);
   };
@@ -363,8 +365,9 @@ export function GovernanceLab({
                 badgeTone: r.recommendation === "Deployment Not Recommended" ? "rose" : r.recommendation === "Further Testing Required" ? "amber" : "emerald",
               }));
             }}
-            emptyText="Reach the Report step to populate history"
-          />
+emptyText="Reach the Report step to populate history"
+                refreshKey={historyVersion}
+              />
         </div>
       </div>
     </div>

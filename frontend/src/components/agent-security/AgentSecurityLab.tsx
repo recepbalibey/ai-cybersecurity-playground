@@ -105,6 +105,8 @@ export function AgentSecurityLab({ onStatusChange }: AgentSecurityLabProps) {
     const token = ++runToken.current;
     setProcessing(true);
     setResult(null);
+    setProtectedResult(null);
+    setCompare(false);
     markStarted("agent-security");
     const res = await runAgentMission(goal, selectedKey, Array.from(activeControls));
     if (runToken.current !== token) return;
@@ -133,10 +135,13 @@ export function AgentSecurityLab({ onStatusChange }: AgentSecurityLabProps) {
   };
 
   const handleReset = () => {
+    runToken.current += 1;
     setResult(null);
     setProtectedResult(null);
     setCompare(false);
     setGoal("");
+    setActiveStage(null);
+    setProcessing(false);
   };
 
   const toggleControl = (key: string) => {

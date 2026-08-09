@@ -183,8 +183,11 @@ const pushResult = (res: EvaluationResult) => {
             </label>
             <select
               value={modelKey}
+              disabled={isProcessing}
               onChange={(e) => setModelKey(e.target.value as ModelKey)}
-              className="h-9 px-3 bg-slate-950 border border-slate-700/80 rounded-lg text-xs text-cyber-heading focus:outline-none focus:border-cyan-500 transition-all"
+              className={`h-9 px-3 bg-slate-950 border border-slate-700/80 rounded-lg text-xs text-cyber-heading focus:outline-none focus:border-cyan-500 transition-all ${
+                isProcessing ? "opacity-40 cursor-not-allowed" : ""
+              }`}
             >
               {models.map((m) => (
                 <option key={m.key} value={m.key}>
@@ -215,11 +218,12 @@ const pushResult = (res: EvaluationResult) => {
                 <button
                   key={d}
                   onClick={() => handleDiffChange(d)}
+                  disabled={isProcessing}
                   className={`px-3 py-2.5 rounded-lg border text-[11px] font-semibold flex-1 transition-all ${
                     difficulty === d
                       ? "bg-cyan-950/40 border-cyan-500/60 text-cyan-300"
                       : "bg-slate-950/70 border-slate-800 text-slate-400 hover:border-slate-600"
-                  }`}
+                  } ${isProcessing ? "opacity-40 cursor-not-allowed" : ""}`}
                 >
                   {d[0].toUpperCase() + d.slice(1)}
                 </button>
@@ -232,8 +236,11 @@ const pushResult = (res: EvaluationResult) => {
             </div>
             <select
               value={scenarioKey}
+              disabled={isProcessing}
               onChange={(e) => setScenarioKey(e.target.value)}
-              className="w-full h-10 px-3 bg-slate-950 border border-slate-700/80 rounded-lg text-sm text-cyber-heading focus:outline-none focus:border-cyan-500 transition-all"
+              className={`w-full h-10 px-3 bg-slate-950 border border-slate-700/80 rounded-lg text-sm text-cyber-heading focus:outline-none focus:border-cyan-500 transition-all ${
+                isProcessing ? "opacity-40 cursor-not-allowed" : ""
+              }`}
             >
               {scenarios.map((s) => (
                 <option key={s.key} value={s.key}>

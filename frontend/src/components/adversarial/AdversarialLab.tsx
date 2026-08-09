@@ -92,13 +92,17 @@ export function AdversarialLab({
   };
 
   const handleSelect = (key: string) => {
+    runToken.current += 1;
     setExperimentKey(key);
     setResult(null);
+    setProcessing(false);
   };
 
   const handleDifficulty = (d: Difficulty) => {
+    runToken.current += 1;
     setDifficulty(d);
     setResult(null);
+    setProcessing(false);
     const first = experiments.find((e) => e.difficulty === d);
     if (first) setExperimentKey(first.key);
   };

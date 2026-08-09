@@ -47,6 +47,10 @@ import { LabCompletion } from "@/components/lab-brief/LabCompletion";
 import { getLabBrief } from "@/data/labBriefData";
 import { CursorHalo } from "@/components/effects/CursorHalo";
 import { Reveal } from "@/components/effects/Reveal";
+import { useKeyboardNav } from "@/hooks/useKeyboardNav";
+import { KeyboardShortcutsHelp } from "@/components/KeyboardShortcutsHelp";
+import { CommandPalette } from "@/components/CommandPalette";
+import { subscribeOverlay } from "@/lib/overlayActivity";
 
 import { LearningHub } from "@/components/learning-hub/LearningHub";
 import type { LearningPathId } from "@/services/learningHub";
@@ -93,7 +97,7 @@ export default function SOCAnalystPage() {
 }
 
 function SOCAnalystApp() {
-  const { markStarted, markCompleted, setMissionStep, resetLab, completedLabs, closeBrief } = useLabBrief();
+  const { markStarted, markCompleted, setMissionStep, resetLab, completedLabs, closeBrief, openLabId } = useLabBrief();
 
   const MODULE_IDS = [
     "learning-hub", "soc-analyst", "threat-hunting", "pentest-assistant",
@@ -158,6 +162,9 @@ function SOCAnalystApp() {
   const [hubPath, setHubPath] = useState<LearningPathId | null>(null);
   const [completedIds, setCompletedIds] = useState<string[]>([]);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
 
 // Invalidated whenever the user navigates, so staged run flows in a
 // previous module can't keep firing state updates into a stale view.
@@ -348,6 +355,21 @@ const runTokenRef = useRef(0);
     navigate(labId as ModuleId);
   };
 
+  // Global keyboard navigation: arrows move between labs, 1-9/0 jump to a
+  // lab by its "Lab N" order, "?" opens the shortcuts help overlay. Cmd/Ctrl+K
+  // toggles the command palette (handled by the palette component itself).
+  const toggleHelp = useCallback(() => setHelpOpen((v) => !v), []);
+  const toggleCommand = useCallback(() => setCommandOpen((v) => !v), []);
+  const [overlayActive, setOverlayActive] = useState(false);
+  useEffect(() => subscribeOverlay(setOverlayActive), []);
+  const keyboardDisabled = openLabId !== null || overlayActive;
+  useKeyboardNav({
+    activeModule: activeModule as string,
+    disabled: keyboardDisabled,
+    onNavigate: handleSelectLab,
+    onToggleHelp: toggleHelp,
+  });
+
   const handleChoosePath = (path: LearningPathId) => {
     setLearningPath(path);
     setHubPath(path);
@@ -443,6 +465,8 @@ const runTokenRef = useRef(0);
           activeModule={activeModule}
           theme={theme}
           onToggleTheme={handleToggleTheme}
+          onToggleShortcuts={toggleHelp}
+          onToggleCommand={toggleCommand}
         />
 
         {/* Main Content Body */}
@@ -792,6 +816,24 @@ const runTokenRef = useRef(0);
       </div>
 
       <LabBriefDrawer />
+
+      <KeyboardShortcutsHelp
+        open={helpOpen}
+        onClose={() => setHelpOpen(false)}
+        completedIds={completedIds}
+      />
+
+      <CommandPalette
+        open={commandOpen}
+        onClose={() => setCommandOpen(false)}
+        onToggle={toggleCommand}
+        onNavigate={handleSelectLab}
+        onOpenTheory={openTheoryModule}
+        onToggleTheme={handleToggleTheme}
+        theme={theme}
+        onToggleShortcuts={toggleHelp}
+        completedIds={completedIds}
+      />
     </div>
   );
 }
