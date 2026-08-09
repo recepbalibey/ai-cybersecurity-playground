@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { AlertOctagon, ListChecks } from "lucide-react";
+import { AlertOctagon, ListChecks, Play } from "lucide-react";
 import type { CodeFinding } from "@/services/securityCodeReviewer";
 
 const SEVERITY_STYLE: Record<string, string> = {
@@ -21,16 +21,34 @@ interface Props {
   findings: CodeFinding[];
   selectedId: string | null;
   onSelect: (f: CodeFinding) => void;
+  hasResult?: boolean;
 }
 
-export function FindingsPanel({ findings, selectedId, onSelect }: Props) {
+export function FindingsPanel({ findings, selectedId, onSelect, hasResult = false }: Props) {
   if (findings.length === 0) {
     return (
-      <div className="cyber-panel border border-cyber-border rounded-lg p-4 flex items-center gap-3 text-sm text-emerald-300">
-        <ListChecks className="w-5 h-5" />
-        <div>
-          <div className="font-semibold">No vulnerabilities detected</div>
-          <div className="text-xs text-cyber-muted">Pattern review completed. Confirm with a human code review.</div>
+      <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
+        <div className="px-3 py-2 border-b border-cyber-border flex items-center gap-2">
+          <AlertOctagon className="w-4 h-4 text-cyan-400" />
+          <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">AI Findings</h3>
+          <span className="ml-auto text-[10px] font-mono text-cyber-muted">0 issues</span>
+        </div>
+        <div className={`flex items-center gap-3 p-4 text-sm ${hasResult ? "text-emerald-300" : "text-cyber-muted"}`}>
+          {hasResult ? (
+            <ListChecks className="w-5 h-5" />
+          ) : (
+            <Play className="w-5 h-5" />
+          )}
+          <div>
+            <div className={`font-semibold ${hasResult ? "" : "text-cyber-heading"}`}>
+              {hasResult ? "No vulnerabilities detected" : "No review run yet"}
+            </div>
+            <div className="text-xs text-cyber-muted">
+              {hasResult
+                ? "Pattern review completed. Confirm with a human code review."
+                : "Run a review to scan this code for security patterns."}
+            </div>
+          </div>
         </div>
       </div>
     );

@@ -55,6 +55,7 @@ import {
   getLearningPath,
   getCompletedLabIds,
   setLearningPath,
+  setLabCompleted,
   clearAllProgress,
   LABS,
   type ProgressSummary,
@@ -209,6 +210,15 @@ const runTokenRef = useRef(0);
     if (saved === "light" || saved === "dark") setTheme(saved);
   }, []);
 
+  // Start with the sidebar collapsed on small screens; user can expand it.
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1100px)");
+    const apply = () => setSidebarOpen(!mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
   // Probe the FastAPI backend so the UI can surface offline fallback mode
   useEffect(() => {
     const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -223,6 +233,17 @@ const runTokenRef = useRef(0);
     setHubPath(getLearningPath());
     setCompletedIds(getCompletedLabIds());
   }, [hubVersion, activeModule]);
+
+  // Persist in-memory completion into localStorage so the hub progress and
+  // sidebar checkmarks survive a refresh and stay in sync with the lab runs.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    for (const id of Array.from(completedLabs)) setLabCompleted(id, true);
+    if (completedLabs.size > 0) {
+      setHubProgress(getProgress());
+      setCompletedIds(getCompletedLabIds());
+    }
+  }, [completedLabs]);
 
   // Reflect theme on the <html> element (drives CSS variables)
   useEffect(() => {
@@ -409,6 +430,7 @@ const runTokenRef = useRef(0);
         onSelectModule={(modId) => navigate(modId as ModuleId)}
         collapsed={!sidebarOpen}
         onToggleCollapsed={() => setSidebarOpen((v) => !v)}
+        completedIds={completedIds}
       />
 
       {/* Main Command Center Area */}
@@ -755,7 +777,10 @@ const runTokenRef = useRef(0);
                 <Reveal>
                   <LabCompletion
                     brief={brief}
-                    onRetry={() => resetLab(activeModule)}
+                    onRetry={() => {
+                      resetLab(activeModule);
+                      setLabCompleted(activeModule, false);
+                    }}
                     onNext={nextLabId ? handleNextLab : undefined}
                     nextLabel={nextLabId ? "Continue to next lab" : undefined}
                   />

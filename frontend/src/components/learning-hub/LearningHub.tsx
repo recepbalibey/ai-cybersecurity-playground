@@ -7,6 +7,7 @@ import {
   CheckCircle2,
   ArrowRight,
   RotateCcw,
+  Play,
 } from "lucide-react";
 import {
   THEORY_TOPICS,
@@ -171,9 +172,21 @@ function Overview({
   suggested: LabsWalker[];
   done: Set<string>;
 }) {
+  const next = suggested.find((l) => !done.has(l.id));
+  const hasNext = next !== undefined && done.size > 0;
   return (
     <div className="space-y-6">
       <Hero learningPath={learningPath} onExploreLabs={onExploreLabs} />
+
+      {hasNext && (
+        <ContinueCard
+          lab={next}
+          completedCount={done.size}
+          totalCount={LABS.length}
+          learningPath={learningPath}
+          onSelect={() => onSelectLab(next.id)}
+        />
+      )}
 
       {!learningPath && (
         <PathChoice onChoosePath={onChoosePath} />
@@ -273,6 +286,65 @@ function Hero({
               : "Choose a learning path to personalize your start."}
           </span>
         </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Continue where you left off                                         */
+/* ------------------------------------------------------------------ */
+
+function ContinueCard({
+  lab,
+  completedCount,
+  totalCount,
+  learningPath,
+  onSelect,
+}: {
+  lab: LabsWalker;
+  completedCount: number;
+  totalCount: number;
+  learningPath: LearningPathId | null;
+  onSelect: () => void;
+}) {
+  const percent = Math.round((completedCount / totalCount) * 100);
+  return (
+    <div className="panel holo-panel holo-border group relative overflow-hidden p-5 radar-hover">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/10">
+          <Play className="h-5 w-5 text-accent" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="font-mono text-xs uppercase tracking-wider text-cyber-muted">
+              Continue where you left off
+            </p>
+            {learningPath && (
+              <span className="rounded-full border border-cyber-border px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-cyber-muted">
+                {LEARNING_PATHS[learningPath].name} path
+              </span>
+            )}
+          </div>
+          <p className="mt-1 text-base font-medium text-cyber-heading">{lab.title}</p>
+          <p className="text-sm text-cyber-muted">{lab.module}</p>
+          <div className="mt-2 flex items-center gap-2 text-xs text-cyber-muted">
+            {completedCount}/{totalCount} labs completed
+            <div className="h-1.5 w-32 overflow-hidden rounded-full bg-cyber-border">
+              <div
+                className="h-full rounded-full bg-emerald-400 progress-fill"
+                style={{ width: `${percent}%` }}
+              />
+            </div>
+          </div>
+        </div>
+        <button
+          onClick={onSelect}
+          className="group flex h-10 shrink-0 items-center gap-2 rounded-md bg-accent px-4 text-sm font-medium text-cyber-base transition-colors hover:bg-accent-hover"
+        >
+          Continue
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={1.75} />
+        </button>
       </div>
     </div>
   );

@@ -190,6 +190,7 @@ export function CodeReviewLab({
           <FindingsPanel
             findings={result?.findings ?? []}
             selectedId={selectedFindingId}
+            hasResult={Boolean(result)}
             onSelect={(f) => setSelectedFindingId(f.id)}
           />
         </div>

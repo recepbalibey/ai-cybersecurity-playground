@@ -17,6 +17,7 @@ import {
   EyeOff,
   Landmark,
   AlertTriangle,
+  Check,
 } from "lucide-react";
 import { AccentSwitcher } from "./effects/AccentSwitcher";
 
@@ -25,6 +26,7 @@ interface NavigationProps {
   onSelectModule?: (moduleId: string) => void;
   collapsed?: boolean;
   onToggleCollapsed?: () => void;
+  completedIds?: string[];
 }
 
 interface NavItem {
@@ -72,7 +74,9 @@ export function Navigation({
   onSelectModule,
   collapsed = false,
   onToggleCollapsed,
+  completedIds = [],
 }: NavigationProps) {
+  const completed = new Set(completedIds);
   return (
     <aside
       className={`${collapsed ? "w-16" : "w-64"} transition-[width] duration-200 bg-cyber-surface border-r border-cyber-border flex flex-col h-screen sticky top-0 select-none z-20`}
@@ -119,12 +123,14 @@ export function Navigation({
               {group.items.map((mod) => {
                 const Icon = mod.icon;
                 const isActive = mod.id === activeModule;
+                const isDone = completed.has(mod.id);
                 return (
                   <button
                     key={mod.id}
                     onClick={() => onSelectModule && onSelectModule(mod.id)}
                     title={mod.name}
                     aria-label={mod.name}
+                    aria-current={isActive ? "page" : undefined}
                     className={`group w-full flex items-center gap-3 px-3.5 py-2.5 rounded-md text-sm font-medium transition-all ${
                       collapsed ? "justify-center px-0" : ""
                     } ${
@@ -139,7 +145,17 @@ export function Navigation({
                       }`}
                       strokeWidth={1.75}
                     />
-                    {!collapsed && <span>{mod.name}</span>}
+                    {!collapsed && (
+                      <span className="min-w-0 flex-1 truncate">{mod.name}</span>
+                    )}
+                    {!collapsed && isDone && (
+                      <span
+                        title="Completed"
+                        className="flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full border border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
+                      >
+                        <Check className="h-3 w-3" strokeWidth={2.5} />
+                      </span>
+                    )}
                   </button>
                 );
               })}
