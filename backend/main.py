@@ -1,9 +1,15 @@
 import os
 import json
-from fastapi import FastAPI, HTTPException
+import logging
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any, List
+import time
+from collections import defaultdict
+
+logger = logging.getLogger(__name__)
 
 from app.services.ai_analyst import AIAnalystService
 from app.services.threat_hunter import ThreatHunterService
@@ -30,14 +36,43 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Enable CORS for Next.js frontend
+# CORS: allow specific origins via ALLOWED_ORIGINS env var (comma-separated).
+# Defaults to localhost for development.
+ALLOWED_ORIGINS = os.environ.get(
+    "ALLOWED_ORIGINS",
+    "http://localhost:3000,http://127.0.0.1:3000"
+).split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=False,
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
+
+# Rate limiting: per-IP, in-memory, sliding window.
+# Production should use Cloudflare-level rate limiting in addition.
+RATE_LIMIT_WINDOW = int(os.environ.get("RATE_LIMIT_WINDOW", "60"))
+RATE_LIMIT_MAX = int(os.environ.get("RATE_LIMIT_MAX", "60"))
+_rate_store: Dict[str, list] = defaultdict(list)
+
+@app.middleware("http")
+async def rate_limit_middleware(request: Request, call_next):
+    # Only rate-limit API POST endpoints (expensive operations)
+    if request.url.path.startswith("/api/") and request.method == "POST":
+        client_ip = request.client.host if request.client else "unknown"
+        now = time.time()
+        window = _rate_store[client_ip]
+        # Prune expired entries
+        _rate_store[client_ip] = [t for t in window if now - t < RATE_LIMIT_WINDOW]
+        if len(_rate_store[client_ip]) >= RATE_LIMIT_MAX:
+            return JSONResponse(
+                status_code=429,
+                content={"detail": "Rate limit exceeded. Try again later."},
+            )
+        _rate_store[client_ip].append(now)
+    return await call_next(request)
 
 ai_service = AIAnalystService()
 threat_hunter_service = ThreatHunterService()
@@ -53,6 +88,18 @@ governance_service = GovernanceEngineService()
 ai_failure_service = AiFailureEngineService()
 
 DATASETS_DIR = os.path.join(os.path.dirname(__file__), "..", "datasets")
+
+def _safe_dataset_path(dataset_key: str) -> str:
+    """Resolve dataset path, rejecting traversal attempts."""
+    # Strip .json extension if present, then re-add
+    clean = dataset_key.removesuffix(".json")
+    # Reject anything that could escape the directory
+    if not clean or ".." in clean or "/" in clean or "\\" in clean or "\0" in clean:
+        return ""
+    # Only allow alphanumeric, hyphens, underscores
+    if not all(c.isalnum() or c in "-_" for c in clean):
+        return ""
+    return os.path.join(DATASETS_DIR, f"{clean}.json")
 
 # Initialize database
 init_db()
@@ -85,22 +132,21 @@ def list_datasets():
                             "entry_count": len(data.get("log_entries", []))
                         })
                 except Exception as e:
-                    pass
+                    logger.warning("Failed to read dataset %s: %s", fname, e)
     return {"datasets": datasets}
 
 @app.get("/api/datasets/{dataset_key}")
 def get_dataset(dataset_key: str):
-    fname = f"{dataset_key}.json" if not dataset_key.endswith(".json") else dataset_key
-    filepath = os.path.join(DATASETS_DIR, fname)
-    if not os.path.exists(filepath):
+    filepath = _safe_dataset_path(dataset_key)
+    if not filepath or not os.path.exists(filepath):
         raise HTTPException(status_code=404, detail="Dataset file not found")
     with open(filepath, "r") as f:
         data = json.load(f)
     return data
 
 class AnalysisRequest(BaseModel):
-    log_content: str
-    dataset_name: Optional[str] = "Custom Upload"
+    log_content: str = Field(..., max_length=100_000)
+    dataset_name: Optional[str] = Field(default="Custom Upload", max_length=200)
 
 @app.post("/api/analyze")
 def analyze_logs(req: AnalysisRequest):
@@ -132,7 +178,7 @@ def get_history():
 
 # Module 2: AI Threat Hunting Endpoints
 class ThreatHuntRequest(BaseModel):
-    query: str
+    query: str = Field(..., max_length=5_000)
 
 @app.get("/api/threat-hunting/scenarios")
 def list_threat_hunting_scenarios():
@@ -146,14 +192,14 @@ def run_threat_hunt(req: ThreatHuntRequest):
 
 # Module 3: AI Pentest Assistant Endpoints
 class PentestConfig(BaseModel):
-    name: Optional[str] = "Lab Target"
-    app_type: Optional[str] = "Web Application"
-    tech_stack: Optional[str] = ""
-    assessment_goal: Optional[str] = "Perform a security assessment"
+    name: Optional[str] = Field(default="Lab Target", max_length=200)
+    app_type: Optional[str] = Field(default="Web Application", max_length=200)
+    tech_stack: Optional[str] = Field(default="", max_length=500)
+    assessment_goal: Optional[str] = Field(default="Perform a security assessment", max_length=2_000)
 
 class PentestAssistantRequest(BaseModel):
-    question: str
-    scenario_key: Optional[str] = ""
+    question: str = Field(..., max_length=5_000)
+    scenario_key: Optional[str] = Field(default="", max_length=200)
 
 @app.get("/api/pentest/scenarios")
 def list_pentest_scenarios():
@@ -177,9 +223,9 @@ def run_pentest_assistant(req: PentestAssistantRequest):
 
 # Module 4: Prompt Injection Playground Endpoints
 class LLMSimulationRequest(BaseModel):
-    payload: str
-    scenario_key: Optional[str] = "1_basic_override"
-    mode: Optional[str] = "vulnerable"
+    payload: str = Field(..., max_length=10_000)
+    scenario_key: Optional[str] = Field(default="1_basic_override", max_length=200)
+    mode: Optional[str] = Field(default="vulnerable", max_length=20)
 
 @app.get("/api/llm-security/scenarios")
 def list_llm_security_scenarios():
@@ -197,9 +243,9 @@ def run_llm_simulation(req: LLMSimulationRequest):
 
 # Module 5: Jailbreak Playground Endpoints
 class JailbreakEvaluationRequest(BaseModel):
-    prompt: str
-    scenario_key: Optional[str] = "1_role_manipulation"
-    model_key: Optional[str] = "sentinel_pro"
+    prompt: str = Field(..., max_length=10_000)
+    scenario_key: Optional[str] = Field(default="1_role_manipulation", max_length=200)
+    model_key: Optional[str] = Field(default="sentinel_pro", max_length=200)
 
 @app.get("/api/jailbreak/scenarios")
 def list_jailbreak_scenarios():
@@ -232,8 +278,8 @@ def aggregate_jailbreak_results(req: dict):
 
 # Module 6: Adversarial Face Recognition Lab Endpoints
 class VisionExperimentRequest(BaseModel):
-    experiment_key: str
-    mode: str = "clean"
+    experiment_key: str = Field(..., max_length=200)
+    mode: str = Field(default="clean", max_length=20)
     intensity: Optional[float] = None
 
 @app.get("/api/vision/experiments")
@@ -264,8 +310,8 @@ def run_vision_analysis(req: VisionExperimentRequest):
 
 # Module 7: AI Agent Security Lab Endpoints
 class AgentMissionRequest(BaseModel):
-    goal: str = ""
-    scenario_key: Optional[str] = "1_safe_investigation"
+    goal: str = Field(default="", max_length=5_000)
+    scenario_key: Optional[str] = Field(default="1_safe_investigation", max_length=200)
     controls: Optional[List[str]] = None
 
 @app.get("/api/agent-security/scenarios")
@@ -302,8 +348,8 @@ def run_agent_mission(req: AgentMissionRequest):
 
 # Module 8: AI Malware Analyst Lab Endpoints
 class MalwareAssistantRequest(BaseModel):
-    question: str
-    sample_key: Optional[str] = "1_powershell_simulation"
+    question: str = Field(..., max_length=5_000)
+    sample_key: Optional[str] = Field(default="1_powershell_simulation", max_length=200)
 
 @app.get("/api/malware-analysis/samples")
 def list_malware_samples():
@@ -346,13 +392,13 @@ def get_malware_history():
 
 # Module 9: AI Security Code Reviewer Endpoints
 class CodeReviewRequest(BaseModel):
-    code: str
-    language: Optional[str] = None
-    example_id: Optional[str] = None
+    code: str = Field(..., max_length=100_000)
+    language: Optional[str] = Field(default=None, max_length=50)
+    example_id: Optional[str] = Field(default=None, max_length=200)
 
 class CodeReviewAssistantRequest(BaseModel):
-    question: str
-    example_id: Optional[str] = None
+    question: str = Field(..., max_length=5_000)
+    example_id: Optional[str] = Field(default=None, max_length=200)
 
 @app.get("/api/code-review/examples")
 def list_code_review_examples():
@@ -406,12 +452,12 @@ def get_code_review_history():
 
 # Module 10: AI Data Privacy Lab Endpoints
 class PrivacyScanRequest(BaseModel):
-    document: str
-    scenario_id: Optional[str] = None
+    document: str = Field(..., max_length=100_000)
+    scenario_id: Optional[str] = Field(default=None, max_length=200)
 
 class PrivacyAssistantRequest(BaseModel):
-    question: str
-    scenario_id: Optional[str] = None
+    question: str = Field(..., max_length=5_000)
+    scenario_id: Optional[str] = Field(default=None, max_length=200)
 
 @app.get("/api/privacy/scenarios")
 def list_privacy_scenarios():
@@ -457,12 +503,12 @@ def get_privacy_history():
 
 # Module 11: AI Risk Assessment & Governance Simulator Endpoints
 class GovernanceAssessRequest(BaseModel):
-    project_id: str
+    project_id: str = Field(..., max_length=200)
     controls: Optional[List[str]] = None
 
 class GovernanceAssistantRequest(BaseModel):
-    question: str
-    project_id: Optional[str] = None
+    question: str = Field(..., max_length=5_000)
+    project_id: Optional[str] = Field(default=None, max_length=200)
 
 @app.get("/api/governance/projects")
 def list_governance_projects():
@@ -517,24 +563,24 @@ def get_governance_history():
 
 # Module 13: AI Failure Lab Endpoints
 class AiFailureEvaluateRequest(BaseModel):
-    scenario_id: str
-    decision: str = "uncertain"
+    scenario_id: str = Field(..., max_length=200)
+    decision: str = Field(default="uncertain", max_length=200)
     mitigations: Optional[List[str]] = None
     confidence: Optional[int] = None
 
 class AiFailureChallengeRequest(BaseModel):
-    scenario_id: str
-    prediction: str
+    scenario_id: str = Field(..., max_length=200)
+    prediction: str = Field(..., max_length=200)
 
 class AiFailureCapstoneRequest(BaseModel):
-    scenario_id: str
+    scenario_id: str = Field(..., max_length=200)
     picks: Dict[str, str] = {}
 
 class AiFailureScorecardRequest(BaseModel):
-    entries: List[Dict[str, Any]] = []
+    entries: List[Dict[str, Any]] = Field(default_factory=list, max_length=50)
 
 class AiFailureAssistantRequest(BaseModel):
-    question: str
+    question: str = Field(..., max_length=5_000)
 
 @app.get("/api/ai-failures/scenarios")
 def list_ai_failure_scenarios():
@@ -629,4 +675,7 @@ def get_ai_failure_history():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    host = os.environ.get("HOST", "127.0.0.1")
+    port = int(os.environ.get("PORT", "8000"))
+    reload = os.environ.get("RELOAD", "true").lower() == "true"
+    uvicorn.run("main:app", host=host, port=port, reload=reload)
