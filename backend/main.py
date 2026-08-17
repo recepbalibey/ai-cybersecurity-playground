@@ -267,7 +267,12 @@ def list_jailbreak_concepts():
 def run_jailbreak_evaluation(req: JailbreakEvaluationRequest):
     if not req.prompt.strip():
         raise HTTPException(status_code=400, detail="Test prompt cannot be empty")
-    return jailbreak_evaluator.evaluate(req.prompt, req.scenario_key, req.model_key)
+    if not req.scenario_key or not req.scenario_key.strip():
+        raise HTTPException(status_code=400, detail="Scenario key is required")
+    try:
+        return jailbreak_evaluator.evaluate(req.prompt, req.scenario_key, req.model_key)
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="Scenario not found")
 
 @app.post("/api/jailbreak/aggregate")
 def aggregate_jailbreak_results(req: dict):

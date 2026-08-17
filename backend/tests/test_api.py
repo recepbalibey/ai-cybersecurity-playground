@@ -129,6 +129,27 @@ def test_jailbreak_evaluate_empty_rejected(client):
     assert client.post("/api/jailbreak/evaluate", json={"prompt": ""}).status_code == 400
 
 
+def test_jailbreak_evaluate_empty_scenario_key(client):
+    r = client.post("/api/jailbreak/evaluate", json={"prompt": "test", "scenario_key": ""})
+    assert r.status_code == 400
+
+
+def test_jailbreak_evaluate_null_scenario_key(client):
+    r = client.post("/api/jailbreak/evaluate", json={"prompt": "test", "scenario_key": None})
+    assert r.status_code == 400
+
+
+def test_jailbreak_evaluate_missing_scenario_key(client):
+    r = client.post("/api/jailbreak/evaluate", json={"prompt": "test"})
+    assert r.status_code == 200
+    assert "status" in r.json()
+
+
+def test_jailbreak_evaluate_invalid_scenario_key(client):
+    r = client.post("/api/jailbreak/evaluate", json={"prompt": "test", "scenario_key": "does_not_exist"})
+    assert r.status_code == 404
+
+
 def test_jailbreak_aggregate(client):
     results = [
         {"status": "BLOCKED", "safety_score": 92},
