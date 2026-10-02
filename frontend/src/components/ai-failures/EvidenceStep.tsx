@@ -39,7 +39,7 @@ export function EvidenceStep({
       <div className="cyber-panel border border-cyber-border rounded-lg p-4">
         <div className="flex items-center gap-2 mb-3">
           <FileText className="w-4 h-4 text-cyan-400" />
-          <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+          <h3 className="text-xs font-bold text-cyber-heading">
             Evidence
           </h3>
         </div>
@@ -53,7 +53,7 @@ export function EvidenceStep({
         <div className="cyber-panel border border-amber-500/40 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-2">
             <EyeOff className="w-4 h-4 text-amber-400" />
-            <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+            <h3 className="text-xs font-bold text-cyber-heading">
               Human vs AI - your call first
             </h3>
           </div>
@@ -79,7 +79,7 @@ export function EvidenceStep({
         <div className="cyber-panel border border-amber-500/40 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-2">
             <CheckCircle2 className="w-4 h-4 text-amber-400" />
-            <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+            <h3 className="text-xs font-bold text-cyber-heading">
               Your verdict locked in
             </h3>
           </div>
@@ -100,7 +100,7 @@ export function EvidenceStep({
         <div className="cyber-panel border border-cyan-500/40 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-3">
             <BrainCircuit className="w-4 h-4 text-cyan-400" />
-            <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+            <h3 className="text-xs font-bold text-cyber-heading">
               AI decision
             </h3>
             <span className="ml-auto text-[10px] font-mono px-2 py-0.5 rounded border border-cyan-500/40 text-cyan-300">

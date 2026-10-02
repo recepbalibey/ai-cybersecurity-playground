@@ -64,7 +64,7 @@ export function HistoryPanel({
     <div className="cyber-panel border border-cyber-border rounded-lg p-4">
       <div className="flex items-center gap-2 mb-3">
         <History className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">{title}</h3>
+        <h3 className="text-xs font-bold text-cyber-heading">{title}</h3>
       </div>
 
       {rows === null ? (

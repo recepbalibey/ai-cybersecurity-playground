@@ -33,7 +33,7 @@ function RiskSection({
     <div className="rounded-md border border-cyber-border bg-slate-900/40 p-3">
       <div className="flex items-center gap-2 mb-1.5">
         <Icon className={`w-4 h-4 ${accent}`} />
-        <h4 className="text-[11px] font-bold text-cyber-heading uppercase tracking-wider font-mono">{title}</h4>
+        <h4 className="text-[11px] font-bold text-cyber-heading">{title}</h4>
       </div>
       <p className="text-[12px] text-cyber-muted leading-snug">{data.summary}</p>
       {data.points.length > 0 && (
@@ -73,7 +73,7 @@ export function GovernanceReview({ review }: GovernanceReviewProps) {
           <div className="rounded-md border border-cyber-border bg-slate-900/40 p-3">
             <div className="flex items-center gap-2 mb-1.5">
               <Gauge className="w-4 h-4 text-cyan-400" />
-              <h4 className="text-[11px] font-bold text-cyber-heading uppercase tracking-wider font-mono">Residual Risk</h4>
+              <h4 className="text-[11px] font-bold text-cyber-heading">Residual Risk</h4>
             </div>
             <div className="flex items-center gap-3">
               <div className="text-3xl font-bold font-mono text-cyber-heading">{review.residual_risk.score}</div>
@@ -100,7 +100,7 @@ export function GovernanceReview({ review }: GovernanceReviewProps) {
               ) : (
                 <ThumbsDown className="w-4 h-4 text-red-300" />
               )}
-              <h4 className="text-[11px] font-bold text-cyber-heading uppercase tracking-wider font-mono">
+              <h4 className="text-[11px] font-bold text-cyber-heading">
                 Deployment Recommendation
               </h4>
             </div>

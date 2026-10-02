@@ -22,7 +22,7 @@ export function PolicyPanel({ policies }: { policies: PolicyResult[] }) {
     <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
         <Gavel className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">Policy Engine</h3>
+        <h3 className="text-xs font-bold text-cyber-heading">Policy Engine</h3>
         {blocked > 0 && (
           <span className="ml-auto text-[10px] font-mono px-2 py-0.5 rounded border border-red-500/40 text-red-300">
             {blocked} blocked - do not send

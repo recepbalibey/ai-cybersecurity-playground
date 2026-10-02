@@ -13,7 +13,7 @@ import { IncidentReport } from "@/services/aiAnalyst";
 import { ConceptChip } from "@/components/effects/ConceptChip";
 import { HoloTerm } from "@/components/effects/HoloTerm";
 import { HoloGauge } from "@/components/effects/HoloGauge";
-import { HoloMatrix } from "@/components/effects/HoloMatrix";
+
 
 interface IncidentReportViewProps {
   report: IncidentReport;
@@ -91,13 +91,10 @@ ${report.recommended_actions
     <div className="cyber-panel holo-panel border border-cyber-border overflow-hidden">
       {/* Report Header */}
       <div className="p-4.5 border-b border-cyber-border bg-cyber-surface/80 flex items-center justify-between relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 opacity-50">
-          <HoloMatrix />
-        </div>
         <div className="flex items-center gap-3 relative">
           <FileText className="w-5 h-5 text-cyan-400" />
           <div>
-            <h2 className="text-base font-bold text-cyber-heading uppercase tracking-wider font-mono">
+            <h2 className="text-base font-bold text-cyber-heading">
               AI Generated SOC Incident Report
             </h2>
             <div className="text-xs text-cyber-muted font-mono mt-0.5">
@@ -128,7 +125,7 @@ ${report.recommended_actions
       <div className="p-6 space-y-6 bg-cyber-base/40">
         {/* Section 1: Executive Summary */}
         <div className="space-y-2.5">
-          <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-widest font-mono flex items-center gap-2">
+          <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
             <ShieldAlert className="w-4.5 h-4.5" />
             Executive Incident Summary
           </h3>
@@ -139,7 +136,7 @@ ${report.recommended_actions
 
         {/* Section 2: Attack Timeline */}
         <div className="space-y-2.5">
-          <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-widest font-mono flex items-center gap-2">
+          <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
             <Clock className="w-4.5 h-4.5" />
             Attack Timeline & Progression
           </h3>
@@ -163,7 +160,7 @@ ${report.recommended_actions
 
         {/* Section 3: Risk Assessment */}
         <div className="space-y-2.5">
-          <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-widest font-mono flex items-center gap-2">
+          <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
             <AlertTriangle className="w-4.5 h-4.5" />
             Risk & Impact Assessment
           </h3>
@@ -201,7 +198,7 @@ ${report.recommended_actions
 
         {/* Section 4: Recommended Actions & Playbook */}
         <div className="space-y-2.5">
-          <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-widest font-mono flex items-center gap-2">
+          <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
             <CheckSquare className="w-4.5 h-4.5" />
             Recommended Containment & Response Playbook
           </h3>

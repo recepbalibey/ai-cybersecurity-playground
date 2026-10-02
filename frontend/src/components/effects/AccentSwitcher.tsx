@@ -24,7 +24,7 @@ export function AccentSwitcher({ collapsed = false }: { collapsed?: boolean }) {
         document.documentElement.setAttribute("data-accent", next);
       }
     } catch {
-      // private mode / storage unavailable — keep default cyan
+      // private mode / storage unavailable  -  keep default cyan
     }
   }, []);
 
@@ -34,7 +34,7 @@ export function AccentSwitcher({ collapsed = false }: { collapsed?: boolean }) {
     try {
       localStorage.setItem(STORAGE_KEY, next);
     } catch {
-      // storage unavailable — expression still applies for the session
+      // storage unavailable  -  expression still applies for the session
     }
   }, []);
 

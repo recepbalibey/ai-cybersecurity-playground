@@ -1,38 +1,16 @@
+"use client";
+
 import { useMemo, useState } from "react";
-import {
-  Compass,
-  BookOpen,
-  FlaskConical,
-  Sparkles,
-  CheckCircle2,
-  ArrowRight,
-  RotateCcw,
-  Play,
-} from "lucide-react";
-import {
-  THEORY_TOPICS,
-  LEARNING_PATHS,
-  LABS,
-  LAB_LESSONS,
-  suggestedLabsBy,
-  type LearningPathId,
-  type TheoryTopic,
-  type LabsWalker,
-  type LabLesson,
-} from "@/services/learningHub";
+import { BookOpen, FlaskConical, CheckCircle2, ArrowRight, RotateCcw, ShieldCheck, ScanLine, Clock3 } from "lucide-react";
+import { THEORY_TOPICS, LEARNING_PATHS, LABS, LAB_LESSONS, suggestedLabsBy, type LearningPathId, type TheoryTopic, type LabsWalker, type LabLesson } from "@/services/learningHub";
 import { cn } from "@/lib/cn";
 import { TheoryFlow, FlowLegend } from "./TheoryFlow";
 import { LabLessonModal } from "./LabLessonModal";
 import { HoloTilt } from "@/components/effects/HoloTilt";
-import { HoloMatrix } from "@/components/effects/HoloMatrix";
 import { getLabBrief } from "@/data/labBriefData";
 
 export interface LearningHubProps {
-  progress: {
-    total: number;
-    completed: number;
-    percent: number;
-  };
+  progress: { total: number; completed: number; percent: number };
   completedIds: string[];
   learningPath: LearningPathId | null;
   onSelectLab: (labId: string) => void;
@@ -42,410 +20,73 @@ export interface LearningHubProps {
   onResetProgress: () => void;
 }
 
-export function LearningHub({
-  progress,
-  completedIds,
-  learningPath,
-  onSelectLab,
-  onOpenTheory,
-  onChoosePath,
-  onExploreLabs,
-  onResetProgress,
-}: LearningHubProps) {
-  const [activeSection, setActiveSection] = useState<
-    "overview" | "theory" | "labs"
-  >("overview");
-  const [theorTopic, setTheoryTopic] = useState<TheoryTopic>(THEORY_TOPICS[0]);
-
-  const suggested = useMemo(
-    () => suggestedLabsBy(learningPath, completedIds),
-    [learningPath, completedIds]
-  );
+export function LearningHub({ progress, completedIds, learningPath, onSelectLab, onOpenTheory, onChoosePath, onResetProgress }: LearningHubProps) {
+  const [activeSection, setActiveSection] = useState<"overview" | "theory" | "labs">("overview");
+  const [theoryTopic, setTheoryTopic] = useState<TheoryTopic>(THEORY_TOPICS[0]);
+  const suggested = useMemo(() => suggestedLabsBy(learningPath, completedIds), [learningPath, completedIds]);
   const done = useMemo(() => new Set(completedIds), [completedIds]);
-
-  const handleOpenTheoryTopic = (topic: TheoryTopic) => {
-    setTheoryTopic(topic);
-    setActiveSection("theory");
-  };
-
+  const next = suggested.find(lab => !done.has(lab.id)) ?? LABS[0];
   return (
-    <div className="flex h-full flex-col gap-6 overflow-y-auto p-6">
-      {/* Top action row */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-xl font-semibold text-cyber-heading">Learning Hub</h2>
-        <div className="flex items-center gap-3 text-sm">
-          <div className="flex items-center gap-2 text-cyber-muted">
-            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-            <span>
-              Completed {progress.completed}/{progress.total} labs
-            </span>
-            <div className="h-1.5 w-28 overflow-hidden rounded-full bg-cyber-border">
-              <div
-                className="h-full rounded-full bg-emerald-400 progress-fill"
-                style={{ width: `${progress.percent}%` }}
-              />
-            </div>
-          </div>
-          {progress.completed > 0 && (
-            <button
-              onClick={onResetProgress}
-              title="Reset all completed lab progress"
-              className="flex items-center gap-1.5 rounded-md border border-cyber-border bg-cyber-surface px-2.5 py-1.5 text-xs text-cyber-muted transition-colors hover:border-rose-400/40 hover:text-rose-400"
-            >
-              <RotateCcw className="h-3.5 w-3.5" strokeWidth={1.75} />
-              Reset progress
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Section nav */}
-      <div className="flex flex-wrap items-center gap-2">
-        {(
-          [
-            { id: "overview", label: "Overview", icon: Compass },
-            { id: "theory", label: "Theory Library", icon: BookOpen },
-            { id: "labs", label: "Labs", icon: FlaskConical },
-          ] as const
-        ).map(({ id, label, icon: Icon }) => (
-          <button
-            key={id}
-            onClick={() => setActiveSection(id)}
-            className={cn(
-              "flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm",
-              activeSection === id
-                ? "border-accent/50 bg-accent/10 text-accent"
-                : "border-transparent text-cyber-muted hover:bg-cyber-surface-hover hover:text-cyber-text"
-            )}
-          >
-            <Icon className="h-4 w-4" strokeWidth={1.75} />
-            {label}
-          </button>
-        ))}
-      </div>
-
-      <div className="min-h-0 flex-1">
-        {activeSection === "overview" && (
-          <Overview
-            learningPath={learningPath}
-            onChoosePath={onChoosePath}
-            onSelectLab={onSelectLab}
-            onExploreLabs={onExploreLabs}
-            onOpenTheoryTopic={handleOpenTheoryTopic}
-            suggested={suggested}
-            done={done}
-          />
-        )}
-        {activeSection === "theory" && (
-          <TheoryLibrary
-            topic={theorTopic}
-            onSelectTopic={setTheoryTopic}
-            onOpenTheory={onOpenTheory}
-          />
-        )}
-        {activeSection === "labs" && (
-          <LabGrid onSelectLab={onSelectLab} done={done} />
-        )}
-      </div>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Overview                                                           */
-/* ------------------------------------------------------------------ */
-
-function Overview({
-  learningPath,
-  onChoosePath,
-  onSelectLab,
-  onExploreLabs,
-  onOpenTheoryTopic,
-  suggested,
-  done,
-}: {
-  learningPath: LearningPathId | null;
-  onChoosePath: LearningHubProps["onChoosePath"];
-  onSelectLab: LearningHubProps["onSelectLab"];
-  onExploreLabs: LearningHubProps["onExploreLabs"];
-  onOpenTheoryTopic: (t: TheoryTopic) => void;
-  suggested: LabsWalker[];
-  done: Set<string>;
-}) {
-  const next = suggested.find((l) => !done.has(l.id));
-  const hasNext = next !== undefined && done.size > 0;
-  return (
-    <div className="space-y-6">
-      <Hero learningPath={learningPath} onExploreLabs={onExploreLabs} />
-
-      {hasNext && (
-        <ContinueCard
-          lab={next}
-          completedCount={done.size}
-          totalCount={LABS.length}
-          learningPath={learningPath}
-          onSelect={() => onSelectLab(next.id)}
-        />
-      )}
-
-      {!learningPath && (
-        <PathChoice onChoosePath={onChoosePath} />
-      )}
-
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2 space-y-6">
-          <div className="panel">
-            <SectionHeading
-              icon={Sparkles}
-              title="Big picture"
-              subtitle="Two AI worlds, one shared discipline."
-            />
-            <BigPicture />
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          <div className="panel p-4">
-            <SectionHeading
-              icon={BookOpen}
-              title="Start with theory"
-              subtitle="Three concepts first."
-            />
-            <div className="space-y-2">
-              {THEORY_TOPICS.slice(0, 3).map((t) => (
-                <TheoryRow key={t.id} topic={t} onOpen={() => onOpenTheoryTopic(t)} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Continue learning - full width at the bottom of the page */}
-      <div className="panel">
-        <SectionHeading
-          icon={FlaskConical}
-          title="Continue learning"
-          subtitle="Labs that build on what you already explored."
-        />
-        <div className="space-y-3">
-          {suggested.map((lab) => (
-            <LabRow
-              key={lab.id}
-              lab={lab}
-              completed={done.has(lab.id)}
-              onSelect={() => onSelectLab(lab.id)}
-            />
+    <div className="learning-home">
+      <div className="hub-toolbar">
+        <div className="hub-tabs" role="tablist" aria-label="Learning resources">
+          {([{ id: "overview", label: "Start here" }, { id: "labs", label: "All labs" }, { id: "theory", label: "Theory" }] as const).map(({ id, label }) => (
+            <button key={id} id={`tab-${id}`} role="tab" aria-selected={activeSection === id} aria-controls="hub-content" onClick={() => setActiveSection(id)} className={activeSection === id ? "is-active" : ""}>{label}</button>
           ))}
         </div>
-      </div>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Hero                                                               */
-/* ------------------------------------------------------------------ */
-
-function Hero({
-  learningPath,
-  onExploreLabs,
-}: {
-  learningPath: LearningPathId | null;
-  onExploreLabs: () => void;
-}) {
-  return (
-    <div className="panel holo-panel holo-border relative overflow-hidden p-8 radar-hover">
-      <div className="pointer-events-none absolute inset-0 opacity-70">
-        <HoloMatrix />
-      </div>
-      <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-accent/5 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-cyan-500/5 blur-3xl" />
-      <div className="holo-reticle relative space-y-4">
-        <p className="font-mono text-xs uppercase tracking-wider text-cyber-muted">
-          AI Cybersecurity Playground
-        </p>
-        <h1 className="max-w-2xl text-2xl font-semibold leading-tight text-cyber-heading md:text-3xl">
-          Explore how artificial intelligence changes cybersecurity - from
-          defending systems with AI to securing AI itself.
-        </h1>
-        <p className="max-w-2xl text-base text-cyber-text">
-          {LABS.length} hands-on labs let you defend with AI and attack AI. Pick a
-          learning path and open the first lab.
-        </p>
-        <div className="flex flex-wrap items-center gap-3 pt-2">
-          <button
-            onClick={onExploreLabs}
-            className="flex h-10 items-center gap-2 rounded-md bg-accent px-4 text-sm font-medium text-cyber-base hover:bg-accent-hover"
-          >
-            Start Learning
-            <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
-          </button>
-          <span className="text-sm text-cyber-muted">
-            {learningPath
-              ? `Path: ${LEARNING_PATHS[learningPath].name}`
-              : "Choose a learning path to personalize your start."}
-          </span>
+        <div className="hub-progress">
+          <span>{progress.completed} of {progress.total} labs complete</span>
+          <progress value={progress.completed} max={progress.total} aria-label="Completed labs" />
+          {progress.completed > 0 && <button onClick={onResetProgress} title="Reset progress" aria-label="Reset progress"><RotateCcw size={16} strokeWidth={1.75} /></button>}
         </div>
       </div>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Continue where you left off                                         */
-/* ------------------------------------------------------------------ */
-
-function ContinueCard({
-  lab,
-  completedCount,
-  totalCount,
-  learningPath,
-  onSelect,
-}: {
-  lab: LabsWalker;
-  completedCount: number;
-  totalCount: number;
-  learningPath: LearningPathId | null;
-  onSelect: () => void;
-}) {
-  const percent = Math.round((completedCount / totalCount) * 100);
-  return (
-    <div className="panel holo-panel holo-border group relative overflow-hidden p-5 radar-hover">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/10">
-          <Play className="h-5 w-5 text-accent" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <p className="font-mono text-xs uppercase tracking-wider text-cyber-muted">
-              Continue where you left off
-            </p>
-            {learningPath && (
-              <span className="rounded-full border border-cyber-border px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-cyber-muted">
-                {LEARNING_PATHS[learningPath].name} path
-              </span>
-            )}
-          </div>
-          <p className="mt-1 text-base font-medium text-cyber-heading">{lab.title}</p>
-          <p className="text-sm text-cyber-muted">{lab.module}</p>
-          <div className="mt-2 flex items-center gap-2 text-xs text-cyber-muted">
-            {completedCount}/{totalCount} labs completed
-            <div className="h-1.5 w-32 overflow-hidden rounded-full bg-cyber-border">
-              <div
-                className="h-full rounded-full bg-emerald-400 progress-fill"
-                style={{ width: `${percent}%` }}
-              />
+      <div id="hub-content" role="tabpanel" aria-labelledby={`tab-${activeSection}`}>
+        {activeSection === "overview" && <div className="space-y-10">
+          <section className="home-hero">
+            <div className="hero-copy">
+              <p className="eyebrow">Learn by doing</p>
+              <h1>Understand AI.<br />Practice security.</h1>
+              <p className="hero-description">Investigate threats with AI. Learn how AI systems fail and how to protect them. Work through {LABS.length} hands-on labs, one step at a time.</p>
+              <div className="hero-actions">
+                <button className="primary-button" onClick={() => onSelectLab(next.id)}>{done.size > 0 ? "Continue learning" : "Start your first lab"}<ArrowRight size={16} strokeWidth={1.75} /></button>
+                <button className="text-button" onClick={() => setActiveSection("labs")}>Browse all labs</button>
+              </div>
+              <p className="hero-note">Simulated scenarios. No live targets. Progress saved on this device.</p>
             </div>
-          </div>
-        </div>
-        <button
-          onClick={onSelect}
-          className="group flex h-10 shrink-0 items-center gap-2 rounded-md bg-accent px-4 text-sm font-medium text-cyber-base transition-colors hover:bg-accent-hover"
-        >
-          Continue
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={1.75} />
-        </button>
+            <div className="first-lab">
+              <div className="flex items-center justify-between"><span className="eyebrow">{done.size > 0 ? "Up next" : "A good place to start"}</span><ScanLine size={20} strokeWidth={1.75} /></div>
+              <h2>{next.title}</h2>
+              <p>{next.blurb}</p>
+              <ol className="lab-steps">
+                <li><span>1</span>Choose a sample scenario</li>
+                <li><span>2</span>Run the analysis</li>
+                <li><span>3</span>Review the evidence and decide</li>
+              </ol>
+              <div className="first-lab-meta"><Clock3 size={16} strokeWidth={1.75} />{getLabBrief(next.id)?.estimatedTime ?? "Self-paced"}<span>Guided lab</span></div>
+            </div>
+          </section>
+          <section>
+            <div className="section-title"><div><h2>Choose a direction</h2><p>Set your lab order. You can switch paths or open any lab.</p></div></div>
+            <div className="path-grid">
+              {(Object.keys(LEARNING_PATHS) as LearningPathId[]).map(id => <button key={id} className={`path-card ${learningPath === id ? "selected" : ""}`} aria-pressed={learningPath === id} onClick={() => onChoosePath(id)}>
+                <div className="path-icon">{id === "ai-for-cyber" ? <ScanLine size={22} strokeWidth={1.75} /> : <ShieldCheck size={22} strokeWidth={1.75} />}</div>
+                <div><h3>{id === "ai-for-cyber" ? "Defend with AI" : "Secure AI systems"}</h3><p>{id === "ai-for-cyber" ? "Read security logs, hunt threats, and review code with AI assistance." : "Test prompt injection, agent permissions, privacy, and model safety."}</p><span className="path-link">{learningPath === id ? "Selected path" : "Choose this path"}<ArrowRight size={16} strokeWidth={1.75} /></span></div>
+              </button>)}
+            </div>
+          </section>
+          <section>
+            <div className="section-title"><div><h2>{learningPath ? "Your next labs" : "Explore the labs"}</h2><p>Choose a topic and put it into practice.</p></div><button className="text-button" onClick={() => setActiveSection("labs")}>View all {LABS.length}<ArrowRight size={16} /></button></div>
+            <div className="recommended-labs">{suggested.slice(0, 3).map(lab => <LabRow key={lab.id} lab={lab} completed={done.has(lab.id)} onSelect={() => onSelectLab(lab.id)} />)}</div>
+          </section>
+          <section className="theory-strip"><BookOpen size={20} strokeWidth={1.75} /><div><h2>New to AI?</h2><p>Read the short lessons before trying a lab.</p></div><button className="text-button" onClick={() => setActiveSection("theory")}>Read the theory<ArrowRight size={16} /></button></section>
+        </div>}
+        {activeSection === "labs" && <div className="space-y-6"><div className="section-title"><div><h1 className="text-2xl font-semibold text-cyber-heading">All labs</h1><p>Open a lab or read its lesson first.</p></div></div><LabGrid onSelectLab={onSelectLab} done={done} /></div>}
+        {activeSection === "theory" && <TheoryLibrary topic={theoryTopic} onSelectTopic={setTheoryTopic} onOpenTheory={onOpenTheory} />}
       </div>
+      <footer className="home-footer"><span>AI Cybersecurity Playground</span><span>A practice space for students and teachers.</span></footer>
     </div>
   );
 }
-
-/* ------------------------------------------------------------------ */
-/* Path choice (onboarding)                                            */
-/* ------------------------------------------------------------------ */
-
-function PathChoice({
-  onChoosePath,
-}: {
-  onChoosePath: (path: LearningPathId) => void;
-}) {
-  return (
-    <div className="panel p-6">
-      <SectionHeading
-        icon={Compass}
-        title="Choose your learning path"
-        subtitle="This sets the order of the labs you see first. You can visit any lab anytime."
-      />
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {(Object.keys(LEARNING_PATHS) as LearningPathId[]).map((id) => {
-          const p = LEARNING_PATHS[id];
-          return (
-            <HoloTilt
-              key={id}
-              className="group panel p-5"
-              maxTilt={4}
-            >
-              <button
-                onClick={() => onChoosePath(id)}
-                className="flex w-full flex-col items-start gap-2 text-left"
-              >
-                <span className="flex items-center gap-2 font-medium text-cyber-heading">
-                  {p.name}
-                  <ArrowRight className="h-4 w-4 text-cyber-muted transition-colors group-hover:text-accent" />
-                </span>
-                <span className="text-sm text-cyber-muted">{p.tagline}</span>
-                <span className="text-sm text-cyber-text">{p.description}</span>
-              </button>
-            </HoloTilt>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Big picture                                                         */
-/* ------------------------------------------------------------------ */
-
-function BigPicture() {
-  const columns = [
-    {
-      title: "AI for Cybersecurity",
-      color: "text-accent",
-      points: [
-        "Detect - AI SOC Analyst",
-        "Hunt - AI Threat Hunting",
-        "Assess - AI Pentest Assistant",
-      ],
-    },
-    {
-      title: "Cybersecurity of AI",
-      color: "text-rose-400",
-      points: [
-        "Manipulate - Prompt Injection",
-        "Bypass - Jailbreak Evaluator",
-        "Fool - Adversarial ML",
-        "Control - AI Agent Security",
-      ],
-    },
-  ];
-  return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-      {columns.map((col) => (
-        <HoloTilt
-          key={col.title}
-          className="group panel p-5"
-          maxTilt={3}
-        >
-          <h4 className={cn("text-sm font-semibold", col.color)}>{col.title}</h4>
-          <ul className="mt-3 space-y-2">
-            {col.points.map((pt) => (
-              <li key={pt} className="flex items-center gap-2 text-sm text-cyber-text">
-                <CheckCircle2 className="h-4 w-4 shrink-0 text-cyber-muted transition-colors group-hover:text-accent" />
-                {pt}
-              </li>
-            ))}
-          </ul>
-        </HoloTilt>
-      ))}
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Theory library                                                      */
-/* ------------------------------------------------------------------ */
 
 function TheoryLibrary({
   topic,

@@ -41,7 +41,7 @@ export function PrivacyFindingsPanel({ findings, selectedId, onSelect, document 
     <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden flex flex-col h-full">
       <div className="px-3 py-2 border-b border-cyber-border flex items-center gap-2">
         <ShieldAlert className="w-4 h-4 text-red-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">Privacy Findings</h3>
+        <h3 className="text-xs font-bold text-cyber-heading">Privacy Findings</h3>
         <span className="ml-auto text-[10px] font-mono text-cyber-muted">{findings.length} item(s)</span>
       </div>
       <ul className="divide-y divide-cyber-border overflow-auto flex-1">

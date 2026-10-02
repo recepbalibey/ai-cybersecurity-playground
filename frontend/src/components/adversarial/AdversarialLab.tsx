@@ -114,7 +114,7 @@ export function AdversarialLab({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <GitCompareArrows className="w-5 h-5 text-cyan-400" />
-            <h2 className="text-base font-bold text-cyber-heading uppercase tracking-wider font-mono">
+            <h2 className="text-base font-bold text-cyber-heading">
               Adversarial Vision Lab - Active
             </h2>
           </div>

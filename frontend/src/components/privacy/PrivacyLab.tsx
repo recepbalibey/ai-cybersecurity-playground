@@ -92,7 +92,7 @@ export function PrivacyLab({
       <div className="cyber-panel border border-cyber-border p-4 rounded-lg flex items-center justify-between flex-wrap gap-3 holo-scan">
         <div className="flex items-center gap-2.5">
           <ShieldCheck className="w-5 h-5 text-cyan-400" />
-          <h2 className="text-base font-bold text-cyber-heading uppercase tracking-wider font-mono">
+          <h2 className="text-base font-bold text-cyber-heading">
             Privacy Protection Pipeline Active
           </h2>
         </div>
@@ -240,7 +240,7 @@ export function PrivacyLab({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
             <div className="lg:col-span-4 h-full">
               <div className="cyber-panel border border-cyber-border rounded-lg p-4">
-                <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono mb-2">
+                <h3 className="text-xs font-bold text-cyber-heading mb-2">
                   Scan Summary
                 </h3>
                 <ul className="space-y-1.5">

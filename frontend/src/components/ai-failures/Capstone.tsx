@@ -115,7 +115,7 @@ export function Capstone({
         <div className="space-y-4">
           {/* Accuracy comparison */}
           <div className="cyber-panel border border-cyber-border rounded-lg p-4">
-            <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono mb-3">
+            <h3 className="text-xs font-bold text-cyber-heading mb-3">
               AI alone vs human alone vs combined
             </h3>
             <div className="space-y-3">
@@ -144,7 +144,7 @@ export function Capstone({
 
           {/* Event-by-event breakdown */}
           <div className="space-y-2">
-            <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+            <h3 className="text-xs font-bold text-cyber-heading">
               Event by event
             </h3>
             {result.events.map(renderEventRow)}

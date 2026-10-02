@@ -48,7 +48,7 @@ export function ThreatWorkspace({
           <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
             <div className="px-4 py-3 border-b border-cyber-border bg-cyber-surface/60 flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-amber-400" />
-              <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+              <h3 className="text-xs font-bold text-cyber-heading">
                 Identified Risks
               </h3>
               <span className="ml-auto text-[10px] font-mono text-slate-500">{threats.length}</span>

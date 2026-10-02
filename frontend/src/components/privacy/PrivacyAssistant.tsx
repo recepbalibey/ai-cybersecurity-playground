@@ -44,7 +44,7 @@ export function PrivacyAssistant() {
     <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden flex flex-col h-full">
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
         <Bot className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">Privacy Assistant</h3>
+        <h3 className="text-xs font-bold text-cyber-heading">Privacy Assistant</h3>
         <span className="ml-auto text-[10px] font-mono text-cyber-muted flex items-center gap-1">
           <ShieldQuestion className="w-3 h-3" /> Ask a question
         </span>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/cn";
 
 export type GaugeTone = "accent" | "emerald" | "amber" | "rose";
@@ -37,32 +37,8 @@ export function HoloGauge({
   integer,
   className,
 }: HoloGaugeProps) {
-  const [shown, setShown] = useState(0);
+  const shown = Math.max(0, Math.min(max, value));
   const [focused, setFocused] = useState(false);
-  const reduced = useRef(false);
-
-  useEffect(() => {
-    reduced.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }, []);
-
-  useEffect(() => {
-    const target = Math.max(0, Math.min(max, value));
-    if (reduced.current) {
-      setShown(target);
-      return;
-    }
-    let raf = 0;
-    const start = performance.now();
-    const dur = 900;
-    const tick = (now: number) => {
-      const p = Math.min(1, (now - start) / dur);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setShown(target * eased);
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [value, max]);
 
   const pct = max === 0 ? 0 : Math.min(100, (shown / max) * 100);
   const renderNum = integer ? String(Math.round(pct)) : pct.toFixed(1);
@@ -80,6 +56,7 @@ export function HoloGauge({
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
       style={{ "--gauge-rgb": rgb } as React.CSSProperties}
+      tabIndex={note ? 0 : undefined}
       role="meter"
       aria-valuenow={Math.round(shown)}
       aria-valuemin={0}
@@ -87,7 +64,7 @@ export function HoloGauge({
       aria-label={label}
     >
       <div className="holo-gauge-ring">
-        {focused && <span className="holo-gauge-sweep" aria-hidden />}
+
         <span className="holo-gauge-num">
           {renderNum}
           <em>%</em>

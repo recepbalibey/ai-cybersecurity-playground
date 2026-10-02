@@ -31,7 +31,7 @@ export function VerdictStep({
     <div className="cyber-panel border border-cyber-border rounded-lg p-4">
       <div className="flex items-center gap-2 mb-3">
         <HelpCircle className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+        <h3 className="text-xs font-bold text-cyber-heading">
           Your verdict - is the AI correct?
         </h3>
       </div>

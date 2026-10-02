@@ -262,7 +262,7 @@ export function LabBriefDrawer() {
             <div className="flex items-center gap-2">
               <span className="font-mono text-[10px] text-cyber-muted tracking-wider">03</span>
               <Target className="h-4 w-4 text-accent" strokeWidth={1.75} />
-              <h3 className="text-[12px] font-bold text-cyber-heading uppercase tracking-wider">
+              <h3 className="text-[12px] font-bold text-cyber-heading">
                 Your Mission
               </h3>
             </div>

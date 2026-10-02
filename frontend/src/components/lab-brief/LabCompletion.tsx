@@ -32,7 +32,7 @@ export function LabCompletion({ brief, onRetry, onNext, nextLabel }: LabCompleti
         episode={{
           what: `You completed the ${brief.title} lab and closed out its mission.`,
           why: brief.whatYouLearned[0] ?? "You validated an AI security decision against the evidence.",
-          tryNext: brief.description.split(".")[0] + " — try a fresh scenario to practice.",
+          tryNext: brief.description.split(".")[0] + "  -  try a fresh scenario to practice.",
         }}
       />
 

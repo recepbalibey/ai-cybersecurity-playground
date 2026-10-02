@@ -9,7 +9,7 @@ export function PrivacyInstructorPanel({ context }: { context: InstructorContext
     <div className="cyber-panel border border-cyan-500/30 rounded-lg overflow-hidden">
       <div className="px-4 py-3 border-b border-cyan-500/30 bg-cyan-500/5 flex items-center gap-2">
         <GraduationCap className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">Instructor</h3>
+        <h3 className="text-xs font-bold text-cyber-heading">Instructor</h3>
       </div>
       <div className="p-4 space-y-4">
         <div className="space-y-3">

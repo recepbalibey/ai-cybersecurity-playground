@@ -126,7 +126,7 @@ export function CodeReviewLab({
       <div className="cyber-panel border border-cyber-border p-4 rounded-lg flex items-center justify-between flex-wrap gap-3 holo-scan">
         <div className="flex items-center gap-2.5">
           <ShieldCheck className="w-5 h-5 text-cyan-400" />
-          <h2 className="text-base font-bold text-cyber-heading uppercase tracking-wider font-mono">
+          <h2 className="text-base font-bold text-cyber-heading">
             AI Security Code Review Active
           </h2>
         </div>
@@ -292,7 +292,7 @@ function AssistantPanel({ qa, question, onQuestion, onAsk, examples }: {
     <div className="cyber-panel border border-cyan-500/30 rounded-lg overflow-hidden flex flex-col h-full">
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
         <Sparkles className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">Review Assistant</h3>
+        <h3 className="text-xs font-bold text-cyber-heading">Review Assistant</h3>
       </div>
       <div className="flex-1 min-h-[120px] max-h-64 overflow-auto p-3 space-y-2">
         {qa.length === 0 && (

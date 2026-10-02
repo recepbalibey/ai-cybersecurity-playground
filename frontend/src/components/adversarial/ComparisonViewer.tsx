@@ -94,7 +94,7 @@ export function ComparisonViewer({ result, isProcessing }: ComparisonViewerProps
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <ScanFace className="w-5 h-5 text-cyan-400" />
-            <h3 className="text-sm font-bold text-cyber-heading uppercase tracking-wider font-mono">
+            <h3 className="text-sm font-bold text-cyber-heading">
               Same Input - Two Models
             </h3>
           </div>
@@ -164,7 +164,7 @@ export function ComparisonViewer({ result, isProcessing }: ComparisonViewerProps
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <ScanFace className="w-5 h-5 text-cyan-400" />
-          <h3 className="text-sm font-bold text-cyber-heading uppercase tracking-wider font-mono">
+          <h3 className="text-sm font-bold text-cyber-heading">
             Before / After Prediction
           </h3>
         </div>

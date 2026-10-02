@@ -28,7 +28,7 @@ export function SecurityScorePanel({ before, after, confidence, risk }: {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-cyan-400" />
-          <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">Security Score</h3>
+          <h3 className="text-xs font-bold text-cyber-heading">Security Score</h3>
         </div>
         <span className={`px-2 py-0.5 rounded border text-[10px] font-mono ${RISK_COLOR[risk]}`}>{risk}</span>
       </div>

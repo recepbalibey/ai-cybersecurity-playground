@@ -19,7 +19,7 @@ export function TeachingOverlay({
       <div className="flex items-center justify-between border-b border-cyan-500/30 pb-3">
         <div className="flex items-center gap-2.5">
           <BookOpen className="w-5 h-5 text-cyan-400" />
-          <h3 className="text-sm font-bold text-cyan-300 uppercase tracking-widest font-mono">
+          <h3 className="text-sm font-bold text-cyan-300">
             Instructor Mode: Master&apos;s Level Teaching Points
           </h3>
         </div>

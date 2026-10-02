@@ -25,7 +25,7 @@ export function ClassificationPanel({ classification }: { classification: Classi
     <div className="cyber-panel border border-cyber-border rounded-lg p-4 flex flex-col gap-3">
       <div className="flex items-center gap-2">
         <Tags className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">Data Classification</h3>
+        <h3 className="text-xs font-bold text-cyber-heading">Data Classification</h3>
       </div>
       <div className={`px-3 py-2 rounded-md border text-sm font-mono font-bold w-fit ${CLASS_COLOR[classification.label] ?? CLASS_COLOR.Internal}`}>
         {classification.label}
@@ -53,7 +53,7 @@ export function PrivacyRiskPanel({ risk }: { risk: RiskResult }) {
     <div className="cyber-panel border border-cyber-border rounded-lg p-4 flex flex-col gap-3">
       <div className="flex items-center gap-2">
         <ShieldAlert className="w-4 h-4 text-orange-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">AI Privacy Risk</h3>
+        <h3 className="text-xs font-bold text-cyber-heading">AI Privacy Risk</h3>
       </div>
 
       <div className="flex items-center gap-3">

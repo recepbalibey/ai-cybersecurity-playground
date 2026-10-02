@@ -16,7 +16,7 @@ export function ScenarioComparison({ comparison }: ScenarioComparisonProps) {
         <div className="cyber-panel border border-cyber-border rounded-lg p-4 h-full">
           <div className="flex items-center gap-2 mb-3">
             <GitCompare className="w-4 h-4 text-cyan-400" />
-            <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+            <h3 className="text-xs font-bold text-cyber-heading">
               Poorly vs Well Governed
             </h3>
           </div>
@@ -60,7 +60,7 @@ export function ScenarioComparison({ comparison }: ScenarioComparisonProps) {
 
       <div className="lg:col-span-4 h-full">
         <div className="cyber-panel border border-cyber-border rounded-lg p-4 h-full">
-          <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono mb-2">
+          <h3 className="text-xs font-bold text-cyber-heading mb-2">
             What changed
           </h3>
           <p className="text-[12px] text-cyber-muted leading-snug">{comparison.notes}</p>

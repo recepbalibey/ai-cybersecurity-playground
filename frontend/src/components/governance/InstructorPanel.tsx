@@ -32,7 +32,7 @@ export function InstructorPanel({ context }: { context?: InstructorContext }) {
     <div className="cyber-panel border border-cyan-500/40 rounded-lg p-4 space-y-4">
       <div className="flex items-center gap-2">
         <GraduationCap className="w-5 h-5 text-cyan-300" />
-        <h3 className="text-xs font-bold text-cyan-200 uppercase tracking-wider font-mono">Instructor Notes</h3>
+        <h3 className="text-xs font-bold text-cyan-200">Instructor Notes</h3>
       </div>
 
       <div className="space-y-3">

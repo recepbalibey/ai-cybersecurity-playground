@@ -21,7 +21,7 @@ export function Assistant({ qa, question, onQuestion, onAsk, examples }: Assista
     <div className="cyber-panel border border-cyan-500/30 rounded-lg overflow-hidden flex flex-col h-full">
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
         <Sparkles className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+        <h3 className="text-xs font-bold text-cyber-heading">
           Reliability Assistant
         </h3>
       </div>

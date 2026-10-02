@@ -71,7 +71,7 @@ export function ProgressPanel({ results, experiments }: ProgressPanelProps) {
     <div className="cyber-panel border border-cyber-border p-5 rounded-lg h-full flex flex-col">
       <div className="flex items-center gap-2.5 mb-4">
         <Award className="w-4 h-4 text-amber-400" />
-        <h3 className="text-sm font-bold text-cyber-heading uppercase tracking-wider font-mono">
+        <h3 className="text-sm font-bold text-cyber-heading">
           Achievement Tiers
         </h3>
       </div>

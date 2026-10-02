@@ -65,7 +65,7 @@ function Section({ icon, title, children }: { icon: React.ReactNode; title: stri
     <div>
       <div className="flex items-center gap-1.5 mb-1">
         {icon}
-        <h4 className="text-[11px] font-bold uppercase tracking-wider text-cyber-heading">{title}</h4>
+        <h4 className="text-[11px] font-bold text-cyber-heading">{title}</h4>
       </div>
       {children}
     </div>

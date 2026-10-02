@@ -169,7 +169,7 @@ export function GovernanceLab({
       <div className="cyber-panel border border-cyber-border p-4 rounded-lg flex items-center justify-between flex-wrap gap-3 holo-scan">
         <div className="flex items-center gap-2.5">
           <ShieldCheck className="w-5 h-5 text-cyan-400" />
-          <h2 className="text-base font-bold text-cyber-heading uppercase tracking-wider font-mono">
+          <h2 className="text-base font-bold text-cyber-heading">
             AI Risk Assessment & Governance Active
           </h2>
         </div>
@@ -320,7 +320,7 @@ export function GovernanceLab({
             <div className="cyber-panel border border-cyber-border rounded-lg p-4 h-full">
               <div className="flex items-center gap-2 mb-2">
                 <GitCompare className="w-4 h-4 text-cyan-400" />
-                <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+                <h3 className="text-xs font-bold text-cyber-heading">
                   Live Assessment Summary
                 </h3>
               </div>

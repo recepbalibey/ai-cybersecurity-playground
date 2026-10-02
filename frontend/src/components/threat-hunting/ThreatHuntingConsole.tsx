@@ -52,7 +52,7 @@ export function ThreatHuntingConsole({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <Search className="w-5 h-5 text-cyan-400" />
-          <h2 className="holo-glitch text-base font-bold text-cyber-heading uppercase tracking-wider font-mono">
+          <h2 className="holo-glitch text-base font-bold text-cyber-heading">
             Threat Hunting Console
           </h2>
         </div>

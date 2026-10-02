@@ -5,12 +5,14 @@ import { CheckCircle2, Cpu, Radio } from "lucide-react";
 import { ReasoningStage } from "@/services/aiAnalyst";
 
 interface LiveInvestigationViewProps {
+  hasResult?: boolean;
   stages: ReasoningStage[];
   currentStageIndex: number;
   isAnalyzing: boolean;
 }
 
 export function LiveInvestigationView({
+  hasResult = false,
   stages,
   currentStageIndex,
   isAnalyzing,
@@ -18,11 +20,11 @@ export function LiveInvestigationView({
   return (
     <div className="cyber-panel flex flex-col h-full border border-cyber-border overflow-hidden">
       {/* Panel Header */}
-      <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
+      <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex flex-wrap items-center gap-2 justify-between">
         <div className="flex items-center gap-2.5">
           <Cpu className="w-4 h-4 text-cyan-400" />
-          <h2 className="text-base font-semibold text-cyber-heading uppercase tracking-wider font-mono">
-            Live AI Investigation View
+          <h2 className="text-base font-semibold text-cyber-heading">
+            Analysis steps
           </h2>
         </div>
         <div className="flex items-center gap-2">
@@ -32,7 +34,7 @@ export function LiveInvestigationView({
             }`}
           />
           <span className="text-xs text-cyber-muted font-mono uppercase font-semibold">
-            {isAnalyzing ? "REASONING IN PROGRESS" : "ANALYSIS COMPLETE"}
+            {isAnalyzing ? "REASONING IN PROGRESS" : hasResult ? "Complete" : "Ready"}
           </span>
         </div>
       </div>
@@ -59,26 +61,26 @@ export function LiveInvestigationView({
             </span>
             <div>
               <div className="text-sm font-semibold text-cyber-heading">
-                AI Cognitive Reasoning Pipeline
+                How the analysis works
               </div>
               <div className="text-xs text-cyber-muted font-mono mt-0.5">
                 {isAnalyzing
                   ? "Evaluating heuristic event features & anomaly probabilities..."
-                  : "All 5 reasoning stages verified & synthesized into SOC report"}
+                  : hasResult ? "Review the evidence and report below." : "Choose logs, then start the analysis."}
               </div>
             </div>
           </div>
           <div className="text-right font-mono text-xs font-bold text-cyan-400">
             {isAnalyzing
               ? `STAGE ${currentStageIndex + 1} / 5`
-              : "100% COMPLETE"}
+              : hasResult ? "Complete" : "Not started"}
           </div>
         </div>
 
         {/* 5-Stage Timeline Vertical Process Pipeline */}
         <div className="flex-1 space-y-3.5 relative">
           {stages.map((stage, idx) => {
-            const isCompleted = idx < currentStageIndex || (!isAnalyzing && stages.length > 0);
+            const isCompleted = (isAnalyzing && idx < currentStageIndex) || (!isAnalyzing && hasResult);
             const isCurrent = isAnalyzing && idx === currentStageIndex;
 
             return (
@@ -89,7 +91,7 @@ export function LiveInvestigationView({
                     ? "bg-cyan-950/40 border-cyan-500/60 shadow-cyan-glow holo-panel"
                     : isCompleted
                     ? "bg-slate-900/60 border-slate-800/80"
-                    : "bg-slate-950/30 border-slate-900/50 opacity-40"
+                    : "bg-slate-950/30 border-slate-900/50"
                 }`}
               >
                 <div className="flex items-start justify-between mb-1.5">

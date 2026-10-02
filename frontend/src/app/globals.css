@@ -2,301 +2,154 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ------------------------------------------------------------------ */
-/* Theme tokens — dark is the default, .light overrides               */
-/* Stored as RGB triplets so Tailwind can apply <alpha-value>.       */
-/* ------------------------------------------------------------------ */
 :root {
-  --cb-base: 7 10 15;            /* #070a0f */
-  --cb-surface: 13 18 29;        /* #0d121d */
-  --cb-surface-hover: 20 28 44;  /* #141c2c */
-  --cb-border: 30 41 59;         /* #1e293b */
-  --cb-border-light: 51 65 85;   /* #334155 */
-  --cb-muted: 100 116 139;       /* #64748b */
-  --cb-text: 226 232 240;        /* #e2e8f0 */
-  --cb-heading: 248 250 252;     /* #f8fafc */
-
-  /* Accent palette scale (default: cyan). Overridden per theme below.
-     Utilities like text-cyan-400 / border-cyan-500 read these triplets. */
-  --accent-50: 236 254 255;      /* cyan-50  #ecfeff */
-  --accent-100: 207 250 254;     /* cyan-100 #cffafe */
-  --accent-200: 165 243 252;     /* cyan-200 #a5f3fc */
-  --accent-300: 103 232 249;     /* cyan-300 #67e8f9 */
-  --accent-400: 34 211 238;      /* cyan-400 #22d3ee */
-  --accent-500: 6 182 212;       /* cyan-500 #06b6d4 */
-  --accent-600: 8 145 178;       /* cyan-600 #0891b2 */
-  --accent-700: 14 116 144;      /* cyan-700 #0e7490 */
-  --accent-800: 21 94 117;       /* cyan-800 #155e75 */
-  --accent-900: 22 78 99;        /* cyan-900 #164e63 */
-  --accent-950: 8 51 68;         /* cyan-950 #083344 */
-
-  --cb-cyan: var(--accent-500);
-  --cb-cyan-dark: var(--accent-600);
-  --cb-accent: var(--accent-500);
-  --cb-accent-hover: var(--accent-600);
-  --cb-accent-mute: var(--accent-700);
-}
-
-/* ------------------------------------------------------------------ */
-/* Accent A/B presets (opt-in). html[data-accent] overrides the       */
-/* palette scale + the single glow convars so every module swaps live. */
-/* ------------------------------------------------------------------ */
-:root[data-accent="electric-blue"] {
-  --accent-50: 239 246 255;   /* blue-50  #eff6ff */
-  --accent-100: 219 234 254;  /* blue-100 #dbeafe */
-  --accent-200: 191 219 254;  /* blue-200 #bfdbfe */
-  --accent-300: 147 197 253;  /* blue-300 #93c5fd */
-  --accent-400: 96 165 250;   /* blue-400 #60a5fa */
-  --accent-500: 59 130 246;   /* blue-500 #3b82f6 */
-  --accent-600: 37 99 235;    /* blue-600 #2563eb */
-  --accent-700: 29 78 216;    /* blue-700 #1d4ed8 */
-  --accent-800: 30 64 175;    /* blue-800 #1e40af */
-  --accent-900: 30 58 138;    /* blue-900 #1e3a8a */
-  --accent-950: 23 37 84;     /* blue-950 #172554 */
-}
-
-:root[data-accent="teal"] {
-  --accent-50: 240 253 250;   /* teal-50  #f0fdfa */
-  --accent-100: 204 251 241;  /* teal-100 #ccfbf1 */
-  --accent-200: 153 246 228;  /* teal-200 #99f6e4 */
-  --accent-300: 94 234 212;   /* teal-300 #5eead4 */
-  --accent-400: 45 212 191;   /* teal-400 #2dd4bf */
-  --accent-500: 20 184 166;   /* teal-500 #14b8a6 */
-  --accent-600: 13 148 136;   /* teal-600 #0d9488 */
-  --accent-700: 15 118 110;   /* teal-700 #0f766e */
-  --accent-800: 17 94 89;     /* teal-800 #115e59 */
-  --accent-900: 19 78 74;     /* teal-900 #134e4a */
-  --accent-950: 4 47 46;      /* teal-950 #042f2e */
-}
-
-:root[data-accent="violet"] {
-  --accent-50: 245 243 255;   /* violet-50  #f5f3ff */
-  --accent-100: 237 233 254;  /* violet-100 #ede9fe */
-  --accent-200: 221 214 254;  /* violet-200 #ddd6fe */
-  --accent-300: 196 181 253;  /* violet-300 #c4b5fd */
-  --accent-400: 167 139 250;  /* violet-400 #a78bfa */
-  --accent-500: 139 92 246;   /* violet-500 #8b5cf6 */
-  --accent-600: 124 58 237;   /* violet-600 #7c3aed */
-  --accent-700: 109 40 217;   /* violet-700 #6d28d9 */
-  --accent-800: 91 33 182;    /* violet-800 #5b21b6 */
-  --accent-900: 76 29 149;    /* violet-900 #4c1d95 */
-  --accent-950: 46 16 101;    /* violet-950 #2e1065 */
-}
-
-html.light {
   color-scheme: light;
-  --cb-base: 248 250 252;        /* #f8fafc */
-  --cb-surface: 255 255 255;     /* #ffffff */
-  --cb-surface-hover: 241 245 249; /* #f1f5f9 */
-  --cb-border: 226 232 240;      /* #e2e8f0 */
-  --cb-border-light: 203 213 225; /* #cbd5e1 */
-  --cb-muted: 100 116 139;       /* #64748b */
-  --cb-text: 51 65 85;           /* #334155 */
-  --cb-heading: 15 23 42;        /* #0f172a */
-  --accent-50: 236 254 255;      /* cyan-50  #ecfeff */
-  --accent-100: 207 250 254;     /* cyan-100 #cffafe */
-  --accent-200: 165 243 252;     /* cyan-200 #a5f3fc */
-  --accent-300: 103 232 249;     /* cyan-300 #67e8f9 */
-  --accent-400: 34 211 238;      /* cyan-400 #22d3ee */
-  --accent-500: 8 145 178;       /* cyan-600 #0891b2 (pulled one step for text contrast) */
-  --accent-600: 14 116 144;      /* cyan-700 #0e7490 */
-  --accent-700: 21 94 117;       /* cyan-800 #155e75 */
-  --accent-800: 22 78 99;        /* cyan-900 #164e63 */
-  --accent-900: 8 51 68;         /* cyan-950 #083344 */
-  --accent-950: 6 34 46;         /* deep cyan */
+  --cb-base: 247 247 245;
+  --cb-surface: 255 255 255;
+  --cb-surface-hover: 240 240 237;
+  --cb-border: 224 225 220;
+  --cb-border-light: 199 201 194;
+  --cb-muted: 100 105 100;
+  --cb-text: 55 60 55;
+  --cb-heading: 28 33 29;
+  --accent-50: 244 248 245;
+  --accent-100: 230 239 232;
+  --accent-200: 204 221 209;
+  --accent-300: 166 194 175;
+  --accent-400: 96 137 110;
+  --accent-500: 57 92 69;
+  --accent-600: 44 73 54;
+  --accent-700: 37 62 46;
+  --accent-800: 31 51 39;
+  --accent-900: 25 41 31;
+  --accent-950: 20 32 25;
   --cb-cyan: var(--accent-500);
   --cb-cyan-dark: var(--accent-600);
   --cb-accent: var(--accent-500);
   --cb-accent-hover: var(--accent-600);
   --cb-accent-mute: var(--accent-300);
 }
-
+html.dark {
+  color-scheme: dark;
+  --cb-base: 22 24 22;
+  --cb-surface: 29 32 29;
+  --cb-surface-hover: 38 42 38;
+  --cb-border: 58 64 58;
+  --cb-border-light: 80 88 80;
+  --cb-muted: 166 176 166;
+  --cb-text: 218 224 218;
+  --cb-heading: 244 246 242;
+  --accent-300: 184 207 190;
+  --accent-400: 156 190 166;
+  --accent-500: 145 181 155;
+  --accent-600: 174 202 181;
+}
 @layer base {
-  body {
-    background-color: rgb(var(--cb-base));
-    color: rgb(var(--cb-text));
-    font-family: var(--font-inter), 'Inter', sans-serif;
-    font-size: 0.9375rem; /* 15px default base */
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
+  body { background: rgb(var(--cb-base)); color: rgb(var(--cb-text)); font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.6; }
+  button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+  button { transition: background-color 150ms, color 150ms, border-color 150ms; }
+  button:disabled { cursor: not-allowed; }
+  *:focus-visible { outline: 2px solid rgb(var(--cb-accent)); outline-offset: 4px; }
+  ::selection { background: rgb(var(--accent-200)); color: rgb(var(--cb-heading)); }
 }
-
-/* Custom SOC Grid Background Texture */
-.bg-grid-pattern {
-  background-image: radial-gradient(rgb(var(--cb-border) / 0.5) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-/* Glassmorphism Panel */
-.cyber-panel {
-  background: rgb(var(--cb-surface) / 0.75);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgb(var(--cb-border) / 0.8);
-  border-radius: 0.5rem;
-}
-
-.cyber-panel-active {
-  border-color: rgb(var(--cb-accent) / 0.5);
-  box-shadow: 0 0 15px rgb(var(--cb-accent) / 0.15);
-}
-
-/* Scanline Effect */
-.scanline-overlay {
-  position: relative;
-  overflow: hidden;
-}
-
-.scanline-overlay::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, transparent, rgb(var(--cb-accent) / 0.8), transparent);
-  box-shadow: 0 0 15px rgb(var(--cb-accent) / 0.8);
-  animation: scanline 4s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes scanline {
-  0% { top: 0%; }
-  100% { top: 100%; }
-}
-
-/* Monospace Log Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgb(var(--cb-base));
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgb(var(--cb-border));
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(var(--cb-border-light));
-}
-
-/* ------------------------------------------------------------------ */
-/* Design system refinements (see DESIGN_RULES.md)                    */
-/* ------------------------------------------------------------------ */
-
-/* Subtle focus ring for keyboard navigation & inputs */
-*:focus-visible {
-  outline: 2px solid rgb(var(--cb-accent) / 0.55);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-/* Muted content panel: one topic per panel, neutral border */
-.panel {
-  background: rgb(var(--cb-surface) / 0.8);
-  border: 1px solid rgb(var(--cb-border));
-  border-radius: 0.5rem;
-}
-
-/* Skeleton loading shimmer */
-.skeleton {
-  position: relative;
-  overflow: hidden;
-  background: rgb(var(--cb-surface-hover));
-  border-radius: 0.375rem;
-}
-
-.skeleton::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  transform: translateX(-100%);
-  background: linear-gradient(90deg, transparent, rgb(var(--cb-border-light) / 0.15), transparent);
-  animation: skeleton-shimmer 1.6s infinite;
-}
-
-@keyframes skeleton-shimmer {
-  100% { transform: translateX(100%); }
-}
-
-/* ------------------------------------------------------------------ */
-/* Theory Library schematic animations                                */
-/* ------------------------------------------------------------------ */
-/* Baseline: fully visible. Animations only ADD motion and can never hide. */
-.theory-node {
-  cursor: pointer;
-  outline: none;
-  animation: theory-node-in 0.5s ease-out both;
-}
-.theory-node:focus-visible .theory-hoverring,
-.theory-node:hover .theory-hoverring {
-  opacity: 1;
-}
-.theory-node-dim {
-  opacity: 0.32;
-}
-.theory-edge {
-  stroke-dasharray: 6 5;
-  animation: theory-edge-draw 0.6s ease-out both;
-}
-.theory-edge-dim {
-  opacity: 0.22;
-}
-.theory-edge-live {
-  stroke-dasharray: 14 12;
-  animation: theory-edge-flow 1s linear infinite;
-}
-.theory-halo {
-  animation: theory-halo-pulse 3.2s ease-in-out infinite;
-}
-.theory-hoverring {
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-.theory-selring {
-  animation: theory-sel-pulse 1.6s ease-in-out infinite;
-}
-@keyframes theory-node-in {
-  from { transform: translateY(8px); }
-  to   { transform: translateY(0); }
-}
-@keyframes theory-edge-draw {
-  from { stroke-dashoffset: 260; }
-  to   { stroke-dashoffset: 0; }
-}
-@keyframes theory-edge-flow {
-  from { stroke-dashoffset: 0; }
-  to   { stroke-dashoffset: -26; }
-}
-@keyframes theory-halo-pulse {
-  0%, 100% { opacity: 0.55; }
-  50%      { opacity: 0.95; }
-}
-@keyframes theory-sel-pulse {
-  0%, 100% { opacity: 0.9; }
-  50%      { opacity: 0.45; }
+.panel, .cyber-panel { background: rgb(var(--cb-surface)); border: 1px solid rgb(var(--cb-border)); border-radius: 12px; }
+.cyber-panel-active { border-color: rgb(var(--cb-accent)); }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: rgb(var(--cb-border-light)); border-radius: 6px; }
+.skeleton { position: relative; overflow: hidden; background: rgb(var(--cb-surface-hover)); border-radius: 6px; }
+.skeleton::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgb(var(--cb-border) / .65), transparent); animation: skeleton-shimmer 1.5s linear infinite; }
+@keyframes skeleton-shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+.electron { display: inline-block; width: var(--orb-size, 18px); height: var(--orb-size, 18px); border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: working-spin .8s linear infinite; }
+.electron i { display: none; }
+@keyframes working-spin { to { transform: rotate(360deg); } }
+.theory-node { cursor: pointer; outline: none; }
+.theory-node-dim { opacity: .35; }
+.theory-edge-dim { opacity: .25; }
+.theory-hoverring { opacity: 0; }
+.theory-node:hover .theory-hoverring, .theory-node:focus-visible .theory-hoverring { opacity: 1; }
+.holo-term { cursor: help; border-bottom: 1px dotted rgb(var(--cb-muted)); }
+.gloss-pop { position: fixed; width: 300px; max-width: calc(100vw - 24px); z-index: 50; background: rgb(var(--cb-surface)); border: 1px solid rgb(var(--cb-border)); border-radius: 8px; box-shadow: 0 8px 24px #00000012; }
+.holo-gauge { --gauge-size: 108px; position: relative; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: var(--gauge-size); text-align: center; gap: 4px; }
+.holo-gauge-track { position: absolute; top: 0; left: 0; width: var(--gauge-size); height: var(--gauge-size); transform: rotate(-90deg); pointer-events: none; }
+.holo-gauge-ring { display: flex; align-items: center; justify-content: center; width: var(--gauge-size); height: var(--gauge-size); }
+.holo-gauge-arc-bg { fill: none; stroke-width: 5; stroke: rgb(var(--cb-border)); }
+.holo-gauge-arc { fill: none; stroke-width: 5; stroke-linecap: round; stroke: rgb(var(--gauge-rgb, var(--cb-accent))); }
+.holo-gauge-num { position: relative; font-size: 24px; font-weight: 600; color: rgb(var(--cb-heading)); line-height: 1.1; }
+.holo-gauge-num em { font-size: 12px; font-style: normal; }
+.holo-gauge-label { position: relative; font-size: 11px; color: rgb(var(--cb-muted)); }
+.holo-gauge-sub { font-size: 11px; color: rgb(var(--cb-muted)); }
+.holo-gauge-note { display: none; position: absolute; top: 100%; z-index: 20; min-width: 200px; padding: 12px; background: rgb(var(--cb-surface)); border: 1px solid rgb(var(--cb-border)); border-radius: 8px; font-size: 12px; }
+.holo-gauge-note.is-on { display: block; }
+.learning-home { max-width: 1120px; margin: 0 auto; }
+.hub-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 32px; border-bottom: 1px solid rgb(var(--cb-border)); }
+.hub-tabs { display: flex; gap: 24px; }
+.hub-tabs button { padding: 12px 0; color: rgb(var(--cb-muted)); border-bottom: 2px solid transparent; font-size: 14px; }
+.hub-tabs button.is-active { border-color: rgb(var(--cb-heading)); color: rgb(var(--cb-heading)); font-weight: 600; }
+.hub-progress { display: flex; align-items: center; gap: 12px; color: rgb(var(--cb-muted)); font-size: 12px; }
+.hub-progress progress { width: 64px; height: 4px; appearance: none; border: 0; background: rgb(var(--cb-border)); }
+progress::-webkit-progress-bar { background: rgb(var(--cb-border)); border-radius: 4px; }
+progress::-webkit-progress-value { background: rgb(var(--cb-accent)); border-radius: 4px; }
+progress::-moz-progress-bar { background: rgb(var(--cb-accent)); }
+.home-hero { display: grid; grid-template-columns: 1.35fr 1fr; gap: 48px; padding: 26px 0 16px; align-items: center; }
+.eyebrow { font-size: 12px; font-weight: 500; color: rgb(var(--cb-muted)); letter-spacing: .04em; }
+.hero-copy h1 { font-size: clamp(36px, 4.1vw, 58px); font-weight: 600; line-height: 1.08; letter-spacing: -.055em; color: rgb(var(--cb-heading)); margin: 16px 0 20px; }
+.hero-description { font-size: 16px; line-height: 1.75; max-width: 470px; color: rgb(var(--cb-muted)); }
+.hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 20px; margin-top: 28px; }
+.primary-button { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 12px; padding: 0 20px; background: rgb(var(--cb-heading)); color: rgb(var(--cb-surface)); border-radius: 8px; font-size: 14px; font-weight: 500; }
+.primary-button:hover { background: rgb(var(--cb-text)); }
+.text-button { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: rgb(var(--cb-text)); min-height: 40px; }
+.text-button:hover { color: rgb(var(--cb-accent)); text-decoration: underline; text-underline-offset: 4px; }
+.hero-note { font-size: 11px; color: rgb(var(--cb-muted)); margin-top: 18px; }
+.first-lab { padding: 28px; border: 1px solid rgb(var(--cb-border)); background: rgb(var(--cb-surface)); border-radius: 16px; box-shadow: 0 4px 16px #00000003; }
+.first-lab h2 { font-size: 22px; font-weight: 600; letter-spacing: -.025em; color: rgb(var(--cb-heading)); margin-top: 24px; }
+.first-lab > p { font-size: 13px; color: rgb(var(--cb-muted)); margin-top: 8px; }
+.lab-steps { display: grid; gap: 14px; margin: 24px 0; font-size: 13px; }
+.lab-steps li { display: flex; align-items: center; gap: 12px; }
+.lab-steps li span { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: rgb(var(--cb-surface-hover)); font-size: 11px; color: rgb(var(--cb-muted)); }
+.first-lab-meta { display: flex; align-items: center; gap: 8px; border-top: 1px solid rgb(var(--cb-border)); padding-top: 16px; font-size: 12px; color: rgb(var(--cb-muted)); }
+.first-lab-meta span { margin-left: auto; }
+.section-title { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.section-title h2 { font-size: 19px; letter-spacing: -.025em; font-weight: 600; color: rgb(var(--cb-heading)); }
+.section-title p { font-size: 13px; margin-top: 4px; color: rgb(var(--cb-muted)); }
+.path-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.path-card { display: flex; gap: 18px; text-align: left; padding: 24px; background: rgb(var(--cb-surface)); border: 1px solid rgb(var(--cb-border)); border-radius: 12px; }
+.path-card:hover { border-color: rgb(var(--cb-border-light)); background: rgb(var(--cb-surface-hover)); }
+.path-card.selected { border-color: rgb(var(--cb-accent)); }
+.path-icon { color: rgb(var(--cb-muted)); padding-top: 3px; }
+.path-card h3 { font-size: 16px; font-weight: 600; color: rgb(var(--cb-heading)); }
+.path-card p { font-size: 13px; line-height: 1.7; margin-top: 6px; color: rgb(var(--cb-muted)); }
+.path-link { display: flex; gap: 8px; align-items: center; margin-top: 16px; font-size: 12px; font-weight: 500; }
+.recommended-labs { display: grid; gap: 8px; }
+.theory-strip { display: flex; align-items: center; gap: 16px; padding: 24px 0; border-top: 1px solid rgb(var(--cb-border)); }
+.theory-strip h2 { font-size: 14px; font-weight: 600; color: rgb(var(--cb-heading)); }
+.theory-strip p { font-size: 13px; color: rgb(var(--cb-muted)); }
+.theory-strip button { margin-left: auto; }
+.home-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 24px 0 8px; border-top: 1px solid rgb(var(--cb-border)); font-size: 11px; color: rgb(var(--cb-muted)); margin-top: 24px; }
+.workspace-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 28px; min-height: 80px; background: rgb(var(--cb-base)); border-bottom: 1px solid rgb(var(--cb-border)); }
+.header-tools { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.tool-button { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 8px; color: rgb(var(--cb-muted)); }
+.tool-button:hover { background: rgb(var(--cb-surface-hover)); color: rgb(var(--cb-heading)); }
+.header-status { font-size: 11px; color: rgb(var(--cb-muted)); }
+.skip-link { position: fixed; top: 8px; left: 80px; z-index: 100; transform: translateY(-150%); padding: 8px 16px; background: rgb(var(--cb-surface)); border: 1px solid rgb(var(--cb-border)); }
+.skip-link:focus { transform: none; }
+@media (max-width: 1100px) { .home-hero { gap: 24px; } .header-subtitle { display: none; } }
+@media (max-width: 760px) {
+  .home-hero { grid-template-columns: 1fr; padding-top: 8px; }
+  .hero-copy h1 { font-size: 40px; }
+  .first-lab { padding: 22px; }
+  .path-grid { grid-template-columns: 1fr; }
+  .hub-progress progress { display: none; }
+  .hub-toolbar { margin-bottom: 20px; gap: 8px; }
+  .hub-tabs { gap: 16px; }
+  .workspace-header { flex-wrap: wrap; gap: 8px; padding: 12px 16px; }
+  .header-tools { gap: 2px; }
+  .header-status { display: none; }
+  .theory-strip { align-items: flex-start; flex-wrap: wrap; }
+  .theory-strip button { margin-left: 36px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .theory-node,
-  .theory-edge,
-  .theory-halo,
-  .theory-selring,
-  .theory-edge-live {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
-
-/* ------------------------------------------------------------------ */
-/* Light-mode overrides for the dark slate/cyan utilities used across */
-/* the lab modules. Substring matches so opacity variants (e.g.       */
-/* bg-slate-900/60) and hover states are covered consistently.        */
-/* ------------------------------------------------------------------ */
 
 /* Dark slate surfaces -> light surfaces */
 html.light [class*="bg-slate-950"] { background-color: rgb(249 250 251); }
@@ -321,13 +174,13 @@ html.light .hover\:text-white:hover { color: rgb(15 23 42); }
 
 /* Cyan: 950 tint panels, bright text, accents */
 html.light [class*="bg-cyan-950"] {
-  background-color: color-mix(in srgb, rgb(8 145 178) 14%, transparent);
+  background-color: color-mix(in srgb, rgb(var(--cb-accent)) 14%, transparent);
 }
 html.light [class*="text-cyan-200"],
-html.light [class*="text-cyan-300"] { color: rgb(14 116 144); }
+html.light [class*="text-cyan-300"] { color: rgb(var(--cb-accent)); }
 html.light [class*="text-cyan-400"],
-html.light [class*="text-cyan-500"] { color: rgb(8 145 178); }
-html.light [class*="border-cyan-"] { border-color: rgb(8 145 178); }
+html.light [class*="text-cyan-500"] { color: rgb(var(--cb-accent)); }
+html.light [class*="border-cyan-"] { border-color: rgb(var(--cb-accent)); }
 
 /* Colored status boxes: pale tint background + darker readable text */
 html.light [class*="bg-emerald-950"],
@@ -517,952 +370,6 @@ html.light .gov-cell-informational:hover { background: rgb(100 116 139 / 0.3); }
   }
 }
 
-/* ------------------------------------------------------------------ */
-/* Reusable interaction effects (UI layer)                             */
-/* Every effect has a prefers-reduced-motion escape hatch.             */
-/* ------------------------------------------------------------------ */
 
-/* Animated lab backdrop: a slowly drifting grid plus soft "data
-   particles" drifting up. Pure transform/opacity animations. */
-.cyber-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-  background: radial-gradient(1200px 700px at 80% -10%, rgb(var(--cb-accent) / 0.07), transparent 60%),
-    radial-gradient(900px 600px at -10% 100%, rgb(var(--cb-cyan-dark) / 0.06), transparent 55%),
-    rgb(var(--cb-base));
-}
-
-.cyber-backdrop-grid {
-  position: absolute;
-  inset: -50%;
-  background-image: radial-gradient(rgb(var(--cb-border) / 0.35) 1px, transparent 1px);
-  background-size: 28px 28px;
-  animation: backdrop-drift 90s linear infinite;
-  mask-image: radial-gradient(120% 120% at 50% 30%, black 40%, transparent 85%);
-}
-
-@keyframes backdrop-drift {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(56px, 56px, 0); }
-}
-
-.cyber-backdrop-particles {
-  position: absolute;
-  inset: 0;
-  opacity: 0.5;
-  background-image:
-    radial-gradient(2px 2px at 18% 30%, rgb(var(--cb-accent) / 0.7), transparent 2px),
-    radial-gradient(2px 2px at 65% 20%, rgb(var(--cb-accent) / 0.5), transparent 2px),
-    radial-gradient(1.5px 1.5px at 40% 55%, rgb(var(--cb-text) / 0.45), transparent 1.5px),
-    radial-gradient(2px 2px at 85% 65%, rgb(var(--cb-accent) / 0.45), transparent 2px),
-    radial-gradient(1.5px 1.5px at 12% 78%, rgb(var(--cb-text) / 0.4), transparent 1.5px),
-    radial-gradient(2px 2px at 50% 88%, rgb(var(--cb-accent) / 0.5), transparent 2px);
-  animation: particles-rise 26s linear infinite;
-}
-
-@keyframes particles-rise {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(0, -120px, 0); }
-}
-
-/* Holographic panel: a conic glow that sweeps across on hover, plus a
-   faint idle sheen. Drop `holo-panel` on a `cyber-panel` / `.panel` to
-   subscribe. The gradient is a 1px ring drawn above the surface and a
-   low-alpha sheen; both are pointer-events:none so content stays clear. */
-.holo-panel {
-  position: relative;
-  transition: border-color 200ms ease, box-shadow 250ms ease;
-}
-
-.holo-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg,
-    transparent 20%,
-    rgb(var(--cb-accent) / 0.55) 40%,
-    rgb(var(--cb-heading) / 0.18) 50%,
-    rgb(var(--cb-accent) / 0.55) 60%,
-    transparent 80%);
-  background-size: 300% 300%;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  opacity: 0;
-  transform: translateX(-25%);
-  transition: opacity 300ms ease, transform 400ms ease;
-  pointer-events: none;
-}
-
-.holo-panel:hover::before {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.holo-panel::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(115deg,
-    transparent 30%,
-    rgb(var(--cb-heading) / 0.07) 46%,
-    transparent 60%);
-  transform: translateX(-130%);
-  transition: transform 600ms ease;
-  pointer-events: none;
-}
-
-.holo-panel:hover::after {
-  transform: translateX(130%);
-}
-
-/* Gentle glow lift on any panel card when hovered (non-decorative: it
-   signals the card is interactive). */
-.cyber-panel:not(.no-hover), .panel:not(.no-hover) {
-  transition: border-color 200ms ease, box-shadow 250ms ease, transform 200ms ease;
-}
-.cyber-panel:not(.no-hover):hover,
-.panel:not(.no-hover):hover {
-  border-color: rgb(var(--cb-accent) / 0.45);
-}
-
-/* Data packet flow along a horizontal rail (timelines / phase bars). */
-.packet-rail {
-  position: relative;
-  overflow: hidden;
-}
-
-.packet {
-  position: absolute;
-  top: 50%;
-  width: 6px;
-  height: 6px;
-  border-radius: 99px;
-  background: rgb(var(--cb-accent));
-  box-shadow: 0 0 8px rgb(var(--cb-accent) / 0.8);
-  transform: translate(-50%, -50%);
-  animation: packet-travel 2.4s linear infinite;
-  opacity: 0;
-}
-
-.packet-delay-1 { animation-delay: 0.8s; }
-.packet-delay-2 { animation-delay: 1.6s; }
-
-@keyframes packet-travel {
-  0%   { left: -2%; opacity: 0; }
-  12%  { opacity: 1; }
-  88%  { opacity: 1; }
-  100% { left: 102%; opacity: 0; }
-}
-
-/* Scanning caret for log lines while processing. */
-.log-scan-line {
-  position: relative;
-}
-
-.log-scan-line::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgb(var(--cb-accent) / 0.14), transparent);
-  animation: log-scan 1.6s ease-in-out infinite;
-}
-
-@keyframes log-scan {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-.caret-blink {
-  display: inline-block;
-  width: 7px;
-  height: 13px;
-  margin-left: 2px;
-  background: rgb(var(--cb-accent));
-  vertical-align: text-bottom;
-  animation: caret-blink 1s steps(1) infinite;
-}
-
-@keyframes caret-blink {
-  0%, 45% { opacity: 1; }
-  46%, 100% { opacity: 0; }
-}
-
-/* Staggered "decode" text entrance. Add inline animation-delay per item. */
-.decode-enter {
-  opacity: 0;
-  animation: decode-in 0.4s ease-out forwards;
-}
-
-@keyframes decode-in {
-  from { opacity: 0; transform: translateY(6px); filter: blur(2px); }
-  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
-}
-
-/* Success ring pulse (subtle, no confetti). */
-.success-ring {
-  position: relative;
-}
-
-.success-ring::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  border: 2px solid rgb(16 185 129 / 0.7);
-  animation: ring-pulse 1.6s ease-out infinite;
-  pointer-events: none;
-}
-
-@keyframes ring-pulse {
-  0%   { transform: scale(1); opacity: 0.7; }
-  70%, 100% { transform: scale(1.25); opacity: 0; }
-}
-
-/* Alert ping that radiates from a flagged element. */
-.alert-ping::before,
-.alert-ping::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  border: 2px solid rgb(244 63 94 / 0.7);
-  animation: alert-ping 1.8s ease-out infinite;
-  pointer-events: none;
-}
-.alert-ping::after { animation-delay: 0.9s; }
-
-@keyframes alert-ping {
-  0%   { transform: scale(1); opacity: 0.8; }
-  100% { transform: scale(1.35); opacity: 0; }
-}
-
-/* Tilt-card: uses --tilt-x / --tilt-y set from JS; do not care if unset. */
-.tilt-card {
-  transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1)) translateZ(0);
-  transition: transform 120ms ease-out, box-shadow 250ms ease, border-color 200ms ease;
-  will-change: transform;
-}
-
-.tilt-card:hover {
-  --tilt-scale: 1.02;
-  box-shadow: 0 18px 40px -18px rgb(var(--cb-accent) / 0.4);
-}
-
-/* Cursor-following holographic spotlight for interactive cards.
-   `--holo-x` / `--holo-y` (in px) are set by HoloTilt; the radial glow
-   is a pointer-events:none overlay so content stays fully readable. */
-.holo-spot {
-  position: relative;
-  overflow: hidden;
-}
-
-.holo-spot::before {
-  content: "";
-  position: absolute;
-  inset: -40px;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(
-    220px 160px at
-      var(--holo-x, 50%) var(--holo-y, 50%),
-    rgb(var(--cb-accent) / 0.16),
-    transparent 65%
-  );
-  opacity: 0;
-  transition: opacity 200ms ease;
-}
-
-.holo-spot:hover::before {
-  opacity: 1;
-}
-
-/* Small pulsing "live" beacon used while streams are active. */
-.live-dot {
-  position: relative;
-  width: 6px;
-  height: 6px;
-  border-radius: 99px;
-  background: rgb(16 185 129 / 1);
-}
-
-.live-dot::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 99px;
-  background: rgb(16 185 129 / 0.8);
-  animation: alert-ping 1.8s ease-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .live-dot::after { animation: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cyber-backdrop-grid,
-  .cyber-backdrop-particles,
-  .packet,
-  .log-scan-line::after,
-  .caret-blink,
-  .decode-enter,
-  .success-ring::after,
-  .alert-ping::before,
-  .alert-ping::after,
-  .holo-panel::before,
-  .holo-panel::after {
-    animation: none !important;
-  }
-  .cyber-backdrop-grid { transform: none; }
-  .decode-enter { opacity: 1; }
-  .tilt-card { transition: none; }
-  .tilt-card:hover { --tilt-scale: 1; }
-}
-
-/* ------------------------------------------------------------------ */
-/* Interactive experience layer                                        */
-/* Hover and cursor-reactive effects. They run only while the user     */
-/* reacts (hover, pointer move, press), never on idle. Every effect    */
-/* has a prefers-reduced-motion escape hatch.                          */
-/* ------------------------------------------------------------------ */
-
-/* Cursor-following holographic halo. Position is driven by the        */
-/* CursorHalo component via --halo-x / --halo-y (in px).               */
-.cursor-halo {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: radial-gradient(
-    640px 460px at var(--halo-x, 50%) var(--halo-y, -10%),
-    rgb(var(--cb-accent) / 0.14),
-    transparent 66%
-  );
-  opacity: 0;
-  transition: opacity 300ms ease;
-}
-.cursor-halo.active { opacity: 1; }
-
-/* Primary accent buttons: sheen sweep, glow, press feedback.          */
-/* Matches the shared CTA pattern (bg-accent + dark text). */
-button[class*="bg-accent"] {
-  position: relative;
-  overflow: hidden;
-  transition: box-shadow 220ms ease, transform 140ms ease, filter 160ms ease;
-}
-button[class*="bg-accent"]::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  transform: translateX(-130%);
-  background: linear-gradient(115deg,
-    transparent 32%,
-    rgb(var(--cb-heading) / 0.4) 50%,
-    transparent 68%);
-  transition: transform 500ms ease;
-  pointer-events: none;
-}
-button[class*="bg-accent"]:hover {
-  box-shadow: 0 0 22px rgb(var(--cb-accent) / 0.5), 0 10px 20px -12px rgb(var(--cb-accent) / 0.55);
-  transform: translateY(-1px);
-  filter: brightness(1.05);
-}
-button[class*="bg-accent"]:hover::after { transform: translateX(130%); }
-button[class*="bg-accent"]:active {
-  transform: translateY(0) scale(0.97);
-  box-shadow: none;
-}
-
-/* Secondary accent-outline buttons: soft glow and slight lift. */
-button[class*="border-accent"] {
-  transition: box-shadow 220ms ease, transform 140ms ease, background-color 160ms ease;
-}
-button[class*="border-accent"]:hover {
-  box-shadow: 0 0 18px rgb(var(--cb-accent) / 0.3), inset 0 0 14px rgb(var(--cb-accent) / 0.06);
-  transform: translateY(-1px);
-}
-button[class*="border-accent"]:active { transform: translateY(0) scale(0.98); }
-
-/* Interactive row / card: lift + glow on hover (opt-in class). */
-.hover-lift {
-  transition: transform 180ms ease, box-shadow 240ms ease, border-color 200ms ease;
-}
-.hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px -16px rgb(var(--cb-accent) / 0.4);
-  border-color: rgb(var(--cb-accent) / 0.45);
-}
-.hover-lift:active { transform: translateY(-1px) scale(0.99); }
-
-/* Animated holographic border: a conic edge that circles the card     */
-/* while hovered. @property lets the angle interpolate smoothly.       */
-@property --holo-angle {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-.holo-border { position: relative; }
-.holo-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: conic-gradient(from var(--holo-angle),
-    transparent 0deg,
-    rgb(var(--cb-accent) / 0.9) 80deg,
-    transparent 160deg,
-    transparent 360deg);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 200ms ease;
-  pointer-events: none;
-}
-.holo-border:hover::before {
-  opacity: 1;
-  animation: holo-border-roll 2.2s linear infinite;
-}
-@keyframes holo-border-roll {
-  to { --holo-angle: 360deg; }
-}
-
-/* Slide-in arrow cue for rows that show a forward direction. */
-.slide-arrow {
-  display: inline-flex;
-  transition: transform 180ms ease, color 180ms ease, text-shadow 180ms ease;
-}
-.group:hover .slide-arrow {
-  transform: translateX(4px);
-  color: rgb(var(--cb-accent));
-  text-shadow: 0 0 10px rgb(var(--cb-accent) / 0.6);
-}
-
-/* Text glow for hover-reactive labels (nav, links, chips). */
-.hover-text-glow {
-  transition: color 180ms ease, text-shadow 180ms ease;
-}
-.hover-text-glow:hover {
-  color: rgb(var(--cb-accent));
-  text-shadow: 0 0 14px rgb(var(--cb-accent) / 0.55);
-}
-
-/* Animated progress fill with a moving light stripe. */
-.progress-fill {
-  position: relative;
-  overflow: hidden;
-  transition: width 700ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.progress-fill::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.35), transparent);
-  transform: translateX(-100%);
-  animation: progress-sweep 1.8s ease-in-out infinite;
-}
-@keyframes progress-sweep {
-  100% { transform: translateX(100%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cursor-halo { opacity: 0; }
-  button[class*="bg-accent"],
-  button[class*="border-accent"],
-  .hover-lift,
-  .slide-arrow,
-  .hover-text-glow { transition: none; }
-  button[class*="bg-accent"]::after,
-  .progress-fill::after,
-  .holo-border:hover::before { animation: none; }
-  button[class*="bg-accent"]:hover,
-  button[class*="border-accent"]:hover,
-  .hover-lift:hover { transform: none; box-shadow: none; }
-  .holo-scan::after,
-  .corner-frame::before,
-  .reveal-up { transition: none; opacity: 1; transform: none; }
-}
-
-/* ------------------------------------------------------------------ */
-/* Interactive experience layer pt.2                                   */
-/* Section-repeat title sweeps, holographic corner brackets, chips     */
-/* and scroll reveals. Same contract: effect only reacts to the user   */
-/* and has a prefers-reduced-motion escape hatch.                      */
-/* ------------------------------------------------------------------ */
-
-/* Holographic scan across a row (used on panel headers) on hover. */
-.holo-scan { position: relative; overflow: hidden; }
-.holo-scan::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(105deg,
-    transparent 42%,
-    rgb(var(--cb-accent) / 0.16) 50%,
-    transparent 58%);
-  transform: translateX(-130%) skewX(-12deg);
-  transition: transform 700ms ease;
-  pointer-events: none;
-}
-.holo-scan:hover::after { transform: translateX(130%) skewX(-12deg); }
-
-/* Holographic corner brackets that snap inward on hover. */
-.corner-frame { position: relative; }
-.corner-frame::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background:
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 0 0 / 16px 1px,
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 0 0 / 1px 16px,
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 100% 0 / 16px 1px,
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 100% 0 / 1px 16px,
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 0 100% / 16px 1px,
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 0 100% / 1px 16px,
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 100% 100% / 16px 1px,
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 100% 100% / 1px 16px;
-  background-repeat: no-repeat;
-  background-position: 0 0, 0 0, 100% 0, 100% 0, 0 100%, 0 100%, 100% 100%, 100% 100%;
-  background-size: 16px 2px, 2px 16px, 16px 2px, 2px 16px, 16px 2px, 2px 16px, 16px 2px, 2px 16px;
-  opacity: 0;
-  transform: scale(1.06);
-  transition: opacity 260ms ease, transform 320ms ease;
-  pointer-events: none;
-}
-.corner-frame:hover::before {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* Interactive chips: glow + accent tint on hover. */
-.chip-holo {
-  transition: border-color 200ms ease, background-color 200ms ease,
-    box-shadow 220ms ease, color 200ms ease;
-}
-.chip-holo:hover {
-  border-color: rgb(var(--cb-accent) / 0.6);
-  background-color: rgb(var(--cb-accent) / 0.1);
-  color: rgb(var(--cb-accent));
-  box-shadow: 0 0 12px rgb(var(--cb-accent) / 0.35);
-}
-
-/* Scroll reveal. `.reveal-up` starts hidden; the Reveal component adds
-   `.reveal-in` when it enters the viewport. */
-.reveal-up {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 560ms ease, transform 560ms ease;
-}
-.reveal-up.reveal-in {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ------------------------------------------------------------------ */
-/* Interactive experience layer pt.3                                   */
-/* Holographic radar, electron-orbit loader, hover reticle + glitch,   */
-/* and the student glossary tooltip. Same contract: effects only       */
-/* react to hover / live state; reduced-motion keeps them off.          */
-/* ------------------------------------------------------------------ */
-
-/* Holographic radar sweep. Hidden at rest; `.radar-live` (a streaming /
-   processing state) or `.radar-hover:hover` reveals a rotating conic
-   sweep and concentric detector rings. Static rings always, sweep spins. */
-.radar-sweep {
-  position: relative;
-}
-.radar-sweep::before {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  border-radius: 999px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    rgb(var(--cb-accent) / 0.38) 40deg,
-    transparent 72deg,
-    rgb(var(--cb-accent) / 0.1) 140deg,
-    transparent 180deg,
-    transparent 360deg
-  );
-  -webkit-mask-image: radial-gradient(circle, #000 0 60%, transparent 72%);
-  mask-image: radial-gradient(circle, #000 0 60%, transparent 72%);
-  opacity: 0;
-  animation: radar-spin 2.6s linear infinite;
-  pointer-events: none;
-}
-.radar-sweep::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  border: 1px solid rgb(var(--cb-accent) / 0.22);
-  box-shadow:
-    0 0 0 8px rgb(var(--cb-accent) / 0.03),
-    0 0 0 26px rgb(var(--cb-accent) / 0.03),
-    0 0 0 52px rgb(var(--cb-accent) / 0.02);
-  opacity: 0;
-  transition: opacity 300ms ease;
-  pointer-events: none;
-}
-.radar-sweep.radar-live::before,
-.radar-sweep.radar-live::after,
-.radar-hover:hover .radar-sweep::before,
-.radar-hover:hover .radar-sweep::after {
-  opacity: 1;
-}
-
-@keyframes radar-spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Sonar ping that ripples outward twice from a live element. */
-.sonar {
-  position: relative;
-}
-.sonar::before,
-.sonar::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 999px;
-  border: 1px solid rgb(var(--cb-accent) / 0.5);
-  opacity: 0;
-  animation: sonar-ping 2.2s ease-out infinite;
-  pointer-events: none;
-}
-.sonar::after { animation-delay: 1.1s; }
-@keyframes sonar-ping {
-  0%   { transform: scale(0.6); opacity: 0.7; }
-  80%  { transform: scale(1.6); opacity: 0; }
-  100% { transform: scale(1.6); opacity: 0; }
-}
-
-/* Electron-orbit loader: a glowing core with two electrons circling.
-   Replaces the plain spinner wherever "AI is thinking". */
-.electron {
-  position: relative;
-  display: inline-block;
-  width: var(--orb-size, 16px);
-  height: var(--orb-size, 16px);
-}
-.electron i {
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-}
-.electron i::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 4px;
-  height: 4px;
-  margin: -2px 0 0 -2px;
-  border-radius: 999px;
-  background: rgb(var(--cb-accent));
-  box-shadow: 0 0 8px rgb(var(--cb-accent) / 0.9);
-}
-.electron i:nth-child(1) {
-  border: 1px dashed rgb(var(--cb-accent) / 0.4);
-  animation: electron-tilt 3.2s linear infinite;
-}
-.electron i:nth-child(2) {
-  border: 1px dashed rgb(var(--cb-accent) / 0.28);
-  animation: electron-tilt 3.2s linear infinite reverse;
-}
-.electron i:nth-child(1)::before { animation: electron-brighten 0.8s ease-in-out infinite; }
-.electron i:nth-child(2)::before { animation: electron-brighten 0.8s ease-in-out infinite reverse; }
-@keyframes electron-tilt {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-@keyframes electron-brighten {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0.3; }
-}
-
-/* Holo-reticle: scope corner brackets + a centre crosshair that snap
-   onto the dominant element / primary input on hover. */
-.holo-reticle { position: relative; }
-.holo-reticle::before {
-  content: "";
-  position: absolute;
-  inset: -7px;
-  border-radius: 10px;
-  background:
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 0 0 / 12px 2px,
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 0 0 / 2px 12px,
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 100% 0 / 12px 2px,
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 100% 0 / 2px 12px,
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 0 100% / 12px 2px,
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 0 100% / 2px 12px,
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 100% 100% / 12px 2px,
-    linear-gradient(rgb(var(--cb-accent)) 0 0) 100% 100% / 2px 12px;
-  background-repeat: no-repeat;
-  background-position: 0 0, 0 0, 100% 0, 100% 0, 0 100%, 0 100%, 100% 100%, 100% 100%;
-  background-size: 12px 2px, 2px 12px, 12px 2px, 2px 12px, 12px 2px, 2px 12px, 12px 2px, 2px 12px;
-  opacity: 0;
-  transform: scale(1.14);
-  transition: opacity 240ms ease, transform 320ms ease;
-  pointer-events: none;
-}
-.holo-reticle::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 46px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgb(var(--cb-accent) / 0.55) 36%, rgb(var(--cb-accent) / 0.7) 64%, transparent);
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  transition: opacity 240ms ease;
-  pointer-events: none;
-}
-.holo-reticle:hover::before { opacity: 1; transform: scale(1); }
-.holo-reticle:hover::after { opacity: 0.75; }
-
-/* Holographic glitch: on hover a term gets a subtle RGB-split sheen
-   (both ghosts kept inside the accent / heading palette - no rainbow). */
-.holo-glitch {
-  position: relative;
-  transition: transform 160ms ease, filter 160ms ease, text-shadow 200ms ease;
-}
-.holo-glitch:hover {
-  filter: saturate(1.15);
-  text-shadow: 2px 0 0 rgb(var(--cb-accent) / 0.5), -2px 0 0 rgb(var(--cb-heading) / 0.35);
-  transform: translateX(1px);
-}
-
-/* Floating student glossary tooltip (used by the HoloTerm component).
-   Pure position styles; the portal bubble handles its own layout. */
-.holo-term {
-  position: relative;
-  display: inline;
-  cursor: help;
-  border-bottom: 1px dashed rgb(var(--cb-accent) / 0.55);
-  transition: color 160ms ease, text-shadow 160ms ease;
-}
-.holo-term:hover {
-  color: rgb(var(--cb-accent));
-  text-shadow: 0 0 12px rgb(var(--cb-accent) / 0.45);
-}
-
-.gloss-pop {
-  position: fixed;
-  z-index: 60;
-  width: max-content;
-  max-width: 320px;
-  border: 1px solid rgb(var(--cb-accent) / 0.45);
-  border-radius: 10px;
-  background: rgb(var(--cb-surface) / 0.97);
-  box-shadow: 0 18px 40px -18px rgb(var(--cb-accent) / 0.5), 0 0 24px rgb(var(--cb-accent) / 0.14);
-  animation: gloss-in 180ms ease-out;
-}
-.gloss-pop::before {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 12px;
-  background: linear-gradient(130deg, transparent 20%, rgb(var(--cb-accent) / 0.4) 50%, transparent 80%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
-}
-@keyframes gloss-in {
-  from { opacity: 0; transform: translateY(6px) scale(0.98); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .radar-sweep::before,
-  .radar-sweep::after,
-  .sonar::before,
-  .sonar::after,
-  .electron i,
-  .electron i::before,
-  .gloss-pop,
-  .gloss-pop::before { animation: none !important; display: none; }
-  .radar-sweep::before { opacity: 0; }
-  .holo-reticle::before,
-  .holo-reticle::after { transition: none; opacity: 0; }
-  .holo-glitch, .holo-term { transition: none; }
-}
-
-/* ------------------------------------------------------------------ */
-/* Interactive experience layer pt.4                                   */
-/* Holographic gauges + cursor-reactive matrix lattice. Same contract: */
-/* effects react to hover / pointer / live state only, single accent.  */
-/* ------------------------------------------------------------------ */
-
-/* Holographic radial gauge: an SVG arc that fills to the value, a      */
-/* conic sweep while hovered, a live count-up of the number, and an    */
-/* education note that fades in on hover. Tone comes from --gauge-rgb. */
-.holo-gauge {
-  position: relative;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  text-align: center;
-  outline: none;
-}
-.holo-gauge-track {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 132px;
-  height: 132px;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-.holo-gauge-arc-bg {
-  fill: none;
-  stroke: rgb(var(--cb-border) / 0.7);
-  stroke-width: 5;
-}
-.holo-gauge-arc {
-  fill: none;
-  stroke: rgb(var(--gauge-rgb, var(--cb-accent)));
-  stroke-width: 5;
-  stroke-linecap: round;
-  transform: rotate(-90deg);
-  transform-box: fill-box;
-  transform-origin: center;
-  filter: drop-shadow(0 0 6px rgb(var(--gauge-rgb, var(--cb-accent)) / 0.55));
-  transition: stroke-dasharray 320ms ease;
-}
-.holo-gauge-ring {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 132px;
-  height: 132px;
-  border-radius: 999px;
-  transition: border-color 200ms ease, box-shadow 260ms ease;
-}
-.holo-gauge:focus-visible .holo-gauge-ring,
-.holo-gauge:hover .holo-gauge-ring {
-  border-color: rgb(var(--cb-accent) / 0.5);
-  box-shadow: 0 0 22px rgb(var(--cb-accent) / 0.22), inset 0 0 18px rgb(var(--cb-accent) / 0.08);
-}
-.holo-gauge-sweep {
-  position: absolute;
-  inset: -4px;
-  border-radius: 999px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    rgb(var(--cb-accent) / 0.16) 70deg,
-    transparent 140deg,
-    transparent 360deg
-  );
-  -webkit-mask-image: radial-gradient(circle, #000 0 64%, transparent 72%);
-  mask-image: radial-gradient(circle, #000 0 64%, transparent 72%);
-  animation: holo-gauge-spin 2.4s linear infinite;
-  pointer-events: none;
-}
-@keyframes holo-gauge-spin {
-  to { transform: rotate(360deg); }
-}
-.holo-gauge-num {
-  position: relative;
-  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
-  font-size: 26px;
-  font-weight: 700;
-  color: rgb(var(--cb-heading));
-  transition: color 160ms ease, text-shadow 160ms ease;
-}
-.holo-gauge:hover .holo-gauge-num {
-  color: rgb(var(--gauge-rgb, var(--cb-accent)));
-  text-shadow: 0 0 14px rgb(var(--gauge-rgb, var(--cb-accent)) / 0.5);
-}
-.holo-gauge-num em {
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 600;
-  color: rgb(var(--cb-muted));
-  margin-left: 1px;
-}
-.holo-gauge-label {
-  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgb(var(--cb-muted));
-}
-.holo-gauge-sub {
-  font-size: 11px;
-  color: rgb(var(--cb-muted));
-}
-.holo-gauge-note {
-  position: relative;
-  display: block;
-  max-width: 200px;
-  font-size: 11px;
-  line-height: 1.45;
-  color: rgb(var(--cb-text));
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-height 300ms ease, opacity 260ms ease, margin 260ms ease;
-}
-.holo-gauge-note.is-on {
-  max-height: 90px;
-  opacity: 1;
-  margin-top: 2px;
-}
-.holo-gauge-note i {
-  position: absolute;
-  left: -8px;
-  top: 4px;
-  width: 3px;
-  height: 3px;
-  border-radius: 999px;
-  background: rgb(var(--cb-accent));
-  box-shadow: 0 0 6px rgb(var(--cb-accent) / 0.8);
-}
-.holo-gauge:focus-visible {
-  outline: 2px solid rgb(var(--cb-accent) / 0.55);
-  outline-offset: 3px;
-}
-
-/* Cursor-reactive matrix lattice (HoloMatrix). A decorative canvas layer */
-/* that wakes cells near the pointer. Hidden behind content; the JS       */
-/* listens on document so a pointer-events:none layer still tracks.       */
-.holo-matrix {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-.holo-matrix-canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .holo-gauge-sweep { animation: none; display: none; }
-  .holo-gauge-arc { transition: none; }
-  .holo-gauge-note { max-height: 90px; opacity: 1; margin-top: 2px; }
-  .holo-gauge-num em { display: none; }
-}
-
+/* Replace decorative glow utilities with neutral surfaces. */
+[class*="shadow-cyan-glow"], [class*="shadow-cyber-glow"], [class*="shadow-red-glow"], [class*="shadow-emerald-glow"] { box-shadow: none; }

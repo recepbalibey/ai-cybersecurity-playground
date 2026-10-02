@@ -22,7 +22,7 @@ export function AttackAnalysisView({ result }: AttackAnalysisViewProps) {
         <div className="p-4 border-b border-cyber-border bg-cyber-surface/60">
           <div className="flex items-center gap-2.5">
             <Crosshair className="w-4 h-4 text-cyan-400" />
-            <h2 className="text-base font-semibold text-cyber-heading uppercase tracking-wider font-mono">
+            <h2 className="text-base font-semibold text-cyber-heading">
               Attack Analysis
             </h2>
           </div>
@@ -43,7 +43,7 @@ export function AttackAnalysisView({ result }: AttackAnalysisViewProps) {
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
         <div className="flex items-center gap-2.5">
           <Crosshair className="w-4 h-4 text-cyan-400" />
-          <h2 className="text-base font-semibold text-cyber-heading uppercase tracking-wider font-mono">
+          <h2 className="text-base font-semibold text-cyber-heading">
             Attack Analysis
           </h2>
         </div>

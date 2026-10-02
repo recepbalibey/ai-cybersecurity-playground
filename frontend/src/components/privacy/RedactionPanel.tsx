@@ -38,7 +38,7 @@ export function RedactionPanel({ redaction, safePrompt }: { redaction: Redaction
       <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
         <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
           <ShieldOff className="w-4 h-4 text-emerald-400" />
-          <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">Automatic Redaction</h3>
+          <h3 className="text-xs font-bold text-cyber-heading">Automatic Redaction</h3>
           <span className="ml-auto text-[10px] font-mono text-cyber-muted">
             {redaction.redacted_count} segment(s) replaced
           </span>
@@ -63,7 +63,7 @@ export function RedactionPanel({ redaction, safePrompt }: { redaction: Redaction
       <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
         <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
           <BadgeX className="w-4 h-4 text-red-400" />
-          <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">AI Assistant Preview</h3>
+          <h3 className="text-xs font-bold text-cyber-heading">AI Assistant Preview</h3>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-cyber-border/60">

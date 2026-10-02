@@ -30,7 +30,7 @@
   "execution_time_ms": 4200,
   "teaching_points": [
     {
-      "title": "The agent read, reasoned, and acted — without abusing its powers",
+      "title": "The agent read, reasoned, and acted  -  without abusing its powers",
       "concept": "Goal-directed loop",
       "explanation": "The agent planned, selected only the tools it needed, read observations, and produced a response. It never took a write or destructive action.",
       "key_takeaway": "A well-scoped agent completes its mission with only read permissions."

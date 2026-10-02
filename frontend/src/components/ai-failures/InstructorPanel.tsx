@@ -20,7 +20,7 @@ export function InstructorPanel({
     <div className="cyber-panel border border-cyan-500/30 rounded-lg p-4 space-y-4">
       <div className="flex items-center gap-2">
         <GraduationCap className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+        <h3 className="text-xs font-bold text-cyber-heading">
           Teaching view - {failureName}
         </h3>
       </div>

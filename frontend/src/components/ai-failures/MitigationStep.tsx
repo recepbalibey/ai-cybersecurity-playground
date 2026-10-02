@@ -71,7 +71,7 @@ export function MitigationStep({
       {/* Retest result */}
       <div className="cyber-panel border border-cyber-border rounded-lg p-4">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+          <h3 className="text-xs font-bold text-cyber-heading">
             Reliability retest
           </h3>
           <div className="flex items-center gap-2">

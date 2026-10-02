@@ -26,7 +26,7 @@ export function CompareMode({
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
         <div className="flex items-center gap-2.5">
           <GitCompareArrows className="w-4 h-4 text-cyan-400" />
-          <h2 className="text-base font-semibold text-cyber-heading uppercase tracking-wider font-mono">
+          <h2 className="text-base font-semibold text-cyber-heading">
             Side-by-Side States
           </h2>
         </div>

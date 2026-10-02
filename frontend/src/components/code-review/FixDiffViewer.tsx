@@ -96,7 +96,7 @@ export function FixDiffViewer({ before, after, improvements }: Props) {
     <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
         <GitCompareArrows className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+        <h3 className="text-xs font-bold text-cyber-heading">
           Before / After
         </h3>
         <div className="ml-auto flex items-center gap-3 text-[10px] font-mono">

@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 interface LogInvestigationPanelProps {
+  isLoadingDataset?: boolean;
   logContent: string;
   onLogContentChange: (content: string) => void;
   onSelectDataset: (key: string) => void;
@@ -20,6 +21,7 @@ interface LogInvestigationPanelProps {
 }
 
 export function LogInvestigationPanel({
+  isLoadingDataset = false,
   logContent,
   onLogContentChange,
   onSelectDataset,
@@ -65,11 +67,11 @@ export function LogInvestigationPanel({
   return (
     <div className="cyber-panel flex flex-col h-full overflow-hidden border border-cyber-border">
       {/* Panel Header */}
-      <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
+      <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex flex-wrap items-center gap-2 justify-between">
         <div className="flex items-center gap-2.5">
           <Terminal className="w-4 h-4 text-cyan-400" />
-          <h2 className="text-base font-semibold text-cyber-heading uppercase tracking-wider font-mono">
-            Log Investigation Panel
+          <h2 className="text-base font-semibold text-cyber-heading">
+            Security logs
           </h2>
         </div>
         <span className="flex items-center gap-1.5 text-xs text-cyber-muted font-mono uppercase">
@@ -94,14 +96,14 @@ export function LogInvestigationPanel({
               className="flex-1 h-10 px-3.5 bg-cyber-surface-hover hover:bg-slate-800 border border-cyber-border-light rounded text-xs font-medium text-cyber-text flex items-center justify-center gap-2 transition-all"
             >
               <Upload className="w-4 h-4 text-cyan-400" />
-              <span>Upload Security Logs (.json, .log, .txt)</span>
+              <span>Upload a log file</span>
             </button>
           </div>
 
           {/* Quick Load Dataset Buttons */}
           <div>
             <div className="text-xs text-cyber-muted font-mono uppercase mb-2">
-              Sample Datasets (Live Classroom Demos)
+              Choose a sample
             </div>
             <div className="grid grid-cols-1 gap-2">
               {datasets.map((ds) => (
@@ -144,12 +146,12 @@ export function LogInvestigationPanel({
         {/* Raw Log Terminal Viewer */}
         <div className="flex-1 flex flex-col min-h-[240px] bg-cyber-base border border-cyber-border rounded overflow-hidden relative">
           <div className="px-3.5 py-2 bg-slate-950 border-b border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-400">
-            <span>Raw Log Stream Viewer</span>
+            <span>Log preview</span>
             <span>{logLines.length} Lines</span>
           </div>
 
           <div className="flex-1 p-3.5 overflow-auto font-mono text-sm text-slate-200 leading-relaxed scanline-overlay">
-            {logLines.length > 0 ? (
+            {isLoadingDataset ? <div role="status" aria-label="Loading logs" className="space-y-3"><span className="sr-only">Loading logs...</span>{[0, 1, 2, 3, 4].map(i => <div key={i} className="skeleton h-4 w-full" aria-hidden="true" />)}</div> : logLines.length > 0 ? (
               logLines.map((line, idx) => (
                 <div
                   key={idx}
@@ -180,9 +182,9 @@ export function LogInvestigationPanel({
         {/* Primary Action Button */}
         <button
           onClick={onStartAnalysis}
-          disabled={isAnalyzing || !logContent.trim()}
+          disabled={isLoadingDataset || isAnalyzing || !logContent.trim()}
           className={`h-12 px-4 rounded text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
-            isAnalyzing || !logContent.trim()
+            isLoadingDataset || isAnalyzing || !logContent.trim()
               ? "bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700"
               : "bg-cyan-600 hover:bg-cyan-500 text-slate-950 shadow-cyan-glow cursor-pointer"
           }`}
@@ -193,12 +195,12 @@ export function LogInvestigationPanel({
                 <i />
                 <i />
               </span>
-              <span>AI Analyst Processing Telemetry...</span>
+              <span>Analyzing logs...</span>
             </>
           ) : (
             <>
               <Sparkles className="w-4 h-4" />
-              <span>Start AI Security Investigation</span>
+              <span>Analyze logs</span>
             </>
           )}
         </button>

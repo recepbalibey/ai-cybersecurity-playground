@@ -1,51 +1,53 @@
 "use client";
 
+import dynamic from "next/dynamic";
+import { WorkspaceSkeleton } from "@/components/WorkspaceSkeleton";
 import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Header } from "@/components/Header";
-import { LogInvestigationPanel } from "@/components/LogInvestigationPanel";
-import { LiveInvestigationView } from "@/components/LiveInvestigationView";
-import { ThreatIntelPanel } from "@/components/ThreatIntelPanel";
-import { IncidentReportView } from "@/components/IncidentReportView";
-import { TeachingOverlay } from "@/components/TeachingOverlay";
+const LogInvestigationPanel = dynamic(() => import("@/components/LogInvestigationPanel").then(m => m.LogInvestigationPanel), { loading: () => <WorkspaceSkeleton /> });
+const LiveInvestigationView = dynamic(() => import("@/components/LiveInvestigationView").then(m => m.LiveInvestigationView), { loading: () => <WorkspaceSkeleton /> });
+const ThreatIntelPanel = dynamic(() => import("@/components/ThreatIntelPanel").then(m => m.ThreatIntelPanel), { loading: () => <WorkspaceSkeleton /> });
+const IncidentReportView = dynamic(() => import("@/components/IncidentReportView").then(m => m.IncidentReportView), { loading: () => <WorkspaceSkeleton /> });
+const TeachingOverlay = dynamic(() => import("@/components/TeachingOverlay").then(m => m.TeachingOverlay), { loading: () => <WorkspaceSkeleton /> });
 
-import { ThreatHuntingConsole } from "@/components/threat-hunting/ThreatHuntingConsole";
-import { AIHuntingTimeline } from "@/components/threat-hunting/AIHuntingTimeline";
-import { TelemetryExplorer } from "@/components/threat-hunting/TelemetryExplorer";
-import { QueryGenerator } from "@/components/threat-hunting/QueryGenerator";
-import { ThreatFindings } from "@/components/threat-hunting/ThreatFindings";
-import { ThreatHuntingReportView } from "@/components/threat-hunting/ThreatHuntingReportView";
+const ThreatHuntingConsole = dynamic(() => import("@/components/threat-hunting/ThreatHuntingConsole").then(m => m.ThreatHuntingConsole), { loading: () => <WorkspaceSkeleton /> });
+const AIHuntingTimeline = dynamic(() => import("@/components/threat-hunting/AIHuntingTimeline").then(m => m.AIHuntingTimeline), { loading: () => <WorkspaceSkeleton /> });
+const TelemetryExplorer = dynamic(() => import("@/components/threat-hunting/TelemetryExplorer").then(m => m.TelemetryExplorer), { loading: () => <WorkspaceSkeleton /> });
+const QueryGenerator = dynamic(() => import("@/components/threat-hunting/QueryGenerator").then(m => m.QueryGenerator), { loading: () => <WorkspaceSkeleton /> });
+const ThreatFindings = dynamic(() => import("@/components/threat-hunting/ThreatFindings").then(m => m.ThreatFindings), { loading: () => <WorkspaceSkeleton /> });
+const ThreatHuntingReportView = dynamic(() => import("@/components/threat-hunting/ThreatHuntingReportView").then(m => m.ThreatHuntingReportView), { loading: () => <WorkspaceSkeleton /> });
 
-import { EngagementSetup } from "@/components/pentest/EngagementSetup";
-import { AttackSurfaceMap } from "@/components/pentest/AttackSurfaceMap";
-import { PentestStrategyTimeline } from "@/components/pentest/PentestStrategyTimeline";
-import { VulnerabilityAnalysis } from "@/components/pentest/VulnerabilityAnalysis";
-import { SecurityTestingAssistant } from "@/components/pentest/SecurityTestingAssistant";
-import { PentestReportView } from "@/components/pentest/PentestReportView";
+const EngagementSetup = dynamic(() => import("@/components/pentest/EngagementSetup").then(m => m.EngagementSetup), { loading: () => <WorkspaceSkeleton /> });
+const AttackSurfaceMap = dynamic(() => import("@/components/pentest/AttackSurfaceMap").then(m => m.AttackSurfaceMap), { loading: () => <WorkspaceSkeleton /> });
+const PentestStrategyTimeline = dynamic(() => import("@/components/pentest/PentestStrategyTimeline").then(m => m.PentestStrategyTimeline), { loading: () => <WorkspaceSkeleton /> });
+const VulnerabilityAnalysis = dynamic(() => import("@/components/pentest/VulnerabilityAnalysis").then(m => m.VulnerabilityAnalysis), { loading: () => <WorkspaceSkeleton /> });
+const SecurityTestingAssistant = dynamic(() => import("@/components/pentest/SecurityTestingAssistant").then(m => m.SecurityTestingAssistant), { loading: () => <WorkspaceSkeleton /> });
+const PentestReportView = dynamic(() => import("@/components/pentest/PentestReportView").then(m => m.PentestReportView), { loading: () => <WorkspaceSkeleton /> });
 
-import { PromptInjectionLab } from "@/components/llm-lab/PromptInjectionLab";
+const PromptInjectionLab = dynamic(() => import("@/components/llm-lab/PromptInjectionLab").then(m => m.PromptInjectionLab), { loading: () => <WorkspaceSkeleton /> });
 
-import { JailbreakLab } from "@/components/jailbreak/JailbreakLab";
+const JailbreakLab = dynamic(() => import("@/components/jailbreak/JailbreakLab").then(m => m.JailbreakLab), { loading: () => <WorkspaceSkeleton /> });
 
-import { AdversarialLab } from "@/components/adversarial/AdversarialLab";
+const AdversarialLab = dynamic(() => import("@/components/adversarial/AdversarialLab").then(m => m.AdversarialLab), { loading: () => <WorkspaceSkeleton /> });
 
-import { AgentSecurityLab } from "@/components/agent-security/AgentSecurityLab";
+const AgentSecurityLab = dynamic(() => import("@/components/agent-security/AgentSecurityLab").then(m => m.AgentSecurityLab), { loading: () => <WorkspaceSkeleton /> });
 
-import { MalwareAnalystLab } from "@/components/malware/MalwareAnalystLab";
+const MalwareAnalystLab = dynamic(() => import("@/components/malware/MalwareAnalystLab").then(m => m.MalwareAnalystLab), { loading: () => <WorkspaceSkeleton /> });
 
-import { CodeReviewLab } from "@/components/code-review/CodeReviewLab";
+const CodeReviewLab = dynamic(() => import("@/components/code-review/CodeReviewLab").then(m => m.CodeReviewLab), { loading: () => <WorkspaceSkeleton /> });
 
-import { PrivacyLab } from "@/components/privacy/PrivacyLab";
+const PrivacyLab = dynamic(() => import("@/components/privacy/PrivacyLab").then(m => m.PrivacyLab), { loading: () => <WorkspaceSkeleton /> });
 
-import { GovernanceLab } from "@/components/governance/GovernanceLab";
+const GovernanceLab = dynamic(() => import("@/components/governance/GovernanceLab").then(m => m.GovernanceLab), { loading: () => <WorkspaceSkeleton /> });
 
-import { AiFailureLab } from "@/components/ai-failures/AiFailureLab";
+const AiFailureLab = dynamic(() => import("@/components/ai-failures/AiFailureLab").then(m => m.AiFailureLab), { loading: () => <WorkspaceSkeleton /> });
 
 import { LabBriefProvider, useLabBrief } from "@/components/lab-brief/LabBriefContext";
 import { LabBriefDrawer } from "@/components/lab-brief/LabBriefDrawer";
 import { LabCompletion } from "@/components/lab-brief/LabCompletion";
 import { getLabBrief } from "@/data/labBriefData";
-import { CursorHalo } from "@/components/effects/CursorHalo";
+
 import { Reveal } from "@/components/effects/Reveal";
 import { useKeyboardNav } from "@/hooks/useKeyboardNav";
 import { KeyboardShortcutsHelp } from "@/components/KeyboardShortcutsHelp";
@@ -165,7 +167,7 @@ function SOCAnalystApp() {
   });
   const [hubPath, setHubPath] = useState<LearningPathId | null>(null);
   const [completedIds, setCompletedIds] = useState<string[]>([]);
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">("light");
 
   const [helpOpen, setHelpOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
@@ -178,6 +180,8 @@ const runTokenRef = useRef(0);
   const [logContent, setLogContent] = useState("");
   const [selectedDatasetName, setSelectedDatasetName] = useState("SSH Brute Force Attack");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isLoadingDataset, setIsLoadingDataset] = useState(true);
+  const datasetTokenRef = useRef(0);
   const [currentStageIndex, setCurrentStageIndex] = useState(0);
   const [analysisResult, setAnalysisResult] = useState<AIAnalysisResult | null>(null);
   const [sampleDatasets, setSampleDatasets] = useState<
@@ -232,7 +236,7 @@ const runTokenRef = useRef(0);
 
   // Probe the FastAPI backend so the UI can surface offline fallback mode
   useEffect(() => {
-    const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+    const base = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api").replace(/\/api\/?$/, "");
     fetch(`${base}/api/health`)
       .then((res) => setBackendOnline(res.ok))
       .catch(() => setBackendOnline(false));
@@ -285,8 +289,12 @@ const runTokenRef = useRef(0);
   };
 
   const loadDataset = async (key: string) => {
+    const token = ++datasetTokenRef.current;
+    setIsLoadingDataset(true);
     const content = await fetchDatasetContent(key);
+    if (token !== datasetTokenRef.current) return;
     setLogContent(content);
+    setIsLoadingDataset(false);
 
     if (key === "bruteforce") {
       setSelectedDatasetName("SSH Brute Force Attack");
@@ -427,11 +435,11 @@ const runTokenRef = useRef(0);
   };
 
   const initialSOCStages: ReasoningStage[] = [
-    { stage: 1, title: "Receiving & Normalizing Logs", status: "pending", detail: "Ready to parse and structure log stream", timestamp: "--" },
-    { stage: 2, title: "Extracting Indicators of Compromise (IOCs)", status: "pending", detail: "Extracting IP addresses, users, commands, domains", timestamp: "--" },
-    { stage: 3, title: "Analyzing Behavioral Anomalies", status: "pending", detail: "Detecting authentication bursts & malicious script execution", timestamp: "--" },
-    { stage: 4, title: "Mapping MITRE ATT&CK Matrix", status: "pending", detail: "Correlating event telemetry against MITRE techniques", timestamp: "--" },
-    { stage: 5, title: "Synthesizing SOC Incident Report", status: "pending", detail: "Generating formal triage report & containment playbook", timestamp: "--" },
+    { stage: 1, title: "Read and organize logs", status: "pending", detail: "Read the selected security logs", timestamp: "--" },
+    { stage: 2, title: "Find indicators of compromise", status: "pending", detail: "Identify IP addresses, users, commands, and domains", timestamp: "--" },
+    { stage: 3, title: "Find unusual behavior", status: "pending", detail: "Check for unusual logins and harmful commands", timestamp: "--" },
+    { stage: 4, title: "Map attack techniques", status: "pending", detail: "Match evidence to MITRE ATT&CK techniques", timestamp: "--" },
+    { stage: 5, title: "Write the incident report", status: "pending", detail: "Explain the findings and suggest next steps", timestamp: "--" },
   ];
 
   const initialHuntingTimeline: HuntingStep[] = [
@@ -464,15 +472,8 @@ const runTokenRef = useRef(0);
 
   return (
     <div className="flex h-screen bg-cyber-base overflow-hidden">
-      {/* Animated lab backdrop (grid + drifting particles) */}
-      <div className="cyber-backdrop" aria-hidden="true">
-        <div className="cyber-backdrop-grid" />
-        <div className="cyber-backdrop-particles" />
-      </div>
-
-      {/* Cursor-following holographic halo */}
-      <CursorHalo />
-
+      <a className="skip-link" href="#main-content">Skip to content</a>
+      {sidebarOpen && <button aria-label="Close navigation" onClick={() => setSidebarOpen(false)} className="fixed inset-0 z-20 bg-black/20 min-[1101px]:hidden" />}
       {/* Left Sidebar Navigation */}
       <Navigation
         activeModule={activeModule}
@@ -483,7 +484,7 @@ const runTokenRef = useRef(0);
       />
 
       {/* Main Command Center Area */}
-      <div className="flex-1 flex flex-col h-screen overflow-y-auto relative z-10">
+      <div className="min-w-0 flex-1 flex flex-col h-screen overflow-y-auto relative z-10">
         {/* Command Center Header */}
         <Header
           instructorMode={instructorMode}
@@ -497,7 +498,7 @@ const runTokenRef = useRef(0);
         />
 
         {/* Main Content Body */}
-        <main className="mx-auto flex-1 w-full max-w-[1600px] p-4 sm:p-6 space-y-6">
+        <main id="main-content" tabIndex={-1} className="mx-auto flex-1 w-full max-w-[1600px] p-4 sm:p-8 space-y-6">
           {/* Module 0: Learning Hub / Home */}
           {activeModule === "learning-hub" && (
             <LearningHub
@@ -526,6 +527,7 @@ const runTokenRef = useRef(0);
               <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 min-h-[420px] xl:min-h-[580px]">
                 <div className="xl:col-span-4 h-full">
                   <LogInvestigationPanel
+                    isLoadingDataset={isLoadingDataset}
                     logContent={logContent}
                     onLogContentChange={setLogContent}
                     onSelectDataset={loadDataset}
@@ -538,6 +540,7 @@ const runTokenRef = useRef(0);
 
                 <div className="xl:col-span-4 h-full">
                   <LiveInvestigationView
+                    hasResult={analysisResult !== null}
                     stages={analysisResult?.reasoning_stages || initialSOCStages}
                     currentStageIndex={currentStageIndex}
                     isAnalyzing={isAnalyzing}
@@ -545,29 +548,14 @@ const runTokenRef = useRef(0);
                 </div>
 
                 <div className="xl:col-span-4 h-full">
-                  <ThreatIntelPanel
-                    severity={analysisResult?.severity || "HIGH"}
-                    iocs={
-                      analysisResult?.iocs || {
-                        ips: ["45.33.32.156"],
-                        domains: ["malicious-c2.top"],
-                        users: ["rdevon"],
-                        hosts: ["auth-gateway.internal.corp"],
-                        commands: ["/usr/bin/cat /etc/shadow"],
-                      }
-                    }
-                    mitreMappings={
-                      analysisResult?.mitre_mappings || [
-                        {
-                          id: "T1110",
-                          name: "Brute Force",
-                          tactic: "Credential Access",
-                          description: "Authentication burst failure followed by privilege escalation.",
-                          confidence: "96%",
-                        },
-                      ]
-                    }
-                  />
+                  {analysisResult ? (
+                    <ThreatIntelPanel severity={analysisResult.severity} iocs={analysisResult.iocs} mitreMappings={analysisResult.mitre_mappings} />
+                  ) : (
+                    <div className="panel h-full flex flex-col justify-center items-start gap-3 p-6">
+                      <h2 className="text-base font-semibold text-cyber-heading">Evidence and findings</h2>
+                      <p className="text-sm text-cyber-muted">Run the analysis to see indicators, attack techniques, and a report for your selected logs.</p>
+                    </div>
+                  )}
                 </div>
               </div>
 

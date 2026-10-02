@@ -28,7 +28,7 @@ export function PrivacyTimeline({ stages, isProcessing, activeStage }: Props) {
     <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
         <ScanLine className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">Protection Pipeline</h3>
+        <h3 className="text-xs font-bold text-cyber-heading">Protection Pipeline</h3>
         {isProcessing && <span className="ml-auto text-[10px] font-mono text-cyan-300 animate-pulse">running</span>}
       </div>
       <ul className="p-3 space-y-2">

@@ -26,7 +26,7 @@ export function SecurityReport({ report }: SecurityReportProps) {
       {/* Report toolbar */}
       <div className="px-4 py-3 border-b border-cyber-border bg-cyber-surface/60 flex items-center gap-2 print:hidden">
         <FileText className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+        <h3 className="text-xs font-bold text-cyber-heading">
           AI Governance Report
         </h3>
         <div className="ml-auto flex items-center gap-2">

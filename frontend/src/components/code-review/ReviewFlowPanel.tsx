@@ -15,7 +15,7 @@ export function ReviewFlowPanel({ stages, active, done }: Props) {
     <div className="cyber-panel border border-cyber-border rounded-lg p-4 overflow-hidden">
       <div className="flex items-center gap-2 mb-3">
         <Radar className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">Analysis Pipeline</h3>
+        <h3 className="text-xs font-bold text-cyber-heading">Analysis Pipeline</h3>
       </div>
 
       <div className="relative">

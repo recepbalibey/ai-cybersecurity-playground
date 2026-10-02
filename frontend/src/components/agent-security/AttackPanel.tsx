@@ -36,7 +36,7 @@ export function AttackPanel({
     <div className="cyber-panel border border-cyber-border p-4 rounded-lg h-full flex flex-col">
       <div className="flex items-center gap-2.5 mb-3">
         <Swords className="w-4 h-4 text-rose-400" />
-        <h3 className="text-sm font-bold text-cyber-heading uppercase tracking-wider font-mono">
+        <h3 className="text-sm font-bold text-cyber-heading">
           Attack & Compare
         </h3>
         <button

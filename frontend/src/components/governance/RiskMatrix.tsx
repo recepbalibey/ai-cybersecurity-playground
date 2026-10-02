@@ -47,7 +47,7 @@ export function RiskMatrix({
         <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden h-full">
           <div className="px-4 py-3 border-b border-cyber-border bg-cyber-surface/60 flex items-center gap-2">
             <BarChart3 className="w-4 h-4 text-cyan-400" />
-            <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+            <h3 className="text-xs font-bold text-cyber-heading">
               Risk Heat Map - Before vs After Controls
             </h3>
             <span className="ml-auto text-[10px] font-mono text-slate-500">LIKELIHOOD x IMPACT</span>
@@ -114,7 +114,7 @@ export function RiskMatrix({
         <div className="cyber-panel border border-cyber-border rounded-lg p-4 h-full flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <BarChart3 className="w-4 h-4 text-cyan-400" />
-            <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+            <h3 className="text-xs font-bold text-cyber-heading">
               Aggregate Risk
             </h3>
           </div>

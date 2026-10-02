@@ -88,7 +88,7 @@ ${report.recommended_actions
         <div className="flex items-center gap-3">
           <FileText className="w-5 h-5 text-cyan-400" />
           <div>
-            <h2 className="text-base font-bold text-cyber-heading uppercase tracking-wider font-mono">
+            <h2 className="text-base font-bold text-cyber-heading">
               AI Threat Hunting Investigation Report
             </h2>
             <div className="text-xs text-cyber-muted font-mono mt-0.5">
@@ -120,7 +120,7 @@ ${report.recommended_actions
         {/* Section 1: Objective & Hypothesis */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-4 bg-slate-950/80 border border-slate-800 rounded">
-            <h3 className="text-xs font-bold text-cyan-400 uppercase tracking-widest font-mono flex items-center gap-2 mb-2">
+            <h3 className="text-xs font-bold text-cyan-400 flex items-center gap-2 mb-2">
               <Search className="w-4 h-4" />
               Hunting Objective
             </h3>
@@ -130,7 +130,7 @@ ${report.recommended_actions
           </div>
 
           <div className="p-4 bg-slate-950/80 border border-slate-800 rounded">
-            <h3 className="text-xs font-bold text-cyan-400 uppercase tracking-widest font-mono flex items-center gap-2 mb-2">
+            <h3 className="text-xs font-bold text-cyan-400 flex items-center gap-2 mb-2">
               <ShieldCheck className="w-4 h-4" />
               Threat Hypothesis
             </h3>
@@ -143,7 +143,7 @@ ${report.recommended_actions
         {/* Section 2: Data Sources & MITRE Mapping */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-4 bg-slate-950/80 border border-slate-800 rounded">
-            <h3 className="text-xs font-bold text-cyan-400 uppercase tracking-widest font-mono mb-2">
+            <h3 className="text-xs font-bold text-cyan-400 mb-2">
               Data Sources Used
             </h3>
             <ul className="list-disc list-inside text-xs text-slate-300 space-y-1">
@@ -154,7 +154,7 @@ ${report.recommended_actions
           </div>
 
           <div className="p-4 bg-slate-950/80 border border-slate-800 rounded">
-            <h3 className="text-xs font-bold text-cyan-400 uppercase tracking-widest font-mono mb-2">
+            <h3 className="text-xs font-bold text-cyan-400 mb-2">
               MITRE ATT&CK Correlation
             </h3>
             <div className="text-xs text-slate-200">
@@ -170,7 +170,7 @@ ${report.recommended_actions
 
         {/* Section 3: Recommended Actions */}
         <div className="space-y-2.5">
-          <h3 className="text-sm font-bold text-cyan-400 uppercase tracking-widest font-mono flex items-center gap-2">
+          <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
             <CheckSquare className="w-4.5 h-4.5" />
             Recommended Containment & Detection Rules
           </h3>

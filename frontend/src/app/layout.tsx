@@ -3,8 +3,8 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AI Cybersecurity Playground | SOC Command Center",
-  description: "Master's-level educational AI cybersecurity operations simulator",
+  title: "AI Cybersecurity Playground | Hands-on Security Labs",
+  description: "Learn to investigate threats with AI and protect AI systems through 12 guided security labs. All scenarios are simulated.",
 };
 
 const inter = Inter({
@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="light">
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} bg-cyber-base text-cyber-text antialiased font-sans`}
       >

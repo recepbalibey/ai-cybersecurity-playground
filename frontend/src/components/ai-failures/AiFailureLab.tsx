@@ -336,7 +336,7 @@ export function AiFailureLab({
       <div className="cyber-panel border border-cyber-border p-4 rounded-lg flex items-center justify-between flex-wrap gap-3 holo-scan">
         <div className="flex items-center gap-2.5">
           <AlertTriangle className="w-5 h-5 text-amber-400" />
-          <h2 className="text-base font-bold text-cyber-heading uppercase tracking-wider font-mono">
+          <h2 className="text-base font-bold text-cyber-heading">
             AI Failure Lab Active
           </h2>
         </div>
@@ -423,7 +423,7 @@ export function AiFailureLab({
             <div className="cyber-panel border border-cyber-border rounded-lg p-4 h-full">
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="w-4 h-4 text-amber-400" />
-                <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+                <h3 className="text-xs font-bold text-cyber-heading">
                   Reliability Summary
                 </h3>
               </div>

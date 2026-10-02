@@ -41,7 +41,7 @@ export function RevealStep({ result, onNext }: RevealStepProps) {
       <div className="cyber-panel border border-cyber-border rounded-lg p-4">
         <div className="flex items-center gap-2 mb-2">
           <FlaskConical className="w-4 h-4 text-emerald-400" />
-          <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+          <h3 className="text-xs font-bold text-cyber-heading">
             Ground truth
           </h3>
         </div>
@@ -52,7 +52,7 @@ export function RevealStep({ result, onNext }: RevealStepProps) {
       <div className="cyber-panel border border-amber-500/40 rounded-lg p-4">
         <div className="flex items-center gap-2 mb-2">
           <AlertTriangle className="w-4 h-4 text-amber-400" />
-          <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+          <h3 className="text-xs font-bold text-cyber-heading">
             Why the AI failed - {result.failure_name}
           </h3>
         </div>
@@ -63,7 +63,7 @@ export function RevealStep({ result, onNext }: RevealStepProps) {
       <div className="cyber-panel border border-red-500/30 rounded-lg p-4">
         <div className="flex items-center gap-2 mb-2">
           <ShieldAlert className="w-4 h-4 text-red-400" />
-          <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+          <h3 className="text-xs font-bold text-cyber-heading">
             Security impact if trusted
           </h3>
         </div>
@@ -73,7 +73,7 @@ export function RevealStep({ result, onNext }: RevealStepProps) {
       {/* Reliability before */}
       <div className="cyber-panel border border-cyan-500/30 rounded-lg p-4">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
+          <h3 className="text-xs font-bold text-cyber-heading">
             Reliability before mitigations
           </h3>
           <span className="text-sm font-mono font-bold text-cyan-300">{result.reliability.before}/100</span>

@@ -46,7 +46,7 @@ export function FindingsPanel({ findings, selectedId, onSelect, hasResult = fals
       <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
         <div className="px-3 py-2 border-b border-cyber-border flex items-center gap-2">
           <AlertOctagon className="w-4 h-4 text-cyan-400" />
-          <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">AI Findings</h3>
+          <h3 className="text-xs font-bold text-cyber-heading">AI Findings</h3>
           <span className="ml-auto text-[10px] font-mono text-cyber-muted">0 issues</span>
         </div>
         <div className={`flex items-center gap-3 p-4 text-sm ${hasResult ? "text-emerald-300" : "text-cyber-muted"}`}>
@@ -74,7 +74,7 @@ export function FindingsPanel({ findings, selectedId, onSelect, hasResult = fals
     <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
       <div className="px-3 py-2 border-b border-cyber-border flex items-center gap-2">
         <AlertOctagon className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">AI Findings</h3>
+        <h3 className="text-xs font-bold text-cyber-heading">AI Findings</h3>
         <span className="ml-auto text-[10px] font-mono text-cyber-muted">
           {visible.length}/{findings.length} issue(s)
         </span>

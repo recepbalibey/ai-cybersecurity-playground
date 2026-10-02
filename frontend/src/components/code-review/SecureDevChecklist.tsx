@@ -23,7 +23,7 @@ export function SecureDevChecklist() {
     <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
         <ClipboardCheck className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">Secure Dev Checklist</h3>
+        <h3 className="text-xs font-bold text-cyber-heading">Secure Dev Checklist</h3>
         <span className="ml-auto text-[11px] font-mono text-cyan-300">{pct}%</span>
       </div>
       <div className="h-1.5 bg-slate-800">

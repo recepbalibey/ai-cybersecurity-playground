@@ -2,7 +2,7 @@
 
 An interactive learning platform for students. It shows how artificial intelligence helps **defend** computer systems, and also how AI systems can be **attacked** and **secured**.
 
-Students work inside a simulated security command center. They run "live" investigations powered by simulated AI analysis, and follow the exact workflow of an AI-assisted security analyst, threat hunter, penetration tester, or security engineer. Every step includes teaching notes.
+Students work inside a guided security workspace. They run "live" investigations powered by simulated AI analysis, and follow the exact workflow of an AI-assisted security analyst, threat hunter, penetration tester, or security engineer. Every step includes teaching notes.
 
 > **This is only a sandbox for learning.** Every dataset, target, finding, and scenario is **simulated**. The app never connects to, attacks, or tests real systems, real people, or real APIs. It teaches concepts. It does not probe production environments.
 
@@ -41,13 +41,13 @@ The app is built around one simple idea. **AI changes cybersecurity in two direc
 
 Each module answers **one clear question**, shows information step by step, and explains not just *what* happened, but *why* it happened, and **what to try next**.
 
-### What makes it good for a classroom
+### Classroom features
 
-- **Instructor Mode.** A switch in the top bar shows teaching points, "the catch", and "dig deeper" notes in every module.
+- **Teaching notes.** A switch in the lab top bar shows teaching points, "the catch", and "dig deeper" notes in every module.
 - **Learning Hub.** Pick a learning path, read short theory lessons with animated flow diagrams, and jump straight into any lab.
 - **Live AI pipelines.** Every module animates the AI steps while it "runs". Students see the process, not just the result.
-- **Interactive effects.** Holographic panels, cursor-following spotlights, hover-tilt cards, data-flow links, text reveal effects, and live status dots. All effects turn off automatically for users who prefer less motion.
-- **Built-in checks.** The project ships with type checking, 167 frontend tests, and a backend API test suite.
+- **Clear workspace.** Neutral surfaces, concise labels, one muted green accent, and light and dark themes. Labs load on demand with skeleton feedback.
+- **Built-in checks.** The project ships with type checking, 195 frontend tests, and a backend API test suite.
 
 ---
 
@@ -177,7 +177,7 @@ flowchart LR
 | **Frontend** | Next.js 14, React 18, TypeScript, Tailwind CSS, Lucide icons, Vitest. |
 | **Backend** | Python FastAPI and Uvicorn, with simulated analysis engines. |
 | **Storage** | SQLite file (`soc_investigations.db`) for review history. |
-| **Design system** | Custom "Cyber Command" design rules in `DESIGN_RULES.md`. |
+| **Design system** | Shared workspace design rules in `DESIGN_RULES.md`. |
 | **Data** | Packaged fake datasets and a knowledge base (MITRE, rules, patterns). |
 
 Both layers are independent simulation engines. The **backend** runs the AI analysis work. The **frontend** also has built-in demo data, so most screens keep working if the API is temporarily down.
@@ -397,7 +397,7 @@ Every module uses the same steps (see the diagram above):
 1. **Set up.** Pick a dataset, target, example, or scenario.
 2. **Run.** Press the main button (Start, Analyze, Hunt, Evaluate). Watch the AI reasoning animate.
 3. **Review.** Check the results: IOCs, MITRE map, findings, report.
-4. **Dig deeper.** Try the glossary ("?") buttons and keep **Instructor Mode** on to read the teaching material.
+4. **Dig deeper.** Try the glossary ("?") buttons and keep **Teaching notes** on to read the teaching material.
 5. **Export or continue.** Download a JSON/Markdown report, then continue to a mission report.
 
 ### 3. A quick 60-second demo
@@ -429,7 +429,7 @@ pytest
 cd frontend
 
 npm run typecheck        # TypeScript type checks
-npm test                 # Vitest (167 tests)
+npm test                 # Vitest (195 tests)
 ```
 
 ### Full test flow (diagram)
@@ -445,6 +445,16 @@ flowchart LR
 ```
 
 ---
+
+## Current deployment
+
+- Frontend: Cloudflare Pages project `ai-cybersecurity-playground`, serving the static Next.js export from `frontend/out`.
+- Website: https://ai-cybersecurity-playground.projects.recepbalibey.com/
+- Backend: Railway project `lively-art`, using the root Dockerfile and `railway.toml`.
+- API: https://api.ai-cybersecurity-playground.projects.recepbalibey.com/api
+- The GitHub repository has Cloudflare Pages and Railway deployment checks. Pushes to `main` use the existing deployment integrations.
+- Set `NEXT_PUBLIC_API_URL` to the API address including `/api` at frontend build time.
+- Browser simulations remain available when the API cannot be reached. API-backed history requires a working backend.
 
 ## Production build
 

@@ -19,7 +19,7 @@ import {
   AlertTriangle,
   Check,
 } from "lucide-react";
-import { AccentSwitcher } from "./effects/AccentSwitcher";
+
 
 interface NavigationProps {
   activeModule: string;
@@ -48,23 +48,23 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: "Defend with AI",
     items: [
-      { id: "soc-analyst", name: "AI SOC Analyst", icon: ShieldAlert },
-      { id: "threat-hunting", name: "AI Threat Hunting", icon: Search },
-      { id: "pentest-assistant", name: "AI Pentest Assistant", icon: Terminal },
-      { id: "malware-analysis", name: "AI Malware Analyst", icon: Bug },
-      { id: "code-review", name: "AI Code Reviewer", icon: FileCode2 },
-      { id: "ai-failure-lab", name: "AI Failure Lab", icon: AlertTriangle },
+      { id: "soc-analyst", name: "Log analysis", icon: ShieldAlert },
+      { id: "threat-hunting", name: "Threat hunting", icon: Search },
+      { id: "pentest-assistant", name: "Security assessment", icon: Terminal },
+      { id: "malware-analysis", name: "Malware analysis", icon: Bug },
+      { id: "code-review", name: "Code review", icon: FileCode2 },
+      { id: "ai-failure-lab", name: "AI reliability", icon: AlertTriangle },
     ],
   },
   {
     label: "Secure AI",
     items: [
-      { id: "prompt-injection", name: "Prompt Injection Lab", icon: Zap },
-      { id: "jailbreak-lab", name: "Jailbreak Lab", icon: Lock },
-      { id: "adversarial-ml", name: "Adversarial ML Lab", icon: Cpu },
-      { id: "agent-security", name: "AI Agent Security Lab", icon: Bot },
-      { id: "privacy-lab", name: "AI Data Privacy Lab", icon: EyeOff },
-      { id: "governance", name: "AI Governance Simulator", icon: Landmark },
+      { id: "prompt-injection", name: "Prompt injection", icon: Zap },
+      { id: "jailbreak-lab", name: "Model safety", icon: Lock },
+      { id: "adversarial-ml", name: "Adversarial ML", icon: Cpu },
+      { id: "agent-security", name: "Agent security", icon: Bot },
+      { id: "privacy-lab", name: "Data privacy", icon: EyeOff },
+      { id: "governance", name: "Risk and governance", icon: Landmark },
     ],
   },
 ];
@@ -79,11 +79,11 @@ export function Navigation({
   const completed = new Set(completedIds);
   return (
     <aside
-      className={`${collapsed ? "w-16" : "w-64"} transition-[width] duration-200 bg-cyber-surface border-r border-cyber-border flex flex-col h-screen sticky top-0 select-none z-20`}
+      className={`${collapsed ? "w-16" : "w-60 max-[1100px]:fixed max-[1100px]:inset-y-0 max-[1100px]:left-0 max-[1100px]:shadow-lg"} transition-[width] duration-200 bg-cyber-surface border-r border-cyber-border flex flex-col h-screen sticky top-0 select-none z-30`}
     >
       {/* Brand Header */}
-      <div className="p-4 border-b border-cyber-border flex items-center gap-3">
-        <div className="w-9 h-9 shrink-0 rounded-md bg-accent/10 border border-accent/40 flex items-center justify-center text-accent">
+      <div className="p-3 border-b border-cyber-border flex items-center gap-3">
+        <div className="w-8 h-8 shrink-0 rounded-lg bg-cyber-surface-hover flex items-center justify-center text-cyber-heading">
           <ShieldAlert className="w-5 h-5" strokeWidth={1.75} />
         </div>
         {!collapsed && (
@@ -91,8 +91,8 @@ export function Navigation({
             <h1 className="text-sm font-semibold tracking-tight text-cyber-heading">
               AI Cybersecurity
             </h1>
-            <p className="text-[11px] text-cyber-muted tracking-widest font-mono">
-              PLAYGROUND v1.0
+            <p className="text-xs text-cyber-muted">
+              Playground
             </p>
           </div>
         )}
@@ -115,7 +115,7 @@ export function Navigation({
         {NAV_GROUPS.map((group) => (
           <div key={group.label}>
             {!collapsed && (
-              <div className="px-3 py-1.5 text-[11px] font-mono tracking-widest text-cyber-muted uppercase">
+              <div className="px-3 py-1.5 text-[11px] font-medium text-cyber-muted">
                 {group.label}
               </div>
             )}
@@ -131,17 +131,17 @@ export function Navigation({
                     title={mod.name}
                     aria-label={mod.name}
                     aria-current={isActive ? "page" : undefined}
-                    className={`group w-full flex items-center gap-3 px-3.5 py-2.5 rounded-md text-sm font-medium transition-all ${
+                    className={`group w-full flex items-center gap-3 px-2.5 py-2 rounded-md text-[13px] font-medium transition-colors ${
                       collapsed ? "justify-center px-0" : ""
                     } ${
                       isActive
-                        ? "bg-accent/10 border border-accent/40 text-accent shadow-cyan-glow"
-                        : "text-cyber-text hover:bg-cyber-surface-hover hover:text-white"
+                        ? "bg-cyber-surface-hover text-cyber-heading"
+                        : "text-cyber-muted hover:bg-cyber-surface-hover hover:text-cyber-heading"
                     }`}
                   >
                     <Icon
                       className={`w-4 h-4 shrink-0 ${
-                        isActive ? "text-accent" : "text-cyber-muted group-hover:text-accent"
+                        isActive ? "text-cyber-heading" : "text-cyber-muted"
                       }`}
                       strokeWidth={1.75}
                     />
@@ -164,27 +164,8 @@ export function Navigation({
         ))}
       </nav>
 
-      {/* Footer System Status */}
-      <div className="p-3.5 border-t border-cyber-border bg-cyber-base/50">
-        {collapsed ? (
-          <div className="flex flex-col items-center gap-2.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <AccentSwitcher collapsed />
-          </div>
-        ) : (
-          <div className="space-y-2.5">
-            <div className="flex items-center justify-between text-xs font-mono text-cyber-muted">
-              <span className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                SYS_OK
-              </span>
-              <span>SOC_NODE_01</span>
-            </div>
-            <div className="pt-2 border-t border-cyber-border">
-              <AccentSwitcher />
-            </div>
-          </div>
-        )}
+      <div className="p-4 border-t border-cyber-border text-xs text-cyber-muted">
+        {collapsed ? <ShieldAlert className="mx-auto h-4 w-4" strokeWidth={1.75} /> : <><p className="font-medium text-cyber-heading">Built for practice</p><p className="mt-1 leading-relaxed">Simulated data and targets.<br />Learn safely at your own pace.</p></>}
       </div>
     </aside>
   );

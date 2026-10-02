@@ -31,7 +31,7 @@ export function ExperimentLibrary({
     <div className="cyber-panel border border-cyber-border p-5 rounded-lg h-full flex flex-col">
       <div className="flex items-center gap-2.5 mb-4">
         <FlaskConical className="w-4 h-4 text-cyan-400" />
-        <h3 className="text-sm font-bold text-cyber-heading uppercase tracking-wider font-mono">
+        <h3 className="text-sm font-bold text-cyber-heading">
           Experiment Library
         </h3>
       </div>
