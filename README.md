@@ -6,50 +6,36 @@ Practice AI cybersecurity through 12 guided labs. Investigate threats with AI, t
 
 <img src="docs/media/demo.gif" alt="Animated demo of the AI Security labs" width="100%">
 
-## What you can practice
+## Features
 
-| Defend with AI | Secure AI systems |
-| --- | --- |
-| Log analysis and threat hunting | Prompt injection and model safety |
-| Security assessments and malware analysis | Adversarial ML and agent permissions |
-| Code review and checking AI claims | Data privacy and AI governance |
+- **12 guided labs:** log analysis, threat hunting, security testing, malware analysis, code review, prompt injection, jailbreaks, adversarial ML, agent security, data privacy, AI governance, and AI mistakes.
+- **Learning Hub:** short lessons, two learning paths, and saved progress.
+- **Hands-on practice:** choose a scenario, run a simulation, and review evidence, teaching notes, and reports.
 
-The Learning Hub includes short theory lessons, two learning paths, and saved progress. Labs include teaching notes, evidence, and reports.
+## Install and run
 
-## How it works
+You need **Node.js 20+**, **Python 3.9+**, and **Git**. No AI API key is needed.
 
-```mermaid
-flowchart LR
-    A[Choose a scenario] --> B[Run a simulation]
-    B --> C[Review the evidence]
-    C --> D[Decide what to do]
+Clone the project:
+
+```bash
+git clone https://github.com/recepbalibey/ai-cybersecurity-playground.git
+cd ai-cybersecurity-playground
 ```
 
-```mermaid
-flowchart LR
-    UI[Next.js frontend] --> API[FastAPI backend]
-    API --> Data[Scenario datasets and knowledge]
-    API --> DB[SQLite history]
-    UI --> Local[Browser simulation fallback]
-```
-
-## Run locally
-
-Use Node.js 20+ and Python 3.9+. Run these commands from the repository root in two terminals.
-
-**Backend**
+Start the backend:
 
 ```bash
 cd backend
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn main:app --host 127.0.0.1 --port 8000
+python -m pip install -r requirements.txt
+python -m uvicorn main:app --host 127.0.0.1 --port 8000
 ```
 
-On Windows, use `python` and `.venv\Scripts\Activate.ps1` instead.
+On Windows, use `python` instead of `python3` and `.\venv\Scripts\Activate.ps1` to activate the environment.
 
-**Frontend**
+In a second terminal, from the project folder, start the frontend:
 
 ```bash
 cd frontend
@@ -57,30 +43,6 @@ npm ci
 npm run dev
 ```
 
-Open [localhost:3000](http://localhost:3000). The default API is `http://localhost:8000/api`. Set `NEXT_PUBLIC_API_URL` before building when using another backend.
+Open [localhost:3000](http://localhost:3000) and choose a lab in the Learning Hub.
 
-## Project layout
-
-```text
-frontend/       Next.js interface, tests, and public logo
-backend/        FastAPI services and API tests
-datasets/       Simulated scenarios
-knowledge/      Learning and detection data
-docs/           Lab guides, design rules, and demo media
-Dockerfile      Backend container
-railway.toml    Railway deployment settings
-```
-
-## Check and build
-
-```bash
-npm run typecheck --prefix frontend
-npm test --prefix frontend
-npm run build --prefix frontend
-```
-
-For backend tests, activate its virtual environment and run `pytest` inside `backend/`.
-
-The frontend exports to `frontend/out` for Cloudflare Pages. The backend runs on Railway. Both use the existing GitHub deployment integrations.
-
-[Development guide](docs/development.md) · [Lab guides](docs/labs/) · [Design rules](docs/design.md)
+[Development guide](docs/development.md) · [Lab guides](docs/labs/)
