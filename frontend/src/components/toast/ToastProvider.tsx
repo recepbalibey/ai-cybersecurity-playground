@@ -32,10 +32,10 @@ interface ToastContextValue {
 const ToastContext = createContext<ToastContextValue | null>(null);
 
 const TONE_STYLE: Record<ToastTone, { border: string; icon: string; Icon: typeof Info }> = {
-  success: { border: "border-emerald-500/40", icon: "text-emerald-400", Icon: CheckCircle2 },
-  info: { border: "border-cyan-500/40", icon: "text-cyan-400", Icon: Info },
-  error: { border: "border-rose-500/40", icon: "text-rose-400", Icon: XCircle },
-  warning: { border: "border-amber-500/40", icon: "text-amber-400", Icon: ShieldAlert },
+  success: { border: "border-emerald-500/40", icon: "text-status-success", Icon: CheckCircle2 },
+  info: { border: "border-cyan-500/40", icon: "text-accent", Icon: Info },
+  error: { border: "border-rose-500/40", icon: "text-status-danger", Icon: XCircle },
+  warning: { border: "border-amber-500/40", icon: "text-status-warning", Icon: ShieldAlert },
 };
 
 export function ToastProvider({ children }: { children: ReactNode }) {
@@ -73,9 +73,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             >
               <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${tone.icon}`} strokeWidth={1.75} />
               <div className="min-w-0 flex-1">
-                <div className="text-[12px] font-semibold text-cyber-heading">{t.title}</div>
+                <div className="text-[0.75rem] font-semibold text-cyber-heading">{t.title}</div>
                 {t.description && (
-                  <div className="mt-0.5 text-[11px] leading-snug text-cyber-muted">{t.description}</div>
+                  <div className="mt-0.5 text-[0.6875rem] leading-snug text-cyber-muted">{t.description}</div>
                 )}
               </div>
               <button

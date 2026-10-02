@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { FontSizeControls } from "./FontSizeControls";
 import { BookOpen, Moon, Sun, Keyboard, Search } from "lucide-react";
 import { getLabBrief } from "@/data/labBriefData";
 import { useLabBrief } from "@/components/lab-brief/LabBriefContext";
@@ -64,6 +65,7 @@ export function Header({
         {brief && <LabBriefButton labId={brief.id} open={briefOpen} onToggle={() => toggleBrief(brief.id)} />}
         {onToggleCommand && <button className="tool-button" onClick={onToggleCommand} title="Find a lab (Ctrl or Command + K)" aria-label="Open command palette"><Search size={16} strokeWidth={1.75} /></button>}
         {onToggleShortcuts && <button className="tool-button hidden sm:grid" onClick={onToggleShortcuts} title="Keyboard shortcuts" aria-label="Open keyboard shortcuts help"><Keyboard size={16} strokeWidth={1.75} /></button>}
+        <FontSizeControls />
         <button className="tool-button" onClick={onToggleTheme} title={theme === "light" ? "Use dark mode" : "Use light mode"} aria-label="Toggle theme">{theme === "light" ? <Moon size={16} strokeWidth={1.75} /> : <Sun size={16} strokeWidth={1.75} />}</button>
         {brief && <button onClick={() => onToggleInstructorMode(!instructorMode)} role="switch" aria-checked={instructorMode} aria-label="Toggle teaching notes" className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-xs ${instructorMode ? "border-cyber-border-light bg-cyber-surface text-cyber-heading" : "border-transparent text-cyber-muted"}`}><BookOpen size={16} strokeWidth={1.75} /><span>Teaching notes</span><span className="hidden sm:inline">{instructorMode ? "On" : "Off"}</span></button>}
       </div>

@@ -20,19 +20,19 @@ export function ToolSandbox({ tools, result, isProcessing }: ToolSandboxProps) {
 
   const riskCls = (r: string) =>
     r === "high"
-      ? "border-rose-500/40 text-rose-400"
+      ? "border-rose-500/40 text-status-danger"
       : r === "medium"
-      ? "border-amber-500/40 text-amber-400"
-      : "border-emerald-500/40 text-emerald-400";
+      ? "border-amber-500/40 text-status-warning"
+      : "border-emerald-500/40 text-status-success";
 
   return (
     <div className="cyber-panel border border-cyber-border p-4 rounded-lg h-full flex flex-col">
       <div className="flex items-center gap-2.5 mb-3">
-        <Wrench className="w-4 h-4 text-cyan-400" />
+        <Wrench className="w-4 h-4 text-accent" />
         <h3 className="text-sm font-bold text-cyber-heading">
           Tool Sandbox
         </h3>
-        <span className="ml-auto text-[10px] font-mono text-cyber-muted">
+        <span className="ml-auto text-[0.625rem] font-mono text-cyber-muted">
           {tools.length} tools
         </span>
       </div>
@@ -47,22 +47,22 @@ export function ToolSandbox({ tools, result, isProcessing }: ToolSandboxProps) {
               key={t.key}
               className={`p-3 rounded-lg border transition-all ${
                 blocked
-                  ? "bg-rose-950/20 border-rose-500/40"
+                  ? "bg-status-danger/10 border-rose-500/40"
                   : used
-                  ? "bg-cyan-950/20 border-cyan-500/40"
-                  : "bg-slate-950/60 border-slate-800"
+                  ? "bg-accent/10 border-cyan-500/40"
+                  : "bg-cyber-base/60 border-cyber-border"
               }`}
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-cyber-heading">{t.name}</span>
-                <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded border ${riskCls(t.risk)}`}>
+                <span className={`text-[0.625rem] font-mono px-1.5 py-0.5 rounded border ${riskCls(t.risk)}`}>
                   {t.risk.toUpperCase()}
                 </span>
               </div>
-              <p className="text-[10px] text-cyber-muted mt-1 leading-relaxed">{t.description}</p>
-              <div className="flex items-center justify-between mt-2 text-[10px] font-mono">
-                <span className="text-cyan-400/80">{t.permission}</span>
-                <span className={`flex items-center gap-1 ${blocked ? "text-rose-400" : used ? "text-emerald-400" : "text-slate-500"}`}>
+              <p className="text-[0.625rem] text-cyber-muted mt-1 leading-relaxed">{t.description}</p>
+              <div className="flex items-center justify-between mt-2 text-[0.625rem] font-mono">
+                <span className="text-accent">{t.permission}</span>
+                <span className={`flex items-center gap-1 ${blocked ? "text-status-danger" : used ? "text-status-success" : "text-cyber-muted"}`}>
                   {isProcessing && used ? (
                     <Activity className="w-3 h-3 animate-pulse" />
                   ) : blocked ? (

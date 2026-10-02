@@ -25,11 +25,11 @@ export function MitigationStep({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-lg border border-cyan-500/30 bg-cyan-500/5 px-4 py-3 text-[13px] text-cyan-100/90 flex items-start gap-2.5">
-        <ShieldCheck className="w-4 h-4 text-cyan-400 mt-0.5 shrink-0" />
+      <div className="rounded-lg border border-cyan-500/30 bg-cyan-500/5 px-4 py-3 text-[0.8125rem] text-cyber-text flex items-start gap-2.5">
+        <ShieldCheck className="w-4 h-4 text-accent mt-0.5 shrink-0" />
         <p>
           Mitigations raise the reliability of this decision. Pick the controls that would have{" "}
-          <span className="font-mono text-cyan-300">caught this failure</span>, then retest.
+          <span className="font-mono text-accent">caught this failure</span>, then retest.
         </p>
       </div>
 
@@ -43,22 +43,22 @@ export function MitigationStep({
               onClick={() => onToggle(m.id)}
               className={`text-left rounded-md border p-3 transition-all ${
                 active
-                  ? "bg-cyan-950/40 border-cyan-500/60 shadow-cyan-glow"
-                  : "bg-slate-950/80 border-cyber-border hover:border-slate-500"
+                  ? "bg-accent/10 border-cyan-500/60 shadow-cyan-glow"
+                  : "bg-cyber-base/80 border-cyber-border hover:border-cyber-border"
               }`}
             >
               <div className="flex items-center justify-between gap-2 mb-1">
-                <span className={`text-[13px] font-bold ${active ? "text-cyan-300" : "text-cyber-heading"}`}>
+                <span className={`text-[0.8125rem] font-bold ${active ? "text-accent" : "text-cyber-heading"}`}>
                   {m.name}
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded border border-slate-700 text-slate-400">
+                <span className="text-[0.625rem] font-mono px-2 py-0.5 rounded border border-cyber-border text-cyber-muted">
                   +{m.gain} reliability
                 </span>
               </div>
-              <p className="text-[11px] text-cyber-muted leading-snug mb-2">{m.description}</p>
+              <p className="text-[0.6875rem] text-cyber-muted leading-snug mb-2">{m.description}</p>
               <span
-                className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
-                  prevents ? "bg-emerald-950/40 text-emerald-300" : "bg-slate-800/60 text-slate-500"
+                className={`text-[0.625rem] font-mono px-1.5 py-0.5 rounded ${
+                  prevents ? "bg-status-success/10 text-status-success" : "bg-cyber-surface-hover/60 text-cyber-muted"
                 }`}
               >
                 {prevents ? "would catch this failure" : "supports the process"}
@@ -75,21 +75,21 @@ export function MitigationStep({
             Reliability retest
           </h3>
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono text-slate-400">
+            <span className="text-[0.6875rem] font-mono text-cyber-muted">
               {reliability.before}% &rarr; {reliability.after}%
             </span>
             {reliability.caught ? (
-              <span className="flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded border border-emerald-500/40 text-emerald-300">
+              <span className="flex items-center gap-1 text-[0.625rem] font-mono px-2 py-0.5 rounded border border-emerald-500/40 text-status-success">
                 <CheckCircle2 className="w-3 h-3" /> failure caught
               </span>
             ) : (
-              <span className="flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded border border-red-500/40 text-red-300">
+              <span className="flex items-center gap-1 text-[0.625rem] font-mono px-2 py-0.5 rounded border border-red-500/40 text-status-danger">
                 <XCircle className="w-3 h-3" /> still missed
               </span>
             )}
           </div>
         </div>
-        <div className="h-2 rounded-full bg-slate-800 overflow-hidden">
+        <div className="h-2 rounded-full bg-cyber-surface-hover overflow-hidden">
           <div
             className={`h-full rounded-full transition-all ${
               reliability.caught ? "bg-emerald-500" : "bg-red-500"
@@ -97,7 +97,7 @@ export function MitigationStep({
             style={{ width: `${reliability.after}%` }}
           />
         </div>
-        <p className="text-[11px] text-cyber-muted mt-2">
+        <p className="text-[0.6875rem] text-cyber-muted mt-2">
           With {selected.length} mitigation(s) selected, reliability moves from {reliability.before}/100 to {reliability.after}/100.
         </p>
       </div>
@@ -106,13 +106,13 @@ export function MitigationStep({
         <button
           onClick={onRetest}
           disabled={isProcessing}
-          className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-slate-950 text-xs font-bold flex items-center gap-2 transition-all"
+          className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-on-accent text-xs font-bold flex items-center gap-2 transition-all"
         >
           <RotateCcw className="w-4 h-4" /> {isProcessing ? "Retesting…" : "Retest reliability"}
         </button>
         <button
           onClick={onReset}
-          className="px-4 h-9 rounded-md border border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300 text-xs font-semibold transition-all"
+          className="px-4 h-9 rounded-md border border-cyber-border text-cyber-text hover:border-cyan-500/60 hover:text-accent text-xs font-semibold transition-all"
         >
           New scenario
         </button>

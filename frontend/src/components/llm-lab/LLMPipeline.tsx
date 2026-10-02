@@ -45,38 +45,38 @@ function trustStyle(level: PipelineBlock["trustLevel"]) {
     case "trusted":
       return {
         border: "border-emerald-500/50",
-        badge: "bg-emerald-950/60 text-emerald-400 border border-emerald-500/40",
-        icon: "text-emerald-400",
+        badge: "bg-status-success/10 text-status-success border border-emerald-500/40",
+        icon: "text-status-success",
       };
     case "flagged":
       return {
         border: "border-red-500/60 shadow-red-glow",
-        badge: "bg-red-950/60 text-red-400 border border-red-500/40",
-        icon: "text-red-400",
+        badge: "bg-status-danger/10 text-status-danger border border-red-500/40",
+        icon: "text-status-danger",
       };
     case "untrusted":
       return {
-        border: "border-slate-600",
-        badge: "bg-slate-900 text-slate-400 border border-slate-700",
-        icon: "text-slate-400",
+        border: "border-cyber-border",
+        badge: "bg-cyber-base text-cyber-muted border border-cyber-border",
+        icon: "text-cyber-muted",
       };
     case "semi-trusted":
       return {
         border: "border-amber-500/40",
-        badge: "bg-amber-950/60 text-amber-400 border border-amber-500/40",
-        icon: "text-amber-400",
+        badge: "bg-status-warning/10 text-status-warning border border-amber-500/40",
+        icon: "text-status-warning",
       };
     case "model":
       return {
         border: "border-cyan-500/50",
-        badge: "bg-cyan-950/60 text-cyan-400 border border-cyan-500/40",
-        icon: "text-cyan-400",
+        badge: "bg-accent/10 text-accent border border-cyan-500/40",
+        icon: "text-accent",
       };
     default:
       return {
-        border: "border-slate-700",
-        badge: "bg-slate-900 text-slate-400 border border-slate-700",
-        icon: "text-slate-400",
+        border: "border-cyber-border",
+        badge: "bg-cyber-base text-cyber-muted border border-cyber-border",
+        icon: "text-cyber-muted",
       };
   }
 }
@@ -109,7 +109,7 @@ export function LLMPipeline({
       {/* Panel Header */}
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
         <div className="flex items-center gap-2.5">
-          <GitBranch className="w-4 h-4 text-cyan-400" />
+          <GitBranch className="w-4 h-4 text-accent" />
           <h2 className="text-base font-semibold text-cyber-heading">
             LLM Instruction Pipeline
           </h2>
@@ -129,7 +129,7 @@ export function LLMPipeline({
             <React.Fragment key={block.id}>
               <button
                 onClick={() => setExpandedId(isExpanded ? null : block.id)}
-                className={`w-full p-3.5 rounded-lg border bg-slate-950/80 text-left transition-all ${
+                className={`w-full p-3.5 rounded-lg border bg-cyber-base/80 text-left transition-all ${
                   style.border
                 } ${
                   isProcessing && block.id === "llm"
@@ -146,32 +146,32 @@ export function LLMPipeline({
                   </div>
                   <div className="flex items-center gap-2">
                     <span
-                      className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold ${style.badge}`}
+                      className={`text-[0.625rem] font-mono px-2 py-0.5 rounded font-bold ${style.badge}`}
                     >
                       {trustLabel(block.trustLevel)}
                     </span>
                     <ChevronDown
-                      className={`w-3.5 h-3.5 text-slate-400 transition-transform ${
+                      className={`w-3.5 h-3.5 text-cyber-muted transition-transform ${
                         isExpanded ? "rotate-180" : ""
                       }`}
                     />
                   </div>
                 </div>
-                <p className="text-[11px] text-slate-400 mt-1 font-mono truncate">
+                <p className="text-[0.6875rem] text-cyber-muted mt-1 font-mono truncate">
                   {block.content}
                 </p>
               </button>
 
               {isExpanded && (
-                <div className="mx-2 px-3.5 py-3 bg-slate-950/90 border border-slate-700 rounded-lg space-y-2">
-                  <div className="text-[10px] font-bold text-cyan-400 font-mono uppercase tracking-wider">
+                <div className="mx-2 px-3.5 py-3 bg-cyber-base/90 border border-cyber-border rounded-lg space-y-2">
+                  <div className="text-[0.625rem] font-bold text-accent font-mono uppercase tracking-wider">
                     Layer Content
                   </div>
-                  <p className="text-xs text-slate-200 leading-relaxed break-words">
+                  <p className="text-xs text-cyber-text leading-relaxed break-words">
                     {block.content}
                   </p>
-                  <div className="flex items-start gap-2 text-[11px] text-slate-400">
-                    <ShieldAlert className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-2 text-[0.6875rem] text-cyber-muted">
+                    <ShieldAlert className="w-3.5 h-3.5 text-status-warning shrink-0 mt-0.5" />
                     <span>{block.securityNotes}</span>
                   </div>
                 </div>
@@ -179,7 +179,7 @@ export function LLMPipeline({
 
               {idx < blocks.length - 1 && (
                 <div className="flex justify-center py-0.5">
-                  <ArrowDown className="w-4 h-4 text-slate-600" />
+                  <ArrowDown className="w-4 h-4 text-cyber-muted" />
                 </div>
               )}
             </React.Fragment>

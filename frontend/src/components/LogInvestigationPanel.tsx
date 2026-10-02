@@ -69,7 +69,7 @@ export function LogInvestigationPanel({
       {/* Panel Header */}
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex flex-wrap items-center gap-2 justify-between">
         <div className="flex items-center gap-2.5">
-          <Terminal className="w-4 h-4 text-cyan-400" />
+          <Terminal className="w-4 h-4 text-accent" />
           <h2 className="text-base font-semibold text-cyber-heading">
             Security logs
           </h2>
@@ -93,9 +93,9 @@ export function LogInvestigationPanel({
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="flex-1 h-10 px-3.5 bg-cyber-surface-hover hover:bg-slate-800 border border-cyber-border-light rounded text-xs font-medium text-cyber-text flex items-center justify-center gap-2 transition-all"
+              className="flex-1 h-10 px-3.5 bg-cyber-surface-hover hover:bg-cyber-surface-hover border border-cyber-border-light rounded text-xs font-medium text-cyber-text flex items-center justify-center gap-2 transition-all"
             >
-              <Upload className="w-4 h-4 text-cyan-400" />
+              <Upload className="w-4 h-4 text-accent" />
               <span>Upload a log file</span>
             </button>
           </div>
@@ -110,17 +110,17 @@ export function LogInvestigationPanel({
                 <button
                   key={ds.key}
                   onClick={() => onSelectDataset(ds.key)}
-                  className="chip-holo px-3.5 py-2.5 bg-slate-950/60 hover:bg-slate-900 border border-slate-800 hover:border-cyan-500/40 rounded text-left transition-all group flex items-center justify-between"
+                  className="chip-holo px-3.5 py-2.5 bg-cyber-base/60 hover:bg-cyber-base border border-cyber-border hover:border-cyan-500/40 rounded text-left transition-all group flex items-center justify-between"
                 >
                   <div>
-                    <div className="text-sm font-semibold text-cyber-text group-hover:text-cyan-300">
+                    <div className="text-sm font-semibold text-cyber-text group-hover:text-accent">
                       {ds.label}
                     </div>
                     <div className="text-xs text-cyber-muted mt-0.5">
                       {ds.desc}
                     </div>
                   </div>
-                  <FileCode className="w-4 h-4 text-slate-600 group-hover:text-cyan-400" />
+                  <FileCode className="w-4 h-4 text-cyber-muted group-hover:text-accent" />
                 </button>
               ))}
             </div>
@@ -129,37 +129,37 @@ export function LogInvestigationPanel({
 
         {/* Supported Format Tags */}
         <div className="flex flex-wrap gap-2 py-1">
-          <span className="text-xs font-mono px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">
+          <span className="text-xs font-mono px-2.5 py-1 rounded bg-cyber-base border border-cyber-border text-cyber-text">
             Windows EVTX
           </span>
-          <span className="text-xs font-mono px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">
+          <span className="text-xs font-mono px-2.5 py-1 rounded bg-cyber-base border border-cyber-border text-cyber-text">
             Syslog / Auth
           </span>
-          <span className="text-xs font-mono px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">
+          <span className="text-xs font-mono px-2.5 py-1 rounded bg-cyber-base border border-cyber-border text-cyber-text">
             Zeek Telemetry
           </span>
-          <span className="text-xs font-mono px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-300">
+          <span className="text-xs font-mono px-2.5 py-1 rounded bg-cyber-base border border-cyber-border text-cyber-text">
             Suricata NIDS
           </span>
         </div>
 
         {/* Raw Log Terminal Viewer */}
         <div className="flex-1 flex flex-col min-h-[240px] bg-cyber-base border border-cyber-border rounded overflow-hidden relative">
-          <div className="px-3.5 py-2 bg-slate-950 border-b border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-400">
+          <div className="px-3.5 py-2 bg-cyber-base border-b border-cyber-border/80 flex items-center justify-between text-xs font-mono text-cyber-muted">
             <span>Log preview</span>
             <span>{logLines.length} Lines</span>
           </div>
 
-          <div className="flex-1 p-3.5 overflow-auto font-mono text-sm text-slate-200 leading-relaxed scanline-overlay">
+          <div className="flex-1 p-3.5 overflow-auto font-mono text-sm text-cyber-text leading-relaxed scanline-overlay">
             {isLoadingDataset ? <div role="status" aria-label="Loading logs" className="space-y-3"><span className="sr-only">Loading logs...</span>{[0, 1, 2, 3, 4].map(i => <div key={i} className="skeleton h-4 w-full" aria-hidden="true" />)}</div> : logLines.length > 0 ? (
               logLines.map((line, idx) => (
                 <div
                   key={idx}
-                  className={`flex gap-3 hover:bg-slate-900/60 py-0.5 rounded ${
+                  className={`flex gap-3 hover:bg-cyber-base/60 py-0.5 rounded ${
                     isAnalyzing && idx === 0 ? "log-scan-line" : ""
                   }`}
                 >
-                  <span className="text-slate-600 select-none w-7 text-right shrink-0">
+                  <span className="text-cyber-muted select-none w-7 text-right shrink-0">
                     {idx + 1}
                   </span>
                   <span className="break-all whitespace-pre-wrap">
@@ -171,8 +171,8 @@ export function LogInvestigationPanel({
                 </div>
               ))
             ) : (
-              <div className="h-full flex flex-col items-center justify-center text-slate-500 gap-2 font-sans text-sm">
-                <FileText className="w-8 h-8 opacity-40 text-cyan-400" />
+              <div className="h-full flex flex-col items-center justify-center text-cyber-muted gap-2 font-sans text-sm">
+                <FileText className="w-8 h-8 opacity-40 text-accent" />
                 <span>Upload a log file or click a sample dataset above</span>
               </div>
             )}
@@ -185,8 +185,8 @@ export function LogInvestigationPanel({
           disabled={isLoadingDataset || isAnalyzing || !logContent.trim()}
           className={`h-12 px-4 rounded text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
             isLoadingDataset || isAnalyzing || !logContent.trim()
-              ? "bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700"
-              : "bg-cyan-600 hover:bg-cyan-500 text-slate-950 shadow-cyan-glow cursor-pointer"
+              ? "bg-cyber-surface-hover text-cyber-muted cursor-not-allowed border border-cyber-border"
+              : "bg-cyan-600 hover:bg-cyan-500 text-on-accent shadow-cyan-glow cursor-pointer"
           }`}
         >
           {isAnalyzing ? (

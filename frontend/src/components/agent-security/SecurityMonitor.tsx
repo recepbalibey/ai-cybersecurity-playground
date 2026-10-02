@@ -12,16 +12,16 @@ interface SecurityMonitorProps {
 function Metric({ label, value, tone }: { label: string; value: string | number; tone: "ok" | "warn" | "bad" | "idle" }) {
   const cls =
     tone === "ok"
-      ? "text-emerald-400"
+      ? "text-status-success"
       : tone === "warn"
-      ? "text-amber-400"
+      ? "text-status-warning"
       : tone === "bad"
-      ? "text-rose-400"
+      ? "text-status-danger"
       : "text-cyber-muted";
   return (
-    <div className="flex flex-col items-center justify-center p-2.5 rounded-md bg-slate-950/60 border border-slate-800">
+    <div className="flex flex-col items-center justify-center p-2.5 rounded-md bg-cyber-base/60 border border-cyber-border">
       <span className={`text-lg font-bold font-mono ${cls}`}>{value}</span>
-      <span className="text-[10px] font-mono text-cyber-muted uppercase tracking-wider mt-0.5">{label}</span>
+      <span className="text-[0.625rem] font-mono text-cyber-muted uppercase tracking-wider mt-0.5">{label}</span>
     </div>
   );
 }
@@ -38,7 +38,7 @@ export function SecurityMonitor({ result, isProcessing }: SecurityMonitorProps) 
   return (
     <div className="cyber-panel border border-cyber-border p-4 rounded-lg h-full flex flex-col">
       <div className="flex items-center gap-2.5 mb-3">
-        <ShieldAlert className="w-4 h-4 text-cyan-400" />
+        <ShieldAlert className="w-4 h-4 text-accent" />
         <h3 className="text-sm font-bold text-cyber-heading">
           Security Monitor
         </h3>
@@ -47,12 +47,12 @@ export function SecurityMonitor({ result, isProcessing }: SecurityMonitorProps) 
       {/* Risk meter */}
       <div className="mb-3">
         <div className="flex items-center justify-between mb-1">
-          <span className="text-[10px] font-mono text-cyber-muted uppercase">Current Risk</span>
-          <span className={`text-xs font-bold font-mono ${riskTone === "ok" ? "text-emerald-400" : riskTone === "bad" ? "text-rose-400" : "text-amber-400"}`}>
+          <span className="text-[0.625rem] font-mono text-cyber-muted uppercase">Current Risk</span>
+          <span className={`text-xs font-bold font-mono ${riskTone === "ok" ? "text-status-success" : riskTone === "bad" ? "text-status-danger" : "text-status-warning"}`}>
             {risk}
           </span>
         </div>
-        <div className="h-2.5 rounded-full bg-slate-800 overflow-hidden">
+        <div className="h-2.5 rounded-full bg-cyber-surface-hover overflow-hidden">
           <div
             className={`h-full rounded-full ${
               riskTone === "ok" ? "bg-emerald-500" : riskTone === "bad" ? "bg-rose-500" : "bg-amber-500"
@@ -70,12 +70,12 @@ export function SecurityMonitor({ result, isProcessing }: SecurityMonitorProps) 
       </div>
 
       {/* Security events feed */}
-      <div className="text-[10px] font-mono text-cyber-muted uppercase tracking-wider mb-1.5">
+      <div className="text-[0.625rem] font-mono text-cyber-muted uppercase tracking-wider mb-1.5">
         Security Events
       </div>
       <div className="flex-1 overflow-y-auto space-y-1.5">
         {events.length === 0 && !isProcessing && (
-          <p className="text-[11px] font-mono text-cyber-muted py-4 text-center">
+          <p className="text-[0.6875rem] font-mono text-cyber-muted py-4 text-center">
             No activity yet. Run a mission to stream security events.
           </p>
         )}
@@ -88,26 +88,26 @@ export function SecurityMonitor({ result, isProcessing }: SecurityMonitorProps) 
               key={i}
               className={`flex items-start gap-2 px-2.5 py-1.5 rounded-md border ${
                 isBlock
-                  ? "bg-rose-950/20 border-rose-500/30"
+                  ? "bg-status-danger/10 border-rose-500/30"
                   : isAllow
-                  ? "bg-emerald-950/10 border-emerald-500/20"
+                  ? "bg-status-success/10 border-emerald-500/20"
                   : isObs
-                  ? "bg-slate-950/50 border-slate-800"
-                  : "bg-slate-950/40 border-slate-800"
+                  ? "bg-cyber-base/50 border-cyber-border"
+                  : "bg-cyber-base/40 border-cyber-border"
               }`}
             >
               <span className="mt-0.5">
                 {isBlock ? (
-                  <Ban className="w-3 h-3 text-rose-400 shrink-0" />
+                  <Ban className="w-3 h-3 text-status-danger shrink-0" />
                 ) : isAllow ? (
-                  <ShieldCheck className="w-3 h-3 text-emerald-400 shrink-0" />
+                  <ShieldCheck className="w-3 h-3 text-status-success shrink-0" />
                 ) : isObs ? (
-                  <Activity className="w-3 h-3 text-cyan-400 shrink-0" />
+                  <Activity className="w-3 h-3 text-accent shrink-0" />
                 ) : (
-                  <FileWarning className="w-3 h-3 text-cyan-500 shrink-0" />
+                  <FileWarning className="w-3 h-3 text-accent shrink-0" />
                 )}
               </span>
-              <span className={`text-[10px] font-mono leading-snug ${isBlock ? "text-rose-300" : "text-cyber-text"}`}>
+              <span className={`text-[0.625rem] font-mono leading-snug ${isBlock ? "text-status-danger" : "text-cyber-text"}`}>
                 {e.detail}
               </span>
             </div>

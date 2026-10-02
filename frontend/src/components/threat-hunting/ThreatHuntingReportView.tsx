@@ -86,7 +86,7 @@ ${report.recommended_actions
       {/* Report Header */}
       <div className="p-4.5 border-b border-cyber-border bg-cyber-surface/80 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <FileText className="w-5 h-5 text-cyan-400" />
+          <FileText className="w-5 h-5 text-accent" />
           <div>
             <h2 className="text-base font-bold text-cyber-heading">
               AI Threat Hunting Investigation Report
@@ -101,14 +101,14 @@ ${report.recommended_actions
         <div className="flex items-center gap-2.5">
           <button
             onClick={handleExportJSON}
-            className="h-9 px-3.5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-mono text-cyan-300 flex items-center gap-2 transition-all font-semibold"
+            className="h-9 px-3.5 rounded bg-cyber-base hover:bg-cyber-surface-hover border border-cyber-border text-xs font-mono text-accent flex items-center gap-2 transition-all font-semibold"
           >
             <Download className="w-4 h-4" />
             <span>JSON</span>
           </button>
           <button
             onClick={handleExportMarkdown}
-            className="h-9 px-3.5 rounded bg-cyan-600 hover:bg-cyan-500 text-slate-950 text-xs font-mono font-semibold flex items-center gap-2 transition-all shadow-cyan-glow"
+            className="h-9 px-3.5 rounded bg-cyan-600 hover:bg-cyan-500 text-on-accent text-xs font-mono font-semibold flex items-center gap-2 transition-all shadow-cyan-glow"
           >
             <Download className="w-4 h-4" />
             <span>Markdown Report</span>
@@ -119,8 +119,8 @@ ${report.recommended_actions
       <div className="p-6 space-y-6 bg-cyber-base/40">
         {/* Section 1: Objective & Hypothesis */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 bg-slate-950/80 border border-slate-800 rounded">
-            <h3 className="text-xs font-bold text-cyan-400 flex items-center gap-2 mb-2">
+          <div className="p-4 bg-cyber-base/80 border border-cyber-border rounded">
+            <h3 className="text-xs font-bold text-accent flex items-center gap-2 mb-2">
               <Search className="w-4 h-4" />
               Hunting Objective
             </h3>
@@ -129,8 +129,8 @@ ${report.recommended_actions
             </p>
           </div>
 
-          <div className="p-4 bg-slate-950/80 border border-slate-800 rounded">
-            <h3 className="text-xs font-bold text-cyan-400 flex items-center gap-2 mb-2">
+          <div className="p-4 bg-cyber-base/80 border border-cyber-border rounded">
+            <h3 className="text-xs font-bold text-accent flex items-center gap-2 mb-2">
               <ShieldCheck className="w-4 h-4" />
               Threat Hypothesis
             </h3>
@@ -142,23 +142,23 @@ ${report.recommended_actions
 
         {/* Section 2: Data Sources & MITRE Mapping */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-4 bg-slate-950/80 border border-slate-800 rounded">
-            <h3 className="text-xs font-bold text-cyan-400 mb-2">
+          <div className="p-4 bg-cyber-base/80 border border-cyber-border rounded">
+            <h3 className="text-xs font-bold text-accent mb-2">
               Data Sources Used
             </h3>
-            <ul className="list-disc list-inside text-xs text-slate-300 space-y-1">
+            <ul className="list-disc list-inside text-xs text-cyber-text space-y-1">
               {report.data_sources_used.map((ds, idx) => (
                 <li key={idx}>{ds}</li>
               ))}
             </ul>
           </div>
 
-          <div className="p-4 bg-slate-950/80 border border-slate-800 rounded">
-            <h3 className="text-xs font-bold text-cyan-400 mb-2">
+          <div className="p-4 bg-cyber-base/80 border border-cyber-border rounded">
+            <h3 className="text-xs font-bold text-accent mb-2">
               MITRE ATT&CK Correlation
             </h3>
-            <div className="text-xs text-slate-200">
-              <div className="font-mono text-cyan-300 font-bold mb-1">
+            <div className="text-xs text-cyber-text">
+              <div className="font-mono text-accent font-bold mb-1">
                 {report.mitre_mapping.id}: {report.mitre_mapping.name}
               </div>
               <div className="text-cyber-muted font-mono">
@@ -170,7 +170,7 @@ ${report.recommended_actions
 
         {/* Section 3: Recommended Actions */}
         <div className="space-y-2.5">
-          <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
+          <h3 className="text-sm font-bold text-accent flex items-center gap-2">
             <CheckSquare className="w-4.5 h-4.5" />
             Recommended Containment & Detection Rules
           </h3>
@@ -178,9 +178,9 @@ ${report.recommended_actions
             {report.recommended_actions.map((act, idx) => (
               <div
                 key={idx}
-                className="p-4 bg-slate-950/80 border border-slate-800 rounded flex items-start gap-3.5"
+                className="p-4 bg-cyber-base/80 border border-cyber-border rounded flex items-start gap-3.5"
               >
-                <span className="font-mono text-xs px-2.5 py-1 rounded bg-cyan-950/60 text-cyan-400 border border-cyan-500/40 shrink-0 font-bold">
+                <span className="font-mono text-xs px-2.5 py-1 rounded bg-accent/10 text-accent border border-cyan-500/40 shrink-0 font-bold">
                   {act.priority}
                 </span>
                 <div className="flex-1">
@@ -195,7 +195,7 @@ ${report.recommended_actions
 
         {/* Concepts to dig deeper into */}
         <div className="flex flex-wrap items-center gap-2 border-t border-cyber-border pt-4 text-sm text-cyber-muted">
-          <span className="font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+          <span className="font-mono text-[0.625rem] uppercase tracking-wider text-cyber-muted">
             Dig deeper:
           </span>
           <ConceptChip

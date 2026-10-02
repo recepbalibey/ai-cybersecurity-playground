@@ -42,13 +42,13 @@ const KIND: Record<
   risk: {
     fill: "rgb(244 63 94 / 0.18)",
     stroke: "rgb(244 63 94)",
-    label: "rgb(251 113 133)",
+    label: "rgb(var(--status-danger))",
     halo: "rgb(244 63 94 / 0.4)",
   },
   gate: {
     fill: "rgb(245 158 11 / 0.18)",
     stroke: "rgb(245 158 11)",
-    label: "rgb(251 191 36)",
+    label: "rgb(var(--status-warning))",
     halo: "rgb(245 158 11 / 0.4)",
   },
 };
@@ -176,12 +176,12 @@ export function TheoryFlow({
 
   return (
     <div className="space-y-3">
-      <div className="theory-flow w-full overflow-x-auto">
+      <div className="theory-flow min-w-0 w-full">
         <svg
           width={width}
           height={height}
           viewBox={`0 0 ${width} ${height}`}
-          className="min-w-full"
+          className="block w-full h-auto"
           onClick={() => select(null)}
           role="img"
           aria-label="Interactive concept schematic"
@@ -316,7 +316,7 @@ export function TheoryFlow({
                   y={p.cy}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  fontSize="13"
+                  fontSize="18"
                   fontWeight="600"
                   fill={k.label}
                   className="font-sans"
@@ -327,6 +327,13 @@ export function TheoryFlow({
             );
           })}
         </svg>
+        <div className="theory-flow-list" aria-label="Flow steps">
+          {nodes.map(node => <button key={node.id} onClick={() => select(node.id)} aria-pressed={selectedId === node.id} className={`rounded-lg border p-3 text-left ${selectedId === node.id ? "border-accent bg-accent/10" : "border-cyber-border bg-cyber-surface-hover"}`}>
+            <span className="block text-xs text-cyber-muted">{NODE_KIND_INFO[node.kind].title}</span>
+            <span className="block mt-1 text-sm font-medium text-cyber-heading">{node.label}</span>
+            <span className="block mt-2 text-xs text-cyber-muted">{edges.filter(([from]) => from === node.id).map(([,to]) => byId.get(to)?.label).filter(Boolean).join(" → ") || "Final result"}</span>
+          </button>)}
+        </div>
       </div>
 
       {/* Interactive inspector panel */}

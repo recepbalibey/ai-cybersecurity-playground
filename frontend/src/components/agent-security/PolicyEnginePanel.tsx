@@ -17,7 +17,7 @@ export function PolicyEnginePanel({ controls, activeControls, onToggle, result }
   return (
     <div className="cyber-panel border border-cyber-border p-4 rounded-lg h-full flex flex-col">
       <div className="flex items-center gap-2.5 mb-3">
-        <Scale className="w-4 h-4 text-cyan-400" />
+        <Scale className="w-4 h-4 text-accent" />
         <h3 className="text-sm font-bold text-cyber-heading">
           Policy Engine & Controls
         </h3>
@@ -31,16 +31,16 @@ export function PolicyEnginePanel({ controls, activeControls, onToggle, result }
             <button
               key={c.key}
               onClick={() => onToggle(c.key)}
-              className={`flex items-center justify-between px-2.5 py-2 rounded-md border text-[10px] font-semibold transition-all ${
+              className={`flex items-center justify-between px-2.5 py-2 rounded-md border text-[0.625rem] font-semibold transition-all ${
                 on
-                  ? "bg-emerald-950/30 border-emerald-500/50 text-emerald-300"
-                  : "bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-600"
+                  ? "bg-status-success/10 border-emerald-500/50 text-status-success"
+                  : "bg-cyber-base/60 border-cyber-border text-cyber-muted hover:border-cyber-border"
               }`}
             >
               <span className="truncate">{c.name}</span>
               <span
                 className={`ml-1.5 inline-block w-6 h-3.5 rounded-full relative shrink-0 ${
-                  on ? "bg-emerald-500/70" : "bg-slate-700"
+                  on ? "bg-emerald-500/70" : "bg-cyber-surface-hover"
                 }`}
               >
                 <span
@@ -55,12 +55,12 @@ export function PolicyEnginePanel({ controls, activeControls, onToggle, result }
       </div>
 
       {/* Policy decision log */}
-      <div className="text-[10px] font-mono text-cyber-muted uppercase tracking-wider mb-1.5">
+      <div className="text-[0.625rem] font-mono text-cyber-muted uppercase tracking-wider mb-1.5">
         Policy Decision Log
       </div>
       <div className="flex-1 overflow-y-auto space-y-1.5">
         {decisions.length === 0 && (
-          <p className="text-[11px] font-mono text-cyber-muted py-4 text-center">
+          <p className="text-[0.6875rem] font-mono text-cyber-muted py-4 text-center">
             Policy engine idle. Run a mission to log allow/block decisions.
           </p>
         )}
@@ -71,21 +71,21 @@ export function PolicyEnginePanel({ controls, activeControls, onToggle, result }
               key={i}
               className={`flex items-start gap-2 px-2.5 py-1.5 rounded-md border ${
                 allow
-                  ? "bg-emerald-950/10 border-emerald-500/20"
-                  : "bg-rose-950/20 border-rose-500/30"
+                  ? "bg-status-success/10 border-emerald-500/20"
+                  : "bg-status-danger/10 border-rose-500/30"
               }`}
             >
               {allow ? (
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                <ShieldCheck className="w-3.5 h-3.5 text-status-success shrink-0 mt-0.5" />
               ) : (
-                <ShieldX className="w-3.5 h-3.5 text-rose-400 shrink-0 mt-0.5" />
+                <ShieldX className="w-3.5 h-3.5 text-status-danger shrink-0 mt-0.5" />
               )}
               <div className="min-w-0">
-                <div className={`text-[10px] font-mono ${allow ? "text-emerald-300" : "text-rose-300"}`}>
+                <div className={`text-[0.625rem] font-mono ${allow ? "text-status-success" : "text-status-danger"}`}>
                   {d.detail}
                 </div>
                 {d.reason && (
-                  <div className="text-[10px] font-mono text-cyber-muted">
+                  <div className="text-[0.625rem] font-mono text-cyber-muted">
                     reason: {d.reason}
                   </div>
                 )}
@@ -95,12 +95,12 @@ export function PolicyEnginePanel({ controls, activeControls, onToggle, result }
         })}
       </div>
 
-      <div className="mt-3 p-2.5 rounded-md bg-slate-950/60 border border-slate-800">
+      <div className="mt-3 p-2.5 rounded-md bg-cyber-base/60 border border-cyber-border">
         <div className="flex items-center gap-1.5 mb-1">
-          <Gavel className="w-3.5 h-3.5 text-cyan-400" />
-          <span className="text-[10px] font-mono text-cyber-muted uppercase">Decision flow</span>
+          <Gavel className="w-3.5 h-3.5 text-accent" />
+          <span className="text-[0.625rem] font-mono text-cyber-muted uppercase">Decision flow</span>
         </div>
-        <p className="text-[10px] font-mono text-cyber-muted leading-relaxed">
+        <p className="text-[0.625rem] font-mono text-cyber-muted leading-relaxed">
           Requested Action → Policy Check → Permission Check → Risk Evaluation → Allow / Block
         </p>
       </div>

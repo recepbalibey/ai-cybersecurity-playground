@@ -471,7 +471,7 @@ const runTokenRef = useRef(0);
   };
 
   return (
-    <div className="flex h-screen bg-cyber-base overflow-hidden">
+    <div className="workspace-shell flex h-screen bg-cyber-base overflow-hidden">
       <a className="skip-link" href="#main-content">Skip to content</a>
       {sidebarOpen && <button aria-label="Close navigation" onClick={() => setSidebarOpen(false)} className="fixed inset-0 z-20 bg-black/20 min-[1101px]:hidden" />}
       {/* Left Sidebar Navigation */}
@@ -498,7 +498,7 @@ const runTokenRef = useRef(0);
         />
 
         {/* Main Content Body */}
-        <main id="main-content" tabIndex={-1} className="mx-auto flex-1 w-full max-w-[1600px] p-4 sm:p-8 space-y-6">
+        <main id="main-content" tabIndex={-1} className="workspace-main mx-auto flex-1 w-full max-w-[1600px] p-4 sm:p-8 space-y-6">
           {/* Module 0: Learning Hub / Home */}
           {activeModule === "learning-hub" && (
             <LearningHub

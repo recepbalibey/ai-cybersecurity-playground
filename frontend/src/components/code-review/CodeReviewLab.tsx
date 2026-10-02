@@ -125,18 +125,18 @@ export function CodeReviewLab({
       {/* status header */}
       <div className="cyber-panel border border-cyber-border p-4 rounded-lg flex items-center justify-between flex-wrap gap-3 holo-scan">
         <div className="flex items-center gap-2.5">
-          <ShieldCheck className="w-5 h-5 text-cyan-400" />
+          <ShieldCheck className="w-5 h-5 text-accent" />
           <h2 className="text-base font-bold text-cyber-heading">
             AI Security Code Review Active
           </h2>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {instructorMode && (
-            <span className="text-[10px] font-mono px-2 py-1 rounded border border-slate-700 text-slate-300 flex items-center gap-1.5">
-              <GraduationCap className="w-3.5 h-3.5 text-cyan-400" /> Teaching mode on
+            <span className="text-[0.625rem] font-mono px-2 py-1 rounded border border-cyber-border text-cyber-text flex items-center gap-1.5">
+              <GraduationCap className="w-3.5 h-3.5 text-accent" /> Teaching mode on
             </span>
           )}
-          <span className="text-[10px] font-mono px-2 py-1 rounded border border-emerald-500/40 text-emerald-300 flex items-center gap-1.5">
+          <span className="text-[0.625rem] font-mono px-2 py-1 rounded border border-emerald-500/40 text-status-success flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             DEFENSIVE / ASSISTED REVIEW
           </span>
@@ -166,21 +166,21 @@ export function CodeReviewLab({
         <button
           onClick={handleRun}
           disabled={isProcessing || !code.trim()}
-          className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 disabled:cursor-not-allowed text-slate-950 text-xs font-bold flex items-center gap-2 transition-all shadow-cyan-glow"
+          className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 disabled:cursor-not-allowed text-on-accent text-xs font-bold flex items-center gap-2 transition-all shadow-cyan-glow"
         >
           <Play className="w-4 h-4" /> {isProcessing ? "Reviewing..." : "Run Review"}
         </button>
         <button
           onClick={handleReset}
           disabled={isProcessing}
-          className="px-4 h-9 rounded-md border border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300 text-xs font-semibold flex items-center gap-2 transition-all disabled:opacity-40"
+          className="px-4 h-9 rounded-md border border-cyber-border text-cyber-text hover:border-cyan-500/60 hover:text-accent text-xs font-semibold flex items-center gap-2 transition-all disabled:opacity-40"
         >
           <RotateCcw className="w-4 h-4" /> Reset
         </button>
         <button
           onClick={() => onToggleInstructorMode(!instructorMode)}
           disabled={isProcessing}
-          className="px-4 h-9 rounded-md border border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300 text-xs font-semibold flex items-center gap-2 transition-all disabled:opacity-40"
+          className="px-4 h-9 rounded-md border border-cyber-border text-cyber-text hover:border-cyan-500/60 hover:text-accent text-xs font-semibold flex items-center gap-2 transition-all disabled:opacity-40"
         >
           <GraduationCap className="w-4 h-4" /> Teaching Mode
         </button>
@@ -269,15 +269,15 @@ export function CodeReviewLab({
 function IntroPanel({ onExample }: { onExample: (id: string) => void }) {
   return (
     <div className="cyber-panel border border-cyber-border rounded-lg p-6 text-center flex flex-col items-center gap-3">
-      <Sparkles className="w-8 h-8 text-cyan-400" />
+      <Sparkles className="w-8 h-8 text-accent" />
       <h3 className="text-sm font-bold text-cyber-heading">Is this code secure?</h3>
-      <p className="text-[13px] text-cyber-muted max-w-md">
+      <p className="text-[0.8125rem] text-cyber-muted max-w-md">
         Load an educational example or paste your own code, then run a review to find
         vulnerabilities, learn their risk, and see a secure fix.
       </p>
       <button
         onClick={() => onExample(REVIEW_EXAMPLES[0].id)}
-        className="mt-1 px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 text-slate-950 text-xs font-bold transition-all shadow-cyan-glow"
+        className="mt-1 px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 text-on-accent text-xs font-bold transition-all shadow-cyan-glow"
       >
         Load first example
       </button>
@@ -291,19 +291,19 @@ function AssistantPanel({ qa, question, onQuestion, onAsk, examples }: {
   return (
     <div className="cyber-panel border border-cyan-500/30 rounded-lg overflow-hidden flex flex-col h-full">
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
-        <Sparkles className="w-4 h-4 text-cyan-400" />
+        <Sparkles className="w-4 h-4 text-accent" />
         <h3 className="text-xs font-bold text-cyber-heading">Review Assistant</h3>
       </div>
       <div className="flex-1 min-h-[120px] max-h-64 overflow-auto p-3 space-y-2">
         {qa.length === 0 && (
-          <p className="text-[11px] text-cyber-muted">Ask about the review, OWASP, CWE, or deploying secure code.</p>
+          <p className="text-[0.6875rem] text-cyber-muted">Ask about the review, OWASP, CWE, or deploying secure code.</p>
         )}
         {qa.map((x, i) => (
           <div key={i} className="space-y-1">
-            <div className="text-[11px] font-mono text-cyan-300 ml-auto w-fit max-w-[85%] rounded-md bg-slate-800/60 px-2 py-1">
+            <div className="text-[0.6875rem] font-mono text-accent ml-auto w-fit max-w-[85%] rounded-md bg-cyber-surface-hover/60 px-2 py-1">
               {x.q}
             </div>
-            <div className="text-[11px] text-cyber-muted rounded-md bg-slate-900/60 px-2 py-1 leading-snug">
+            <div className="text-[0.6875rem] text-cyber-muted rounded-md bg-cyber-base/60 px-2 py-1 leading-snug">
               {x.a.startsWith("__pending_") ? (
                 <span className="inline-flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
@@ -322,7 +322,7 @@ function AssistantPanel({ qa, question, onQuestion, onAsk, examples }: {
             <button
               key={e}
               onClick={() => onAsk(e)}
-              className="chip-holo text-[10px] px-2 py-1 rounded-full border border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300"
+              className="chip-holo text-[0.625rem] px-2 py-1 rounded-full border border-cyber-border text-cyber-text hover:border-cyan-500/60 hover:text-accent"
             >
               {e}
             </button>
@@ -339,12 +339,12 @@ function AssistantPanel({ qa, question, onQuestion, onAsk, examples }: {
             value={question}
             onChange={(e) => onQuestion(e.target.value)}
             placeholder="Ask a question..."
-            className="flex-1 h-8 min-w-0 px-2 bg-slate-950 border border-slate-700 rounded-md text-xs text-cyber-heading focus:outline-none focus:border-cyan-500"
+            className="flex-1 h-8 min-w-0 px-2 bg-cyber-base border border-cyber-border rounded-md text-xs text-cyber-heading focus:outline-none focus:border-cyan-500"
           />
           <button
             type="submit"
             disabled={!question.trim()}
-            className="h-8 px-3 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-slate-950 text-xs font-bold"
+            className="h-8 px-3 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-on-accent text-xs font-bold"
           >
             Ask
           </button>

@@ -61,7 +61,7 @@ export function LabLessonModal({
           <button
             onClick={onClose}
             aria-label="Close"
-            className="rounded-md border border-cyber-border p-1.5 text-cyber-muted transition-colors hover:border-rose-400/40 hover:text-rose-400"
+            className="rounded-md border border-cyber-border p-1.5 text-cyber-muted transition-colors hover:border-rose-400/40 hover:text-status-danger"
           >
             <X className="h-4 w-4" strokeWidth={1.75} />
           </button>
@@ -80,7 +80,7 @@ export function LabLessonModal({
                   style={{ animationDelay: `${i * 70}ms` }}
                   className="decode-enter flex items-start gap-2.5 text-sm text-cyber-text"
                 >
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-accent/40 bg-accent/10 font-mono text-[10px] font-medium text-accent">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-accent/40 bg-accent/10 font-mono text-[0.625rem] font-medium text-accent">
                     {i + 1}
                   </span>
                   {step}
@@ -106,7 +106,7 @@ export function LabLessonModal({
             <ul className="space-y-2">
               {lesson.takeaways.map((t) => (
                 <li key={t} className="flex items-start gap-2.5 text-sm text-cyber-text">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" strokeWidth={1.75} />
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-status-success" strokeWidth={1.75} />
                   {t}
                 </li>
               ))}
@@ -140,7 +140,7 @@ export function LabLessonModal({
             </button>
             <button
               onClick={onOpenLab}
-              className="flex h-10 items-center gap-2 rounded-md bg-accent px-4 text-sm font-medium text-cyber-base transition-colors hover:bg-accent-hover"
+              className="flex h-10 items-center gap-2 rounded-md bg-accent px-4 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover"
             >
               Open lab
               <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
@@ -164,7 +164,7 @@ function SectionTitle({
   return (
     <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-cyber-heading">
       <Icon
-        className={tone === "amber" ? "text-amber-400" : "text-accent"}
+        className={tone === "amber" ? "text-status-warning" : "text-accent"}
         strokeWidth={1.75}
       />
       {title}

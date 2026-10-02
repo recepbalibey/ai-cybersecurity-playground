@@ -159,18 +159,18 @@ export function AgentSecurityLab({ onStatusChange }: AgentSecurityLabProps) {
       <div className="cyber-panel corner-frame border border-cyber-border p-4 rounded-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <Bot className="w-5 h-5 text-cyan-400" />
+            <Bot className="w-5 h-5 text-accent" />
             <h2 className="text-base font-bold text-cyber-heading">
               Agent Runtime Active
             </h2>
           </div>
-          <span className="text-[10px] font-mono px-2 py-1 rounded border border-emerald-500/40 text-emerald-300 flex items-center gap-1.5">
+          <span className="text-[0.625rem] font-mono px-2 py-1 rounded border border-emerald-500/40 text-status-success flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             SANDBOX SIMULATION
           </span>
         </div>
-        <div className="mt-2 flex items-center gap-2 text-[10px] font-mono text-cyber-muted">
-          <Cpu className="w-3.5 h-3.5 text-cyan-500" />
+        <div className="mt-2 flex items-center gap-2 text-[0.625rem] font-mono text-cyber-muted">
+          <Cpu className="w-3.5 h-3.5 text-accent" />
           Goal → Planner → Memory → Tool Selection → Tool Execution → Observation → Decision → Final Response
         </div>
       </div>

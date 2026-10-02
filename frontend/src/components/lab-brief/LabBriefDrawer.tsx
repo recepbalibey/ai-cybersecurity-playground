@@ -31,7 +31,7 @@ function TheoryPreview({ topicId, label }: { topicId: string; label: string }) {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-[12px] font-medium text-cyber-text hover:text-accent transition-colors"
+        className="flex w-full items-center justify-between gap-2 px-3 py-2 text-left text-[0.75rem] font-medium text-cyber-text hover:text-accent transition-colors"
       >
         <span className="flex items-center gap-2">
           <BookOpen className="h-3.5 w-3.5 text-accent" strokeWidth={1.75} />
@@ -47,17 +47,17 @@ function TheoryPreview({ topicId, label }: { topicId: string; label: string }) {
       </button>
       {open && (
         <div className="px-3 pb-3 space-y-2 border-t border-cyber-border">
-          <p className="pt-2 text-[12px] text-cyber-text">{topic.blurb}</p>
+          <p className="pt-2 text-[0.75rem] text-cyber-text">{topic.blurb}</p>
           <div className="rounded-md bg-cyber-surface-hover/60 px-3 py-2">
-            <p className="font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+            <p className="font-mono text-[0.625rem] uppercase tracking-wider text-cyber-muted">
               The catch
             </p>
-            <p className="text-[12px] text-cyber-text">{topic.dark}</p>
+            <p className="text-[0.75rem] text-cyber-text">{topic.dark}</p>
           </div>
           <ul className="space-y-1 pt-1">
             {topic.takeaways.slice(0, 3).map((t) => (
-              <li key={t} className="flex items-start gap-2 text-[12px] text-cyber-muted">
-                <CheckCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-400" strokeWidth={1.75} />
+              <li key={t} className="flex items-start gap-2 text-[0.75rem] text-cyber-muted">
+                <CheckCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-status-success" strokeWidth={1.75} />
                 {t}
               </li>
             ))}
@@ -90,9 +90,9 @@ function CollapsibleSection({
         aria-expanded={open}
         className="flex w-full items-center gap-3 px-1 py-3 text-left"
       >
-        <span className="font-mono text-[10px] text-cyber-muted tracking-wider">{index}</span>
+        <span className="font-mono text-[0.625rem] text-cyber-muted tracking-wider">{index}</span>
         <Icon className="h-4 w-4 text-accent" strokeWidth={1.75} />
-        <span className="text-[12px] font-semibold text-cyber-heading uppercase tracking-wider">
+        <span className="text-[0.75rem] font-semibold text-cyber-heading uppercase tracking-wider">
           {title}
         </span>
         <ChevronDown
@@ -111,15 +111,15 @@ function CollapsibleSection({
 function MetadataRow({ brief }: { brief: LabBrief }) {
   return (
     <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-cyber-border pt-3 mt-4">
-      <span className="flex items-center gap-1.5 text-[11px] text-cyber-muted">
+      <span className="flex items-center gap-1.5 text-[0.6875rem] text-cyber-muted">
         <Gauge className="h-3.5 w-3.5" strokeWidth={1.75} />
         {brief.difficulty}
       </span>
-      <span className="flex items-center gap-1.5 text-[11px] text-cyber-muted">
+      <span className="flex items-center gap-1.5 text-[0.6875rem] text-cyber-muted">
         <Clock className="h-3.5 w-3.5" strokeWidth={1.75} />
         {brief.estimatedTime}
       </span>
-      <span className="flex items-center gap-1.5 text-[11px] text-cyber-muted">
+      <span className="flex items-center gap-1.5 text-[0.6875rem] text-cyber-muted">
         <Layers className="h-3.5 w-3.5" strokeWidth={1.75} />
         {brief.skills.join(" · ")}
       </span>
@@ -193,13 +193,13 @@ export function LabBriefDrawer() {
         {/* header */}
         <div className="flex items-start justify-between gap-3 border-b border-cyber-border px-5 py-4">
           <div className="space-y-1">
-            <p className="font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+            <p className="font-mono text-[0.625rem] uppercase tracking-wider text-cyber-muted">
               Lab Brief
             </p>
             <h2 id="lab-brief-title" className="text-base font-bold text-cyber-heading">
               {brief.title}
             </h2>
-            <p className="text-[13px] text-cyber-muted">{brief.description}</p>
+            <p className="text-[0.8125rem] text-cyber-muted">{brief.description}</p>
           </div>
           <button
             type="button"
@@ -217,7 +217,7 @@ export function LabBriefDrawer() {
           <CollapsibleSection index="01" icon={GraduationCap} title="What you will learn">
             <ul className="space-y-2 pl-1">
               {brief.learningObjectives.map((o) => (
-                <li key={o} className="flex items-start gap-2 text-[13px] text-cyber-text">
+                <li key={o} className="flex items-start gap-2 text-[0.8125rem] text-cyber-text">
                   <CheckCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" strokeWidth={1.75} />
                   {o}
                 </li>
@@ -229,7 +229,7 @@ export function LabBriefDrawer() {
           <CollapsibleSection index="02" icon={CircleHelp} title="What you need to know">
             <ul className="space-y-1.5 pl-1">
               {brief.prerequisites.map((p) => (
-                <li key={p} className="flex items-start gap-2 text-[13px] text-cyber-text">
+                <li key={p} className="flex items-start gap-2 text-[0.8125rem] text-cyber-text">
                   <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-cyber-muted" />
                   {p}
                 </li>
@@ -243,7 +243,7 @@ export function LabBriefDrawer() {
               </div>
             )}
             {brief.theoryLinks.length > 0 && (
-              <p className="pt-2 text-[12px] text-cyber-muted">
+              <p className="pt-2 text-[0.75rem] text-cyber-muted">
                 Related concept:{" "}
                 {brief.theoryLinks.map((l) => (
                   <ConceptChip
@@ -260,15 +260,15 @@ export function LabBriefDrawer() {
           {/* 03 - your mission (always visible) */}
           <div className="holo-panel rounded-lg border border-cyber-border bg-cyber-surface-hover/40 p-4 space-y-3">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[10px] text-cyber-muted tracking-wider">03</span>
+              <span className="font-mono text-[0.625rem] text-cyber-muted tracking-wider">03</span>
               <Target className="h-4 w-4 text-accent" strokeWidth={1.75} />
-              <h3 className="text-[12px] font-bold text-cyber-heading">
+              <h3 className="text-[0.75rem] font-bold text-cyber-heading">
                 Your Mission
               </h3>
             </div>
-            <p className="text-[13px] leading-relaxed text-cyber-text">{brief.mission}</p>
+            <p className="text-[0.8125rem] leading-relaxed text-cyber-text">{brief.mission}</p>
             <div>
-              <p className="mb-2 font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+              <p className="mb-2 font-mono text-[0.625rem] uppercase tracking-wider text-cyber-muted">
                 Mission objectives
               </p>
               <ul className="space-y-1.5">
@@ -276,7 +276,7 @@ export function LabBriefDrawer() {
                   <li
                     key={o}
                     style={{ animationDelay: `${i * 70}ms` }}
-                    className="decode-enter flex items-start gap-2 text-[13px] text-cyber-text"
+                    className="decode-enter flex items-start gap-2 text-[0.8125rem] text-cyber-text"
                   >
                     <span className="mt-0.5 block h-3.5 w-3.5 shrink-0 rounded border border-cyber-border-light" />
                     {o}
@@ -293,7 +293,7 @@ export function LabBriefDrawer() {
           <button
             type="button"
             onClick={handleStart}
-            className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-accent px-4 text-sm font-semibold text-cyber-base transition-colors hover:bg-accent-hover"
+            className="flex h-10 w-full items-center justify-center gap-2 rounded-md bg-accent px-4 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-hover"
           >
             {started ? "Continue Mission" : "Start Mission"}
             <ArrowRight className="h-4 w-4" strokeWidth={2} />

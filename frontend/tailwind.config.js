@@ -8,6 +8,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        "on-accent": "rgb(var(--cb-on-accent) / <alpha-value>)",
+        status: { danger: "rgb(var(--status-danger) / <alpha-value>)", warning: "rgb(var(--status-warning) / <alpha-value>)", success: "rgb(var(--status-success) / <alpha-value>)", info: "rgb(var(--status-info) / <alpha-value>)" },
         cyber: {
           base: "rgb(var(--cb-base) / <alpha-value>)",
           surface: "rgb(var(--cb-surface) / <alpha-value>)",

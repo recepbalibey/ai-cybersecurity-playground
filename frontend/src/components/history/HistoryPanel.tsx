@@ -14,11 +14,11 @@ export interface HistoryRow {
 }
 
 const BADGE_TONE: Record<BadgeTone, string> = {
-  rose: "text-rose-300 border-rose-500/40",
-  amber: "text-amber-300 border-amber-500/40",
-  yellow: "text-yellow-300 border-yellow-500/40",
-  emerald: "text-emerald-300 border-emerald-500/40",
-  neutral: "text-slate-300 border-slate-600",
+  rose: "text-status-danger border-rose-500/40",
+  amber: "text-status-warning border-amber-500/40",
+  yellow: "text-status-warning border-yellow-500/40",
+  emerald: "text-status-success border-emerald-500/40",
+  neutral: "text-cyber-text border-cyber-border",
 };
 
 const toneFor = (value: string | undefined): BadgeTone => {
@@ -63,31 +63,31 @@ export function HistoryPanel({
   return (
     <div className="cyber-panel border border-cyber-border rounded-lg p-4">
       <div className="flex items-center gap-2 mb-3">
-        <History className="w-4 h-4 text-cyan-400" />
+        <History className="w-4 h-4 text-accent" />
         <h3 className="text-xs font-bold text-cyber-heading">{title}</h3>
       </div>
 
       {rows === null ? (
-        <div className="text-[12px] text-cyber-muted animate-pulse">{loadingText}</div>
+        <div className="text-[0.75rem] text-cyber-muted animate-pulse">{loadingText}</div>
       ) : rows.length === 0 ? (
-        <div className="flex flex-col items-center gap-1.5 text-slate-600 py-3">
+        <div className="flex flex-col items-center gap-1.5 text-cyber-muted py-3">
           <FileWarning className="w-5 h-5 opacity-50" />
-          <span className="text-[12px]">{emptyText}</span>
+          <span className="text-[0.75rem]">{emptyText}</span>
         </div>
       ) : (
         <ul className="space-y-2">
           {rows.map((row) => (
             <li
               key={row.id}
-              className="rounded-md border border-slate-800 bg-slate-950/60 px-3 py-2 flex items-center justify-between gap-2 hover:border-cyan-500/40 transition-all"
+              className="rounded-md border border-cyber-border bg-cyber-base/60 px-3 py-2 flex items-center justify-between gap-2 hover:border-cyan-500/40 transition-all"
             >
               <div className="min-w-0">
-                <div className="text-[12px] font-semibold text-cyber-text truncate">{row.label}</div>
-                {row.meta && <div className="text-[11px] font-mono text-slate-500">{row.meta}</div>}
+                <div className="text-[0.75rem] font-semibold text-cyber-text truncate">{row.label}</div>
+                {row.meta && <div className="text-[0.6875rem] font-mono text-cyber-muted">{row.meta}</div>}
               </div>
               {row.badge && (
                 <span
-                  className={`shrink-0 text-[10px] font-mono px-2 py-0.5 rounded border ${
+                  className={`shrink-0 text-[0.625rem] font-mono px-2 py-0.5 rounded border ${
                     BADGE_TONE[row.badgeTone ?? toneFor(row.badge)] ?? BADGE_TONE.neutral
                   }`}
                 >

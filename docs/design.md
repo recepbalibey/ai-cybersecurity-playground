@@ -25,6 +25,8 @@ The playground is a place to learn AI security through simulated labs. A new vis
 ## Interaction
 
 - A new visitor can start a lab without choosing a path first.
+- Provide saved text-size controls from 100% to 150% beside the theme switch.
+- Keep code, notices, and selected cards readable in both themes.
 - Show instant button feedback and loading skeletons while lab code or data loads.
 - Load lab components on demand.
 - Use motion only to explain work in progress. No cursor halos, tilt, radar sweeps, particle fields, or count-up numbers.

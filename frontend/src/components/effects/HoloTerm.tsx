@@ -89,15 +89,15 @@ export function HoloTerm({
             className="gloss-pop p-3.5"
             style={{ top: pos.top, left: pos.left }}
           >
-            <span className="mb-1 block font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+            <span className="mb-1 block font-mono text-[0.625rem] uppercase tracking-wider text-cyber-muted">
               {topic ? `Concept: ${title}` : title}
             </span>
-            <span className="block text-[12px] leading-relaxed text-cyber-text">
+            <span className="block text-[0.75rem] leading-relaxed text-cyber-text">
               {body}
             </span>
             {essence && (
-              <span className="mt-2 block rounded-md bg-cyber-surface-hover/60 px-2.5 py-1.5 text-[11px] text-cyber-text">
-                <span className="mr-1 font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+              <span className="mt-2 block rounded-md bg-cyber-surface-hover/60 px-2.5 py-1.5 text-[0.6875rem] text-cyber-text">
+                <span className="mr-1 font-mono text-[0.625rem] uppercase tracking-wider text-cyber-muted">
                   The catch:
                 </span>
                 {essence}
@@ -107,7 +107,7 @@ export function HoloTerm({
               <button
                 type="button"
                 onClick={() => onOpenTheory(topic.id)}
-                className="mt-2.5 flex h-7 items-center gap-1.5 rounded-md border border-accent/40 px-2.5 text-[11px] font-medium text-accent transition-colors hover:bg-accent/10"
+                className="mt-2.5 flex h-7 items-center gap-1.5 rounded-md border border-accent/40 px-2.5 text-[0.6875rem] font-medium text-accent transition-colors hover:bg-accent/10"
               >
                 Open full theory
               </button>

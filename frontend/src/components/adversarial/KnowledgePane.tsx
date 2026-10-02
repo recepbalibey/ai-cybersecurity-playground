@@ -36,10 +36,10 @@ export function KnowledgePane({ concepts, attacks, defenses, result }: Knowledge
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2 rounded-md text-[10px] font-semibold uppercase tracking-wide transition-all ${
+              className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2 rounded-md text-[0.625rem] font-semibold uppercase tracking-wide transition-all ${
                 tab === t.id
-                  ? "bg-cyan-950/40 border border-cyan-500/50 text-cyan-300"
-                  : "bg-slate-950/60 border border-slate-800 text-slate-400 hover:border-slate-600"
+                  ? "bg-accent/10 border border-cyan-500/50 text-accent"
+                  : "bg-cyber-base/60 border border-cyber-border text-cyber-muted hover:border-cyber-border"
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
@@ -58,16 +58,16 @@ export function KnowledgePane({ concepts, attacks, defenses, result }: Knowledge
               </p>
             )}
             {(result?.teaching_points ?? []).map((p, i) => (
-              <div key={i} className="p-3.5 bg-slate-950/60 border border-slate-800 rounded-md">
+              <div key={i} className="p-3.5 bg-cyber-base/60 border border-cyber-border rounded-md">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-mono text-cyan-400 px-1.5 py-0.5 rounded bg-cyan-950/40 border border-cyan-500/30">
+                  <span className="text-[0.625rem] font-mono text-accent px-1.5 py-0.5 rounded bg-accent/10 border border-cyan-500/30">
                     {p.concept}
                   </span>
-                  <span className="text-[10px] font-mono text-cyber-muted">#{i + 1}</span>
+                  <span className="text-[0.625rem] font-mono text-cyber-muted">#{i + 1}</span>
                 </div>
                 <div className="text-xs font-bold text-cyber-heading mb-1">{p.title}</div>
-                <p className="text-[11px] text-cyber-muted leading-relaxed">{p.explanation}</p>
-                <p className="text-[11px] text-cyan-300/90 mt-2 font-mono">→ {p.key_takeaway}</p>
+                <p className="text-[0.6875rem] text-cyber-muted leading-relaxed">{p.explanation}</p>
+                <p className="text-[0.6875rem] text-accent mt-2 font-mono">→ {p.key_takeaway}</p>
               </div>
             ))}
           </>
@@ -75,30 +75,30 @@ export function KnowledgePane({ concepts, attacks, defenses, result }: Knowledge
 
         {tab === "attacks" && (
           <>
-            <div className="text-[10px] font-mono text-cyber-muted uppercase tracking-wider mb-1">Attack classes</div>
+            <div className="text-[0.625rem] font-mono text-cyber-muted uppercase tracking-wider mb-1">Attack classes</div>
             {attacks.map((a) => (
-              <div key={a.key} className="p-3 bg-slate-950/60 border border-slate-800 rounded-md">
+              <div key={a.key} className="p-3 bg-cyber-base/60 border border-cyber-border rounded-md">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-rose-300">{a.name}</span>
-                  <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded border ${
-                    a.severity === "Critical" ? "border-rose-500 text-rose-400" : a.severity === "High" ? "border-orange-500 text-orange-400" : "border-amber-500 text-amber-400"
+                  <span className="text-xs font-bold text-status-danger">{a.name}</span>
+                  <span className={`text-[0.625rem] font-mono px-1.5 py-0.5 rounded border ${
+                    a.severity === "Critical" ? "border-rose-500 text-status-danger" : a.severity === "High" ? "border-orange-500 text-status-warning" : "border-amber-500 text-status-warning"
                   }`}>
                     {a.severity}
                   </span>
                 </div>
-                <p className="text-[11px] text-cyber-muted mt-1.5">{a.description}</p>
-                <div className="mt-2 text-[10px] font-mono text-cyan-400/80">Mitigation: {a.mitigations}</div>
+                <p className="text-[0.6875rem] text-cyber-muted mt-1.5">{a.description}</p>
+                <div className="mt-2 text-[0.625rem] font-mono text-accent">Mitigation: {a.mitigations}</div>
               </div>
             ))}
-            <div className="text-[10px] font-mono text-cyber-muted uppercase tracking-wider mt-4 mb-1">Defense mechanisms</div>
+            <div className="text-[0.625rem] font-mono text-cyber-muted uppercase tracking-wider mt-4 mb-1">Defense mechanisms</div>
             {defenses.map((d) => (
-              <div key={d.key} className="p-3 bg-slate-950/60 border border-slate-800 rounded-md">
+              <div key={d.key} className="p-3 bg-cyber-base/60 border border-cyber-border rounded-md">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-emerald-300">{d.name}</span>
-                  <span className="text-[10px] font-mono text-emerald-400/80">{d.effectiveness}</span>
+                  <span className="text-xs font-bold text-status-success">{d.name}</span>
+                  <span className="text-[0.625rem] font-mono text-status-success">{d.effectiveness}</span>
                 </div>
-                <p className="text-[11px] text-cyber-muted mt-1.5">{d.description}</p>
-                <div className="mt-2 text-[10px] font-mono text-amber-400/80">Trade-off: {d.tradeoff}</div>
+                <p className="text-[0.6875rem] text-cyber-muted mt-1.5">{d.description}</p>
+                <div className="mt-2 text-[0.625rem] font-mono text-status-warning">Trade-off: {d.tradeoff}</div>
               </div>
             ))}
           </>
@@ -106,12 +106,12 @@ export function KnowledgePane({ concepts, attacks, defenses, result }: Knowledge
 
         {tab === "concepts" &&
           concepts.map((c) => (
-            <div key={c.key} className="p-3.5 bg-slate-950/60 border border-slate-800 rounded-md">
+            <div key={c.key} className="p-3.5 bg-cyber-base/60 border border-cyber-border rounded-md">
               <div className="text-xs font-bold text-cyber-heading mb-1">{c.name}</div>
-              <div className="text-[11px] text-cyan-300/90 font-mono mb-1.5">{c.summary}</div>
-              <p className="text-[11px] text-cyber-muted leading-relaxed">{c.details}</p>
-              <p className="text-[11px] text-emerald-300/80 mt-2 font-mono flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <div className="text-[0.6875rem] text-accent font-mono mb-1.5">{c.summary}</div>
+              <p className="text-[0.6875rem] text-cyber-muted leading-relaxed">{c.details}</p>
+              <p className="text-[0.6875rem] text-status-success mt-2 font-mono flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-status-success shrink-0" />
                 {c.good_practice}
               </p>
             </div>

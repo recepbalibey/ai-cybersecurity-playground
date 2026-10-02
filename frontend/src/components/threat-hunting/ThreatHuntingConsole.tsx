@@ -51,7 +51,7 @@ export function ThreatHuntingConsole({
       {/* Console Title */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <Search className="w-5 h-5 text-cyan-400" />
+          <Search className="w-5 h-5 text-accent" />
           <h2 className="holo-glitch text-base font-bold text-cyber-heading">
             Threat Hunting Console
           </h2>
@@ -69,17 +69,17 @@ export function ThreatHuntingConsole({
             value={queryInput}
             onChange={(e) => setQueryInput(e.target.value)}
             placeholder="What threat do you want to hunt? (e.g. Find suspicious PowerShell or SMB lateral movement)"
-            className="w-full h-14 pl-12 pr-36 bg-slate-950 border border-slate-700/80 rounded-lg text-sm text-cyber-heading placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all font-sans"
+            className="w-full h-14 pl-12 pr-36 bg-cyber-base border border-cyber-border/80 rounded-lg text-sm text-cyber-heading placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all font-sans"
           />
-          <Search className="w-5 h-5 text-slate-500 absolute left-4 top-4" />
+          <Search className="w-5 h-5 text-cyber-muted absolute left-4 top-4" />
 
           <button
             type="submit"
             disabled={isHunting || !queryInput.trim()}
             className={`absolute right-2 top-2 h-10 px-5 rounded-md text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all ${
               isHunting || !queryInput.trim()
-                ? "bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700"
-                : "bg-cyan-600 hover:bg-cyan-500 text-slate-950 shadow-cyan-glow cursor-pointer"
+                ? "bg-cyber-surface-hover text-cyber-muted cursor-not-allowed border border-cyber-border"
+                : "bg-cyan-600 hover:bg-cyan-500 text-on-accent shadow-cyan-glow cursor-pointer"
             }`}
           >
             {isHunting ? (
@@ -116,11 +116,11 @@ export function ThreatHuntingConsole({
                   setQueryInput(preset.query);
                   onSearch(preset.query);
                 }}
-                className="px-3.5 py-2.5 bg-slate-950/70 hover:bg-slate-900 border border-slate-800 hover:border-cyan-500/50 rounded-md text-left transition-all group flex items-center justify-between disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-slate-800"
+                className="px-3.5 py-2.5 bg-cyber-base/70 hover:bg-cyber-base border border-cyber-border hover:border-cyan-500/50 rounded-md text-left transition-all group flex items-center justify-between disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-cyber-border"
               >
                 <div className="flex items-center gap-2.5">
-                  <Icon className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 transition-colors shrink-0" />
-                  <span className="text-xs font-semibold text-cyber-text group-hover:text-cyan-300">
+                  <Icon className="w-4 h-4 text-cyber-muted group-hover:text-accent transition-colors shrink-0" />
+                  <span className="text-xs font-semibold text-cyber-text group-hover:text-accent">
                     {preset.label}
                   </span>
                 </div>

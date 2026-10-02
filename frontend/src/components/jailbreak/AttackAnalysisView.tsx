@@ -21,13 +21,13 @@ export function AttackAnalysisView({ result }: AttackAnalysisViewProps) {
       <div className="cyber-panel border border-cyber-border overflow-hidden">
         <div className="p-4 border-b border-cyber-border bg-cyber-surface/60">
           <div className="flex items-center gap-2.5">
-            <Crosshair className="w-4 h-4 text-cyan-400" />
+            <Crosshair className="w-4 h-4 text-accent" />
             <h2 className="text-base font-semibold text-cyber-heading">
               Attack Analysis
             </h2>
           </div>
         </div>
-        <div className="p-6 text-center text-sm text-slate-500">
+        <div className="p-6 text-center text-sm text-cyber-muted">
           Run an evaluation to see how this attack was analyzed and why it worked or failed.
         </div>
       </div>
@@ -42,18 +42,18 @@ export function AttackAnalysisView({ result }: AttackAnalysisViewProps) {
     <div className="cyber-panel border border-cyber-border overflow-hidden">
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
         <div className="flex items-center gap-2.5">
-          <Crosshair className="w-4 h-4 text-cyan-400" />
+          <Crosshair className="w-4 h-4 text-accent" />
           <h2 className="text-base font-semibold text-cyber-heading">
             Attack Analysis
           </h2>
         </div>
         <span
-          className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold uppercase ${
+          className={`text-[0.625rem] font-mono px-2 py-0.5 rounded font-bold uppercase ${
             blocked
-              ? "bg-emerald-950/60 text-emerald-400 border border-emerald-500/40"
+              ? "bg-status-success/10 text-status-success border border-emerald-500/40"
               : compromised
-              ? "bg-red-950/60 text-red-400 border border-red-500/40"
-              : "bg-slate-900 text-slate-400 border border-slate-700"
+              ? "bg-status-danger/10 text-status-danger border border-red-500/40"
+              : "bg-cyber-base text-cyber-muted border border-cyber-border"
           }`}
         >
           {result.status}
@@ -69,58 +69,58 @@ export function AttackAnalysisView({ result }: AttackAnalysisViewProps) {
         </div>
 
         {/* Goal */}
-        <div className="p-4 rounded-lg border border-slate-800 bg-slate-950/70">
+        <div className="p-4 rounded-lg border border-cyber-border bg-cyber-base/70">
           <div className="flex items-center gap-2 mb-1.5">
-            <Crosshair className="w-4 h-4 text-amber-400" />
+            <Crosshair className="w-4 h-4 text-status-warning" />
             <span className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
               Goal of the Attacker
             </span>
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed">{aa.goal}</p>
+          <p className="text-xs text-cyber-text leading-relaxed">{aa.goal}</p>
         </div>
 
         {/* Why worked/failed */}
 <div
           className={`p-4 rounded-lg border ${
             compromised
-              ? "bg-red-950/20 border-red-500/40"
-              : "bg-emerald-950/10 border-emerald-500/30"
+              ? "bg-status-danger/10 border-red-500/40"
+              : "bg-status-success/10 border-emerald-500/30"
           }`}
         >
           <div className="flex items-center gap-2 mb-1.5">
-            <span className={compromised ? "text-red-400" : "text-emerald-400"}>
+            <span className={compromised ? "text-status-danger" : "text-status-success"}>
               <ShieldAlert className="w-4 h-4" />
             </span>
             <span className="text-xs font-bold uppercase tracking-wider font-mono text-cyber-heading">
               Why it {compromised ? "worked" : "failed"}
             </span>
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed">{aa.why_worked_or_failed}</p>
+          <p className="text-xs text-cyber-text leading-relaxed">{aa.why_worked_or_failed}</p>
         </div>
 
         {/* Security lesson */}
-        <div className="p-4 rounded-lg border border-slate-800 bg-slate-950/70">
+        <div className="p-4 rounded-lg border border-cyber-border bg-cyber-base/70">
           <div className="flex items-center gap-2 mb-1.5">
-            <BookOpenCheck className="w-4 h-4 text-cyan-400" />
+            <BookOpenCheck className="w-4 h-4 text-accent" />
             <span className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
               Security Lesson
             </span>
           </div>
-          <p className="text-xs text-slate-200 leading-relaxed">{result.lesson.headline}</p>
-          <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">{result.lesson.safety_lesson}</p>
+          <p className="text-xs text-cyber-text leading-relaxed">{result.lesson.headline}</p>
+          <p className="text-[0.6875rem] text-cyber-muted mt-1 leading-relaxed">{result.lesson.safety_lesson}</p>
         </div>
 
         {/* Possible defenses */}
-        <div className="p-4 rounded-lg border border-slate-800 bg-slate-950/70">
+        <div className="p-4 rounded-lg border border-cyber-border bg-cyber-base/70">
           <div className="flex items-center gap-2 mb-2">
-            <ListChecks className="w-4 h-4 text-emerald-400" />
+            <ListChecks className="w-4 h-4 text-status-success" />
             <span className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
               Possible Defenses
             </span>
           </div>
           <ul className="space-y-1.5">
             {aa.defenses.map((d, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs text-slate-300">
+              <li key={i} className="flex items-start gap-2 text-xs text-cyber-text">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/70 mt-1.5 shrink-0" />
                 {d}
               </li>
@@ -142,8 +142,8 @@ function Field({
   value: string;
 }) {
   return (
-    <div className="p-3 rounded-lg border border-slate-800 bg-slate-950/70">
-      <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-mono uppercase mb-1">
+    <div className="p-3 rounded-lg border border-cyber-border bg-cyber-base/70">
+      <div className="flex items-center gap-1.5 text-[0.625rem] text-cyber-muted font-mono uppercase mb-1">
         {icon}
         {label}
       </div>

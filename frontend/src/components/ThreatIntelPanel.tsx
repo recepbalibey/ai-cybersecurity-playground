@@ -26,13 +26,13 @@ export function ThreatIntelPanel({
   const getSeverityBadge = () => {
     switch (severity) {
       case "CRITICAL":
-        return "bg-red-950/60 border-red-500/60 text-red-400 shadow-red-glow";
+        return "bg-status-danger/10 border-red-500/60 text-status-danger shadow-red-glow";
       case "HIGH":
-        return "bg-orange-950/60 border-orange-500/60 text-orange-400";
+        return "bg-status-warning/10 border-orange-500/60 text-status-warning";
       case "MEDIUM":
-        return "bg-amber-950/60 border-amber-500/60 text-amber-400";
+        return "bg-status-warning/10 border-amber-500/60 text-status-warning";
       default:
-        return "bg-blue-950/60 border-blue-500/60 text-blue-400";
+        return "bg-status-info/10 border-blue-500/60 text-status-info";
     }
   };
 
@@ -41,7 +41,7 @@ export function ThreatIntelPanel({
       {/* Panel Header */}
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
         <div className="flex items-center gap-2.5">
-          <ShieldAlert className="w-4 h-4 text-cyan-400" />
+          <ShieldAlert className="w-4 h-4 text-accent" />
           <h2 className="text-base font-semibold text-cyber-heading">
             Threat Intelligence Panel
           </h2>
@@ -69,9 +69,9 @@ export function ThreatIntelPanel({
 
           <div className="space-y-2.5">
             {/* IP Addresses */}
-            <div className="p-3 bg-slate-950/60 border border-slate-800 rounded">
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-200 mb-1.5">
-                <Globe className="w-4 h-4 text-cyan-400" />
+            <div className="p-3 bg-cyber-base/60 border border-cyber-border rounded">
+              <div className="flex items-center gap-2 text-xs font-semibold text-cyber-text mb-1.5">
+                <Globe className="w-4 h-4 text-accent" />
                 <span>Origin IP Addresses ({iocs.ips.length})</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -79,7 +79,7 @@ export function ThreatIntelPanel({
                   <span
                     key={ip}
                     style={{ animationDelay: `${idx * 70}ms` }}
-                    className="decode-enter font-mono text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-cyan-300 font-medium"
+                    className="decode-enter font-mono text-xs px-2.5 py-1 rounded bg-cyber-base border border-cyber-border text-accent font-medium"
                   >
                     {ip}
                   </span>
@@ -88,9 +88,9 @@ export function ThreatIntelPanel({
             </div>
 
             {/* Target Accounts */}
-            <div className="p-3 bg-slate-950/60 border border-slate-800 rounded">
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-200 mb-1.5">
-                <User className="w-4 h-4 text-amber-400" />
+            <div className="p-3 bg-cyber-base/60 border border-cyber-border rounded">
+              <div className="flex items-center gap-2 text-xs font-semibold text-cyber-text mb-1.5">
+                <User className="w-4 h-4 text-status-warning" />
                 <span>Targeted User Accounts ({iocs.users.length})</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -98,7 +98,7 @@ export function ThreatIntelPanel({
                   <span
                     key={u}
                     style={{ animationDelay: `${idx * 70}ms` }}
-                    className="decode-enter font-mono text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-amber-300 font-medium"
+                    className="decode-enter font-mono text-xs px-2.5 py-1 rounded bg-cyber-base border border-cyber-border text-status-warning font-medium"
                   >
                     {u}
                   </span>
@@ -107,9 +107,9 @@ export function ThreatIntelPanel({
             </div>
 
             {/* Target Systems */}
-            <div className="p-3 bg-slate-950/60 border border-slate-800 rounded">
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-200 mb-1.5">
-                <Server className="w-4 h-4 text-emerald-400" />
+            <div className="p-3 bg-cyber-base/60 border border-cyber-border rounded">
+              <div className="flex items-center gap-2 text-xs font-semibold text-cyber-text mb-1.5">
+                <Server className="w-4 h-4 text-status-success" />
                 <span>Target Systems ({iocs.hosts.length})</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -117,7 +117,7 @@ export function ThreatIntelPanel({
                   <span
                     key={h}
                     style={{ animationDelay: `${idx * 70}ms` }}
-                    className="decode-enter font-mono text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-emerald-300 font-medium"
+                    className="decode-enter font-mono text-xs px-2.5 py-1 rounded bg-cyber-base border border-cyber-border text-status-success font-medium"
                   >
                     {h}
                   </span>
@@ -127,16 +127,16 @@ export function ThreatIntelPanel({
 
             {/* Executable Commands */}
             {iocs.commands.length > 0 && (
-              <div className="p-3 bg-slate-950/60 border border-slate-800 rounded">
-                <div className="flex items-center gap-2 text-xs font-semibold text-slate-200 mb-1.5">
-                  <Terminal className="w-4 h-4 text-red-400" />
+              <div className="p-3 bg-cyber-base/60 border border-cyber-border rounded">
+                <div className="flex items-center gap-2 text-xs font-semibold text-cyber-text mb-1.5">
+                  <Terminal className="w-4 h-4 text-status-danger" />
                   <span>Suspicious Commands ({iocs.commands.length})</span>
                 </div>
                 <div className="space-y-1.5">
                   {iocs.commands.map((cmd, idx) => (
                     <div
                       key={idx}
-                      className="font-mono text-xs p-2 rounded bg-slate-900 border border-slate-800 text-red-300 truncate"
+                      className="font-mono text-xs p-2 rounded bg-cyber-base border border-cyber-border text-status-danger truncate"
                     >
                       {cmd}
                     </div>
@@ -155,7 +155,7 @@ export function ThreatIntelPanel({
               <ConceptChip
                 label="why mapping matters"
                 topicId="detection"
-                className="ml-1 text-[11px] normal-case"
+                className="ml-1 text-[0.6875rem] normal-case"
               />
               {" "}
               <HoloTerm
@@ -171,13 +171,13 @@ export function ThreatIntelPanel({
               <div
                 key={technique.id}
                 style={{ animationDelay: `${120 + idx * 90}ms` }}
-                className="decode-enter p-3.5 bg-slate-950/80 border border-slate-800 rounded holo-panel hover:border-cyan-500/40 transition-all"
+                className="decode-enter p-3.5 bg-cyber-base/80 border border-cyber-border rounded holo-panel hover:border-cyan-500/40 transition-all"
               >
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="font-mono text-xs font-bold text-cyan-400 px-2 py-0.5 bg-cyan-950/60 border border-cyan-500/30 rounded">
+                  <span className="font-mono text-xs font-bold text-accent px-2 py-0.5 bg-accent/10 border border-cyan-500/30 rounded">
                     {technique.id}
                   </span>
-                  <span className="text-xs font-mono text-slate-400">
+                  <span className="text-xs font-mono text-cyber-muted">
                     Confidence: {technique.confidence}
                   </span>
                 </div>
@@ -188,7 +188,7 @@ export function ThreatIntelPanel({
                 <div className="text-xs text-cyber-muted font-mono mb-1.5">
                   Tactic: {technique.tactic}
                 </div>
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="text-xs text-cyber-text leading-relaxed">
                   {technique.description}
                 </p>
               </div>

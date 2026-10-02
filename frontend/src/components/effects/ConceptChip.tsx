@@ -111,7 +111,7 @@ export function ConceptChip({
         aria-expanded={open}
         aria-haspopup="dialog"
         className={cn(
-          "inline-flex items-center gap-1 rounded-sm border-b border-dashed border-accent/50 text-accent transition-colors hover:border-accent hover:text-cyan-200",
+          "inline-flex items-center gap-1 rounded-sm border-b border-dashed border-accent/50 text-accent transition-colors hover:border-accent hover:text-cyber-text",
           className
         )}
       >
@@ -129,14 +129,14 @@ export function ConceptChip({
             className="fixed z-50 w-[16rem] rounded-lg border border-cyber-border bg-cyber-surface p-3 shadow-2xl animate-fade-in"
             style={{ left: pos.left, top: pos.top }}
           >
-            <span className="mb-1 block font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+            <span className="mb-1 block font-mono text-[0.625rem] uppercase tracking-wider text-cyber-muted">
               {topic.title}
             </span>
-            <span className="block text-[12px] leading-relaxed text-cyber-text">
+            <span className="block text-[0.75rem] leading-relaxed text-cyber-text">
               {topic.blurb}
             </span>
-            <span className="mt-2 block rounded-md bg-cyber-surface-hover/60 px-2.5 py-1.5 text-[11px] text-cyber-text">
-              <span className="mr-1 font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+            <span className="mt-2 block rounded-md bg-cyber-surface-hover/60 px-2.5 py-1.5 text-[0.6875rem] text-cyber-text">
+              <span className="mr-1 font-mono text-[0.625rem] uppercase tracking-wider text-cyber-muted">
                 The catch:
               </span>
               {topic.dark}
@@ -148,7 +148,7 @@ export function ConceptChip({
                   setOpen(false);
                   onOpenTheory(topic.id);
                 }}
-                className="mt-2.5 flex h-7 items-center gap-1.5 rounded-md border border-accent/40 px-2.5 text-[11px] font-medium text-accent transition-colors hover:bg-accent/10"
+                className="mt-2.5 flex h-7 items-center gap-1.5 rounded-md border border-accent/40 px-2.5 text-[0.6875rem] font-medium text-accent transition-colors hover:bg-accent/10"
               >
                 <BookOpen className="h-3 w-3" strokeWidth={1.75} />
                 Open full theory

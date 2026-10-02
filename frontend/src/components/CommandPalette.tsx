@@ -212,13 +212,13 @@ export function CommandPalette({
             aria-expanded="true"
             aria-controls="command-palette-list"
           />
-          <span className="flex items-center gap-1 rounded border border-cyber-border px-1.5 py-1 font-mono text-[10px] text-cyber-muted">
+          <span className="flex items-center gap-1 rounded border border-cyber-border px-1.5 py-1 font-mono text-[0.625rem] text-cyber-muted">
             <Command className="h-3 w-3" strokeWidth={1.75} /> K
           </span>
           <button
             onClick={onClose}
             aria-label="Close command palette"
-            className="ml-1 rounded-md p-1 text-cyber-muted transition-colors hover:text-rose-400"
+            className="ml-1 rounded-md p-1 text-cyber-muted transition-colors hover:text-status-danger"
           >
             <X className="h-4 w-4" strokeWidth={1.75} />
           </button>
@@ -242,14 +242,14 @@ export function CommandPalette({
               <span className={i === activeIdx ? "text-accent" : "text-cyber-muted"}>{item.icon}</span>
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-sm font-medium text-cyber-heading">{item.label}</span>
-                <span className="block truncate font-mono text-[11px] text-cyber-muted">{item.hint}</span>
+                <span className="block truncate font-mono text-[0.6875rem] text-cyber-muted">{item.hint}</span>
               </span>
-              {item.done && <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" strokeWidth={1.75} />}
+              {item.done && <CheckCircle2 className="h-4 w-4 shrink-0 text-status-success" strokeWidth={1.75} />}
             </button>
           ))}
         </div>
 
-        <div className="flex items-center gap-4 border-t border-cyber-border bg-cyber-surface-hover/40 px-4 py-2.5 font-mono text-[10px] text-cyber-muted">
+        <div className="flex items-center gap-4 border-t border-cyber-border bg-cyber-surface-hover/40 px-4 py-2.5 font-mono text-[0.625rem] text-cyber-muted">
           <span className="flex items-center gap-1">
             <kbd className="rounded border border-cyber-border bg-cyber-surface px-1">↑</kbd>
             <kbd className="rounded border border-cyber-border bg-cyber-surface px-1">↓</kbd>

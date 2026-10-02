@@ -92,7 +92,7 @@ ${report.recommended_actions
       {/* Report Header */}
       <div className="p-4.5 border-b border-cyber-border bg-cyber-surface/80 flex items-center justify-between relative overflow-hidden">
         <div className="flex items-center gap-3 relative">
-          <FileText className="w-5 h-5 text-cyan-400" />
+          <FileText className="w-5 h-5 text-accent" />
           <div>
             <h2 className="text-base font-bold text-cyber-heading">
               AI Generated SOC Incident Report
@@ -107,14 +107,14 @@ ${report.recommended_actions
         <div className="flex items-center gap-2.5 relative">
           <button
             onClick={handleExportJSON}
-            className="h-9 px-3.5 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-mono text-cyan-300 flex items-center gap-2 transition-all font-semibold"
+            className="h-9 px-3.5 rounded bg-cyber-base hover:bg-cyber-surface-hover border border-cyber-border text-xs font-mono text-accent flex items-center gap-2 transition-all font-semibold"
           >
             <Download className="w-4 h-4" />
             <span>JSON</span>
           </button>
           <button
             onClick={handleExportMarkdown}
-            className="h-9 px-3.5 rounded bg-cyan-600 hover:bg-cyan-500 text-slate-950 text-xs font-mono font-semibold flex items-center gap-2 transition-all shadow-cyan-glow"
+            className="h-9 px-3.5 rounded bg-cyan-600 hover:bg-cyan-500 text-on-accent text-xs font-mono font-semibold flex items-center gap-2 transition-all shadow-cyan-glow"
           >
             <Download className="w-4 h-4" />
             <span>Markdown Report</span>
@@ -125,18 +125,18 @@ ${report.recommended_actions
       <div className="p-6 space-y-6 bg-cyber-base/40">
         {/* Section 1: Executive Summary */}
         <div className="space-y-2.5">
-          <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
+          <h3 className="text-sm font-bold text-accent flex items-center gap-2">
             <ShieldAlert className="w-4.5 h-4.5" />
             Executive Incident Summary
           </h3>
-          <div className="p-4.5 bg-slate-950/80 border border-slate-800 rounded text-sm text-cyber-text leading-relaxed">
+          <div className="p-4.5 bg-cyber-base/80 border border-cyber-border rounded text-sm text-cyber-text leading-relaxed">
             {report.summary}
           </div>
         </div>
 
         {/* Section 2: Attack Timeline */}
         <div className="space-y-2.5">
-          <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
+          <h3 className="text-sm font-bold text-accent flex items-center gap-2">
             <Clock className="w-4.5 h-4.5" />
             Attack Timeline & Progression
           </h3>
@@ -144,13 +144,13 @@ ${report.recommended_actions
             {report.attack_timeline.map((item, idx) => (
               <div
                 key={idx}
-                className="p-4 bg-slate-950/60 border border-slate-800 rounded flex flex-col gap-1.5"
+                className="p-4 bg-cyber-base/60 border border-cyber-border rounded flex flex-col gap-1.5"
               >
                 <div className="text-sm font-semibold text-cyber-heading">
                   {item.step}
                 </div>
-                <p className="text-xs text-slate-300">{item.detail}</p>
-                <div className="font-mono text-xs p-2 bg-slate-900 border border-slate-800 text-slate-300 rounded break-all mt-1">
+                <p className="text-xs text-cyber-text">{item.detail}</p>
+                <div className="font-mono text-xs p-2 bg-cyber-base border border-cyber-border text-cyber-text rounded break-all mt-1">
                   Evidence: {item.evidence}
                 </div>
               </div>
@@ -160,20 +160,20 @@ ${report.recommended_actions
 
         {/* Section 3: Risk Assessment */}
         <div className="space-y-2.5">
-          <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
+          <h3 className="text-sm font-bold text-accent flex items-center gap-2">
             <AlertTriangle className="w-4.5 h-4.5" />
             Risk & Impact Assessment
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
-            <div className="p-4 bg-slate-950/60 border border-slate-800 rounded">
+            <div className="p-4 bg-cyber-base/60 border border-cyber-border rounded">
               <div className="text-xs text-cyber-muted font-mono uppercase">
                 Business Impact
               </div>
-              <div className="text-sm text-slate-200 mt-1 leading-normal">
+              <div className="text-sm text-cyber-text mt-1 leading-normal">
                 {report.risk_assessment.business_impact}
               </div>
             </div>
-            <div className="p-4 bg-slate-950/60 border border-slate-800 rounded">
+            <div className="p-4 bg-cyber-base/60 border border-cyber-border rounded">
               <div className="text-xs text-cyber-muted font-mono uppercase">
                 AI Confidence Score
               </div>
@@ -185,11 +185,11 @@ ${report.recommended_actions
                 note="What drives this number? The AI weighs how specific the evidence is, how many independent signals agree, and how often this pattern has turned out to be real before."
               />
             </div>
-            <div className="p-4 bg-slate-950/60 border border-slate-800 rounded">
+            <div className="p-4 bg-cyber-base/60 border border-cyber-border rounded">
               <div className="text-xs text-cyber-muted font-mono uppercase">
                 False Positive Likelihood
               </div>
-              <div className="text-base font-mono font-bold text-cyan-400 mt-1">
+              <div className="text-base font-mono font-bold text-accent mt-1">
                 {report.risk_assessment.false_positive_likelihood}
               </div>
             </div>
@@ -198,7 +198,7 @@ ${report.recommended_actions
 
         {/* Section 4: Recommended Actions & Playbook */}
         <div className="space-y-2.5">
-          <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
+          <h3 className="text-sm font-bold text-accent flex items-center gap-2">
             <CheckSquare className="w-4.5 h-4.5" />
             Recommended Containment & Response Playbook
           </h3>
@@ -206,9 +206,9 @@ ${report.recommended_actions
             {report.recommended_actions.map((act, idx) => (
               <div
                 key={idx}
-                className="p-4 bg-slate-950/80 border border-slate-800 rounded flex items-start gap-3.5"
+                className="p-4 bg-cyber-base/80 border border-cyber-border rounded flex items-start gap-3.5"
               >
-                <span className="font-mono text-xs px-2.5 py-1 rounded bg-red-950/60 text-red-400 border border-red-500/40 shrink-0 font-bold">
+                <span className="font-mono text-xs px-2.5 py-1 rounded bg-status-danger/10 text-status-danger border border-red-500/40 shrink-0 font-bold">
                   {act.priority}
                 </span>
                 <div className="flex-1">
@@ -223,7 +223,7 @@ ${report.recommended_actions
 
         {/* Concepts to dig deeper into */}
         <div className="flex flex-wrap items-center gap-2 border-t border-cyber-border pt-4 text-sm text-cyber-muted">
-          <span className="font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+          <span className="font-mono text-[0.625rem] uppercase tracking-wider text-cyber-muted">
               Dig deeper:
             </span>
           <ConceptChip

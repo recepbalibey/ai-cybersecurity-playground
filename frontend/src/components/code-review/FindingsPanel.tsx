@@ -8,16 +8,16 @@ const SEVERITIES = ["Critical", "High", "Medium", "Low", "Informational"] as con
 type Severity = (typeof SEVERITIES)[number];
 
 const SEVERITY_STYLE: Record<string, string> = {
-  Critical: "border-red-500/50 text-red-300",
-  High: "border-orange-500/50 text-orange-300",
-  Medium: "border-yellow-500/50 text-yellow-300",
-  Low: "border-sky-500/50 text-sky-300",
-  Informational: "border-slate-600 text-slate-300",
+  Critical: "border-red-500/50 text-status-danger",
+  High: "border-orange-500/50 text-status-warning",
+  Medium: "border-yellow-500/50 text-status-warning",
+  Low: "border-sky-500/50 text-status-info",
+  Informational: "border-cyber-border text-cyber-text",
 };
 
 const SEVERITY_DOT: Record<string, string> = {
   Critical: "bg-red-500", High: "bg-orange-500", Medium: "bg-yellow-500",
-  Low: "bg-sky-500", Informational: "bg-slate-500",
+  Low: "bg-sky-500", Informational: "bg-cyber-surface-hover",
 };
 
 interface Props {
@@ -45,11 +45,11 @@ export function FindingsPanel({ findings, selectedId, onSelect, hasResult = fals
     return (
       <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
         <div className="px-3 py-2 border-b border-cyber-border flex items-center gap-2">
-          <AlertOctagon className="w-4 h-4 text-cyan-400" />
+          <AlertOctagon className="w-4 h-4 text-accent" />
           <h3 className="text-xs font-bold text-cyber-heading">AI Findings</h3>
-          <span className="ml-auto text-[10px] font-mono text-cyber-muted">0 issues</span>
+          <span className="ml-auto text-[0.625rem] font-mono text-cyber-muted">0 issues</span>
         </div>
-        <div className={`flex items-center gap-3 p-4 text-sm ${hasResult ? "text-emerald-300" : "text-cyber-muted"}`}>
+        <div className={`flex items-center gap-3 p-4 text-sm ${hasResult ? "text-status-success" : "text-cyber-muted"}`}>
           {hasResult ? (
             <ListChecks className="w-5 h-5" />
           ) : (
@@ -73,9 +73,9 @@ export function FindingsPanel({ findings, selectedId, onSelect, hasResult = fals
   return (
     <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
       <div className="px-3 py-2 border-b border-cyber-border flex items-center gap-2">
-        <AlertOctagon className="w-4 h-4 text-cyan-400" />
+        <AlertOctagon className="w-4 h-4 text-accent" />
         <h3 className="text-xs font-bold text-cyber-heading">AI Findings</h3>
-        <span className="ml-auto text-[10px] font-mono text-cyber-muted">
+        <span className="ml-auto text-[0.625rem] font-mono text-cyber-muted">
           {visible.length}/{findings.length} issue(s)
         </span>
       </div>
@@ -87,20 +87,20 @@ export function FindingsPanel({ findings, selectedId, onSelect, hasResult = fals
               key={sev}
               onClick={() => setFilter(active ? null : sev)}
               aria-pressed={active}
-              className={`flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider transition-colors ${
+              className={`flex items-center gap-1 rounded-full border px-2 py-0.5 text-[0.625rem] font-mono uppercase tracking-wider transition-colors ${
                 active ? SEVERITY_STYLE[sev] : "border-cyber-border text-cyber-muted hover:border-cyber-border-light hover:text-cyber-text"
               }`}
             >
               <span className={`h-1.5 w-1.5 rounded-full ${SEVERITY_DOT[sev]}`} />
               {sev}
-              <span className={active ? "" : "text-cyber-muted/70"}>{counts[sev]}</span>
+              <span className={active ? "" : "text-cyber-muted"}>{counts[sev]}</span>
             </button>
           );
         })}
         {filter && (
           <button
             onClick={() => setFilter(null)}
-            className="ml-auto flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-cyber-muted transition-colors hover:text-cyber-text"
+            className="ml-auto flex items-center gap-1 rounded-full px-2 py-0.5 text-[0.625rem] font-mono uppercase tracking-wider text-cyber-muted transition-colors hover:text-cyber-text"
           >
             <X className="h-3 w-3" /> Clear
           </button>
@@ -124,19 +124,19 @@ export function FindingsPanel({ findings, selectedId, onSelect, hasResult = fals
             <li key={f.id}>
               <button
                 onClick={() => onSelect(f)}
-                className={`w-full text-left px-3 py-2.5 hover:bg-slate-800/40 transition-colors flex gap-3 ${
-                  active ? "bg-slate-800/50 border-l-2 border-l-cyan-500" : "border-l-2 border-l-transparent"
+                className={`w-full text-left px-3 py-2.5 hover:bg-cyber-surface-hover/40 transition-colors flex gap-3 ${
+                  active ? "bg-cyber-surface-hover/50 border-l-2 border-l-cyan-500" : "border-l-2 border-l-transparent"
                 }`}
               >
                 <span className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${SEVERITY_DOT[f.severity]}`} />
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-[12px] font-semibold text-cyber-heading">{f.title}</span>
-                    <span className={`text-[10px] font-mono px-1 py-0.5 rounded border ${SEVERITY_STYLE[f.severity]}`}>
+                    <span className="text-[0.75rem] font-semibold text-cyber-heading">{f.title}</span>
+                    <span className={`text-[0.625rem] font-mono px-1 py-0.5 rounded border ${SEVERITY_STYLE[f.severity]}`}>
                       {f.severity}
                     </span>
                   </div>
-                  <div className="text-[11px] text-cyber-muted mt-0.5">
+                  <div className="text-[0.6875rem] text-cyber-muted mt-0.5">
                     {f.language} - lines {f.affected_lines.start}-{f.affected_lines.end}
                   </div>
                 </div>

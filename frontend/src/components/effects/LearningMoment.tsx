@@ -28,23 +28,23 @@ export function LearningMoment({ episode, className }: LearningMomentProps) {
     >
       <div className="flex items-center gap-2">
         <GraduationCap className="h-4 w-4 text-accent" strokeWidth={1.75} />
-        <p className="font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+        <p className="font-mono text-[0.625rem] uppercase tracking-wider text-cyber-muted">
           What just happened
         </p>
       </div>
 
       <div className="space-y-2.5">
-        <p className="flex items-start gap-2 text-[13px] text-cyber-text">
+        <p className="flex items-start gap-2 text-[0.8125rem] text-cyber-text">
           <CheckCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" strokeWidth={1.75} />
           <span>{episode.what}</span>
         </p>
-        <p className="flex items-start gap-2 text-[13px] text-cyber-muted">
-          <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-400" strokeWidth={1.75} />
+        <p className="flex items-start gap-2 text-[0.8125rem] text-cyber-muted">
+          <Lightbulb className="mt-0.5 h-3.5 w-3.5 shrink-0 text-status-warning" strokeWidth={1.75} />
           <span>{episode.why}</span>
         </p>
         {episode.tryNext && (
-          <p className="flex items-start gap-2 text-[13px] text-cyber-text">
-            <ArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-400" strokeWidth={1.75} />
+          <p className="flex items-start gap-2 text-[0.8125rem] text-cyber-text">
+            <ArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-status-success" strokeWidth={1.75} />
             <span>{episode.tryNext}</span>
           </p>
         )}

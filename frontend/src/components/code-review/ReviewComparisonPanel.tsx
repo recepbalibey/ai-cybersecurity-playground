@@ -24,24 +24,24 @@ export function ReviewComparisonPanel({ comparison, hasResult }: Props) {
   return (
     <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
-        <Eye className="w-4 h-4 text-cyan-400" />
+        <Eye className="w-4 h-4 text-accent" />
         <h3 className="text-xs font-bold text-cyber-heading">Manual vs AI Review</h3>
       </div>
 
       <div className="grid grid-cols-2 divide-x divide-cyber-border">
-        <ReviewColumn label="Manual review" accent="text-slate-300" icon={<Clock className="w-3.5 h-3.5" />}
+        <ReviewColumn label="Manual review" accent="text-cyber-text" icon={<Clock className="w-3.5 h-3.5" />}
           time={formatTime(m.time_seconds)} issues={m.issues} coverage={m.coverage} />
-        <ReviewColumn label="AI review" accent="text-cyan-300" icon={<ListChecks className="w-3.5 h-3.5" />}
+        <ReviewColumn label="AI review" accent="text-accent" icon={<ListChecks className="w-3.5 h-3.5" />}
           time={formatTime(a.time_seconds)} issues={a.issues} coverage={a.coverage} />
       </div>
 
-      <div className="px-4 py-3 border-t border-cyber-border bg-slate-900/40 flex items-start gap-2">
-        <Lightbulb className="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0" />
-        <p className="text-[12px] text-cyber-muted leading-relaxed">
+      <div className="px-4 py-3 border-t border-cyber-border bg-cyber-base/40 flex items-start gap-2">
+        <Lightbulb className="w-3.5 h-3.5 text-accent mt-0.5 shrink-0" />
+        <p className="text-[0.75rem] text-cyber-muted leading-relaxed">
           {hasResult
             ? "AI scanned every line and found issues a sampled manual read missed. AI assists, it does not replace the human review."
             : "AI scans the whole file for many patterns; a manual read samples key lines. Use AI to widen coverage, then verify."}
-          {ratio > 0 && <span className="text-cyan-300 font-mono"> Time saved ~{ratio}x.</span>}
+          {ratio > 0 && <span className="text-accent font-mono"> Time saved ~{ratio}x.</span>}
         </p>
       </div>
     </div>
@@ -53,17 +53,17 @@ function ReviewColumn({ label, accent, icon, time, issues, coverage }: {
 }) {
   return (
     <div className="px-4 py-3 space-y-2">
-      <div className={`flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider ${accent}`}>
+      <div className={`flex items-center gap-1.5 text-[0.6875rem] font-bold uppercase tracking-wider ${accent}`}>
         {icon} {label}
       </div>
       <div>
-        <div className="text-[20px] font-mono font-bold text-cyber-heading leading-none">{time}</div>
-        <div className="text-[10px] font-mono text-cyber-muted mt-1">time on a small file</div>
+        <div className="text-[1.25rem] font-mono font-bold text-cyber-heading leading-none">{time}</div>
+        <div className="text-[0.625rem] font-mono text-cyber-muted mt-1">time on a small file</div>
       </div>
-      <div className="text-[12px] text-cyber-muted">
+      <div className="text-[0.75rem] text-cyber-muted">
         <span className="text-cyber-heading font-semibold">{issues} issues</span> found
       </div>
-      <div className="text-[11px] text-cyber-muted">{coverage}</div>
+      <div className="text-[0.6875rem] text-cyber-muted">{coverage}</div>
     </div>
   );
 }

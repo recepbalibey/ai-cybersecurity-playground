@@ -59,12 +59,12 @@ export function AttackLibrary({
       {/* Panel Header */}
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
         <div className="flex items-center gap-2.5">
-          <FlaskConical className="w-4 h-4 text-cyan-400" />
+          <FlaskConical className="w-4 h-4 text-accent" />
           <h2 className="text-base font-semibold text-cyber-heading">
             Attack Library
           </h2>
         </div>
-        <span className="text-[11px] text-cyber-muted font-mono uppercase">
+        <span className="text-[0.6875rem] text-cyber-muted font-mono uppercase">
           {scenarios.length} techniques
         </span>
       </div>
@@ -82,10 +82,10 @@ export function AttackLibrary({
                 <button
                   key={d.value}
                   onClick={() => onDifficultyChange(d.value)}
-                  className={`px-2 py-2.5 rounded-lg border text-[11px] font-semibold flex flex-col items-center gap-1 transition-all ${
+                  className={`px-2 py-2.5 rounded-lg border text-[0.6875rem] font-semibold flex flex-col items-center gap-1 transition-all ${
                     difficulty === d.value
-                      ? "bg-cyan-950/40 border-cyan-500/60 text-cyan-300"
-                      : "bg-slate-950/70 border-slate-800 text-slate-400 hover:border-slate-600"
+                      ? "bg-accent/10 border-cyan-500/60 text-accent"
+                      : "bg-cyber-base/70 border-cyber-border text-cyber-muted hover:border-cyber-border"
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -108,36 +108,36 @@ export function AttackLibrary({
                 onClick={() => onSelectScenario(sc.key)}
                 className={`w-full text-left p-3.5 rounded-lg border transition-all ${
                   active
-                    ? "bg-cyan-950/30 border-cyan-500/60 shadow-cyan-glow"
-                    : "bg-slate-950/70 border-slate-800 hover:border-slate-600"
+                    ? "bg-accent/10 border-cyan-500/60 shadow-cyan-glow"
+                    : "bg-cyber-base/70 border-cyber-border hover:border-cyber-border"
                 }`}
               >
                 <div className="flex items-center gap-2.5 mb-1.5">
-                  <Icon className={`w-4 h-4 ${active ? "text-cyan-400" : "text-slate-400"}`} />
+                  <Icon className={`w-4 h-4 ${active ? "text-accent" : "text-cyber-muted"}`} />
                   <span
                     className={`text-sm font-bold font-mono ${
-                      active ? "text-cyan-200" : "text-cyber-heading"
+                      active ? "text-cyber-text" : "text-cyber-heading"
                     }`}
                   >
                     {sc.title}
                   </span>
                   <span
-                    className={`ml-auto text-[10px] font-mono px-1.5 py-0.5 rounded uppercase ${
+                    className={`ml-auto text-[0.625rem] font-mono px-1.5 py-0.5 rounded uppercase ${
                       sc.difficulty === "advanced"
-                        ? "bg-red-950/60 text-red-400 border border-red-500/40"
+                        ? "bg-status-danger/10 text-status-danger border border-red-500/40"
                         : sc.difficulty === "intermediate"
-                        ? "bg-amber-950/60 text-amber-400 border border-amber-500/40"
-                        : "bg-emerald-950/60 text-emerald-400 border border-emerald-500/40"
+                        ? "bg-status-warning/10 text-status-warning border border-amber-500/40"
+                        : "bg-status-success/10 text-status-success border border-emerald-500/40"
                     }`}
                   >
                     {sc.difficulty}
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-400 leading-relaxed mb-1.5">
+                <p className="text-[0.6875rem] text-cyber-muted leading-relaxed mb-1.5">
                   {cat?.description ?? sc.description}
                 </p>
-                <p className="text-[11px] text-cyan-400 font-mono">
-                  <span className="text-cyan-500/70">Objective:</span>{" "}
+                <p className="text-[0.6875rem] text-accent font-mono">
+                  <span className="text-accent">Objective:</span>{" "}
                   {sc.learning_objective}
                 </p>
               </button>

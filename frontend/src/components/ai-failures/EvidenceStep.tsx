@@ -38,12 +38,12 @@ export function EvidenceStep({
       {/* Evidence */}
       <div className="cyber-panel border border-cyber-border rounded-lg p-4">
         <div className="flex items-center gap-2 mb-3">
-          <FileText className="w-4 h-4 text-cyan-400" />
+          <FileText className="w-4 h-4 text-accent" />
           <h3 className="text-xs font-bold text-cyber-heading">
             Evidence
           </h3>
         </div>
-        <pre className="whitespace-pre-wrap text-[12px] leading-relaxed text-cyber-text font-mono bg-slate-950/60 rounded-md p-3 border border-slate-800">
+        <pre className="whitespace-pre-wrap text-[0.75rem] leading-relaxed text-cyber-text font-mono bg-cyber-base/60 rounded-md p-3 border border-cyber-border">
           {inputData}
         </pre>
       </div>
@@ -52,12 +52,12 @@ export function EvidenceStep({
       {challengeMode && !studentPredict && (
         <div className="cyber-panel border border-amber-500/40 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-2">
-            <EyeOff className="w-4 h-4 text-amber-400" />
+            <EyeOff className="w-4 h-4 text-status-warning" />
             <h3 className="text-xs font-bold text-cyber-heading">
               Human vs AI - your call first
             </h3>
           </div>
-          <p className="text-[12px] text-cyber-muted mb-3">
+          <p className="text-[0.75rem] text-cyber-muted mb-3">
             Commit to your own verdict before the AI's decision is revealed. Then compare your judgment against the model.
           </p>
           <div className="flex flex-wrap gap-2">
@@ -65,7 +65,7 @@ export function EvidenceStep({
               <button
                 key={l.value}
                 onClick={() => onPredict(l.value)}
-                className="px-3 py-1.5 rounded-md border border-slate-700 text-slate-300 hover:border-amber-500/60 hover:text-amber-300 text-xs font-semibold transition-all"
+                className="px-3 py-1.5 rounded-md border border-cyber-border text-cyber-text hover:border-amber-500/60 hover:text-status-warning text-xs font-semibold transition-all"
               >
                 {l.label}
               </button>
@@ -78,17 +78,17 @@ export function EvidenceStep({
       {challengeMode && studentPredict && !showAi && (
         <div className="cyber-panel border border-amber-500/40 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-2">
-            <CheckCircle2 className="w-4 h-4 text-amber-400" />
+            <CheckCircle2 className="w-4 h-4 text-status-warning" />
             <h3 className="text-xs font-bold text-cyber-heading">
               Your verdict locked in
             </h3>
           </div>
-          <p className="text-[12px] text-cyan-200 mb-3">
+          <p className="text-[0.75rem] text-cyber-text mb-3">
             You predicted: <span className="font-mono font-bold">{studentPredict.replace(/_/g, " ")}</span>
           </p>
           <button
             onClick={onRevealAi}
-            className="px-4 h-9 rounded-md bg-amber-600 hover:bg-amber-500 text-slate-950 text-xs font-bold flex items-center gap-2 transition-all"
+            className="px-4 h-9 rounded-md bg-amber-600 hover:bg-amber-500 text-on-accent text-xs font-bold flex items-center gap-2 transition-all"
           >
             <EyeOff className="w-4 h-4" /> Reveal the AI's decision
           </button>
@@ -99,20 +99,20 @@ export function EvidenceStep({
       {showAi && (
         <div className="cyber-panel border border-cyan-500/40 rounded-lg p-4">
           <div className="flex items-center gap-2 mb-3">
-            <BrainCircuit className="w-4 h-4 text-cyan-400" />
+            <BrainCircuit className="w-4 h-4 text-accent" />
             <h3 className="text-xs font-bold text-cyber-heading">
               AI decision
             </h3>
-            <span className="ml-auto text-[10px] font-mono px-2 py-0.5 rounded border border-cyan-500/40 text-cyan-300">
+            <span className="ml-auto text-[0.625rem] font-mono px-2 py-0.5 rounded border border-cyan-500/40 text-accent">
               confidence {aiConfidence}%
             </span>
           </div>
-          <p className="text-[13px] text-cyber-text leading-relaxed">{aiOutput}</p>
+          <p className="text-[0.8125rem] text-cyber-text leading-relaxed">{aiOutput}</p>
           {challengeMode && studentPredict && (
-            <div className="mt-3 flex items-center gap-1.5 text-[11px] font-mono text-slate-400">
-              You predicted: <span className="text-amber-300">{studentPredict.replace(/_/g, " ")}</span>
+            <div className="mt-3 flex items-center gap-1.5 text-[0.6875rem] font-mono text-cyber-muted">
+              You predicted: <span className="text-status-warning">{studentPredict.replace(/_/g, " ")}</span>
               vs
-              <span className="text-cyan-300">AI: {aiOutput.includes("benign") || aiOutput.includes("No") || aiOutput.includes("Low risk") ? "benign" : "attack"}</span>
+              <span className="text-accent">AI: {aiOutput.includes("benign") || aiOutput.includes("No") || aiOutput.includes("Low risk") ? "benign" : "attack"}</span>
             </div>
           )}
         </div>
@@ -122,13 +122,13 @@ export function EvidenceStep({
       {!challengeMode && !showAi && (
         <button
           onClick={onCommit}
-          className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 text-slate-950 text-xs font-bold flex items-center gap-2 transition-all shadow-cyan-glow"
+          className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 text-on-accent text-xs font-bold flex items-center gap-2 transition-all shadow-cyan-glow"
         >
           <XCircle className="w-4 h-4" /> I have studied the evidence
         </button>
       )}
       {!challengeMode && showAi && (
-        <p className="text-[11px] text-cyber-muted">
+        <p className="text-[0.6875rem] text-cyber-muted">
           The AI's decision and confidence are above. Judge whether the AI output was correct before the next step.
         </p>
       )}

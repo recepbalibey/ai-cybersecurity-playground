@@ -45,16 +45,16 @@ export function AttackConsole({
       {/* Panel Header */}
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
         <div className="flex items-center gap-2.5">
-          <Bot className="w-4 h-4 text-cyan-400" />
+          <Bot className="w-4 h-4 text-accent" />
           <h2 className="text-base font-semibold text-cyber-heading">
             {application}
           </h2>
         </div>
         <span
-          className={`text-[11px] font-mono px-2.5 py-1 rounded font-bold uppercase ${
+          className={`text-[0.6875rem] font-mono px-2.5 py-1 rounded font-bold uppercase ${
             mode === "protected"
-              ? "bg-emerald-950/60 text-emerald-400 border border-emerald-500/40"
-              : "bg-red-950/60 text-red-400 border border-red-500/40"
+              ? "bg-status-success/10 text-status-success border border-emerald-500/40"
+              : "bg-status-danger/10 text-status-danger border border-red-500/40"
           }`}
         >
           {mode === "protected" ? "Protected" : "Vulnerable"}
@@ -64,20 +64,20 @@ export function AttackConsole({
       <div className="p-4 flex-1 flex flex-col gap-3 overflow-y-auto">
         {/* System Prompt (hidden info panel) */}
         <details className="group">
-          <summary className="flex items-center justify-between cursor-pointer list-none px-3.5 py-2.5 bg-slate-950/80 border border-slate-800 rounded-lg text-xs font-mono text-cyber-muted">
+          <summary className="flex items-center justify-between cursor-pointer list-none px-3.5 py-2.5 bg-cyber-base/80 border border-cyber-border rounded-lg text-xs font-mono text-cyber-muted">
             <span className="flex items-center gap-2">
-              <KeyRound className="w-4 h-4 text-cyan-400" />
+              <KeyRound className="w-4 h-4 text-accent" />
               View System Configuration
             </span>
-            <span className="text-[10px] text-cyan-400 font-semibold group-open:rotate-180 transition-transform">
+            <span className="text-[0.625rem] text-accent font-semibold group-open:rotate-180 transition-transform">
               ▾
             </span>
           </summary>
-          <div className="mt-2 px-3.5 py-3 bg-slate-950/90 border border-slate-800 rounded-lg">
-            <div className="text-[10px] font-bold text-cyan-400 font-mono uppercase mb-1.5">
+          <div className="mt-2 px-3.5 py-3 bg-cyber-base/90 border border-cyber-border rounded-lg">
+            <div className="text-[0.625rem] font-bold text-accent font-mono uppercase mb-1.5">
               System Prompt
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed font-mono">
+            <p className="text-xs text-cyber-text leading-relaxed font-mono">
               {systemPrompt}
             </p>
           </div>
@@ -90,18 +90,18 @@ export function AttackConsole({
             value={payload}
             onChange={(e) => setPayload(e.target.value)}
             placeholder="Enter your prompt / attack..."
-            className="w-full h-11 pl-11 pr-24 bg-slate-950 border border-slate-700/80 rounded-lg text-sm text-cyber-heading placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
+            className="w-full h-11 pl-11 pr-24 bg-cyber-base border border-cyber-border/80 rounded-lg text-sm text-cyber-heading placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all"
           />
-          <TerminalSquare className="w-4 h-4 text-slate-500 absolute left-4 top-3.5" />
+          <TerminalSquare className="w-4 h-4 text-cyber-muted absolute left-4 top-3.5" />
           <button
             type="submit"
             disabled={isProcessing || !payload.trim()}
-            className={`absolute right-2 top-1.5 h-8 px-4 rounded-md text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all ${
+            className={`absolute right-2 top-1.5 h-8 px-4 rounded-md text-[0.6875rem] font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all ${
               isProcessing || !payload.trim()
-                ? "bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700"
+                ? "bg-cyber-surface-hover text-cyber-muted cursor-not-allowed border border-cyber-border"
                 : mode === "protected"
-                ? "bg-emerald-600 hover:bg-emerald-500 text-slate-950 shadow-emerald-glow cursor-pointer"
-                : "bg-cyan-600 hover:bg-cyan-500 text-slate-950 shadow-cyan-glow cursor-pointer"
+                ? "bg-emerald-600 hover:bg-emerald-500 text-on-accent shadow-emerald-glow cursor-pointer"
+                : "bg-cyan-600 hover:bg-cyan-500 text-on-accent shadow-cyan-glow cursor-pointer"
             }`}
           >
             <Send className="w-3.5 h-3.5" />
@@ -116,7 +116,7 @@ export function AttackConsole({
               key={idx}
               onClick={() => onRunAttack(p)}
               disabled={isProcessing}
-              className="px-2.5 py-1.5 bg-slate-950/70 hover:bg-slate-900 border border-slate-800 hover:border-red-500/50 rounded-md text-[10px] font-mono text-slate-300 hover:text-red-300 transition-all text-left"
+              className="px-2.5 py-1.5 bg-cyber-base/70 hover:bg-cyber-base border border-cyber-border hover:border-red-500/50 rounded-md text-[0.625rem] font-mono text-cyber-text hover:text-status-danger transition-all text-left"
             >
               {p.length > 48 ? p.slice(0, 48) + "..." : p}
             </button>
@@ -125,7 +125,7 @@ export function AttackConsole({
 
         {/* Result */}
         {isProcessing && (
-          <div className="flex items-center gap-2 p-3 bg-cyan-950/30 border border-cyan-500/30 rounded-lg text-xs font-mono text-cyan-300">
+          <div className="flex items-center gap-2 p-3 bg-accent/10 border border-cyan-500/30 rounded-lg text-xs font-mono text-accent">
             <Loader2 className="w-4 h-4 animate-spin" />
             Model generating response...
           </div>
@@ -137,58 +137,58 @@ export function AttackConsole({
             <div
               className={`p-3.5 rounded-lg border flex items-start gap-3 ${
                 result.status === "SUCCESS"
-                  ? "bg-red-950/30 border-red-500/50"
+                  ? "bg-status-danger/10 border-red-500/50"
                   : result.status === "BLOCKED"
-                  ? "bg-emerald-950/30 border-emerald-500/50"
-                  : "bg-slate-950/60 border-slate-700"
+                  ? "bg-status-success/10 border-emerald-500/50"
+                  : "bg-cyber-base/60 border-cyber-border"
               }`}
             >
               {result.status === "SUCCESS" ? (
-                <ShieldAlert className="w-5 h-5 text-red-400 shrink-0" />
+                <ShieldAlert className="w-5 h-5 text-status-danger shrink-0" />
               ) : result.status === "BLOCKED" ? (
-                <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0" />
+                <ShieldCheck className="w-5 h-5 text-status-success shrink-0" />
               ) : (
-                <ShieldCheck className="w-5 h-5 text-slate-400 shrink-0" />
+                <ShieldCheck className="w-5 h-5 text-cyber-muted shrink-0" />
               )}
               <div>
                 <div className="text-sm font-bold font-mono uppercase tracking-wider mb-1">
                   <span
                     className={
                       result.status === "SUCCESS"
-                        ? "text-red-400"
+                        ? "text-status-danger"
                         : result.status === "BLOCKED"
-                        ? "text-emerald-400"
-                        : "text-slate-400"
+                        ? "text-status-success"
+                        : "text-cyber-muted"
                     }
                   >
                     Attack Status: {result.status}
                   </span>
                 </div>
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="text-xs text-cyber-text leading-relaxed">
                   {result.reason}
                 </p>
               </div>
             </div>
 
             {/* Model Response */}
-            <div className="p-3.5 bg-slate-950/80 border border-slate-800 rounded-lg">
-              <div className="text-[10px] font-bold text-cyan-400 font-mono uppercase mb-1.5">
+            <div className="p-3.5 bg-cyber-base/80 border border-cyber-border rounded-lg">
+              <div className="text-[0.625rem] font-bold text-accent font-mono uppercase mb-1.5">
                 Model Response
               </div>
-              <p className="text-sm text-slate-200 leading-relaxed">
+              <p className="text-sm text-cyber-text leading-relaxed">
                 {result.response}
               </p>
             </div>
 
             {/* Detected Signals (protected only) */}
             {result.detectedSignals.length > 0 && (
-              <div className="p-3.5 bg-slate-950/80 border border-slate-800 rounded-lg">
-                <div className="text-[10px] font-bold text-amber-400 font-mono uppercase mb-1.5">
+              <div className="p-3.5 bg-cyber-base/80 border border-cyber-border rounded-lg">
+                <div className="text-[0.625rem] font-bold text-status-warning font-mono uppercase mb-1.5">
                   Detected Signals
                 </div>
                 <ul className="space-y-1">
                   {result.detectedSignals.map((s, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-xs text-slate-300">
+                    <li key={idx} className="flex items-start gap-2 text-xs text-cyber-text">
                       <span className="w-1.5 h-1.5 rounded-full bg-red-500/70 mt-1.5 shrink-0"></span>
                       {s}
                     </li>

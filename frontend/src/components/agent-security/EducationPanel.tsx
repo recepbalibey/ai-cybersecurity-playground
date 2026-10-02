@@ -28,11 +28,11 @@ export function EducationPanel({ principles, riskFactors, result, totalMissions 
   return (
     <div className="cyber-panel border border-cyber-border p-4 rounded-lg h-full flex flex-col">
       <div className="flex items-center gap-2.5 mb-3">
-        <BookOpen className="w-4 h-4 text-amber-400" />
+        <BookOpen className="w-4 h-4 text-status-warning" />
         <h3 className="text-sm font-bold text-cyber-heading">
           Mission Intelligence
         </h3>
-        <span className="ml-auto text-[10px] font-mono text-cyber-muted">
+        <span className="ml-auto text-[0.625rem] font-mono text-cyber-muted">
           {totalMissions} mission{totalMissions === 1 ? "" : "s"}
         </span>
       </div>
@@ -44,8 +44,8 @@ export function EducationPanel({ principles, riskFactors, result, totalMissions 
             <button
               key={id}
               onClick={() => setTab(id)}
-              className={`flex-1 px-1 py-1.5 rounded text-[10px] font-semibold uppercase tracking-wide transition-all ${
-                tab === id ? "bg-amber-500/20 text-amber-300 border border-amber-500/40" : "bg-slate-950/60 text-slate-400 border border-slate-800"
+              className={`flex-1 px-1 py-1.5 rounded text-[0.625rem] font-semibold uppercase tracking-wide transition-all ${
+                tab === id ? "bg-amber-500/20 text-status-warning border border-amber-500/40" : "bg-cyber-base/60 text-cyber-muted border border-cyber-border"
               }`}
             >
               {label}
@@ -58,17 +58,17 @@ export function EducationPanel({ principles, riskFactors, result, totalMissions 
         {tab === "points" && (
           <>
             {(result?.teaching_points ?? []).map((p, i) => (
-              <div key={i} className="p-3.5 bg-slate-950/60 border border-slate-800 rounded-md">
+              <div key={i} className="p-3.5 bg-cyber-base/60 border border-cyber-border rounded-md">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-mono text-cyan-400 px-1.5 py-0.5 rounded bg-cyan-950/40 border border-cyan-500/30">{p.concept}</span>
+                  <span className="text-[0.625rem] font-mono text-accent px-1.5 py-0.5 rounded bg-accent/10 border border-cyan-500/30">{p.concept}</span>
                 </div>
                 <div className="text-xs font-bold text-cyber-heading mb-1">{p.title}</div>
-                <p className="text-[11px] text-cyber-muted leading-relaxed">{p.explanation}</p>
-                <p className="text-[11px] text-amber-300/90 mt-2 font-mono">→ {p.key_takeaway}</p>
+                <p className="text-[0.6875rem] text-cyber-muted leading-relaxed">{p.explanation}</p>
+                <p className="text-[0.6875rem] text-status-warning mt-2 font-mono">→ {p.key_takeaway}</p>
               </div>
             ))}
             {(result?.teaching_points ?? []).length === 0 && (
-              <p className="text-[11px] font-mono text-cyber-muted py-6 text-center">
+              <p className="text-[0.6875rem] font-mono text-cyber-muted py-6 text-center">
                 Run a mission to unlock its teaching points.
               </p>
             )}
@@ -77,27 +77,27 @@ export function EducationPanel({ principles, riskFactors, result, totalMissions 
 
         {tab === "risks" &&
           riskFactors.map((r) => (
-            <div key={r.key} className="p-3 bg-slate-950/60 border border-slate-800 rounded-md">
+            <div key={r.key} className="p-3 bg-cyber-base/60 border border-cyber-border rounded-md">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-rose-300">{r.name}</span>
-                <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded border ${
-                  r.severity === "Critical" ? "border-rose-500 text-rose-400" : r.severity === "High" ? "border-orange-500 text-orange-400" : "border-amber-500 text-amber-400"
+                <span className="text-xs font-bold text-status-danger">{r.name}</span>
+                <span className={`text-[0.625rem] font-mono px-1.5 py-0.5 rounded border ${
+                  r.severity === "Critical" ? "border-rose-500 text-status-danger" : r.severity === "High" ? "border-orange-500 text-status-warning" : "border-amber-500 text-status-warning"
                 }`}>{r.severity}</span>
               </div>
-              <p className="text-[11px] text-cyber-muted mt-1.5">{r.description}</p>
-              <p className="text-[10px] text-amber-400/80 mt-1.5 font-mono">Risk: {r.why_dangerous}</p>
-              <p className="text-[10px] text-emerald-400/80 mt-1 font-mono">Control: {r.control}</p>
+              <p className="text-[0.6875rem] text-cyber-muted mt-1.5">{r.description}</p>
+              <p className="text-[0.625rem] text-status-warning mt-1.5 font-mono">Risk: {r.why_dangerous}</p>
+              <p className="text-[0.625rem] text-status-success mt-1 font-mono">Control: {r.control}</p>
             </div>
           ))}
 
         {tab === "principles" &&
           principles.map((p) => (
-            <div key={p.key} className="p-3 bg-slate-950/60 border border-slate-800 rounded-md">
+            <div key={p.key} className="p-3 bg-cyber-base/60 border border-cyber-border rounded-md">
               <div className="text-xs font-bold text-cyber-heading mb-1">{p.name}</div>
-              <div className="text-[10px] text-cyan-300/90 font-mono mb-1.5">{p.summary}</div>
-              <p className="text-[11px] text-cyber-muted leading-relaxed">{p.details}</p>
-              <p className="text-[11px] text-emerald-300/80 mt-2 font-mono flex items-center gap-1.5">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <div className="text-[0.625rem] text-accent font-mono mb-1.5">{p.summary}</div>
+              <p className="text-[0.6875rem] text-cyber-muted leading-relaxed">{p.details}</p>
+              <p className="text-[0.6875rem] text-status-success mt-2 font-mono flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-status-success shrink-0" />
                 {p.good_practice}
               </p>
             </div>
@@ -106,7 +106,7 @@ export function EducationPanel({ principles, riskFactors, result, totalMissions 
         {tab === "timeline" && (
           <>
             {missions.length === 0 && (
-              <p className="text-[11px] font-mono text-cyber-muted py-6 text-center">
+              <p className="text-[0.6875rem] font-mono text-cyber-muted py-6 text-center">
                 No mission executed yet.
               </p>
             )}
@@ -117,8 +117,8 @@ export function EducationPanel({ principles, riskFactors, result, totalMissions 
                     n.status === "blocked" ? "bg-rose-500" : n.status === "flagged" ? "bg-amber-500" : "bg-cyan-500"
                   }`}
                 />
-                <span className="text-[11px] font-mono text-cyber-text w-32 shrink-0">{n.label}</span>
-                <span className="text-[10px] font-mono text-cyber-muted truncate">{n.detail}</span>
+                <span className="text-[0.6875rem] font-mono text-cyber-text w-32 shrink-0">{n.label}</span>
+                <span className="text-[0.625rem] font-mono text-cyber-muted truncate">{n.detail}</span>
               </div>
             ))}
           </>

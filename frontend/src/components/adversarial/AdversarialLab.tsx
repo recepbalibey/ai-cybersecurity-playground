@@ -113,16 +113,16 @@ export function AdversarialLab({
       <div className="cyber-panel corner-frame border border-cyber-border p-5 rounded-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <GitCompareArrows className="w-5 h-5 text-cyan-400" />
+            <GitCompareArrows className="w-5 h-5 text-accent" />
             <h2 className="text-base font-bold text-cyber-heading">
               Adversarial Vision Lab - Active
             </h2>
           </div>
-          <span className="text-[10px] font-mono px-2 py-1 rounded border border-cyan-500/40 text-cyan-300">
+          <span className="text-[0.625rem] font-mono px-2 py-1 rounded border border-cyan-500/40 text-accent">
             {currentExperiment?.title ?? "-"}
           </span>
         </div>
-        <div className="mt-3 flex items-center gap-2 text-[10px] font-mono text-cyber-muted">
+        <div className="mt-3 flex items-center gap-2 text-[0.625rem] font-mono text-cyber-muted">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           Pipeline: Image → Preprocessing → ML Model → Prediction → Robustness Evaluation
         </div>

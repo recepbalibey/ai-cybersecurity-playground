@@ -168,18 +168,18 @@ export function GovernanceLab({
       {/* status header */}
       <div className="cyber-panel border border-cyber-border p-4 rounded-lg flex items-center justify-between flex-wrap gap-3 holo-scan">
         <div className="flex items-center gap-2.5">
-          <ShieldCheck className="w-5 h-5 text-cyan-400" />
+          <ShieldCheck className="w-5 h-5 text-accent" />
           <h2 className="text-base font-bold text-cyber-heading">
             AI Risk Assessment & Governance Active
           </h2>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {instructorMode && (
-            <span className="text-[10px] font-mono px-2 py-1 rounded border border-slate-700 text-slate-300 flex items-center gap-1.5">
-              <GraduationCap className="w-3.5 h-3.5 text-cyan-400" /> Teaching mode on
+            <span className="text-[0.625rem] font-mono px-2 py-1 rounded border border-cyber-border text-cyber-text flex items-center gap-1.5">
+              <GraduationCap className="w-3.5 h-3.5 text-accent" /> Teaching mode on
             </span>
           )}
-          <span className="text-[10px] font-mono px-2 py-1 rounded border border-emerald-500/40 text-emerald-300 flex items-center gap-1.5">
+          <span className="text-[0.625rem] font-mono px-2 py-1 rounded border border-emerald-500/40 text-status-success flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             GOVERNANCE GATE REVIEW
           </span>
@@ -187,11 +187,11 @@ export function GovernanceLab({
       </div>
 
       {/* key question */}
-      <div className="rounded-lg border border-cyan-500/30 bg-cyan-500/5 px-4 py-3 text-[13px] text-cyan-100/90 flex items-start gap-2.5">
-        <ShieldCheck className="w-4 h-4 text-cyan-400 mt-0.5 shrink-0" />
+      <div className="rounded-lg border border-cyan-500/30 bg-cyan-500/5 px-4 py-3 text-[0.8125rem] text-cyber-text flex items-start gap-2.5">
+        <ShieldCheck className="w-4 h-4 text-accent mt-0.5 shrink-0" />
         <p>
           One question drives every screen here:{" "}
-          <span className="font-mono text-cyan-300 font-bold">should this AI system be deployed?</span>{" "}
+          <span className="font-mono text-accent font-bold">should this AI system be deployed?</span>{" "}
           Work the pipeline and decide - or decide to send it back for more work.
         </p>
       </div>
@@ -207,12 +207,12 @@ export function GovernanceLab({
               <button
                 onClick={() => reached && goToStep(s.id)}
                 disabled={!reached}
-                className={`px-3 py-1.5 rounded-md text-[11px] font-mono uppercase tracking-wider border transition-all ${
+                className={`px-3 py-1.5 rounded-md text-[0.6875rem] font-mono uppercase tracking-wider border transition-all ${
                   isActive
-                    ? "bg-cyan-600 text-slate-950 border-cyan-500 font-bold"
+                    ? "bg-cyan-600 text-on-accent border-cyan-500 font-bold"
                     : reached
-                    ? "border-cyber-border text-cyber-muted hover:border-cyan-500/60 hover:text-cyan-300"
-                    : "border-cyber-border text-slate-600 opacity-50 cursor-not-allowed"
+                    ? "border-cyber-border text-cyber-muted hover:border-cyan-500/60 hover:text-accent"
+                    : "border-cyber-border text-cyber-muted opacity-50 cursor-not-allowed"
                 }`}
               >
                 {s.id + 1}. {s.title}
@@ -284,7 +284,7 @@ export function GovernanceLab({
         {step > 0 && (
           <button
             onClick={() => goToStep(step - 1)}
-            className="px-4 h-9 rounded-md border border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300 text-xs font-semibold flex items-center gap-2 transition-all"
+            className="px-4 h-9 rounded-md border border-cyber-border text-cyber-text hover:border-cyan-500/60 hover:text-accent text-xs font-semibold flex items-center gap-2 transition-all"
           >
             <ArrowLeft className="w-4 h-4" /> Back
           </button>
@@ -292,7 +292,7 @@ export function GovernanceLab({
         {step < STEPS.length - 1 && (
           <button
             onClick={() => goToStep(step + 1)}
-            className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 text-slate-950 text-xs font-bold flex items-center gap-2 transition-all shadow-cyan-glow"
+            className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 text-on-accent text-xs font-bold flex items-center gap-2 transition-all shadow-cyan-glow"
           >
             Next: {STEPS[step + 1].title} <ArrowRight className="w-4 h-4" />
           </button>
@@ -300,14 +300,14 @@ export function GovernanceLab({
         {step === STEPS.length - 1 && (
           <button
             onClick={() => goToStep(0)}
-            className="px-4 h-9 rounded-md border border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300 text-xs font-semibold flex items-center gap-2 transition-all"
+            className="px-4 h-9 rounded-md border border-cyber-border text-cyber-text hover:border-cyan-500/60 hover:text-accent text-xs font-semibold flex items-center gap-2 transition-all"
           >
             New Assessment
           </button>
         )}
         <button
           onClick={() => onToggleInstructorMode(!instructorMode)}
-          className="px-4 h-9 rounded-md border border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300 text-xs font-semibold flex items-center gap-2 transition-all"
+          className="px-4 h-9 rounded-md border border-cyber-border text-cyber-text hover:border-cyan-500/60 hover:text-accent text-xs font-semibold flex items-center gap-2 transition-all"
         >
           <GraduationCap className="w-4 h-4" /> Teaching Mode
         </button>
@@ -319,15 +319,15 @@ export function GovernanceLab({
           <div className="lg:col-span-7 h-full">
             <div className="cyber-panel border border-cyber-border rounded-lg p-4 h-full">
               <div className="flex items-center gap-2 mb-2">
-                <GitCompare className="w-4 h-4 text-cyan-400" />
+                <GitCompare className="w-4 h-4 text-accent" />
                 <h3 className="text-xs font-bold text-cyber-heading">
                   Live Assessment Summary
                 </h3>
               </div>
               <ul className="space-y-1.5">
                 {result.summary.map((line, i) => (
-                  <li key={i} className="text-[12px] text-cyber-muted leading-snug flex gap-2">
-                    <span className="text-cyan-400 font-mono">-</span>
+                  <li key={i} className="text-[0.75rem] text-cyber-muted leading-snug flex gap-2">
+                    <span className="text-accent font-mono">-</span>
                     {line}
                   </li>
                 ))}

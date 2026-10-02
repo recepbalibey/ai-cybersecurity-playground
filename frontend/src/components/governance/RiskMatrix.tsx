@@ -46,22 +46,22 @@ export function RiskMatrix({
       <div className="lg:col-span-8 h-full">
         <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden h-full">
           <div className="px-4 py-3 border-b border-cyber-border bg-cyber-surface/60 flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-cyan-400" />
+            <BarChart3 className="w-4 h-4 text-accent" />
             <h3 className="text-xs font-bold text-cyber-heading">
               Risk Heat Map - Before vs After Controls
             </h3>
-            <span className="ml-auto text-[10px] font-mono text-slate-500">LIKELIHOOD x IMPACT</span>
+            <span className="ml-auto text-[0.625rem] font-mono text-cyber-muted">LIKELIHOOD x IMPACT</span>
           </div>
           <div className="p-4">
             <div className="overflow-x-auto">
               <div className="min-w-[420px]">
                 {/* header row */}
                 <div className="flex">
-                  <div className="w-14 shrink-0 flex items-center justify-center text-[10px] font-mono text-slate-500 uppercase tracking-wider">
+                  <div className="w-14 shrink-0 flex items-center justify-center text-[0.625rem] font-mono text-cyber-muted uppercase tracking-wider">
                     L\\I
                   </div>
                   {impacts.map((i) => (
-                    <div key={i} className="flex-1 text-center text-[10px] font-mono text-slate-500">
+                    <div key={i} className="flex-1 text-center text-[0.625rem] font-mono text-cyber-muted">
                       {i}
                     </div>
                   ))}
@@ -69,7 +69,7 @@ export function RiskMatrix({
                 {/* rows */}
                 {likelihoods.map((l) => (
                   <div key={l} className="flex items-center mt-1.5">
-                    <div className="w-14 shrink-0 text-center text-[10px] font-mono text-slate-500">{l}</div>
+                    <div className="w-14 shrink-0 text-center text-[0.625rem] font-mono text-cyber-muted">{l}</div>
                     {impacts.map((i) => {
                       const w = cellWeight(l, i);
                       const before = threats.filter((t) => t.likelihood === l && t.impact === i);
@@ -92,15 +92,15 @@ export function RiskMatrix({
                   </div>
                 ))}
                 {/* legend */}
-                <div className="flex items-center gap-3 mt-4 text-[10px] font-mono text-slate-400 flex-wrap">
+                <div className="flex items-center gap-3 mt-4 text-[0.625rem] font-mono text-cyber-muted flex-wrap">
                   <span className="flex items-center gap-1"><span className="gov-dot gov-dot-critical" /> Critical 85-100</span>
                   <span className="flex items-center gap-1"><span className="gov-dot gov-dot-high" /> High 65-84</span>
                   <span className="flex items-center gap-1"><span className="gov-dot gov-dot-medium" /> Medium 45-64</span>
                   <span className="flex items-center gap-1"><span className="gov-dot gov-dot-low" /> Low 25-44</span>
                   <span className="flex items-center gap-1"><span className="gov-dot gov-dot-info" /> Informational</span>
                   <span className="flex items-center gap-1 ml-auto">
-                    <CircleDot className="w-3 h-3 text-slate-300" /> before
-                    <CircleDashed className="w-3 h-3 text-slate-300 ml-2" /> after
+                    <CircleDot className="w-3 h-3 text-cyber-text" /> before
+                    <CircleDashed className="w-3 h-3 text-cyber-text ml-2" /> after
                   </span>
                 </div>
               </div>
@@ -113,28 +113,28 @@ export function RiskMatrix({
       <div className="lg:col-span-4 h-full">
         <div className="cyber-panel border border-cyber-border rounded-lg p-4 h-full flex flex-col gap-4">
           <div className="flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-cyan-400" />
+            <BarChart3 className="w-4 h-4 text-accent" />
             <h3 className="text-xs font-bold text-cyber-heading">
               Aggregate Risk
             </h3>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-md border border-red-500/40 bg-red-950/20 p-3 text-center">
-              <div className="text-[10px] font-mono uppercase tracking-wider text-red-300">Base</div>
-              <div className="text-2xl font-bold text-red-200 font-mono">{baseScore}</div>
-              <div className="text-[10px] font-mono text-red-300/80">{baseLevel}</div>
+            <div className="rounded-md border border-red-500/40 bg-status-danger/10 p-3 text-center">
+              <div className="text-[0.625rem] font-mono uppercase tracking-wider text-status-danger">Base</div>
+              <div className="text-2xl font-bold text-status-danger font-mono">{baseScore}</div>
+              <div className="text-[0.625rem] font-mono text-status-danger">{baseLevel}</div>
             </div>
-            <div className="rounded-md border border-emerald-500/40 bg-emerald-950/20 p-3 text-center">
-              <div className="text-[10px] font-mono uppercase tracking-wider text-emerald-300">Residual</div>
-              <div className="text-2xl font-bold text-emerald-200 font-mono">{residualScore}</div>
-              <div className="text-[10px] font-mono text-emerald-300/80">{residualLevel}</div>
+            <div className="rounded-md border border-emerald-500/40 bg-status-success/10 p-3 text-center">
+              <div className="text-[0.625rem] font-mono uppercase tracking-wider text-status-success">Residual</div>
+              <div className="text-2xl font-bold text-status-success font-mono">{residualScore}</div>
+              <div className="text-[0.625rem] font-mono text-status-success">{residualLevel}</div>
             </div>
           </div>
-          <div className="text-[11px] text-cyber-muted leading-snug">
+          <div className="text-[0.6875rem] text-cyber-muted leading-snug">
             The aggregate is weighted toward the worst threat, because one critical risk should
             block a go-live even when the average looks fine.
           </div>
-          <div className="rounded-md border border-cyber-border bg-slate-900/40 p-3 text-[11px] text-cyber-muted leading-snug">
+          <div className="rounded-md border border-cyber-border bg-cyber-base/40 p-3 text-[0.6875rem] text-cyber-muted leading-snug">
             Each dot is one identified risk. Follow it from its base position to where the controls
             move it on the grid.
           </div>

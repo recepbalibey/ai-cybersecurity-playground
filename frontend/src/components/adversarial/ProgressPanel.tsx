@@ -70,7 +70,7 @@ export function ProgressPanel({ results, experiments }: ProgressPanelProps) {
   return (
     <div className="cyber-panel border border-cyber-border p-5 rounded-lg h-full flex flex-col">
       <div className="flex items-center gap-2.5 mb-4">
-        <Award className="w-4 h-4 text-amber-400" />
+        <Award className="w-4 h-4 text-status-warning" />
         <h3 className="text-sm font-bold text-cyber-heading">
           Achievement Tiers
         </h3>
@@ -78,10 +78,10 @@ export function ProgressPanel({ results, experiments }: ProgressPanelProps) {
 
       <div className="mb-4">
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[10px] font-mono text-cyber-muted uppercase">Progress</span>
+          <span className="text-[0.625rem] font-mono text-cyber-muted uppercase">Progress</span>
           <span className="text-xs font-mono text-cyber-heading">{progress}%</span>
         </div>
-        <div className="h-2 rounded-full bg-slate-800 overflow-hidden">
+        <div className="h-2 rounded-full bg-cyber-surface-hover overflow-hidden">
           <div className="h-full bg-amber-500 transition-all" style={{ width: `${progress}%` }} />
         </div>
       </div>
@@ -95,22 +95,22 @@ export function ProgressPanel({ results, experiments }: ProgressPanelProps) {
               key={a.id}
               className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
                 has
-                  ? "bg-amber-950/20 border-amber-500/40"
-                  : "bg-slate-950/50 border-slate-800"
+                  ? "bg-status-warning/10 border-amber-500/40"
+                  : "bg-cyber-base/50 border-cyber-border"
               }`}
             >
               <div
-                className={`p-2 rounded-md ${has ? "bg-amber-500/20 text-amber-300" : "bg-slate-900 text-slate-500"}`}
+                className={`p-2 rounded-md ${has ? "bg-amber-500/20 text-status-warning" : "bg-cyber-base text-cyber-muted"}`}
               >
                 <Icon className="w-4 h-4" />
               </div>
               <div className="flex-1">
                 <div className="text-xs font-bold text-cyber-heading flex items-center gap-2">
                   {a.name}
-                  {has && <span className="text-[10px] font-mono text-amber-300 border border-amber-500/40 rounded px-1">UNLOCKED</span>}
+                  {has && <span className="text-[0.625rem] font-mono text-status-warning border border-amber-500/40 rounded px-1">UNLOCKED</span>}
                 </div>
-                <p className="text-[10px] text-cyber-muted mt-0.5">{a.desc}</p>
-                <p className="text-[10px] font-mono text-cyber-muted/60 mt-0.5">Hint: {a.hint}</p>
+                <p className="text-[0.625rem] text-cyber-muted mt-0.5">{a.desc}</p>
+                <p className="text-[0.625rem] font-mono text-cyber-muted mt-0.5">Hint: {a.hint}</p>
               </div>
             </div>
           );

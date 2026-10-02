@@ -38,7 +38,7 @@ export function QueryGenerator({ queries }: QueryGeneratorProps) {
       {/* Panel Header */}
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
         <div className="flex items-center gap-2.5">
-          <Code2 className="w-4 h-4 text-cyan-400" />
+          <Code2 className="w-4 h-4 text-accent" />
           <h2 className="text-base font-semibold text-cyber-heading">
             Detection Query Generator
           </h2>
@@ -47,12 +47,12 @@ export function QueryGenerator({ queries }: QueryGeneratorProps) {
         {/* Copy Button */}
         <button
           onClick={handleCopy}
-          className="h-8 px-3 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-mono text-cyan-300 flex items-center gap-1.5 transition-all"
+          className="h-8 px-3 rounded bg-cyber-base hover:bg-cyber-surface-hover border border-cyber-border text-xs font-mono text-accent flex items-center gap-1.5 transition-all"
         >
           {copied ? (
             <>
-              <Check className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-emerald-400">Copied</span>
+              <Check className="w-3.5 h-3.5 text-status-success" />
+              <span className="text-status-success">Copied</span>
             </>
           ) : (
             <>
@@ -64,15 +64,15 @@ export function QueryGenerator({ queries }: QueryGeneratorProps) {
       </div>
 
       {/* Dialect Switcher Tabs */}
-      <div className="flex border-b border-cyber-border bg-slate-950/80 px-2 pt-2 gap-1 overflow-x-auto">
+      <div className="flex border-b border-cyber-border bg-cyber-base/80 px-2 pt-2 gap-1 overflow-x-auto">
         {dialects.map((d) => (
           <button
             key={d.key}
             onClick={() => setActiveDialect(d.key)}
             className={`px-3 py-2 text-xs font-mono font-semibold rounded-t border-t border-x transition-all ${
               activeDialect === d.key
-                ? "bg-cyber-surface border-cyan-500/50 text-cyan-300 border-b-cyber-surface"
-                : "border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-900"
+                ? "bg-cyber-surface border-cyan-500/50 text-accent border-b-cyber-surface"
+                : "border-transparent text-cyber-muted hover:text-cyber-text hover:bg-cyber-base"
             }`}
           >
             {d.label}
@@ -81,7 +81,7 @@ export function QueryGenerator({ queries }: QueryGeneratorProps) {
       </div>
 
       {/* Query Terminal View */}
-      <div className="p-4 flex-1 bg-cyber-base font-mono text-xs text-slate-200 overflow-auto leading-relaxed scanline-overlay min-h-[200px]">
+      <div className="p-4 flex-1 bg-cyber-base font-mono text-xs text-cyber-text overflow-auto leading-relaxed scanline-overlay min-h-[200px]">
         <pre className="whitespace-pre-wrap break-all font-mono">{currentQuery}</pre>
       </div>
     </div>

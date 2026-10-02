@@ -22,11 +22,11 @@ export function SecureDevChecklist() {
   return (
     <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
-        <ClipboardCheck className="w-4 h-4 text-cyan-400" />
+        <ClipboardCheck className="w-4 h-4 text-accent" />
         <h3 className="text-xs font-bold text-cyber-heading">Secure Dev Checklist</h3>
-        <span className="ml-auto text-[11px] font-mono text-cyan-300">{pct}%</span>
+        <span className="ml-auto text-[0.6875rem] font-mono text-accent">{pct}%</span>
       </div>
-      <div className="h-1.5 bg-slate-800">
+      <div className="h-1.5 bg-cyber-surface-hover">
         <div className="h-full bg-emerald-500 transition-all duration-500" style={{ width: `${pct}%` }} />
       </div>
       <ul className="max-h-80 overflow-auto divide-y divide-cyber-border/60">
@@ -36,14 +36,14 @@ export function SecureDevChecklist() {
             <li key={item}>
               <button
                 onClick={() => toggle(item)}
-                className="w-full text-left px-4 py-2 flex items-start gap-2 hover:bg-slate-800/40 transition-colors"
+                className="w-full text-left px-4 py-2 flex items-start gap-2 hover:bg-cyber-surface-hover/40 transition-colors"
               >
                 <span className={`mt-0.5 w-4 h-4 rounded flex items-center justify-center shrink-0 border ${
-                  on ? "bg-emerald-600 border-emerald-500 text-slate-950" : "border-slate-600 text-transparent"
+                  on ? "bg-emerald-600 border-emerald-500 text-on-accent" : "border-cyber-border text-transparent"
                 }`}>
                   {on ? <Check className="w-3 h-3" /> : <Square className="w-3 h-3" />}
                 </span>
-                <span className={`text-[12px] leading-snug ${on ? "text-cyber-muted line-through" : "text-cyber-heading"}`}>
+                <span className={`text-[0.75rem] leading-snug ${on ? "text-cyber-muted line-through" : "text-cyber-heading"}`}>
                   {item}
                 </span>
               </button>

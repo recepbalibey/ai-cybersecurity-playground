@@ -21,15 +21,15 @@ export function LabMission({ brief, currentStep = -1, onViewBrief, className }: 
     <div className={cn("flex items-center gap-3", className)}>
       <div className="flex min-w-0 items-center gap-2">
         <Target className="h-3.5 w-3.5 shrink-0 text-accent" strokeWidth={1.75} />
-        <p className="truncate text-[12px] text-cyber-muted">
-          <span className="mr-1 font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+        <p className="truncate text-[0.75rem] text-cyber-muted">
+          <span className="mr-1 font-mono text-[0.625rem] uppercase tracking-wider text-cyber-muted">
             Mission
           </span>
           <span className="text-cyber-text">{brief.mission}</span>
         </p>
       </div>
       {showProgress && (
-        <span className="hidden shrink-0 items-center gap-1.5 rounded border border-cyber-border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-cyber-muted lg:flex">
+        <span className="hidden shrink-0 items-center gap-1.5 rounded border border-cyber-border px-2 py-0.5 font-mono text-[0.625rem] uppercase tracking-wider text-cyber-muted lg:flex">
           <span className="text-accent">{clampedStep + 1}</span>
           <span>/</span>
           <span>{steps.length}</span>
@@ -53,7 +53,7 @@ export function LabMission({ brief, currentStep = -1, onViewBrief, className }: 
       <button
         type="button"
         onClick={onViewBrief}
-        className="flex shrink-0 items-center gap-1.5 rounded border border-cyber-border px-2 py-1 text-[11px] text-cyber-muted transition-colors hover:border-cyber-border-light hover:text-cyber-text"
+        className="flex shrink-0 items-center gap-1.5 rounded border border-cyber-border px-2 py-1 text-[0.6875rem] text-cyber-muted transition-colors hover:border-cyber-border-light hover:text-cyber-text"
       >
         <BookOpen className="h-3.5 w-3.5" strokeWidth={1.75} />
         View Brief

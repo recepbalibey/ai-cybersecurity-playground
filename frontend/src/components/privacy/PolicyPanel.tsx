@@ -5,9 +5,9 @@ import { Gavel, ShieldX, ShieldCheck, TriangleAlert } from "lucide-react";
 import type { PolicyResult, PolicyStatus } from "@/services/privacyScanner";
 
 const STATUS_STYLE: Record<PolicyStatus, string> = {
-  blocked: "text-red-300 border-red-500/50 bg-red-950/30",
-  pass: "text-emerald-300 border-emerald-500/40 bg-emerald-950/20",
-  review: "text-amber-300 border-amber-500/50 bg-amber-950/30",
+  blocked: "text-status-danger border-red-500/50 bg-status-danger/10",
+  pass: "text-status-success border-emerald-500/40 bg-status-success/10",
+  review: "text-status-warning border-amber-500/50 bg-status-warning/10",
 };
 
 const STATUS_ICON: Record<PolicyStatus, React.ReactNode> = {
@@ -21,10 +21,10 @@ export function PolicyPanel({ policies }: { policies: PolicyResult[] }) {
   return (
     <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden">
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
-        <Gavel className="w-4 h-4 text-cyan-400" />
+        <Gavel className="w-4 h-4 text-accent" />
         <h3 className="text-xs font-bold text-cyber-heading">Policy Engine</h3>
         {blocked > 0 && (
-          <span className="ml-auto text-[10px] font-mono px-2 py-0.5 rounded border border-red-500/40 text-red-300">
+          <span className="ml-auto text-[0.625rem] font-mono px-2 py-0.5 rounded border border-red-500/40 text-status-danger">
             {blocked} blocked - do not send
           </span>
         )}
@@ -37,13 +37,13 @@ export function PolicyPanel({ policies }: { policies: PolicyResult[] }) {
             </span>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-[12px] font-semibold text-cyber-heading">{p.name}</span>
-                <span className={`text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border ${STATUS_STYLE[p.status]}`}>
+                <span className="text-[0.75rem] font-semibold text-cyber-heading">{p.name}</span>
+                <span className={`text-[0.625rem] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border ${STATUS_STYLE[p.status]}`}>
                   {p.status}
                 </span>
               </div>
-              <div className="text-[11px] text-cyber-muted mt-0.5">{p.reason}</div>
-              <div className="text-[11px] text-cyan-300/80 mt-0.5">{p.recommendation}</div>
+              <div className="text-[0.6875rem] text-cyber-muted mt-0.5">{p.reason}</div>
+              <div className="text-[0.6875rem] text-accent mt-0.5">{p.recommendation}</div>
             </div>
           </li>
         ))}

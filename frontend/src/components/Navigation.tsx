@@ -79,17 +79,16 @@ export function Navigation({
   const completed = new Set(completedIds);
   return (
     <aside
-      className={`${collapsed ? "w-16" : "w-60 max-[1100px]:fixed max-[1100px]:inset-y-0 max-[1100px]:left-0 max-[1100px]:shadow-lg"} transition-[width] duration-200 bg-cyber-surface border-r border-cyber-border flex flex-col h-screen sticky top-0 select-none z-30`}
+      className={`${collapsed ? "navigation-rail w-16" : "navigation-expanded w-60 max-[1100px]:fixed max-[1100px]:inset-y-0 max-[1100px]:left-0 max-[1100px]:shadow-lg"} transition-[width] duration-200 bg-cyber-surface border-r border-cyber-border flex flex-col h-screen sticky top-0 select-none z-30`}
     >
       {/* Brand Header */}
-      <div className="p-3 border-b border-cyber-border flex items-center gap-3">
-        <div className="w-8 h-8 shrink-0 rounded-lg bg-cyber-surface-hover flex items-center justify-center text-cyber-heading">
-          <ShieldAlert className="w-5 h-5" strokeWidth={1.75} />
-        </div>
+      <div className={`border-b border-cyber-border flex items-center ${collapsed ? "flex-col p-2 gap-2" : "p-3 gap-3"}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="brand-logo" src="/logo.png" alt="AI Security logo" width={32} height={32} />
         {!collapsed && (
           <div className="flex-1">
             <h1 className="text-sm font-semibold tracking-tight text-cyber-heading">
-              AI Cybersecurity
+              AI Security
             </h1>
             <p className="text-xs text-cyber-muted">
               Playground
@@ -115,7 +114,7 @@ export function Navigation({
         {NAV_GROUPS.map((group) => (
           <div key={group.label}>
             {!collapsed && (
-              <div className="px-3 py-1.5 text-[11px] font-medium text-cyber-muted">
+              <div className="px-3 py-1.5 text-[0.6875rem] font-medium text-cyber-muted">
                 {group.label}
               </div>
             )}
@@ -131,7 +130,7 @@ export function Navigation({
                     title={mod.name}
                     aria-label={mod.name}
                     aria-current={isActive ? "page" : undefined}
-                    className={`group w-full flex items-center gap-3 px-2.5 py-2 rounded-md text-[13px] font-medium transition-colors ${
+                    className={`group w-full flex items-center gap-3 px-2.5 py-2 rounded-md text-[0.8125rem] font-medium transition-colors ${
                       collapsed ? "justify-center px-0" : ""
                     } ${
                       isActive
@@ -151,7 +150,7 @@ export function Navigation({
                     {!collapsed && isDone && (
                       <span
                         title="Completed"
-                        className="flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full border border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
+                        className="flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full border border-emerald-500/40 bg-emerald-500/10 text-status-success"
                       >
                         <Check className="h-3 w-3" strokeWidth={2.5} />
                       </span>

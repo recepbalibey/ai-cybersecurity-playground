@@ -22,7 +22,7 @@ export function LiveInvestigationView({
       {/* Panel Header */}
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex flex-wrap items-center gap-2 justify-between">
         <div className="flex items-center gap-2.5">
-          <Cpu className="w-4 h-4 text-cyan-400" />
+          <Cpu className="w-4 h-4 text-accent" />
           <h2 className="text-base font-semibold text-cyber-heading">
             Analysis steps
           </h2>
@@ -43,7 +43,7 @@ export function LiveInvestigationView({
       <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto bg-grid-pattern relative">
         {/* Holographic Header Telemetry */}
         <div
-          className={`p-3.5 bg-slate-950/80 border border-slate-800 rounded flex items-center justify-between holo-reticle ${
+          className={`p-3.5 bg-cyber-base/80 border border-cyber-border rounded flex items-center justify-between holo-reticle ${
             isAnalyzing ? "border-cyan-500/40" : ""
           }`}
         >
@@ -55,7 +55,7 @@ export function LiveInvestigationView({
             >
               <Radio
                 className={`w-5 h-5 ${
-                  isAnalyzing ? "text-cyan-400 animate-pulse" : "text-emerald-400"
+                  isAnalyzing ? "text-accent animate-pulse" : "text-status-success"
                 }`}
               />
             </span>
@@ -70,7 +70,7 @@ export function LiveInvestigationView({
               </div>
             </div>
           </div>
-          <div className="text-right font-mono text-xs font-bold text-cyan-400">
+          <div className="text-right font-mono text-xs font-bold text-accent">
             {isAnalyzing
               ? `STAGE ${currentStageIndex + 1} / 5`
               : hasResult ? "Complete" : "Not started"}
@@ -88,10 +88,10 @@ export function LiveInvestigationView({
                 key={stage.stage}
                 className={`p-4 rounded-lg border transition-all duration-300 relative ${
                   isCurrent
-                    ? "bg-cyan-950/40 border-cyan-500/60 shadow-cyan-glow holo-panel"
+                    ? "bg-accent/10 border-cyan-500/60 shadow-cyan-glow holo-panel"
                     : isCompleted
-                    ? "bg-slate-900/60 border-slate-800/80"
-                    : "bg-slate-950/30 border-slate-900/50"
+                    ? "bg-cyber-base/60 border-cyber-border/80"
+                    : "bg-cyber-base/30 border-cyber-border/50"
                 }`}
               >
                 <div className="flex items-start justify-between mb-1.5">
@@ -99,10 +99,10 @@ export function LiveInvestigationView({
                     <div
                       className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-mono font-bold ${
                         isCurrent
-                          ? "bg-cyan-500 text-slate-950 animate-pulse"
+                          ? "bg-cyan-500 text-on-accent animate-pulse"
                           : isCompleted
-                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-                          : "bg-slate-800 text-slate-500"
+                          ? "bg-emerald-500/20 text-status-success border border-emerald-500/40"
+                          : "bg-cyber-surface-hover text-cyber-muted"
                       }`}
                     >
                       {isCompleted ? (
@@ -115,29 +115,29 @@ export function LiveInvestigationView({
                       <h3
                         className={`text-sm font-semibold ${
                           isCurrent
-                            ? "text-cyan-300"
+                            ? "text-accent"
                             : isCompleted
                             ? "text-cyber-heading"
-                            : "text-slate-500"
+                            : "text-cyber-muted"
                         }`}
                       >
                         Stage {stage.stage}: {stage.title}
                       </h3>
                     </div>
                   </div>
-                  <span className="text-xs font-mono text-slate-400">
+                  <span className="text-xs font-mono text-cyber-muted">
                     {stage.timestamp}
                   </span>
                 </div>
 
-                <p className="text-xs text-slate-300 pl-10 leading-relaxed">
+                <p className="text-xs text-cyber-text pl-10 leading-relaxed">
                   {stage.detail}
                 </p>
 
                 {/* Animated Scanner Bar for active stage */}
                 {isCurrent && (
                   <div className="mt-2.5 pl-10">
-                    <div className="h-1.5 w-full bg-slate-800 rounded overflow-hidden relative">
+                    <div className="h-1.5 w-full bg-cyber-surface-hover rounded overflow-hidden relative">
                       <div className="h-full bg-cyan-400 animate-pulse w-2/3"></div>
                     </div>
                   </div>

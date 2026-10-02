@@ -69,12 +69,12 @@ export function SecurityAnalysisPanel({
       {/* Panel Header */}
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
         <div className="flex items-center gap-2.5">
-          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+          <ShieldCheck className="w-4 h-4 text-status-success" />
           <h2 className="text-base font-semibold text-cyber-heading">
             Security Analysis
           </h2>
         </div>
-        <span className="text-[11px] text-cyber-muted font-mono uppercase">
+        <span className="text-[0.6875rem] text-cyber-muted font-mono uppercase">
           Defense Layers
         </span>
       </div>
@@ -85,10 +85,10 @@ export function SecurityAnalysisPanel({
           <div
             className={`p-4 rounded-lg border ${
               attackAnalysis.riskLevel === "high"
-                ? "bg-red-950/30 border-red-500/50"
+                ? "bg-status-danger/10 border-red-500/50"
                 : attackAnalysis.riskLevel === "medium"
-                ? "bg-amber-950/20 border-amber-500/40"
-                : "bg-slate-950/60 border-slate-700"
+                ? "bg-status-warning/10 border-amber-500/40"
+                : "bg-cyber-base/60 border-cyber-border"
             }`}
           >
             <div className="flex items-center justify-between mb-2">
@@ -96,8 +96,8 @@ export function SecurityAnalysisPanel({
                 <AlertTriangle
                   className={`w-4 h-4 ${
                     attackAnalysis.riskLevel === "high"
-                      ? "text-red-400"
-                      : "text-amber-400"
+                      ? "text-status-danger"
+                      : "text-status-warning"
                   }`}
                 />
                 <span className="text-sm font-bold text-cyber-heading uppercase tracking-wider font-mono">
@@ -105,10 +105,10 @@ export function SecurityAnalysisPanel({
                 </span>
               </div>
               <span
-                className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold ${
+                className={`text-[0.625rem] font-mono px-2 py-0.5 rounded font-bold ${
                   attackAnalysis.riskLevel === "high"
-                    ? "bg-red-950/70 text-red-400 border border-red-500/40"
-                    : "bg-amber-950/60 text-amber-400 border border-amber-500/40"
+                    ? "bg-status-danger/10 text-status-danger border border-red-500/40"
+                    : "bg-status-warning/10 text-status-warning border border-amber-500/40"
                 }`}
               >
                 {attackAnalysis.riskLevel.toUpperCase()} RISK
@@ -116,33 +116,33 @@ export function SecurityAnalysisPanel({
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3">
               <div>
-                <div className="text-[10px] text-slate-400 font-mono uppercase mb-1">
+                <div className="text-[0.625rem] text-cyber-muted font-mono uppercase mb-1">
                   Technique
                 </div>
-                <div className="text-xs text-slate-200 font-mono">
+                <div className="text-xs text-cyber-text font-mono">
                   {attackAnalysis.technique}
                 </div>
               </div>
               <div>
-                <div className="text-[10px] text-slate-400 font-mono uppercase mb-1">
+                <div className="text-[0.625rem] text-cyber-muted font-mono uppercase mb-1">
                   Vector
                 </div>
-                <div className="text-xs text-slate-200 font-mono">
+                <div className="text-xs text-cyber-text font-mono">
                   {attackAnalysis.vector}
                 </div>
               </div>
               <div>
-                <div className="text-[10px] text-slate-400 font-mono uppercase mb-1">
+                <div className="text-[0.625rem] text-cyber-muted font-mono uppercase mb-1">
                   Success Rate
                 </div>
-                <div className="text-xs text-slate-200 font-mono">
+                <div className="text-xs text-cyber-text font-mono">
                   {attackAnalysis.successRate}
                 </div>
               </div>
             </div>
             <div className="flex items-start gap-2">
-              <CheckCircle2 className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
-              <p className="text-[11px] text-slate-300 leading-relaxed">
+              <CheckCircle2 className="w-3.5 h-3.5 text-cyber-muted shrink-0 mt-0.5" />
+              <p className="text-[0.6875rem] text-cyber-text leading-relaxed">
                 {attackAnalysis.notes}
               </p>
             </div>
@@ -151,11 +151,11 @@ export function SecurityAnalysisPanel({
 
         {!hasActiveDefenses && (
           <div className="flex flex-col items-center justify-center text-center py-8">
-            <ShieldAlert className="w-10 h-10 text-red-400/60 mb-3" />
-            <p className="text-sm text-slate-400">
+            <ShieldAlert className="w-10 h-10 text-status-danger mb-3" />
+            <p className="text-sm text-cyber-muted">
               No defense layers detected.
             </p>
-            <p className="text-xs text-slate-600 mt-1">
+            <p className="text-xs text-cyber-muted mt-1">
               This application is fully vulnerable to prompt injection.
             </p>
           </div>
@@ -167,7 +167,7 @@ export function SecurityAnalysisPanel({
               <div className="text-xs font-mono text-cyber-muted uppercase tracking-wider">
                 Active Defense Layers
               </div>
-              <span className="text-[10px] text-cyan-400 font-mono">
+              <span className="text-[0.625rem] text-accent font-mono">
                 {defenseLayers.length} ACTIVE
               </span>
             </div>
@@ -177,28 +177,28 @@ export function SecurityAnalysisPanel({
               return (
                 <div
                   key={layer.name}
-                  className="mb-3 p-4 rounded-lg border border-emerald-500/30 bg-emerald-950/20"
+                  className="mb-3 p-4 rounded-lg border border-emerald-500/30 bg-status-success/10"
                 >
                   <div className="flex items-center gap-2 mb-2">
-                    <Icon className="w-4 h-4 text-emerald-400" />
+                    <Icon className="w-4 h-4 text-status-success" />
                     <span className="text-xs font-bold text-cyber-heading uppercase tracking-wider font-mono">
                       {layer.name}
                     </span>
-                    <span className="ml-auto text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950/60 text-emerald-400 border border-emerald-500/40">
+                    <span className="ml-auto text-[0.625rem] font-mono px-1.5 py-0.5 rounded bg-status-success/10 text-status-success border border-emerald-500/40">
                       ACTIVE
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-300 leading-relaxed mb-3">
+                  <p className="text-[0.6875rem] text-cyber-text leading-relaxed mb-3">
                     {layer.description}
                   </p>
                   <div className="space-y-1">
                     {(layer.checkerLines ?? []).map((line, idx) => (
                       <div
                         key={idx}
-                        className="flex items-start gap-2 text-[11px] font-mono"
+                        className="flex items-start gap-2 text-[0.6875rem] font-mono"
                       >
-                        <Radar className="w-3 h-3 text-cyan-400 mt-0.5 shrink-0" />
-                        <span className="text-slate-400 break-all">{line}</span>
+                        <Radar className="w-3 h-3 text-accent mt-0.5 shrink-0" />
+                        <span className="text-cyber-muted break-all">{line}</span>
                       </div>
                     ))}
                   </div>

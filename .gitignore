@@ -173,3 +173,6 @@ coverage/
 # ============================================
 
 .local/
+
+# Local project handoff notes
+docs/*.local.md

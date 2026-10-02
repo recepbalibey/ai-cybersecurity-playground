@@ -21,3 +21,7 @@ backend/.pytest_cache
 *.tmp
 *.md
 !backend/requirements.txt
+
+# Documentation, demo media, and frontend are not backend runtime assets
+docs
+frontend

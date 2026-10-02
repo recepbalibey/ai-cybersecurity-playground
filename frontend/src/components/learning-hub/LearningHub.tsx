@@ -99,12 +99,15 @@ function TheoryLibrary({
 }) {
   const selected = topic;
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[280px_1fr]">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,240px)_minmax(0,1fr)]">
       <div className="panel h-fit p-4 lg:sticky lg:top-0">
         <p className="mb-3 font-mono text-xs uppercase tracking-wider text-cyber-muted">
           Concepts
         </p>
-        <div className="space-y-1">
+        <select aria-label="Choose a theory topic" value={selected.id} onChange={event => { const next = THEORY_TOPICS.find(topic => topic.id === event.target.value); if (next) onSelectTopic(next); }} className="lg:hidden w-full min-w-0 rounded-md border border-cyber-border bg-cyber-surface p-2 text-sm text-cyber-text">
+          {THEORY_TOPICS.map(topic => <option key={topic.id} value={topic.id}>{topic.title}</option>)}
+        </select>
+        <div className="hidden lg:block space-y-1">
           {THEORY_TOPICS.map((t) => (
             <button
               key={t.id}
@@ -186,7 +189,7 @@ function TheoryLibrary({
           </p>
           <button
             onClick={() => onOpenTheory(selected.id)}
-            className="flex h-10 items-center gap-2 rounded-md bg-accent px-4 text-sm font-medium text-cyber-base hover:bg-accent-hover"
+            className="flex h-10 items-center gap-2 rounded-md bg-accent px-4 text-sm font-medium text-on-accent hover:bg-accent-hover"
           >
             Open {selected.title}
             <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
@@ -223,11 +226,11 @@ function LabGrid({
           <div className="flex items-center justify-between">
             <span className="font-mono text-xs text-cyber-muted">{lab.module}</span>
             {done.has(lab.id) ? (
-              <span className="flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-950/30 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-emerald-400">
+              <span className="flex items-center gap-1 rounded-full border border-emerald-500/30 bg-status-success/10 px-2 py-0.5 font-mono text-[0.625rem] uppercase tracking-wider text-status-success">
                 <CheckCircle2 className="h-3 w-3" /> Done
               </span>
             ) : (
-              <span className="rounded-full border border-cyber-border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+              <span className="rounded-full border border-cyber-border px-2 py-0.5 font-mono text-[0.625rem] uppercase tracking-wider text-cyber-muted">
                 Lab {lab.order}
               </span>
             )}
@@ -235,7 +238,7 @@ function LabGrid({
           <h4 className="font-medium text-cyber-heading">{lab.title}</h4>
           <p className="text-sm text-cyber-muted">{lab.blurb}</p>
           {brief && (
-            <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-cyber-muted">
+            <div className="flex flex-wrap items-center gap-2 text-[0.6875rem] font-mono uppercase tracking-wider text-cyber-muted">
               <span className="rounded border border-cyber-border px-1.5 py-0.5">
                 {brief.difficulty}
               </span>
@@ -247,7 +250,7 @@ function LabGrid({
               </span>
             </div>
           )}
-          <p className="text-xs text-cyber-text/70">
+          <p className="text-xs text-cyber-text">
             <span className="font-medium text-cyber-muted">You'll learn: </span>
             {lab.learned}
           </p>
@@ -326,7 +329,7 @@ function LabRow({
     >
       <div className="flex items-center gap-3">
         {completed ? (
-          <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+          <CheckCircle2 className="h-4 w-4 text-status-success" />
         ) : (
           <span className="h-4 w-4 rounded-full border border-cyber-border" />
         )}

@@ -23,9 +23,9 @@ export function AgentBrain({ result, isProcessing, activeStage }: AgentBrainProp
   const graph: GraphNode[] = result?.graph ?? [];
 
   const nodeColor = (n: GraphNode) => {
-    if (n.status === "blocked") return "border-rose-500/50 text-rose-300 bg-rose-950/40";
-    if (n.status === "flagged") return "border-amber-500/50 text-amber-300 bg-amber-950/40";
-    return "border-cyan-500/40 text-cyan-200 bg-cyan-950/30";
+    if (n.status === "blocked") return "border-rose-500/50 text-status-danger bg-status-danger/10";
+    if (n.status === "flagged") return "border-amber-500/50 text-status-warning bg-status-warning/10";
+    return "border-cyan-500/40 text-cyber-text bg-accent/10";
   };
 
   const isActive = (i: number) =>
@@ -34,11 +34,11 @@ export function AgentBrain({ result, isProcessing, activeStage }: AgentBrainProp
   return (
     <div className="cyber-panel border border-cyber-border p-4 rounded-lg h-full flex flex-col">
       <div className="flex items-center gap-2.5 mb-3">
-        <Brain className="w-4 h-4 text-cyan-400" />
+        <Brain className="w-4 h-4 text-accent" />
         <h3 className="text-sm font-bold text-cyber-heading">
           Agent Brain
         </h3>
-        <span className="ml-auto text-[10px] font-mono text-cyber-muted">
+        <span className="ml-auto text-[0.625rem] font-mono text-cyber-muted">
           {isProcessing ? "EXECUTING" : result ? "COMPLETE" : "IDLE"}
         </span>
       </div>
@@ -46,10 +46,10 @@ export function AgentBrain({ result, isProcessing, activeStage }: AgentBrainProp
       <div className="flex-1 overflow-y-auto space-y-1.5">
         {graph.length === 0 && !isProcessing && (
           <div className="flex flex-col items-center justify-center py-10 text-center">
-            <div className="p-3 rounded-full bg-slate-900 border border-slate-800 mb-3">
+            <div className="p-3 rounded-full bg-cyber-base border border-cyber-border mb-3">
               <Clock className="w-5 h-5 text-cyber-muted" />
             </div>
-            <p className="text-[11px] font-mono text-cyber-muted">
+            <p className="text-[0.6875rem] font-mono text-cyber-muted">
               Set a goal and run a mission to watch the agent plan, choose tools, and decide.
             </p>
           </div>
@@ -62,11 +62,11 @@ export function AgentBrain({ result, isProcessing, activeStage }: AgentBrainProp
               <div
                 className={`flex items-center gap-2.5 p-2.5 rounded-lg border transition-all ${
                   isActive(i)
-                    ? "border-cyan-400/80 bg-cyan-950/50 shadow-cyan-glow scale-[1.01]"
+                    ? "border-cyan-400/80 bg-accent/10 shadow-cyan-glow scale-[1.01]"
                     : nodeColor(n)
                 }`}
               >
-                <div className="w-9 h-9 shrink-0 rounded-md bg-slate-950/70 border border-slate-700/60 flex items-center justify-center text-[10px] font-mono text-cyan-300">
+                <div className="w-9 h-9 shrink-0 rounded-md bg-cyber-base/70 border border-cyber-border/60 flex items-center justify-center text-[0.625rem] font-mono text-accent">
                   {NODE_ICONS[n.node] ?? "NODE"}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -75,22 +75,22 @@ export function AgentBrain({ result, isProcessing, activeStage }: AgentBrainProp
                     <Icon
                       className={`w-3.5 h-3.5 ${
                         n.status === "blocked"
-                          ? "text-rose-400"
+                          ? "text-status-danger"
                           : n.status === "flagged"
-                          ? "text-amber-400"
-                          : "text-emerald-400"
+                          ? "text-status-warning"
+                          : "text-status-success"
                       }`}
                     />
                   </div>
-                  <div className="text-[10px] font-mono text-cyber-muted truncate">
+                  <div className="text-[0.625rem] font-mono text-cyber-muted truncate">
                     {n.detail}
-                    {n.permission && <span className="text-cyan-400/80"> · {n.permission}</span>}
+                    {n.permission && <span className="text-accent"> · {n.permission}</span>}
                   </div>
                 </div>
               </div>
               {i < graph.length - 1 && (
                 <div className="flex justify-center py-0.5">
-                  <ChevronDown className="w-3.5 h-3.5 text-cyan-500/50" />
+                  <ChevronDown className="w-3.5 h-3.5 text-accent" />
                 </div>
               )}
             </div>

@@ -190,12 +190,12 @@ export function AiFailureLab({
                   <button
                     onClick={() => reached && setView({ kind: "standard", step: s.id })}
                     disabled={!reached}
-                    className={`px-3 py-1.5 rounded-md text-[11px] font-mono uppercase tracking-wider border transition-all ${
+                    className={`px-3 py-1.5 rounded-md text-[0.6875rem] font-mono uppercase tracking-wider border transition-all ${
                       isActive
-                        ? "bg-cyan-600 text-slate-950 border-cyan-500 font-bold"
+                        ? "bg-cyan-600 text-on-accent border-cyan-500 font-bold"
                         : reached
-                        ? "border-cyber-border text-cyber-muted hover:border-cyan-500/60 hover:text-cyan-300"
-                        : "border-cyber-border text-slate-600 opacity-50 cursor-not-allowed"
+                        ? "border-cyber-border text-cyber-muted hover:border-cyan-500/60 hover:text-accent"
+                        : "border-cyber-border text-cyber-muted opacity-50 cursor-not-allowed"
                     }`}
                   >
                     {s.id + 1}. {s.title}
@@ -271,14 +271,14 @@ export function AiFailureLab({
             {step > 0 ? (
               <button
                 onClick={() => setView({ kind: "standard", step: step - 1 })}
-                className="px-4 h-9 rounded-md border border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300 text-xs font-semibold flex items-center gap-2 transition-all"
+                className="px-4 h-9 rounded-md border border-cyber-border text-cyber-text hover:border-cyan-500/60 hover:text-accent text-xs font-semibold flex items-center gap-2 transition-all"
               >
                 <ArrowLeft className="w-4 h-4" /> Back
               </button>
             ) : (
               <button
                 onClick={() => setView({ kind: "scenarios" })}
-                className="px-4 h-9 rounded-md border border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300 text-xs font-semibold flex items-center gap-2 transition-all"
+                className="px-4 h-9 rounded-md border border-cyber-border text-cyber-text hover:border-cyan-500/60 hover:text-accent text-xs font-semibold flex items-center gap-2 transition-all"
               >
                 <ArrowLeft className="w-4 h-4" /> Scenarios
               </button>
@@ -287,7 +287,7 @@ export function AiFailureLab({
               <button
                 onClick={() => setView({ kind: "standard", step: 1 })}
                 disabled={!standard.showAi}
-                className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-slate-950 text-xs font-bold flex items-center gap-2 transition-all shadow-cyan-glow"
+                className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-on-accent text-xs font-bold flex items-center gap-2 transition-all shadow-cyan-glow"
               >
                 Next: Verdict <ArrowRight className="w-4 h-4" />
               </button>
@@ -335,18 +335,18 @@ export function AiFailureLab({
       {/* status header */}
       <div className="cyber-panel border border-cyber-border p-4 rounded-lg flex items-center justify-between flex-wrap gap-3 holo-scan">
         <div className="flex items-center gap-2.5">
-          <AlertTriangle className="w-5 h-5 text-amber-400" />
+          <AlertTriangle className="w-5 h-5 text-status-warning" />
           <h2 className="text-base font-bold text-cyber-heading">
             AI Failure Lab Active
           </h2>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {instructorMode && (
-            <span className="text-[10px] font-mono px-2 py-1 rounded border border-slate-700 text-slate-300 flex items-center gap-1.5">
-              <GraduationCap className="w-3.5 h-3.5 text-cyan-400" /> Teaching mode on
+            <span className="text-[0.625rem] font-mono px-2 py-1 rounded border border-cyber-border text-cyber-text flex items-center gap-1.5">
+              <GraduationCap className="w-3.5 h-3.5 text-accent" /> Teaching mode on
             </span>
           )}
-          <span className="text-[10px] font-mono px-2 py-1 rounded border border-amber-500/40 text-amber-300 flex items-center gap-1.5">
+          <span className="text-[0.625rem] font-mono px-2 py-1 rounded border border-amber-500/40 text-status-warning flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
             RELIABILITY VALIDATION
           </span>
@@ -354,11 +354,11 @@ export function AiFailureLab({
       </div>
 
       {/* key question */}
-      <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-[13px] text-amber-100/90 flex items-start gap-2.5">
-        <AlertTriangle className="w-4 h-4 text-amber-400 mt-0.5 shrink-0" />
+      <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-[0.8125rem] text-status-warning flex items-start gap-2.5">
+        <AlertTriangle className="w-4 h-4 text-status-warning mt-0.5 shrink-0" />
         <p>
           One question drives every screen here:{" "}
-          <span className="font-mono text-amber-300 font-bold">is this AI output correct?</span>{" "}
+          <span className="font-mono text-status-warning font-bold">is this AI output correct?</span>{" "}
           Judge the AI, see the ground truth, and choose mitigations that raise reliability.
         </p>
       </div>
@@ -377,10 +377,10 @@ export function AiFailureLab({
             <button
               key={kind}
               onClick={() => setView({ kind } as View)}
-              className={`px-3 py-1.5 rounded-md text-[11px] font-mono uppercase tracking-wider border transition-all ${
+              className={`px-3 py-1.5 rounded-md text-[0.6875rem] font-mono uppercase tracking-wider border transition-all ${
                 active
-                  ? "bg-cyan-600 text-slate-950 border-cyan-500 font-bold"
-                  : "border-cyber-border text-cyber-muted hover:border-cyan-500/60 hover:text-cyan-300"
+                  ? "bg-cyan-600 text-on-accent border-cyan-500 font-bold"
+                  : "border-cyber-border text-cyber-muted hover:border-cyan-500/60 hover:text-accent"
               }`}
             >
               {label}
@@ -392,7 +392,7 @@ export function AiFailureLab({
       {/* challenge mode toggle for standard flow */}
       {view.kind === "standard" && view.step === 0 && (
         <div className="flex items-center gap-3">
-          <label className="flex items-center gap-2 text-[12px] text-cyber-muted cursor-pointer select-none">
+          <label className="flex items-center gap-2 text-[0.75rem] text-cyber-muted cursor-pointer select-none">
             <input
               type="checkbox"
               checked={challengeMode}
@@ -406,7 +406,7 @@ export function AiFailureLab({
               resetStandard();
               setView({ kind: "scenarios" });
             }}
-            className="flex items-center gap-1.5 text-[11px] font-mono text-slate-400 hover:text-cyan-300 transition-colors"
+            className="flex items-center gap-1.5 text-[0.6875rem] font-mono text-cyber-muted hover:text-accent transition-colors"
           >
             <RefreshCcw className="w-3.5 h-3.5" /> reset scenario
           </button>
@@ -422,15 +422,15 @@ export function AiFailureLab({
           <div className="lg:col-span-7 h-full">
             <div className="cyber-panel border border-cyber-border rounded-lg p-4 h-full">
               <div className="flex items-center gap-2 mb-2">
-                <AlertTriangle className="w-4 h-4 text-amber-400" />
+                <AlertTriangle className="w-4 h-4 text-status-warning" />
                 <h3 className="text-xs font-bold text-cyber-heading">
                   Reliability Summary
                 </h3>
               </div>
               <ul className="space-y-1.5">
                 {standard.result.summary.map((line, i) => (
-                  <li key={i} className="text-[12px] text-cyber-muted leading-snug flex gap-2">
-                    <span className="text-cyan-400 font-mono">-</span>
+                  <li key={i} className="text-[0.75rem] text-cyber-muted leading-snug flex gap-2">
+                    <span className="text-accent font-mono">-</span>
                     {line}
                   </li>
                 ))}

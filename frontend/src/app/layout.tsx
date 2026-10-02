@@ -3,7 +3,8 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AI Cybersecurity Playground | Hands-on Security Labs",
+  icons: { icon: "/logo.png", apple: "/logo.png" },
+  title: "AI Security",
   description: "Learn to investigate threats with AI and protect AI systems through 12 guided security labs. All scenarios are simulated.",
 };
 

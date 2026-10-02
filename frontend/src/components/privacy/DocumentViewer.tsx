@@ -102,28 +102,28 @@ export function DocumentViewer({ document, findings, redacted, title, subtitle }
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-3 flex-wrap">
         <div className="flex items-center gap-2.5 min-w-0">
           {mode === "scan" ? (
-            <ScanSearch className="w-4 h-4 text-cyan-400 shrink-0" />
+            <ScanSearch className="w-4 h-4 text-accent shrink-0" />
           ) : (
-            <ShieldOff className="w-4 h-4 text-emerald-400 shrink-0" />
+            <ShieldOff className="w-4 h-4 text-status-success shrink-0" />
           )}
           <div className="min-w-0">
             <h3 className="text-sm font-bold text-cyber-heading truncate">{title}</h3>
-            <p className="text-[11px] font-mono text-cyber-muted truncate">{subtitle}</p>
+            <p className="text-[0.6875rem] font-mono text-cyber-muted truncate">{subtitle}</p>
           </div>
         </div>
-        <div className="ml-auto flex items-center gap-1 rounded-md border border-cyber-border bg-slate-900/50 p-0.5">
+        <div className="ml-auto flex items-center gap-1 rounded-md border border-cyber-border bg-cyber-base/50 p-0.5">
           <button
             onClick={() => setMode("scan")}
-            className={`px-3 py-1.5 rounded text-[11px] font-mono transition-colors ${
-              mode === "scan" ? "bg-cyan-600/20 text-cyan-300 border border-cyan-500/40" : "text-cyber-muted hover:text-cyber-heading"
+            className={`px-3 py-1.5 rounded text-[0.6875rem] font-mono transition-colors ${
+              mode === "scan" ? "bg-cyan-600/20 text-accent border border-cyan-500/40" : "text-cyber-muted hover:text-cyber-heading"
             }`}
           >
             Sensitive Data
           </button>
           <button
             onClick={() => setMode("protected")}
-            className={`px-3 py-1.5 rounded text-[11px] font-mono transition-colors ${
-              mode === "protected" ? "bg-emerald-600/20 text-emerald-300 border border-emerald-500/40" : "text-cyber-muted hover:text-cyber-heading"
+            className={`px-3 py-1.5 rounded text-[0.6875rem] font-mono transition-colors ${
+              mode === "protected" ? "bg-emerald-600/20 text-status-success border border-emerald-500/40" : "text-cyber-muted hover:text-cyber-heading"
             }`}
           >
             Protected
@@ -132,16 +132,16 @@ export function DocumentViewer({ document, findings, redacted, title, subtitle }
       </div>
 
       {/* body */}
-      <div className="flex flex-1 min-h-[420px] bg-slate-950/40">
-        <div className="w-11 shrink-0 border-r border-cyber-border text-right text-[11px] leading-[1.55] font-mono select-none py-3 overflow-hidden">
+      <div className="flex flex-1 min-h-[420px] bg-cyber-base/40">
+        <div className="w-11 shrink-0 border-r border-cyber-border text-right text-[0.6875rem] leading-[1.55] font-mono select-none py-3 overflow-hidden">
           {lines.map((_, i) => (
-            <div key={i} className="pr-2 text-slate-600" style={{ height: 17 }}>
+            <div key={i} className="pr-2 text-cyber-muted" style={{ height: 17 }}>
               {i + 1}
             </div>
           ))}
         </div>
         <div className="relative flex-1 overflow-auto">
-          <pre className="p-4 font-mono text-[13px] leading-[1.55] text-cyan-100/90 whitespace-pre-wrap min-w-full">
+          <pre className="p-4 font-mono text-[0.8125rem] leading-[1.55] text-cyber-text whitespace-pre-wrap min-w-full">
             {lines.map((l, i) => (
               <div key={i} className="min-h-[17px]">
                 {mode === "scan" ? <HighlightedLine text={l.text} lineStart={l.start} spans={spans} /> : <RedactedLine text={l.text} />}
@@ -152,19 +152,19 @@ export function DocumentViewer({ document, findings, redacted, title, subtitle }
       </div>
 
       {/* footer */}
-      <div className="px-4 py-2 border-t border-cyber-border flex items-center gap-2 text-[11px]">
-        <FileText className="w-3.5 h-3.5 text-slate-500" />
+      <div className="px-4 py-2 border-t border-cyber-border flex items-center gap-2 text-[0.6875rem]">
+        <FileText className="w-3.5 h-3.5 text-cyber-muted" />
         {mode === "scan" ? (
           findings.length > 0 ? (
             <span className="text-cyber-muted">
-              <span className="text-red-300 font-semibold">{findings.length}</span> sensitive item(s) highlighted in the heatmap.
+              <span className="text-status-danger font-semibold">{findings.length}</span> sensitive item(s) highlighted in the heatmap.
             </span>
           ) : (
             <span className="text-cyber-muted">No sensitive patterns detected in this document.</span>
           )
         ) : (
           <span className="text-cyber-muted">
-            Protected version - sensitive spans replaced with <span className="text-emerald-300 font-mono">[REDACTED]</span>.
+            Protected version - sensitive spans replaced with <span className="text-status-success font-mono">[REDACTED]</span>.
           </span>
         )}
       </div>

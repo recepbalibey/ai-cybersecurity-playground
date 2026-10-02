@@ -37,7 +37,7 @@ function affectedLines(findings: CodeFinding[]): Set<number> {
   return set;
 }
 
-const LINE_HEIGHT = 19.5; // 13px * 1.5 leading
+const LINE_HEIGHT = "1.21875rem"; // Match the scaled editor text.
 
 export function CodeEditorPanel({
   code, onCodeChange, language, onLanguageChange, exampleId, onExampleChange,
@@ -45,6 +45,7 @@ export function CodeEditorPanel({
   result,
 }: Props) {
   const preRef = useRef<HTMLPreElement>(null);
+  const gutterRef = useRef<HTMLDivElement>(null);
 
   const lineCount = code.split("\n").length;
   const lineSet = affectedLines(findings);
@@ -52,30 +53,34 @@ export function CodeEditorPanel({
 
   const handleScroll = (e: React.UIEvent<HTMLTextAreaElement>) => {
     const v = e.currentTarget.scrollTop;
-    if (preRef.current) preRef.current.scrollTop = v;
+    if (preRef.current) {
+      preRef.current.scrollTop = v;
+      preRef.current.scrollLeft = e.currentTarget.scrollLeft;
+    }
+    if (gutterRef.current) gutterRef.current.scrollTop = v;
   };
 
   return (
     <div className="cyber-panel border border-cyber-border rounded-lg flex flex-col h-full overflow-hidden">
       {/* toolbar */}
       <div className="flex items-center gap-2 px-3 py-2 border-b border-cyber-border flex-wrap">
-        <Code2 className="w-4 h-4 text-cyan-400 shrink-0" />
+        <Code2 className="w-4 h-4 text-accent shrink-0" />
         <select
           value={language}
           onChange={(e) => onLanguageChange(e.target.value)}
-          className="h-8 px-2 bg-slate-950 border border-slate-700/80 rounded-md text-xs text-cyber-heading focus:outline-none focus:border-cyan-500"
+          className="h-8 px-2 bg-cyber-base border border-cyber-border/80 rounded-md text-xs text-cyber-heading focus:outline-none focus:border-cyan-500"
         >
           {LANG_OPTIONS.map(([v, label]) => (
             <option key={v} value={v}>{label}</option>
           ))}
         </select>
 
-        <div className="flex-1 flex items-center gap-1.5 min-w-0">
-          <BookOpenCheck className="w-4 h-4 text-slate-500 shrink-0" />
+        <div className="flex-1 flex items-center gap-1.5 min-w-0 basis-48">
+          <BookOpenCheck className="w-4 h-4 text-cyber-muted shrink-0" />
           <select
             value={exampleId}
             onChange={(e) => onExampleChange(e.target.value)}
-            className="flex-1 h-8 min-w-0 px-2 bg-slate-950 border border-slate-700/80 rounded-md text-xs text-cyber-heading focus:outline-none focus:border-cyan-500"
+            className="flex-1 h-8 min-w-0 px-2 bg-cyber-base border border-cyber-border/80 rounded-md text-xs text-cyber-heading focus:outline-none focus:border-cyan-500"
           >
             <option value="">Custom / paste code</option>
             {REVIEW_EXAMPLES.map((e) => (
@@ -85,7 +90,7 @@ export function CodeEditorPanel({
           <button
             onClick={() => selection && onSelectExample(selection.id)}
             disabled={!selection || isRunning}
-            className="h-8 px-2 border border-slate-700 rounded-md text-[11px] font-mono text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="h-8 px-2 border border-cyber-border rounded-md text-[0.6875rem] font-mono text-cyber-text hover:border-cyan-500/60 hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Load
           </button>
@@ -94,7 +99,7 @@ export function CodeEditorPanel({
         <button
           onClick={onRun}
           disabled={isRunning || !code.trim()}
-          className="h-8 px-3 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 disabled:cursor-not-allowed text-slate-950 text-xs font-bold flex items-center gap-1.5 transition-all shadow-cyan-glow"
+          className="h-8 px-3 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 disabled:cursor-not-allowed text-on-accent text-xs font-bold flex items-center gap-1.5 transition-all shadow-cyan-glow"
         >
           <Play className="w-3.5 h-3.5" />
           {isRunning ? "Reviewing..." : "Run Review"}
@@ -102,7 +107,7 @@ export function CodeEditorPanel({
         <button
           onClick={onReset}
           disabled={isRunning}
-          className="h-8 px-2.5 rounded-md border border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300 flex items-center gap-1.5 text-xs disabled:opacity-40"
+          className="h-8 px-2.5 rounded-md border border-cyber-border text-cyber-text hover:border-cyan-500/60 hover:text-accent flex items-center gap-1.5 text-xs disabled:opacity-40"
         >
           <RotateCcw className="w-3.5 h-3.5" />
         </button>
@@ -110,7 +115,7 @@ export function CodeEditorPanel({
           onClick={onToggleTeaching}
           disabled={isRunning}
           className={`h-8 px-2.5 rounded-md border text-xs flex items-center gap-1.5 disabled:opacity-40 transition-all ${
-            teaching ? "border-cyan-500/60 text-cyan-300 bg-cyan-950/30" : "border-slate-700 text-slate-300 hover:border-cyan-500/60"
+            teaching ? "border-cyan-500/60 text-accent bg-accent/10" : "border-cyber-border text-cyber-text hover:border-cyan-500/60"
           }`}
         >
           <BookOpenCheck className="w-3.5 h-3.5" />
@@ -121,13 +126,13 @@ export function CodeEditorPanel({
       {/* editor body */}
       <div className="flex flex-1 min-h-0">
         {/* gutter */}
-        <div className="w-12 shrink-0 overflow-hidden border-r border-cyber-border bg-slate-950/40 py-3 text-right">
+        <div ref={gutterRef} className="w-12 shrink-0 overflow-hidden border-r border-cyber-border bg-cyber-base/40 py-4 text-right">
           {Array.from({ length: lineCount }).map((_, i) => (
             <div
               key={i}
               style={{ height: LINE_HEIGHT }}
-              className={`pr-2 text-[11px] leading-none font-mono ${
-                lineSet.has(i + 1) ? "bg-red-950/40 text-red-300" : "text-slate-600"
+              className={`pr-2 text-[0.6875rem] leading-none font-mono ${
+                lineSet.has(i + 1) ? "bg-status-danger/10 text-status-danger" : "text-cyber-muted"
               }`}
             >
               {i + 1}
@@ -140,7 +145,7 @@ export function CodeEditorPanel({
           <pre
             ref={preRef}
             aria-hidden
-            className="absolute inset-0 p-4 pointer-events-none font-mono text-[13px] leading-[1.5] whitespace-pre overflow-hidden text-cyan-100"
+            className="absolute inset-0 p-4 pointer-events-none font-mono text-[0.8125rem] leading-[1.5] whitespace-pre overflow-hidden text-cyber-text"
             dangerouslySetInnerHTML={{ __html: highlightHtml(code || "\n") }}
           />
           <textarea
@@ -148,15 +153,16 @@ export function CodeEditorPanel({
             onChange={(e) => onCodeChange(e.target.value)}
             onScroll={handleScroll}
             spellCheck={false}
-            className="relative w-full h-full resize-none bg-transparent text-transparent caret-cyan-300 font-mono text-[13px] leading-[1.5] p-4 focus:outline-none overflow-auto"
+            aria-label="Source code"
+            className="relative w-full h-full resize-none bg-transparent text-transparent caret-cyan-300 font-mono text-[0.8125rem] leading-[1.5] p-4 focus:outline-none overflow-auto"
             placeholder="Paste source code here, or load an educational example from the selector above."
           />
         </div>
       </div>
 
       {/* footer */}
-      <div className="px-3 py-2 border-t border-cyber-border flex items-center gap-2 text-[11px]">
-        <span className="text-slate-500 font-mono uppercase tracking-wider text-[10px]">Is this code secure?</span>
+      <div className="px-3 py-2 border-t border-cyber-border flex items-center gap-2 text-[0.6875rem]">
+        <span className="text-cyber-muted font-mono uppercase tracking-wider text-[0.625rem]">Is this code secure?</span>
         {result ? (
           <span className="text-cyber-muted truncate">
             {result.risk_level} risk - {result.findings.length} finding(s), score {result.security_score.before}/100

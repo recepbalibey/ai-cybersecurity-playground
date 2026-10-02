@@ -43,9 +43,9 @@ export function PrivacyAssistant() {
   return (
     <div className="cyber-panel border border-cyber-border rounded-lg overflow-hidden flex flex-col h-full">
       <div className="px-4 py-3 border-b border-cyber-border flex items-center gap-2">
-        <Bot className="w-4 h-4 text-cyan-400" />
+        <Bot className="w-4 h-4 text-accent" />
         <h3 className="text-xs font-bold text-cyber-heading">Privacy Assistant</h3>
-        <span className="ml-auto text-[10px] font-mono text-cyber-muted flex items-center gap-1">
+        <span className="ml-auto text-[0.625rem] font-mono text-cyber-muted flex items-center gap-1">
           <ShieldQuestion className="w-3 h-3" /> Ask a question
         </span>
       </div>
@@ -53,14 +53,14 @@ export function PrivacyAssistant() {
       <div ref={scrollRef} className="flex-1 overflow-auto p-3 space-y-3 min-h-[240px]">
         {messages.length === 0 && (
           <div className="space-y-1.5">
-            <p className="text-[12px] text-cyber-muted leading-snug">
+            <p className="text-[0.75rem] text-cyber-muted leading-snug">
               Ask about PII, secrets, data classification, DLP policies, redaction, or prompt hygiene.
             </p>
             {SUGGESTIONS.map((s) => (
               <button
                 key={s}
                 onClick={() => send(s)}
-                className="block w-full text-left px-3 py-2 rounded-md border border-cyber-border text-[11px] font-mono text-cyan-300 hover:border-cyan-500/50 hover:bg-slate-800/40 transition-colors"
+                className="block w-full text-left px-3 py-2 rounded-md border border-cyber-border text-[0.6875rem] font-mono text-accent hover:border-cyan-500/50 hover:bg-cyber-surface-hover/40 transition-colors"
               >
                 {s}
               </button>
@@ -70,10 +70,10 @@ export function PrivacyAssistant() {
         {messages.map((m, i) => (
           <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
             <div
-              className={`max-w-[85%] px-3 py-2 rounded-lg text-[12px] leading-relaxed ${
+              className={`max-w-[85%] px-3 py-2 rounded-lg text-[0.75rem] leading-relaxed ${
                 m.role === "user"
-                  ? "bg-cyan-600/20 border border-cyan-500/30 text-cyan-100"
-                  : "bg-slate-800/70 border border-cyber-border text-cyber-heading/90"
+                  ? "bg-cyan-600/20 border border-cyan-500/30 text-cyber-text"
+                  : "bg-cyber-surface-hover/70 border border-cyber-border text-cyber-heading"
               }`}
             >
               {m.content}
@@ -82,7 +82,7 @@ export function PrivacyAssistant() {
         ))}
         {typing && (
           <div className="flex justify-start">
-            <div className="px-3 py-2 rounded-lg bg-slate-800/70 border border-cyber-border text-[12px] text-slate-400">
+            <div className="px-3 py-2 rounded-lg bg-cyber-surface-hover/70 border border-cyber-border text-[0.75rem] text-cyber-muted">
               thinking...
             </div>
           </div>
@@ -100,12 +100,12 @@ export function PrivacyAssistant() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask about protecting data before AI..."
-          className="flex-1 h-9 px-3 rounded-md bg-slate-900 border border-cyber-border text-[12px] text-cyber-heading placeholder:text-slate-600 focus:outline-none focus:border-cyan-500/60"
+          className="flex-1 h-9 px-3 rounded-md bg-cyber-base border border-cyber-border text-[0.75rem] text-cyber-heading placeholder:text-cyber-muted focus:outline-none focus:border-cyan-500/60"
         />
         <button
           type="submit"
           disabled={!input.trim() || typing}
-          className="h-9 px-3 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-slate-950 flex items-center gap-1.5 text-xs font-bold"
+          className="h-9 px-3 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-on-accent flex items-center gap-1.5 text-xs font-bold"
         >
           <Send className="w-3.5 h-3.5" />
           Ask

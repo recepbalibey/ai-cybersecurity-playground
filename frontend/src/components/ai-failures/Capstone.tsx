@@ -22,31 +22,31 @@ function renderEventRow(ev: CapstoneEventResult) {
   return (
     <div key={ev.id} className="rounded-md border border-cyber-border p-3">
       <div className="flex items-center gap-2 mb-1">
-        <Siren className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-        <span className="text-[13px] font-bold text-cyber-heading">{ev.id} - {ev.title}</span>
+        <Siren className="w-3.5 h-3.5 text-accent shrink-0" />
+        <span className="text-[0.8125rem] font-bold text-cyber-heading">{ev.id} - {ev.title}</span>
       </div>
-      <p className="text-[11px] text-cyber-muted mb-2 leading-snug">{ev.evidence}</p>
-      <div className="flex items-center gap-3 flex-wrap text-[11px] font-mono">
-        <span className="text-slate-400">
-          You: <span className={ev.human_correct ? "text-emerald-300" : "text-red-300"}>{ev.student_verdict ?? "-"}</span>
+      <p className="text-[0.6875rem] text-cyber-muted mb-2 leading-snug">{ev.evidence}</p>
+      <div className="flex items-center gap-3 flex-wrap text-[0.6875rem] font-mono">
+        <span className="text-cyber-muted">
+          You: <span className={ev.human_correct ? "text-status-success" : "text-status-danger"}>{ev.student_verdict ?? "-"}</span>
         </span>
-        <span className="text-slate-400">
-          AI: <span className={ev.ai_correct ? "text-emerald-300" : "text-red-300"}>{ev.ai_verdict}</span>
+        <span className="text-cyber-muted">
+          AI: <span className={ev.ai_correct ? "text-status-success" : "text-status-danger"}>{ev.ai_verdict}</span>
         </span>
-        <span className="text-slate-400">
-          Truth: <span className="text-cyan-300">{ev.ground_truth}</span>
+        <span className="text-cyber-muted">
+          Truth: <span className="text-accent">{ev.ground_truth}</span>
         </span>
         {ev.combined_correct ? (
-          <span className="flex items-center gap-1 text-emerald-300">
+          <span className="flex items-center gap-1 text-status-success">
             <CheckCircle2 className="w-3 h-3" /> caught
           </span>
         ) : (
-          <span className="flex items-center gap-1 text-red-300">
+          <span className="flex items-center gap-1 text-status-danger">
             <XCircle className="w-3 h-3" /> missed by both
           </span>
         )}
       </div>
-      <p className="text-[11px] text-slate-400 mt-2 leading-snug">{ev.detail}</p>
+      <p className="text-[0.6875rem] text-cyber-muted mt-2 leading-snug">{ev.detail}</p>
     </div>
   );
 }
@@ -64,11 +64,11 @@ export function Capstone({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-lg border border-red-500/30 bg-red-500/5 px-4 py-3 text-[13px] text-red-100/90 flex items-start gap-2.5">
-        <Siren className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
+      <div className="rounded-lg border border-red-500/30 bg-red-500/5 px-4 py-3 text-[0.8125rem] text-status-danger flex items-start gap-2.5">
+        <Siren className="w-4 h-4 text-status-danger mt-0.5 shrink-0" />
         <p>
           Six events arrive in one minute during a live incident. Triage each event yourself,{" "}
-          <span className="font-mono text-red-300">before</span> scoring. Then compare AI alone, you alone, and combined.
+          <span className="font-mono text-status-danger">before</span> scoring. Then compare AI alone, you alone, and combined.
         </p>
       </div>
 
@@ -77,10 +77,10 @@ export function Capstone({
           {events.map((ev) => (
             <div key={ev.id} className="rounded-md border border-cyber-border p-3">
               <div className="flex items-center gap-2 mb-1">
-                <Siren className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                <span className="text-[13px] font-bold text-cyber-heading">{ev.id} - {ev.title}</span>
+                <Siren className="w-3.5 h-3.5 text-accent shrink-0" />
+                <span className="text-[0.8125rem] font-bold text-cyber-heading">{ev.id} - {ev.title}</span>
               </div>
-              <p className="text-[12px] text-cyber-muted mb-3 leading-snug">{ev.evidence}</p>
+              <p className="text-[0.75rem] text-cyber-muted mb-3 leading-snug">{ev.evidence}</p>
               <div className="flex flex-wrap gap-2">
                 {VERDICT_OPTIONS.map((o) => {
                   const active = picks[ev.id] === o.value;
@@ -90,8 +90,8 @@ export function Capstone({
                       onClick={() => onPick(ev.id, o.value)}
                       className={`px-3 py-1.5 rounded-md border text-xs font-semibold transition-all ${
                         active
-                          ? "bg-cyan-950/40 border-cyan-500/60 text-cyan-300"
-                          : "border-slate-700 text-slate-300 hover:border-cyan-500/60 hover:text-cyan-300"
+                          ? "bg-accent/10 border-cyan-500/60 text-accent"
+                          : "border-cyber-border text-cyber-text hover:border-cyan-500/60 hover:text-accent"
                       }`}
                     >
                       {o.label}
@@ -104,7 +104,7 @@ export function Capstone({
           <button
             onClick={onRun}
             disabled={!ready || isProcessing}
-            className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-slate-950 text-xs font-bold transition-all"
+            className="px-4 h-9 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-on-accent text-xs font-bold transition-all"
           >
             {isProcessing ? "Scoring…" : allPicked ? "Score the capstone" : "Pick a verdict for every event"}
           </button>
@@ -121,25 +121,25 @@ export function Capstone({
             <div className="space-y-3">
               {(
                 [
-                  ["AI alone", result.ai_accuracy, result.ai_total, "text-cyan-300"],
-                  ["You alone", result.human_accuracy, result.human_total, "text-amber-300"],
-                  ["Combined", result.combined_accuracy, result.combined_total, "text-emerald-300"],
+                  ["AI alone", result.ai_accuracy, result.ai_total, "text-accent"],
+                  ["You alone", result.human_accuracy, result.human_total, "text-status-warning"],
+                  ["Combined", result.combined_accuracy, result.combined_total, "text-status-success"],
                 ] as const
               ).map(([label, acc, total, color]) => (
                 <div key={label}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className={`text-[11px] font-mono uppercase tracking-wider ${color}`}>{label}</span>
+                    <span className={`text-[0.6875rem] font-mono uppercase tracking-wider ${color}`}>{label}</span>
                     <span className="text-xs font-mono text-cyber-muted">
                       {total}/{result.total_events} - {acc}%
                     </span>
                   </div>
-                  <div className="h-2 rounded-full bg-slate-800 overflow-hidden">
-                    <div className="h-full bg-slate-500 rounded-full" style={{ width: `${acc}%` }} />
+                  <div className="h-2 rounded-full bg-cyber-surface-hover overflow-hidden">
+                    <div className="h-full bg-cyber-surface-hover rounded-full" style={{ width: `${acc}%` }} />
                   </div>
                 </div>
               ))}
             </div>
-            <p className="text-[12px] text-cyber-text leading-snug mt-3">{result.insight}</p>
+            <p className="text-[0.75rem] text-cyber-text leading-snug mt-3">{result.insight}</p>
           </div>
 
           {/* Event-by-event breakdown */}

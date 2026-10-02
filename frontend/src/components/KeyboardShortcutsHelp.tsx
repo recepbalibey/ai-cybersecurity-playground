@@ -23,7 +23,7 @@ const SHORTCUTS: { keys: string[]; desc: string }[] = [
 
 function Key({ children }: { children: string }) {
   return (
-    <kbd className="inline-flex h-6 min-w-6 items-center justify-center rounded border border-cyber-border bg-cyber-surface-hover px-1.5 font-mono text-[11px] font-medium text-cyber-heading">
+    <kbd className="inline-flex h-6 min-w-6 items-center justify-center rounded border border-cyber-border bg-cyber-surface-hover px-1.5 font-mono text-[0.6875rem] font-medium text-cyber-heading">
       {children}
     </kbd>
   );
@@ -81,7 +81,7 @@ export function KeyboardShortcutsHelp({
           <button
             onClick={onClose}
             aria-label="Close"
-            className="rounded-md border border-cyber-border p-1.5 text-cyber-muted transition-colors hover:border-rose-400/40 hover:text-rose-400"
+            className="rounded-md border border-cyber-border p-1.5 text-cyber-muted transition-colors hover:border-rose-400/40 hover:text-status-danger"
           >
             <X className="h-4 w-4" strokeWidth={1.75} />
           </button>
@@ -113,7 +113,7 @@ export function KeyboardShortcutsHelp({
             <p className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cyber-heading">
               <ArrowUp className="h-3.5 w-3.5" strokeWidth={1.75} />
               Lab jump numbers
-              <span className="text-[10px] font-mono normal-case text-cyber-muted">
+              <span className="text-[0.625rem] font-mono normal-case text-cyber-muted">
                 press 1-9 or 0 to go straight to a lab
               </span>
             </p>
@@ -123,12 +123,12 @@ export function KeyboardShortcutsHelp({
                   key={lab.id}
                   className="flex items-center gap-2 rounded-md border border-cyber-border bg-cyber-surface/40 px-3 py-1.5 text-sm"
                 >
-                  <kbd className="inline-flex h-6 min-w-6 items-center justify-center rounded-md border border-accent/40 bg-accent/10 px-1.5 font-mono text-[11px] font-medium text-accent">
+                  <kbd className="inline-flex h-6 min-w-6 items-center justify-center rounded-md border border-accent/40 bg-accent/10 px-1.5 font-mono text-[0.6875rem] font-medium text-accent">
                     {lab.order}
                   </kbd>
                   <span className="truncate text-cyber-text">{lab.title}</span>
                   {done.has(lab.id) && (
-                    <span className="ml-auto text-[10px] font-mono text-emerald-400">done</span>
+                    <span className="ml-auto text-[0.625rem] font-mono text-status-success">done</span>
                   )}
                 </div>
               ))}
@@ -144,7 +144,7 @@ export function KeyboardShortcutsHelp({
           </p>
           <button
             onClick={onClose}
-            className="h-10 rounded-md bg-accent px-4 text-sm font-medium text-cyber-base transition-colors hover:bg-accent-hover"
+            className="h-10 rounded-md bg-accent px-4 text-sm font-medium text-on-accent transition-colors hover:bg-accent-hover"
           >
             Got it
           </button>

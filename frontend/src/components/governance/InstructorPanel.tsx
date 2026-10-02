@@ -31,29 +31,29 @@ export function InstructorPanel({ context }: { context?: InstructorContext }) {
   return (
     <div className="cyber-panel border border-cyan-500/40 rounded-lg p-4 space-y-4">
       <div className="flex items-center gap-2">
-        <GraduationCap className="w-5 h-5 text-cyan-300" />
-        <h3 className="text-xs font-bold text-cyan-200">Instructor Notes</h3>
+        <GraduationCap className="w-5 h-5 text-accent" />
+        <h3 className="text-xs font-bold text-cyber-text">Instructor Notes</h3>
       </div>
 
       <div className="space-y-3">
         {ctx.teaching_points.map((tp) => (
-          <div key={tp.title} className="rounded-md border border-cyber-border bg-slate-900/40 p-3">
-            <div className="text-[12px] font-bold text-cyan-200">{tp.title}</div>
-            <div className="text-[11px] text-cyan-300/80 italic mt-0.5">{tp.concept}</div>
-            <p className="text-[12px] text-cyber-muted mt-1.5">{tp.explanation}</p>
-            <div className="mt-2 text-[11px] text-emerald-300 font-mono">Takeaway: {tp.key_takeaway}</div>
+          <div key={tp.title} className="rounded-md border border-cyber-border bg-cyber-base/40 p-3">
+            <div className="text-[0.75rem] font-bold text-cyber-text">{tp.title}</div>
+            <div className="text-[0.6875rem] text-accent italic mt-0.5">{tp.concept}</div>
+            <p className="text-[0.75rem] text-cyber-muted mt-1.5">{tp.explanation}</p>
+            <div className="mt-2 text-[0.6875rem] text-status-success font-mono">Takeaway: {tp.key_takeaway}</div>
           </div>
         ))}
       </div>
 
       <div>
-        <div className="flex items-center gap-1.5 mb-2 text-[11px] font-bold uppercase tracking-wider text-cyan-300">
+        <div className="flex items-center gap-1.5 mb-2 text-[0.6875rem] font-bold uppercase tracking-wider text-accent">
           <MessageCircleQuestion className="w-3.5 h-3.5" /> Discussion
         </div>
         <ul className="space-y-1.5">
           {ctx.discussion_questions.map((q, i) => (
-            <li key={i} className="text-[12px] text-cyber-muted flex gap-2">
-              <span className="text-cyan-400 shrink-0">-</span>
+            <li key={i} className="text-[0.75rem] text-cyber-muted flex gap-2">
+              <span className="text-accent shrink-0">-</span>
               <span>{q}</span>
             </li>
           ))}

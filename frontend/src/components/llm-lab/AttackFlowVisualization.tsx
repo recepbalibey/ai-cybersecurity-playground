@@ -25,17 +25,17 @@ function nodeBadge(status: TrustAnalysis["status"]) {
     case "trusted":
       return {
         label: "TRUSTED",
-        cls: "bg-emerald-950/60 text-emerald-400 border border-emerald-500/40",
+        cls: "bg-status-success/10 text-status-success border border-emerald-500/40",
       };
     case "flagged":
       return {
         label: "MALICIOUS",
-        cls: "bg-red-950/60 text-red-400 border border-red-500/40",
+        cls: "bg-status-danger/10 text-status-danger border border-red-500/40",
       };
     default:
       return {
         label: "NEUTRAL",
-        cls: "bg-slate-900 text-slate-400 border border-slate-700",
+        cls: "bg-cyber-base text-cyber-muted border border-cyber-border",
       };
   }
 }
@@ -55,7 +55,7 @@ export function AttackFlowVisualization({
     <div className="cyber-panel border border-cyber-border overflow-hidden flex flex-col h-full">
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
         <div className="flex items-center gap-2.5">
-          <Radio className="w-4 h-4 text-cyan-400" />
+          <Radio className="w-4 h-4 text-accent" />
           <h2 className="text-base font-semibold text-cyber-heading">
             Attack Flow Visualization
           </h2>
@@ -67,16 +67,16 @@ export function AttackFlowVisualization({
 
       <div className="p-4 flex-1 flex flex-col gap-3 overflow-y-auto">
         {/* Trust boundary snapshot */}
-        <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-lg space-y-1.5">
+        <div className="p-3 bg-cyber-base/80 border border-cyber-border rounded-lg space-y-1.5">
           {trusted.map((t, idx) => {
             const b = nodeBadge(t.status);
             return (
               <div key={idx} className="flex items-center justify-between gap-2">
-                <span className="text-[11px] font-mono text-slate-300">
+                <span className="text-[0.6875rem] font-mono text-cyber-text">
                   {t.layer}
                 </span>
                 <span
-                  className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold ${b.cls}`}
+                  className={`text-[0.625rem] font-mono px-2 py-0.5 rounded font-bold ${b.cls}`}
                 >
                   {b.label}
                 </span>
@@ -88,45 +88,45 @@ export function AttackFlowVisualization({
         {/* Flow stages */}
         <div className="space-y-1.5">
           <Stage
-            icon={<AlertTriangle className="w-4 h-4 text-red-400" />}
+            icon={<AlertTriangle className="w-4 h-4 text-status-danger" />}
             label="User (Injected) Payload"
             border="border-red-500/40"
             content={userPayload}
-            color="text-red-300"
+            color="text-status-danger"
           />
           <Arrow />
 
           <Stage
-            icon={<FileText className="w-4 h-4 text-amber-400" />}
+            icon={<FileText className="w-4 h-4 text-status-warning" />}
             label="Retrieved Knowledge Base"
             border="border-amber-500/40"
             content={knowledgeBase}
-            color="text-amber-200"
+            color="text-status-warning"
           />
           <Arrow />
 
           <Stage
-            icon={<ShieldCheck className="w-4 h-4 text-emerald-400" />}
+            icon={<ShieldCheck className="w-4 h-4 text-status-success" />}
             label="System Prompt"
             border="border-emerald-500/40"
             content={systemPrompt}
-            color="text-emerald-200"
+            color="text-status-success"
           />
           <Arrow />
 
           {/* Defense junction */}
-          <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-lg">
-            <div className="text-[10px] font-bold text-cyan-400 font-mono uppercase tracking-wider mb-1.5">
+          <div className="p-3 bg-cyber-base/80 border border-cyber-border rounded-lg">
+            <div className="text-[0.625rem] font-bold text-accent font-mono uppercase tracking-wider mb-1.5">
               Security Policy Layer
             </div>
             <div className="flex flex-wrap gap-1.5">
               {defenseLayers.map((d) => (
                 <span
                   key={d.name}
-                  className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
+                  className={`text-[0.625rem] font-mono px-2 py-0.5 rounded border ${
                     d.active
-                      ? "bg-emerald-950/60 text-emerald-400 border-emerald-500/40"
-                      : "bg-slate-900 text-slate-500 border-slate-700 line-through"
+                      ? "bg-status-success/10 text-status-success border-emerald-500/40"
+                      : "bg-cyber-base text-cyber-muted border-cyber-border line-through"
                   }`}
                 >
                   {d.name}
@@ -140,18 +140,18 @@ export function AttackFlowVisualization({
           <div
             className={`p-3.5 rounded-lg border ${
               mode === "protected"
-                ? "bg-emerald-950/20 border-emerald-500/50"
-                : "bg-red-950/20 border-red-500/50"
+                ? "bg-status-success/10 border-emerald-500/50"
+                : "bg-status-danger/10 border-red-500/50"
             }`}
           >
             <div
-              className={`text-[11px] font-bold font-mono uppercase tracking-wider mb-1 ${
-                mode === "protected" ? "text-emerald-400" : "text-red-400"
+              className={`text-[0.6875rem] font-bold font-mono uppercase tracking-wider mb-1 ${
+                mode === "protected" ? "text-status-success" : "text-status-danger"
               }`}
             >
               {mode === "protected" ? "Injection Blocked" : "Instruction Executed"}
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed font-mono">
+            <p className="text-xs text-cyber-text leading-relaxed font-mono">
               {modelResponse}
             </p>
           </div>
@@ -175,16 +175,16 @@ function Stage({
   color: string;
 }) {
   return (
-    <div className={`p-3 bg-slate-950/70 border rounded-lg ${border}`}>
+    <div className={`p-3 bg-cyber-base/70 border rounded-lg ${border}`}>
       <div className="flex items-center gap-2 mb-1">
         {icon}
-        <span className="text-[10px] font-bold font-mono uppercase tracking-wider text-slate-400">
+        <span className="text-[0.625rem] font-bold font-mono uppercase tracking-wider text-cyber-muted">
           {label}
         </span>
-        <ArrowDown className="w-3.5 h-3.5 text-slate-600 ml-auto" />
+        <ArrowDown className="w-3.5 h-3.5 text-cyber-muted ml-auto" />
       </div>
       <p
-        className={`text-[11px] font-mono leading-snug break-all ${color}`}
+        className={`text-[0.6875rem] font-mono leading-snug break-all ${color}`}
       >
         {content || "-"}
       </p>
@@ -195,7 +195,7 @@ function Stage({
 function Arrow() {
   return (
     <div className="flex justify-center">
-      <ArrowDown className="w-4 h-4 text-slate-600" />
+      <ArrowDown className="w-4 h-4 text-cyber-muted" />
     </div>
   );
 }

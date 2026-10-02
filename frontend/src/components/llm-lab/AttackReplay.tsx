@@ -86,7 +86,7 @@ export function AttackReplay({
       {/* Panel Header */}
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
         <div className="flex items-center gap-2.5">
-          <History className="w-4 h-4 text-cyan-400" />
+          <History className="w-4 h-4 text-accent" />
           <h2 className="text-base font-semibold text-cyber-heading">
             Attack Replay
           </h2>
@@ -101,7 +101,7 @@ export function AttackReplay({
         <button
           onClick={isPlaying ? pause : play}
           disabled={history.length === 0}
-          className="px-3 h-8 rounded-md bg-cyan-600 hover:bg-cyan-500 text-slate-950 text-[11px] font-bold flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-cyan-glow"
+          className="px-3 h-8 rounded-md bg-cyan-600 hover:bg-cyan-500 text-on-accent text-[0.6875rem] font-bold flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-cyan-glow"
         >
           {isPlaying ? (
             <>
@@ -120,14 +120,14 @@ export function AttackReplay({
           disabled={currentIndex < 0}
           aria-label="Reset replay"
           title="Reset replay"
-          className="px-3 h-8 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-bold flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="px-3 h-8 rounded-md bg-cyber-surface-hover hover:bg-cyber-surface-hover text-cyber-text text-[0.6875rem] font-bold flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <RotateCcw className="w-3.5 h-3.5" />
         </button>
         <button
           onClick={clear}
           disabled={history.length === 0}
-          className="px-3 h-8 rounded-md bg-red-950/60 hover:bg-red-950/80 border border-red-500/40 text-red-300 text-[11px] font-bold flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="px-3 h-8 rounded-md bg-status-danger/10 hover:bg-status-danger/10 border border-red-500/40 text-status-danger text-[0.6875rem] font-bold flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <Trash2 className="w-3.5 h-3.5" />
           Clear
@@ -138,9 +138,9 @@ export function AttackReplay({
       <div className="p-4 flex-1 overflow-y-auto">
         {history.length === 0 ? (
           <div className="flex flex-col items-center justify-center text-center h-full py-8">
-            <Terminal className="w-10 h-10 text-slate-600 mb-3" />
-            <p className="text-sm text-slate-400">No attacks recorded yet.</p>
-            <p className="text-xs text-slate-600 mt-1">
+            <Terminal className="w-10 h-10 text-cyber-muted mb-3" />
+            <p className="text-sm text-cyber-muted">No attacks recorded yet.</p>
+            <p className="text-xs text-cyber-muted mt-1">
               Run an attack to log it here.
             </p>
           </div>
@@ -156,25 +156,25 @@ export function AttackReplay({
                 }}
                 className={`w-full text-left p-2.5 rounded-lg border cursor-pointer transition-all ${
                   idx === currentIndex
-                    ? "bg-cyan-950/30 border-cyan-500/50 shadow-cyan-glow"
-                    : "bg-slate-950/60 border-slate-800 hover:border-slate-600"
+                    ? "bg-accent/10 border-cyan-500/50 shadow-cyan-glow"
+                    : "bg-cyber-base/60 border-cyber-border hover:border-cyber-border"
                 }`}
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[10px] font-mono text-slate-500">
+                  <span className="text-[0.625rem] font-mono text-cyber-muted">
                     {entry.timestamp}
                   </span>
                   <span
-                    className={`ml-auto text-[10px] font-mono px-1.5 py-0.5 rounded font-bold ${
+                    className={`ml-auto text-[0.625rem] font-mono px-1.5 py-0.5 rounded font-bold ${
                       entry.status === "SUCCESS"
-                        ? "bg-red-950/60 text-red-400 border border-red-500/40"
-                        : "bg-emerald-950/60 text-emerald-400 border border-emerald-500/40"
+                        ? "bg-status-danger/10 text-status-danger border border-red-500/40"
+                        : "bg-status-success/10 text-status-success border border-emerald-500/40"
                     }`}
                   >
                     {entry.status}
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-300 font-mono break-all">
+                <p className="text-[0.6875rem] text-cyber-text font-mono break-all">
                   {entry.payload}
                 </p>
               </button>

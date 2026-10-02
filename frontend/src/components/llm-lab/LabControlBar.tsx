@@ -43,7 +43,7 @@ export function LabControlBar({
     <div className="cyber-panel border border-cyber-border p-5 rounded-lg space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <FlaskConical className="w-5 h-5 text-cyan-400" />
+          <FlaskConical className="w-5 h-5 text-accent" />
           <h2 className="text-base font-bold text-cyber-heading">
             LLM Security Laboratory
           </h2>
@@ -65,8 +65,8 @@ export function LabControlBar({
               disabled={lock}
               className={`px-3 py-3 rounded-lg border text-xs font-bold flex items-center justify-center gap-2 transition-all ${
                 mode === "vulnerable"
-                  ? "bg-red-950/40 border-red-500/60 text-red-300 shadow-red-glow"
-                  : "bg-slate-950/70 border-slate-800 text-slate-400 hover:border-slate-600"
+                  ? "bg-status-danger/10 border-red-500/60 text-status-danger shadow-red-glow"
+                  : "bg-cyber-base/70 border-cyber-border text-cyber-muted hover:border-cyber-border"
               } ${lock ? "opacity-40 cursor-not-allowed" : ""}`}
             >
               <ShieldAlert className="w-4 h-4" />
@@ -77,8 +77,8 @@ export function LabControlBar({
               disabled={lock}
               className={`rounded-lg border text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
                 mode === "protected"
-                  ? "bg-emerald-950/40 border-emerald-500/60 text-emerald-300 shadow-emerald-glow"
-                  : "bg-slate-950/70 border-slate-800 text-slate-400 hover:border-slate-600"
+                  ? "bg-status-success/10 border-emerald-500/60 text-status-success shadow-emerald-glow"
+                  : "bg-cyber-base/70 border-cyber-border text-cyber-muted hover:border-cyber-border"
               } ${lock ? "opacity-40 cursor-not-allowed" : ""}`}
             >
               <ShieldCheck className="w-4 h-4" />
@@ -98,10 +98,10 @@ export function LabControlBar({
                 key={d.value}
                 onClick={() => onDifficultyChange(d.value)}
                 disabled={lock}
-                className={`px-3 py-3 rounded-lg border text-[11px] font-semibold flex-1 transition-all ${
+                className={`px-3 py-3 rounded-lg border text-[0.6875rem] font-semibold flex-1 transition-all ${
                   difficulty === d.value
-                    ? "bg-cyan-950/40 border-cyan-500/60 text-cyan-300"
-                    : "bg-slate-950/70 border-slate-800 text-slate-400 hover:border-slate-600"
+                    ? "bg-accent/10 border-cyan-500/60 text-accent"
+                    : "bg-cyber-base/70 border-cyber-border text-cyber-muted hover:border-cyber-border"
                 } ${lock ? "opacity-40 cursor-not-allowed" : ""}`}
               >
                 {d.label}
@@ -114,7 +114,7 @@ export function LabControlBar({
               value={scenarioKey}
               disabled={lock}
               onChange={(e) => onScenarioChange(e.target.value)}
-              className={`w-full h-10 px-3 bg-slate-950 border border-slate-700/80 rounded-lg text-sm text-cyber-heading focus:outline-none focus:border-cyan-500 transition-all ${
+              className={`w-full h-10 px-3 bg-cyber-base border border-cyber-border/80 rounded-lg text-sm text-cyber-heading focus:outline-none focus:border-cyan-500 transition-all ${
                 lock ? "opacity-40 cursor-not-allowed" : ""
               }`}
             >
@@ -140,7 +140,7 @@ export function LabControlBar({
           </div>
           <div className="flex items-center gap-3">
             <div className="flex-1">
-              <div className="h-3 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+              <div className="h-3 w-full bg-cyber-base rounded-full overflow-hidden border border-cyber-border">
                 <div
                   className={`h-full rounded-full transition-all duration-700 ${
                     securityScore !== null && securityScore >= 70
@@ -154,15 +154,15 @@ export function LabControlBar({
             <span
               className={`text-xl font-bold font-mono ${
                 securityScore !== null && securityScore >= 70
-                  ? "text-emerald-400"
-                  : "text-red-400"
+                  ? "text-status-success"
+                  : "text-status-danger"
               }`}
             >
               {securityScore ?? "--"}%
             </span>
           </div>
           {isProcessing && (
-            <div className="flex items-center gap-2 text-xs font-mono text-cyan-300 mt-2">
+            <div className="flex items-center gap-2 text-xs font-mono text-accent mt-2">
               <Activity className="w-3.5 h-3.5 animate-pulse" />
               Simulating model behavior...
             </div>

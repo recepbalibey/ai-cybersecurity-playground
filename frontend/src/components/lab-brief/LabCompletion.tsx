@@ -19,9 +19,9 @@ export function LabCompletion({ brief, onRetry, onNext, nextLabel }: LabCompleti
       role="status"
     >
       <div className="flex items-center gap-3">
-        <CheckCircle className="h-5 w-5 text-emerald-400" strokeWidth={1.75} />
+        <CheckCircle className="h-5 w-5 text-status-success" strokeWidth={1.75} />
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-wider text-emerald-400">
+          <p className="font-mono text-[0.625rem] uppercase tracking-wider text-status-success">
             Mission Complete
           </p>
           <h3 className="text-base font-bold text-cyber-heading">{brief.title}</h3>
@@ -37,17 +37,17 @@ export function LabCompletion({ brief, onRetry, onNext, nextLabel }: LabCompleti
       />
 
       <div className="space-y-2">
-        <p className="font-mono text-[10px] uppercase tracking-wider text-cyber-muted">
+        <p className="font-mono text-[0.625rem] uppercase tracking-wider text-cyber-muted">
           What you learned
         </p>
         <ul className="space-y-1.5">
           {brief.whatYouLearned.map((l, i) => (
             <li
               key={l}
-              className="decode-enter flex items-start gap-2 text-[13px] text-cyber-text"
+              className="decode-enter flex items-start gap-2 text-[0.8125rem] text-cyber-text"
               style={{ animationDelay: `${i * 90}ms` }}
             >
-              <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" strokeWidth={1.75} />
+              <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-status-success" strokeWidth={1.75} />
               {l}
             </li>
           ))}
@@ -67,7 +67,7 @@ export function LabCompletion({ brief, onRetry, onNext, nextLabel }: LabCompleti
           <button
             type="button"
             onClick={onNext}
-            className="flex h-9 items-center gap-2 rounded-md bg-accent px-4 text-xs font-semibold text-cyber-base transition-colors hover:bg-accent-hover"
+            className="flex h-9 items-center gap-2 rounded-md bg-accent px-4 text-xs font-semibold text-on-accent transition-colors hover:bg-accent-hover"
           >
             {nextLabel ?? "Continue to next lab"}
             <ArrowRight className="h-4 w-4" strokeWidth={2} />

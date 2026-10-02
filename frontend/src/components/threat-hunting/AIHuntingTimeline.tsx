@@ -20,7 +20,7 @@ export function AIHuntingTimeline({
       {/* Panel Header */}
       <div className="p-4 border-b border-cyber-border bg-cyber-surface/60 flex items-center justify-between holo-scan">
         <div className="flex items-center gap-2.5">
-          <Cpu className="w-4 h-4 text-cyan-400" />
+          <Cpu className="w-4 h-4 text-accent" />
           <h2 className="text-base font-semibold text-cyber-heading">
             AI Hunting Workflow
           </h2>
@@ -39,11 +39,11 @@ export function AIHuntingTimeline({
 
       <div className="p-4 flex-1 flex flex-col gap-4 overflow-y-auto bg-grid-pattern">
         {/* Holographic Status */}
-        <div className="p-3.5 bg-slate-950/80 border border-slate-800 rounded flex items-center justify-between">
+        <div className="p-3.5 bg-cyber-base/80 border border-cyber-border rounded flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Radio
               className={`w-5 h-5 ${
-                isHunting ? "text-cyan-400 animate-pulse" : "text-emerald-400"
+                isHunting ? "text-accent animate-pulse" : "text-status-success"
               }`}
             />
             <div>
@@ -57,7 +57,7 @@ export function AIHuntingTimeline({
               </div>
             </div>
           </div>
-          <div className="text-right font-mono text-xs font-bold text-cyan-400">
+          <div className="text-right font-mono text-xs font-bold text-accent">
             {isHunting ? `STEP ${currentStepIndex + 1} / 5` : "COMPLETE"}
           </div>
         </div>
@@ -66,8 +66,8 @@ export function AIHuntingTimeline({
         <div
           className={`packet-rail relative h-3 rounded-full border ${
             isHunting
-              ? "border-cyan-500/40 bg-cyan-950/20"
-              : "border-slate-800 bg-slate-900/40"
+              ? "border-cyan-500/40 bg-accent/10"
+              : "border-cyber-border bg-cyber-base/40"
           }`}
         >
           <span className="packet" />
@@ -86,10 +86,10 @@ export function AIHuntingTimeline({
                 key={step.step}
                 className={`p-3.5 rounded-lg border transition-all duration-300 relative ${
                   isCurrent
-                    ? "bg-cyan-950/40 border-cyan-500/60 shadow-cyan-glow"
+                    ? "bg-accent/10 border-cyan-500/60 shadow-cyan-glow"
                     : isCompleted
-                    ? "bg-slate-900/60 border-slate-800/80"
-                    : "bg-slate-950/30 border-slate-900/50 opacity-40"
+                    ? "bg-cyber-base/60 border-cyber-border/80"
+                    : "bg-cyber-base/30 border-cyber-border/50 opacity-40"
                 }`}
               >
                 <div className="flex items-start justify-between mb-1">
@@ -97,10 +97,10 @@ export function AIHuntingTimeline({
                     <div
                       className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-mono font-bold ${
                         isCurrent
-                          ? "bg-cyan-500 text-slate-950 animate-pulse"
+                          ? "bg-cyan-500 text-on-accent animate-pulse"
                           : isCompleted
-                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-                          : "bg-slate-800 text-slate-500"
+                          ? "bg-emerald-500/20 text-status-success border border-emerald-500/40"
+                          : "bg-cyber-surface-hover text-cyber-muted"
                       }`}
                     >
                       {isCompleted ? (
@@ -112,27 +112,27 @@ export function AIHuntingTimeline({
                     <h3
                       className={`text-xs font-semibold ${
                         isCurrent
-                          ? "text-cyan-300"
+                          ? "text-accent"
                           : isCompleted
                           ? "text-cyber-heading"
-                          : "text-slate-500"
+                          : "text-cyber-muted"
                       }`}
                     >
                       Step {step.step}: {step.name}
                     </h3>
                   </div>
-                  <span className="text-xs font-mono text-slate-400">
+                  <span className="text-xs font-mono text-cyber-muted">
                     {step.timestamp}
                   </span>
                 </div>
 
-                <p className="text-xs text-slate-300 pl-9 leading-relaxed">
+                <p className="text-xs text-cyber-text pl-9 leading-relaxed">
                   {step.detail}
                 </p>
 
                 {isCurrent && (
                   <div className="mt-2 pl-9">
-                    <div className="h-1 w-full bg-slate-800 rounded overflow-hidden relative">
+                    <div className="h-1 w-full bg-cyber-surface-hover rounded overflow-hidden relative">
                       <div className="h-full bg-cyan-400 animate-pulse w-2/3"></div>
                     </div>
                   </div>
