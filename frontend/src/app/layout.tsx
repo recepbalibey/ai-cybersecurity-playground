@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -8,18 +8,18 @@ export const metadata: Metadata = {
   description: "Learn to investigate threats with AI and protect AI systems through 12 guided security labs. All scenarios are simulated.",
 };
 
-const inter = Inter({
-  subsets: ["latin"],
+const inter = localFont({
+  src: "./fonts/inter-latin.woff2",
   variable: "--font-inter",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: "400 800",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
+const jetbrainsMono = localFont({
+  src: "./fonts/jetbrains-mono-latin.woff2",
   variable: "--font-jb-mono",
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: "400 700",
 });
 
 export default function RootLayout({
